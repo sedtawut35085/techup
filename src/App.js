@@ -1,23 +1,16 @@
-import logo from './logo.svg';
-import './App.css';
+import "./assets/styles/App.css"
+import { BrowserRouter , Route , Routes} from "react-router-dom";
+
+import SignInForm from "./pages/Sign_in/signIn.js"
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Uptodate 3.0.0
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="App bg-color-0">
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<SignInForm />}></Route>
+        </Routes>
+      </BrowserRouter>
     </div>
   );
 }

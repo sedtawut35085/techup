@@ -1,0 +1,166 @@
+body {
+    font-family: 'Poppins', sans-serif;
+    color: #26262C;
+    background-color: #fff;
+}
+
+.f-xs {
+    font-size: 0.75rem;
+}
+.f-sm {
+    font-size: 0.875rem;
+}
+.f-md {
+    font-size: 1.125rem;
+}
+.f-lg {
+    font-size: 1.5rem;
+}
+.f-xl {
+    font-size: 2.25rem;
+}
+
+.fw-100 {
+    font-weight: 100;
+}
+.fw-200 {
+    font-weight: 200;
+}
+.fw-300 {
+    font-weight: 300;
+}
+.fw-400 {
+    font-weight: 400;
+}
+.fw-500 {
+    font-weight: 500;
+}
+.fw-600 {
+    font-weight: 600;
+}
+.fw-700 {
+    font-weight: 700;
+}
+.fw-800 {
+    font-weight: 800;
+}
+
+.bg-color-white, .hv-bg-color-white:hover {
+    background-color: #fff;
+}
+.bg-color-black, .hv-bg-color-black:hover {
+    background-color: #26262C;
+}
+.bg-color-0, .hv-bg-color-0:hover {
+    background-color: rgba(255, 162, 66, 0.8);
+}
+.bg-color-1, .hv-bg-color-1:hover {
+    background-color: #FFA242;
+}
+.bg-color-2, .hv-bg-color-2:hover {
+    background-color: #FED470;
+}
+.bg-color-3, .hv-bg-color-3:hover {
+    background-color: #58A550;
+}
+.bg-color-4, .hv-bg-color-4:hover {
+    background-color: #2CACC9;
+}
+.bg-color-5, .hv-bg-color-5:hover {
+    background-color: #FF333D;
+}
+.bg-color-6, .hv-bg-color-6:hover {
+    background-color: #1B1F4B;
+}
+.bg-color-7, .hv-bg-color-7:hover {
+    background-color: #194D45;
+}
+.bg-color-8, .hv-bg-color-8:hover {
+    background-color: #6A244D;
+}
+.bg-color-9, .hv-bg-color-9:hover {
+    background-color: rgba(27, 31, 75, 0.8);
+}
+.bg-color-10, .hv-bg-color-10:hover {
+    background-color: rgba(25, 77, 69, 0.8);
+}
+.bg-color-11, .hv-bg-color-11:hover {
+    background-color: rgba(106, 36, 77, 0.8);
+}
+.bg-color-gray1, .hv-bg-color-gray1:hover {
+    background-color: #D7D7D6;
+}
+.bg-color-gray2, .hv-bg-color-gray2:hover {
+    background-color: #A5A3A2;
+}
+.bg-color-gray3, .hv-bg-color-gray3:hover {
+    background-color: #726F6E;
+}
+.bg-color-gray4, .hv-bg-color-gray4:hover {
+    background-color: #585656;
+}
+
+.color-white, .hv-color-white:hover {
+    color: #fff;
+}
+.color-black, .hv-color-black:hover {
+    color: #26262C;
+}
+.color-1, .hv-color-1:hover {
+    color: #FFA242;   
+}
+.color-2, .hv-color-2:hover {
+    color: #FED470;   
+}
+.color-3, .hv-color-3:hover {
+    background-color: #58A550;
+}
+.color-4, .hv-color-4:hover {
+    background-color: #2CACC9;
+}
+.color-5, .hv-color-5:hover {
+    background-color: #FF333D;
+}
+.color-6, .hv-color-6:hover {
+    background-color: #1B1F4B;
+}
+.color-7, .hv-color-7:hover {
+    background-color: #194D45;
+}
+.color-8, .hv-color-8:hover {
+    background-color: #6A244D;
+}
+.color-9, .hv-color-9:hover {
+    background-color: rgba(27, 31, 75, 0.8);
+}
+.color-10, .hv-color-10:hover {
+    background-color: rgba(25, 77, 69, 0.8);
+}
+.color-11, .hv-color-11:hover {
+    background-color: rgba(106, 36, 77, 0.8);
+}
+.color-gray1, .hv-color-gray1:hover {
+    background-color: #D7D7D6;
+}
+.color-gray2, .hv-color-gray2:hover {
+    background-color: #A5A3A2;
+}
+.color-gray3, .hv-color-gray3:hover {
+    background-color: #726F6E;
+}
+.color-gray4, .hv-color-gray4:hover {
+    background-color: #585656;
+}
+
+.sh-sm {
+    box-shadow: 0 0 4px rgba(0, 0, 0, 0.25);
+}
+.sh-md {
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.25);
+}
+.sh-lg {
+    box-shadow: 0 0 12px rgba(0, 0, 0, 0.25);
+}
+.sh-xl {
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.25);
+}
