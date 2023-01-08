@@ -14,7 +14,7 @@ function SignInForm() {
     <div className="container d-flex justify-content-center align-items-center text-center bg-color-white sh-xl" style={{height: "100vh"}}>
         <form onSubmit={handleSubmit}>
             <div className="form-group">
-                <label htmlFor="email">Email</label>
+                <label htmlFor="email">KMUTT Email</label>
                 <input
                 type="email"
                 id="email"
