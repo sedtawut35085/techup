@@ -203,7 +203,7 @@
     list-style: none;
     width: 20px;
     height: 20px;
-    animation: animate-icon-left 36s linear infinite;
+    animation: animate-icon-left 40s linear infinite;
     left: 5%;
     top: -200px;
     animation-delay: 0s;
@@ -216,17 +216,17 @@
 .background-icon-left li:nth-child(1) {
     left: 10%;
     top: -200px;
-    animation-delay: 9s;
+    animation-delay: 10s;
 }
 .background-icon-left li:nth-child(2) {
     left: 5%;
     top: -200px;
-    animation-delay: 18s;
+    animation-delay: 20s;
 }
 .background-icon-left li:nth-child(3) {
     left: 10%;
     top: -200px;
-    animation-delay: 27s;
+    animation-delay: 30s;
 }
 
 @keyframes animate-icon-right {
@@ -247,7 +247,7 @@
     list-style: none;
     width: 20px;
     height: 20px;
-    animation: animate-icon-right 36s linear infinite;
+    animation: animate-icon-right 40s linear infinite;
     left: 95%;
     top: -200px;
     animation-delay: 0s;
@@ -260,15 +260,15 @@
 .background-icon-right li:nth-child(1) {
     left: 90%;
     top: -200px;
-    animation-delay: 9s;
+    animation-delay: 10s;
 }
 .background-icon-right li:nth-child(2) {
     left: 95%;
     top: -200px;
-    animation-delay: 18s;
+    animation-delay: 20s;
 }
 .background-icon-right li:nth-child(3) {
     left: 90%;
     top: -200px;
-    animation-delay: 27s;
+    animation-delay: 30s;
 }
