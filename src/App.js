@@ -13,22 +13,6 @@ import SelectRole from "./pages/Sign/selectRole.js"
 function App() {
   return (
     <div className="App">
-<<<<<<< HEAD
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Uptodate 10.0.0
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-=======
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<SignInForm />}></Route>
@@ -36,7 +20,6 @@ function App() {
           <Route path="/sign-up/select-role" element={<SelectRole />}></Route>
         </Routes>
       </BrowserRouter>
->>>>>>> dev-bright
     </div>
   );
 }
