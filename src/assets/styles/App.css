@@ -11,10 +11,58 @@ a {
     transition: all 0.2s;
 }
 
-.container {
+svg {
+    transition: all .2s;
+}
+
+.cover-container {
+    max-width: 1420px;
     min-height: 100vh;
+    color: #26262C;
     background-color: #fff;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.25);
+    --bs-gutter-x: 1.5rem;
+    --bs-gutter-y: 0;
+    width: 100%;
+    padding-top: 115px;
+    padding-right: calc(var(--bs-gutter-x) * .5);
+    padding-left: calc(var(--bs-gutter-x) * .5);
+    padding-bottom: 60px;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+@media screen and (max-width: 1520px) {
+    .cover-container {
+        max-width: 1100px;
+    }
+}
+
+@media screen and (max-width: 1200px) {
+    .cover-container {
+        max-width: 970px;
+    }
+}
+
+@media screen and (max-width: 992px) {
+    .cover-container {
+        max-width: 730px;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .cover-container {
+        max-width: 550px;
+    }
+}
+
+@media screen and (max-width: 576px) {
+    .cover-container {
+        width: 90vw;
+        border-radius: 1rem;
+        margin: 3rem auto;
+        background-color: rgba(255, 255, 255, 1);
+    }
 }
 
 .f-xs {

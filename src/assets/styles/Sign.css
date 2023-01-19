@@ -82,15 +82,10 @@
     background-color: #FF9326;
 }
 
-
 .select-role-title {
     width: 100%; 
     text-align: center;
     position: relative;
-}
-
-.select-role-title span {
-    background-color: #fff;
 }
 
 .select-role-title::before {
@@ -113,4 +108,62 @@
     right: 0;
     top: 50%;
     position: absolute;
+}
+
+.select-section {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+.select-role-box {
+    width: 30%;
+    height: calc(16vw + 80px);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 0 12px rgba(0, 0, 0, 0.25);
+    border-radius: 24px;
+    transition: all .2s;
+    cursor: pointer;
+}
+
+.select-role-box .icon {
+    color: #FFA242;
+    line-height: 1rem;
+    padding: 0;
+    font-size: 8rem;
+}
+
+.select-role-box .text {
+    padding: 1rem 0 0 0;
+    font-size: 1.5rem;
+}
+
+.select-role-box:hover {
+    background-color: #FFA242;
+    color: #fff;
+}
+
+.select-role-box#student:hover #student-icon,
+.select-role-box#professor:hover #professor-icon {
+    color: #fff !important;
+}
+
+@media screen and (max-width: 768px) {
+    .select-role-box {
+        width: 80%;
+        height: calc(15vw + 140px);
+    }
+    .select-section {
+        flex-direction: column;
+    }
+    .select-role-title::before, .select-role-title::after {
+        display: none;
+    }
+}
+
+.select-page {
+    padding: 60px 0;
 }

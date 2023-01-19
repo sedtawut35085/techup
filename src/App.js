@@ -1,6 +1,8 @@
 import "./assets/styles/App.css"
-import "./assets/styles/SignIn.css"
 import "./assets/styles/Background.css"
+import "./assets/styles/Components.css"
+
+import "./assets/styles/Sign.css"
 
 import { BrowserRouter , Route , Routes} from "react-router-dom";
 
