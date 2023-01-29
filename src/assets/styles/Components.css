@@ -1,4 +1,6 @@
+/* Back button */
 .btn-back {
+    cursor: pointer;
     width: 50px;
     height: 50px;
     background-color: #fff;
@@ -9,35 +11,209 @@
     align-items: center;
     font-size: 1.5rem;
     position: absolute;
-    left: calc(((100vw - 1420px) / 2) - 25px);
+    left: calc(((100vw - 1420px) / 2) - 30px);
+    transition: all .2s;
 }
-
+.btn-back:hover {
+    background-color: #FFA242;
+    color: #fff;
+}
 @media screen and (max-width: 1520px) {
     .btn-back {
-        left: calc(((100vw - 1100px) / 2) - 25px);
+        left: calc(((100vw - 1100px) / 2) - 30px);
     }
 }
-
 @media screen and (max-width: 1200px) {
     .btn-back {
-        left: calc(((100vw - 970px) / 2) - 25px);
+        left: calc(((100vw - 970px) / 2) - 30px);
     }
 }
-
 @media screen and (max-width: 992px) {
     .btn-back {
-        left: calc(((100vw - 730px) / 2) - 25px);
+        left: calc(((100vw - 730px) / 2) - 30px);
     }
 }
-
 @media screen and (max-width: 768px) {
     .btn-back {
-        left: calc(((100vw - 550px) / 2) - 25px);
+        left: calc(((100vw - 550px) / 2) - 30px);
     }
 }
-
 @media screen and (max-width: 576px) {
     .btn-back {
         left: 5px;
     }
 }
+/* Back button */
+
+/* Information input box */
+.input-box {
+    background-color: #fff;
+    width: 100%;
+    height: 60px;
+    padding: 0 20px;
+    font-size: 1rem;
+    color: #26262C;
+    outline: none;
+    border-radius: 12px;
+    border: 0;
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.25);    
+}
+/* Information input box */
+
+/* Techup selectpicker */
+.tu-selectpicker-box {
+    z-index: 1;
+    cursor: pointer;
+    background-color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    height: 60px;
+    padding: 0 20px;
+    font-size: 1rem;
+    border-radius: 12px;
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.25);
+    position: relative;
+}
+.tu-selectpicker-box .icon .delete{
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    padding: 4px;
+    margin-right: .5rem;
+    transition: all .1s;
+}
+.tu-selectpicker-box .icon .delete:hover {
+    background-color: #FF333D;
+    color: #fff;
+}
+.tu-selectpicker-options {
+    z-index: 0;
+    background-color: #fff;
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 25px 0px 15px 0px;
+    margin-top: -30px;
+    opacity: 0;
+    visibility: hidden;
+    overflow: hidden;
+    font-size: 1rem;
+    border-radius: 0 0 12px 12px;
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.25);
+    transition: all .2s;
+}
+.tu-selectpicker-options.showed {
+    visibility: visible;
+    margin-top: -10px;
+    opacity: 1;
+}
+.tu-selectpicker-options .option {
+    cursor: pointer;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    color: #26262C;
+    width: 100%;
+    padding: 10px 20px;
+    transition: all .2s;
+    -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+    -khtml-user-select: none; /* Konqueror HTML */
+    -moz-user-select: none; /* Old versions of Firefox */
+    -ms-user-select: none; /* Internet Explorer/Edge */
+    user-select: none;
+}
+.tu-selectpicker-options .option.default {
+    color: #A5A3A2;
+}
+.tu-selectpicker-options .option.selected {
+    background-color: #FFA242;
+    color: #fff;
+}
+.tu-selectpicker-options .option:hover {
+    background-color: #FFA242;
+    color: #fff;
+}
+/* Techup selectpicker */
+
+/* Techup datepicker */
+.sdp {
+    --font: 'Poppins', sans-serif !important;
+    --theme-color: #FFA242 !important;
+    --outline: none !important;
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.25);
+    margin-bottom: 2rem;
+}
+.tu-datepicker-calendar {
+    visibility: hidden;
+    z-index: 999;
+    display: flex;
+    justify-content: end;
+    position: absolute;
+    opacity: 0;
+    transition: all .3s;
+}
+.tu-datepicker-calendar.showed {
+    visibility: visible;
+    opacity: 1;
+}
+/* Techup datepicker */
+
+/* Contact */
+.delete-contact {
+    cursor: pointer;
+    height: 40px;
+    width: 40px;
+    background-color: #fff;
+    border-radius: 12px;
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.25);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.125rem;
+    color: #26262C;
+    transition: all .2s;
+}
+
+.delete-contact:hover {
+    background-color: #FF333D;
+    color: #fff;
+}
+
+.add-contact {
+    cursor: pointer;
+    margin: 1.5rem 0;
+    text-decoration: underline;
+    color: #FFA242;
+    display: flex;
+    align-items: center;
+    font-size: 1.5rem;
+    transition: all .2s;
+}
+
+.add-contact:hover {
+    color: #FF9326;
+    font-weight: 600;
+}
+/* Contact */
+
+/* Button 1 */
+.btn-01 {
+    height: 45px;
+    padding: 0 24px;
+    border-radius: 12px;
+    background-color: #FFA242;
+    color: #fff;
+    box-shadow: 0 0 4px rgba(0, 0, 0, 0.25);
+    font-size: 1.125rem;
+    font-weight: 800;
+    outline: none;
+    border: none;
+    transition: all 0.2s;
+}
+.btn-01:hover {
+    background-color: #FF9326;
+}
+/* Button 1 */

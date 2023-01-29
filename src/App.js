@@ -1,7 +1,6 @@
 import "./assets/styles/App.css"
 import "./assets/styles/Background.css"
 import "./assets/styles/Components.css"
-
 import "./assets/styles/Sign.css"
 
 import { BrowserRouter , Route , Routes} from "react-router-dom";
@@ -17,7 +16,7 @@ function App() {
         <Routes>
           <Route path="/" element={<SignInForm />}></Route>
           <Route path="/sign-up" element={<SignUpForm />}></Route>
-          <Route path="/sign-up/select-role" element={<SelectRole />}></Route>
+          <Route path="/select-role" element={<SelectRole />}></Route>
         </Routes>
       </BrowserRouter>
     </div>

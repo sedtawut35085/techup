@@ -15,11 +15,11 @@ function SignUpForm() {
     setErrors([])
 
     if(!(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email))) {
-        if(email === '') {
-            setErrors(errors => [...errors, 'email'])
-        } else {
-            setErrors(errors => [...errors, 'invalid_email'])
-        }
+      if(email === '') {
+        setErrors(errors => [...errors, 'email'])
+      } else {
+        setErrors(errors => [...errors, 'invalid_email'])
+      }
     } else if(!email.includes('@mail.kmutt.ac.th')) {
         setErrors(errors => [...errors, 'kmutt_email'])
     } else if(password === '') {
@@ -29,7 +29,7 @@ function SignUpForm() {
     } else if(password !== cfPassword) {
         setErrors(errors => [...errors, 'wrong_cf_password'])
     } else {
-        window.location.href = '/sign-up/select-role'
+        window.location.href = '/select-role'
     }
 
     event.preventDefault();
