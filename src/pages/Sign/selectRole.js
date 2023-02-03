@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { FaUserGraduate, FaChalkboardTeacher, FaChevronLeft, FaUserCircle, FaUpload } from 'react-icons/fa';
 
+import { isNumber, isEmail } from '../../assets/js/helper'
 import BackgroundIcon from '../../components/background/bgIcons.js';
 import SelectPicker from '../../components/picker_select/selectPicker.js'
 import TuDatePicker from '../../components/picker_date/datePicker.js'
@@ -13,17 +14,70 @@ function SelectRole() {
     const [image, setImage] = useState("");
     const [techupID, setTechupID] = useState("") 
     const [studentID, setStudentID] = useState("") 
+    const [professorID, setProfessorID] = useState("")
     const [name, setName] = useState("")
     const [surname, setSurname] = useState("")
     const [gender, setGender] = useState({label: "", data: ""})
     const [birthday, setBirthday] = useState("")
+    const [contacts, setContacts] = useState([])
+
+    const [errors, setErrors] = useState([])
 
     const genderAll = [
         {label: "Male", data: "male"},
         {label: "Female", data: "female"}
     ]
 
+    function goBack() {
+        setRole("")
+        setImage("")
+        setTechupID("")
+        setStudentID("")
+        setProfessorID("")
+        setName("")
+        setSurname("")
+        setGender({label: "", data: ""})
+        setBirthday("")
+        setContacts([])
+        setErrors([])
+    }
+
     function handleSubmit(event) {
+
+        setErrors([])
+
+       
+        if(role == "student") {
+            if(techupID == "") {
+                setErrors(errors => [...errors, 'techupId'])
+            }
+            if(studentID.length !== 11){
+                if(studentID == "") {
+                    setErrors(errors => [...errors, 'stuId'])
+                } else {
+                    setErrors(errors => [...errors, 'invalid_stuId'])
+                }
+            }
+        }
+        if(role == "professor") {
+            if(professorID.length !== 11){
+                if(studentID == "") {
+                    setErrors(errors => [...errors, 'profId'])
+                } else {
+                    setErrors(errors => [...errors, 'invalid_profId'])
+                }
+            }
+        }
+        
+        if(name == ""){
+            setErrors(errors => [...errors, 'name'])
+        }
+        if(surname == ""){
+            setErrors(errors => [...errors, 'surname'])
+        }
+
+        console.log(contacts)
+
         event.preventDefault();
     }
 
@@ -34,7 +88,7 @@ function SelectRole() {
                     {
                     role === "student"
                     ?   <div className="select-page">
-                            <div className="btn-back" onClick={() => setRole("")}>
+                            <div className="btn-back" onClick={() => goBack()}>
                                 <FaChevronLeft />
                             </div>
                             <p className="title f-xl fw-800">Information - Student</p>
@@ -57,8 +111,10 @@ function SelectRole() {
                                             id="techup-id" 
                                             className="input-box"
                                             placeholder="Display name... (Will show in profile and leaderboard)"
+                                            maxLength="30"
                                             onChange={(event) => setTechupID(event.target.value)}
                                         />
+                                        {errors.includes("techupId") && (<label className="f-xs color-5 pt-2" htmlFor="techup-id">Please enter your Techup ID</label>)}
                                     </div>
                                     <div className="col-12 pt-4">
                                         <label className="f-lg pb-2" htmlFor="student-id">Student ID<span className="color-5">*</span></label>
@@ -68,8 +124,12 @@ function SelectRole() {
                                             id="student-id" 
                                             className="input-box"
                                             placeholder="Enter KMUTT student ID (Ex. xx090500xxx)"
+                                            maxLength="15"
+                                            onKeyPress={(event) => isNumber(event)}
                                             onChange={(event) => setStudentID(event.target.value)}
                                         />
+                                        {errors.includes("stuId") && (<label className="f-xs color-5 pt-2" htmlFor="student-id">Please enter your Student ID</label>)}
+                                        {errors.includes("invalid_stuId") && (<label className="f-xs color-5 pt-2" htmlFor="student-id">Please enter a valid Student ID</label>)}
                                     </div>
                                 </div>
                                 <div className="col-lg-6 col-md-12 pt-4 px-4">
@@ -82,6 +142,7 @@ function SelectRole() {
                                         placeholder="Enter your English first name"
                                         onChange={(event) => setName(event.target.value)}
                                     />
+                                    {errors.includes("name") && (<label className="f-xs color-5 pt-2" htmlFor="name">Please enter your Name</label>)}
                                 </div>
                                 <div className="col-lg-6 col-md-12 pt-4 px-4">
                                     <label className="f-lg pb-2" htmlFor="surname">Surname<span className="color-5">*</span></label>
@@ -93,9 +154,10 @@ function SelectRole() {
                                         placeholder="Enter your English surname"
                                         onChange={(event) => setSurname(event.target.value)}
                                     />
+                                    {errors.includes("surname") && (<label className="f-xs color-5 pt-2" htmlFor="surname">Please enter your Surname</label>)}
                                 </div>
                                 <div className="col-lg-6 col-md-12 pt-4 px-4">
-                                    <label className="f-lg pb-2" htmlFor="gender">Gender {gender.label}</label>
+                                    <label className="f-lg pb-2" htmlFor="gender">Gender</label>
                                     <SelectPicker 
                                         name="gender" 
                                         id="gender" 
@@ -117,7 +179,7 @@ function SelectRole() {
                                 </div>
                                 <div className="col-12 pt-4 px-4">
                                     <label className="f-lg pb-2" htmlFor="contact">Contact</label>
-                                    <ContactInfo />
+                                    <ContactInfo setValue={setContacts} />
                                 </div>
                                 <div className="col-12 pt-4 px-4"><div className="divider"></div></div>
                                 <div className="col-12 pt-5 d-flex jc-center">
@@ -127,7 +189,7 @@ function SelectRole() {
                         </div>
                     :   role === "professor"
                     ?   <div className="select-page">
-                            <div className="btn-back" onClick={() => setRole("")}>
+                            <div className="btn-back" onClick={() => goBack()}>
                                 <FaChevronLeft />
                             </div>
                             <p className="title f-xl fw-800">Information - Professor</p>
@@ -143,52 +205,47 @@ function SelectRole() {
                                 </div>
                                 <div className="col-lg-6 col-md-12 px-4">
                                     <div className="col-12 pt-4">
-                                        <label className="f-lg pb-2" htmlFor="techup-id">Techup ID<span className="color-5">*</span></label>
+                                        <label className="f-lg pb-2" htmlFor="name">Name<span className="color-5">*</span></label>
                                         <input
                                             type="text" 
-                                            name="techup-id" 
-                                            id="techup-id" 
+                                            name="name" 
+                                            id="name" 
                                             className="input-box"
-                                            placeholder="Display name... (Will show in profile and leaderboard)"
-                                            onChange={(event) => setTechupID(event.target.value)}
+                                            placeholder="Enter your English first name"
+                                            onChange={(event) => setName(event.target.value)}
                                         />
+                                        {errors.includes("name") && (<label className="f-xs color-5 pt-2" htmlFor="name">Please enter your Name</label>)}
                                     </div>
                                     <div className="col-12 pt-4">
-                                        <label className="f-lg pb-2" htmlFor="student-id">Student ID<span className="color-5">*</span></label>
+                                        <label className="f-lg pb-2" htmlFor="surname">Surname<span className="color-5">*</span></label>
                                         <input
                                             type="text" 
-                                            name="student-id" 
-                                            id="student-id" 
+                                            name="surname" 
+                                            id="surname" 
                                             className="input-box"
-                                            placeholder="Enter KMUTT student ID (Ex. xx090500xxx)"
-                                            onChange={(event) => setStudentID(event.target.value)}
+                                            placeholder="Enter your English surname"
+                                            onChange={(event) => setSurname(event.target.value)}
                                         />
+                                        {errors.includes("surname") && (<label className="f-xs color-5 pt-2" htmlFor="surname">Please enter your Surname</label>)}
                                     </div>
                                 </div>
                                 <div className="col-lg-6 col-md-12 pt-4 px-4">
-                                    <label className="f-lg pb-2" htmlFor="name">Name<span className="color-5">*</span></label>
-                                    <input
-                                        type="text" 
-                                        name="name" 
-                                        id="name" 
-                                        className="input-box"
-                                        placeholder="Enter your English first name"
-                                        onChange={(event) => setName(event.target.value)}
-                                    />
+                                    <label className="f-lg pb-2" htmlFor="professor-id">Professor ID<span className="color-5">*</span></label>
+                                        <input
+                                            type="text" 
+                                            name="professor-id" 
+                                            id="professor-id" 
+                                            className="input-box"
+                                            placeholder="Enter KMUTT professor ID (Ex. xx090500xxx)"
+                                            maxLength="15"
+                                            onKeyPress={(event) => isNumber(event)}
+                                            onChange={(event) => setStudentID(event.target.value)}
+                                        />
+                                        {errors.includes("profId") && (<label className="f-xs color-5 pt-2" htmlFor="professor-id">Please enter your Professor ID</label>)}
+                                        {errors.includes("invalid_profId") && (<label className="f-xs color-5 pt-2" htmlFor="professor-id">Please enter a valid Professor ID</label>)}
                                 </div>
                                 <div className="col-lg-6 col-md-12 pt-4 px-4">
-                                    <label className="f-lg pb-2" htmlFor="surname">Surname<span className="color-5">*</span></label>
-                                    <input
-                                        type="text" 
-                                        name="surname" 
-                                        id="surname" 
-                                        className="input-box"
-                                        placeholder="Enter your English surname"
-                                        onChange={(event) => setSurname(event.target.value)}
-                                    />
-                                </div>
-                                <div className="col-lg-6 col-md-12 pt-4 px-4">
-                                    <label className="f-lg pb-2" htmlFor="gender">Gender {gender.label}</label>
+                                    <label className="f-lg pb-2" htmlFor="gender">Gender</label>
                                     <SelectPicker 
                                         name="gender" 
                                         id="gender" 
@@ -210,7 +267,7 @@ function SelectRole() {
                                 </div>
                                 <div className="col-12 pt-4 px-4">
                                     <label className="f-lg pb-2" htmlFor="contact">Contact</label>
-                                    <ContactInfo />
+                                    <ContactInfo setValue={setContacts} />
                                 </div>
                                 <div className="col-12 pt-4 px-4"><div className="divider"></div></div>
                                 <div className="col-12 pt-5 d-flex jc-center">

@@ -33,7 +33,7 @@ function SignInForm() {
       } else {
         setErrors(errors => [...errors, 'invalid_email'])
       }
-    } else if(!email.includes('@mail.kmutt.ac.th')) {
+    } else if(!email.includes('@mail.kmutt.ac.th') && !email.includes('@kmutt.ac.th')) {
       setErrors(errors => [...errors, 'kmutt_email'])
     } else if(password === '') {
       setErrors(errors => [...errors, 'password'])

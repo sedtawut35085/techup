@@ -56,13 +56,22 @@
     outline: none;
     border-radius: 12px;
     border: 0;
-    box-shadow: 0 0 8px rgba(0, 0, 0, 0.25);    
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.25);  
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;  
+    transition: all .2s;
+    border: 1px solid #fff;
+}
+
+.input-box:focus {
+    border: 1px solid #FFA242;
+    box-shadow: 0 0 8px #ffa14242;  
 }
 /* Information input box */
 
 /* Techup selectpicker */
 .tu-selectpicker-box {
-    z-index: 1;
     cursor: pointer;
     background-color: #fff;
     display: flex;
@@ -75,6 +84,20 @@
     border-radius: 12px;
     box-shadow: 0 0 8px rgba(0, 0, 0, 0.25);
     position: relative;
+    -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+    -khtml-user-select: none; /* Konqueror HTML */
+    -moz-user-select: none; /* Old versions of Firefox */
+    -ms-user-select: none; /* Internet Explorer/Edge */
+    user-select: none;
+}
+.tu-selectpicker-box span {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.tu-selectpicker-box .icon svg {
+    transition: all .3s;
 }
 .tu-selectpicker-box .icon .delete{
     width: 24px;
@@ -89,26 +112,26 @@
     color: #fff;
 }
 .tu-selectpicker-options {
-    z-index: 0;
+    z-index: 999;
     background-color: #fff;
     position: absolute;
     display: flex;
     flex-direction: column;
     justify-content: center;
     padding: 25px 0px 15px 0px;
-    margin-top: -30px;
+    margin-top: -20px;
     opacity: 0;
     visibility: hidden;
     overflow: hidden;
     font-size: 1rem;
-    border-radius: 0 0 12px 12px;
+    border-radius: 12px;
     box-shadow: 0 0 8px rgba(0, 0, 0, 0.25);
     transition: all .2s;
 }
 .tu-selectpicker-options.showed {
     visibility: visible;
-    margin-top: -10px;
     opacity: 1;
+    margin-top: 0;
 }
 .tu-selectpicker-options .option {
     cursor: pointer;
@@ -162,6 +185,9 @@
 /* Techup datepicker */
 
 /* Contact */
+.contact-row {
+    padding-bottom: 1.5rem ;
+}
 .delete-contact {
     cursor: pointer;
     height: 40px;
@@ -176,15 +202,14 @@
     color: #26262C;
     transition: all .2s;
 }
-
 .delete-contact:hover {
     background-color: #FF333D;
     color: #fff;
 }
-
 .add-contact {
+    width: 240px;
     cursor: pointer;
-    margin: 1.5rem 0;
+    margin-bottom: 1.5rem;
     text-decoration: underline;
     color: #FFA242;
     display: flex;
@@ -192,7 +217,6 @@
     font-size: 1.5rem;
     transition: all .2s;
 }
-
 .add-contact:hover {
     color: #FF9326;
     font-weight: 600;

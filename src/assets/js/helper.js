@@ -20,3 +20,21 @@ export function convertToDate(dateTime) {
         return dateTime
     }
 }
+
+export function isNumber(evt) {
+    evt = (evt) ? evt : window.event;
+    var charCode = (evt.which) ? evt.which : evt.keyCode;
+    if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+        evt.preventDefault();
+    } else {
+        return true;
+    }
+}
+
+export function isEmail(input) {
+    if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(input))
+    {
+        return (true)
+    }
+    return (false)
+}

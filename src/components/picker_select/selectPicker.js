@@ -42,12 +42,12 @@ const SelectPicker = ({id, data, defaultValue, setValue, placeholder}) => {
                         style={selected.label === "" && selected.data === "" ? {display: "none"} : {}} 
                         onClick={() => clearOption()}
                     />
-                    <FaChevronDown />
+                    <FaChevronDown style={isShow ? {transform: "rotate(0.5turn)"} : {}} />
                 </div>
             </div>
             <div className={"tu-selectpicker-options " + (isShow ? "showed" : "")} style={{width: width + 40}}>
                 {data.map((item, key) => (
-                    <div key={key} className={"option " + (item === selected ? "selected" : "")} onClick={() => selectOption(item)}>{item.label}</div>
+                    <div key={key} className={"option " + (item.label === selected.label ? "selected" : "")} onClick={() => selectOption(item)}>{item.label}</div>
                 ))}
             </div>
         </div>
