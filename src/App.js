@@ -8,6 +8,7 @@ import { BrowserRouter , Route , Routes} from "react-router-dom";
 import SignInForm from "./pages/Sign/signIn.js"
 import SignUpForm from "./pages/Sign/signUp.js"
 import SelectRole from "./pages/Sign/selectRole.js"
+import PendingProf from "./pages/Sign/pendingProf.js"
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
           <Route path="/" element={<SignInForm />}></Route>
           <Route path="/sign-up" element={<SignUpForm />}></Route>
           <Route path="/select-role" element={<SelectRole />}></Route>
+          <Route path="/pending-prof" element={<PendingProf />}></Route>
         </Routes>
       </BrowserRouter>
     </div>
