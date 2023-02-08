@@ -44,44 +44,44 @@ function SelectRole() {
 
     function handleSubmit(event) {
 
-        setErrors([])
-       
+        setErrors([]);
+        const arrayError = [];
+
         if(role === "student") {
             if(techupID === "") {
-                setErrors(errors => [...errors, 'techupId'])
+                arrayError.push('techupId');
             }
             if(studentID.length !== 11){
                 if(studentID === "") {
-                    setErrors(errors => [...errors, 'stuId'])
+                    arrayError.push('stuId');
                 } else {
-                    setErrors(errors => [...errors, 'invalid_stuId'])
+                    arrayError.push('invalid_stuId');
                 }
             }
-        }
+        }    
         if(role === "professor") {
             if(professorID.length !== 11){
                 if(studentID === "") {
-                    setErrors(errors => [...errors, 'profId'])
+                    arrayError.push('profId');
                 } else {
-                    setErrors(errors => [...errors, 'invalid_profId'])
+                    arrayError.push('invalid_profId');
                 }
             }
-        }
-        
+        }        
         if(name === ""){
-            setErrors(errors => [...errors, 'name'])
+            arrayError.push('name');
         }
         if(surname === ""){
-            setErrors(errors => [...errors, 'surname'])
+            arrayError.push('surname');
         }
 
-        if(errors.length === 0) {
+        if(arrayError.length === 0) {
             if(role === "professor") {
                 window.location.href = '/pending-prof'
             }
         }
-        
 
+        setErrors(arrayError);
         event.preventDefault();
     }
 
