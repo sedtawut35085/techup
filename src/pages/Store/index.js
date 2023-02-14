@@ -7,7 +7,7 @@ function Store() {
     return (
         <div className="store">
             <div className="cover-container">
-                <h1>Store555</h1>
+                <span>TechUp Store<hr></hr></span>
             </div>
             <div className="background-container"></div>
             <BackgroundIcon />
