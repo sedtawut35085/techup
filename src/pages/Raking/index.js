@@ -2,12 +2,12 @@ import React from 'react';
 
 import BackgroundIcon from '../../components/background/bgIcons.js';
 
-function Homepage() {
+function Raking() {
 
     return (
-        <div className="homepage">
+        <div className="raking">
             <div className="cover-container">
-                <h1>Homepage</h1>
+                <h1>Raking</h1>
             </div>
             <div className="background-container"></div>
             <BackgroundIcon />
@@ -15,4 +15,4 @@ function Homepage() {
     );
 }
 
-export default Homepage;
+export default Raking;
