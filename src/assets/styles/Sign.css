@@ -151,6 +151,28 @@
     color: #fff !important;
 }
 
+.select-role-box svg {
+    transition: all .2s;
+}
+
+@media screen and (max-width: 1520px) {
+    .select-role-title::before, .select-role-title::after {
+        width: 22%;
+    }
+}
+
+@media screen and (max-width: 1200px) {
+    .select-role-title::before, .select-role-title::after {
+        width: 18%;
+    }
+}
+
+@media screen and (max-width: 992px) {
+    .select-role-title::before, .select-role-title::after {
+        display: none;
+    }
+}
+
 @media screen and (max-width: 768px) {
     .select-role-box {
         width: 80%;
@@ -158,12 +180,71 @@
     }
     .select-section {
         flex-direction: column;
-    }
-    .select-role-title::before, .select-role-title::after {
-        display: none;
-    }
+    }    
 }
 
 .select-page {
     padding: 60px 0;
+}
+
+@media screen and (max-width: 576px) {
+    .select-page .title {
+        padding-top: .2rem;
+        font-size: 1.8rem;
+        padding-left: 2rem;
+    }
+}
+
+.select-page .input-section {
+    display: flex;
+}
+
+.select-page .profile-image .icon {
+    color: #D7D7D6;
+    font-size: 300px;
+}
+
+.select-page .profile-image img {
+    width: 300px;
+    height: 300px;
+    border-radius: 50%;
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.25);
+    object-fit: cover;
+}
+
+.select-page .profile-image input {
+    display: none;
+}
+
+.select-page .profile-image label {
+    cursor: pointer;
+    height: 40px;
+    font-size: 1.125rem;
+    color: #FFA242;
+    background-color: #fff;
+    margin-top: -18px;
+    padding: 0 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.25);
+    border-radius: 20px;
+    transition: all .2s;
+}
+
+.select-page .profile-image label:hover {
+    background-color: #FFA242;
+    box-shadow: 0 0 12px rgba(0, 0, 0, 0.25);
+    color: #fff;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Works for Firefox */
+input[type="number"] {
+  -moz-appearance: textfield;
 }
