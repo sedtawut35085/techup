@@ -17,6 +17,7 @@ function SignInForm() {
   const [password, setPassword] = useState('');
   const [code, setCode] = useState('');
   const [isForgetPasswordMessage, setIsForgetPasswordMessage] = useState(false);
+  const [isErrorSignIn, setIsErrorSignIn] = useState(false);
   const [keep, setKeep] = useState(false);
 
   const [errors, setErrors] = useState([])
@@ -33,11 +34,13 @@ function SignInForm() {
     setKeep(false)
     setIsReSend(false)
     setIsForgetPasswordMessage(false)
+    setIsErrorSignIn(false)
     setErrorCodeMessage('')
   }
 
   async function handleSignIn(event) {
     setErrors([])
+    setIsErrorSignIn(false)
     if(!(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email))) {
       if(email === '') {
         setErrors(errors => [...errors, 'email'])
@@ -90,14 +93,14 @@ function SignInForm() {
         if(res[0] === undefined){
           navigate('/select-role')
         }else{
-          //navidate to home page
+          navigate('/home')
         }
       }else{
         //professor
       }
     })
     .catch(err => {
-
+      setIsErrorSignIn(true)
     });   
   }
 
@@ -192,6 +195,17 @@ function SignInForm() {
                 </div>
                 <a className="f-sm text-end" href="/#" onClick={() => {setIsForgot(true); clear()}}>Forgot password ?</a>
               </div>
+              {isErrorSignIn === false?
+                    <>
+                       
+                    </>
+                    :                        
+                    <>
+                       <div className="col-12 d-flex jc-center pb-2">
+                          <label className="f-sm color-5 text-center" htmlFor="error">The email address you entered isn't connected to an account or password not correct.</label>
+                      </div>
+                    </>
+              } 
               <div className="sp-vertical"></div>
               <button type="submit" className="sign-form-button">Sign In</button>
             </form>

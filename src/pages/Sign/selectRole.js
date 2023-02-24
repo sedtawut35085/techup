@@ -1,3 +1,5 @@
+
+
 import React, { useState, useContext } from 'react';
 import { FaUserGraduate, FaChalkboardTeacher, FaChevronLeft, FaUserCircle, FaUpload } from 'react-icons/fa';
 
@@ -10,7 +12,6 @@ import ContactInfo from '../../components/contact_info/contactInfo.js'
 import { useNavigate } from 'react-router-dom'
 import { AuthContext } from '../../auth';
 import { saveStudent } from '../../service';
-import Auth from '../../configuration/configuration-aws'
 
 function SelectRole() {
 
@@ -31,6 +32,7 @@ function SelectRole() {
     const [location, setLocation] = useState("")
     
     const [errors, setErrors] = useState([])
+    const [errorsSubmit, setErrorsSubmit] = useState(false)
 
     const navigate = useNavigate()
 
@@ -52,13 +54,11 @@ function SelectRole() {
         setLocation("")
         setContacts([])
         setErrors([])
+        setErrorsSubmit(true)
 
     }
     
-    async function logout() {
-        await Auth.signOut();
-        navigate('/')
-    }
+    
 
     async function handleSubmit(event) {
 
@@ -131,7 +131,12 @@ function SelectRole() {
                 }
                 event.preventDefault();
                 let response = await saveStudent(data, imageFile)
-                console.log(response)
+                console.log(response.status)
+                if(response.status === 200){
+                    navigate('/home')
+                }else{
+                    setErrorsSubmit(true)
+                }
             }
         }
 
@@ -263,9 +268,18 @@ function SelectRole() {
                                 <div className="col-12 pt-5 d-flex jc-center">
                                     <button type="submit" className="btn-01">Submit</button>
                                 </div>
-                               
+                                {errorsSubmit === false?
+                                    <>
+                                        
+                                    </>
+                                        :                        
+                                    <>
+                                        <div className="col-12 pt-5 d-flex jc-center">
+                                            <label className="f-xm color-5" htmlFor="error">server error</label>
+                                        </div>
+                                    </>
+                                } 
                             </form>
-                            <div className="bg-gray-200 hover:bg-gray-400 py-2 px-4 block whitespace-no-wrap text-sm" href='#' onClick={logout}>logout</div>
                         </div>
                     :   role === "professor"
                     ?   <div className="select-page">

@@ -1,0 +1,163 @@
+.topbar {
+    position: fixed;
+    background-color: #fff;
+    box-shadow: 0 5px 12px rgba(0, 0, 0, 0.25);
+    width: 100vw;
+    height: 55px;
+    padding: 0 150px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 1rem;
+    -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+    -khtml-user-select: none; /* Konqueror HTML */
+    -moz-user-select: none; /* Old versions of Firefox */
+    -ms-user-select: none; /* Internet Explorer/Edge */
+    user-select: none;
+}
+.topbar .nav {
+    padding: 0 .3rem;
+}
+/* Nav side */
+.topbar nav {
+    display: flex;
+}
+.topbar nav a {
+    display: block;
+    position: relative;
+    margin-right: 1.5rem;
+    height: 55px;
+}
+.topbar nav a:hover {
+    color: #FFA242;
+}
+.topbar nav a div {
+    height: 100%;
+    display: flex;
+    align-items: center;
+}
+.topbar nav a.hover::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 3px;
+    background: #FFA242;
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: all .3s ease-out;
+}
+.topbar nav a.hover:hover::after {
+    transform: scaleX(1);
+}
+.topbar nav a.hover.active::after {
+    transform: scaleX(1);
+}
+/* Nav side */
+
+/* Profile side */
+.topbar .profile-section {
+    display: flex;
+    align-items: center;
+}
+.topbar .profile-section .point {
+    margin: 0 1rem;
+    padding: 0 1rem;
+    color: #fff;
+    font-size: 1rem;
+    font-weight: 600;
+    background-color: #FFA242;
+    border: 3px solid #FED470;
+    border-radius: 25px;
+}
+.topbar .profile-section .profile-pic {
+    position: relative;
+}
+.topbar .profile-section .profile-pic .img {
+    cursor: pointer;
+}
+.topbar .profile-section .profile-pic .img svg {
+    width: 40px;
+    height: 40px;
+    border-radius: 20px;
+}
+.topbar .profile-section .profile-pic .dropdown {
+    min-width: 220px;
+    background-color: #fff;
+    position: absolute;
+    right: 0;
+    top: 30px;
+    box-shadow: 0 0 12px rgba(0, 0, 0, 0.25);
+    border-radius: 12px;
+    transition: all .2s;
+    opacity: 0;
+    visibility: hidden;
+}
+.topbar .profile-section .profile-pic .dropdown.active {
+    top: 46px;
+    opacity: 1;
+    visibility: visible;
+}
+.topbar .profile-section .profile-pic .dropdown .info {
+    padding: 1.2rem .8rem 0 .8rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.topbar .profile-section .profile-pic .dropdown .info span {
+    white-space: nowrap;
+    padding: 0 1.5rem;
+}
+.topbar .profile-section .profile-pic .dropdown .menu {
+    padding-bottom: 1.2rem;
+}
+.topbar .profile-section .profile-pic .dropdown .menu a {
+    color: #FFA242;
+    cursor: pointer;
+    padding: .4rem 1rem;
+    display: flex;
+    align-items: center;
+    white-space: nowrap;
+    transition: all .2s;
+}
+.topbar .profile-section .profile-pic .dropdown .menu a:hover {
+    background-color: #FFA242;
+    color: #fff;
+}
+/* Profile side */
+
+/* Notification badge */
+.notification {
+    height: 55px;
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.notification .icon {
+    transition: all .2s;
+    cursor: pointer;
+}
+
+.notification .icon:hover {
+    color: #FFA242;
+}
+
+.badge {
+    height: 14px;
+    width: 14px;
+    border-radius: 7px;
+    background: #FF333D;
+    font-size: 1px;
+    color: #FF333D;
+    position: absolute;
+    top: 14px;
+    right: -4px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: .9;
+}
+/* Notification badge */
