@@ -11,7 +11,7 @@
     align-items: center;
     font-size: 1.5rem;
     position: absolute;
-    left: calc(((100vw - 1420px) / 2) - 30px);
+    left: calc(((100vw - 1420px) / 2) - 25px);
     transition: all .2s;
 }
 .btn-back:hover {
@@ -241,3 +241,22 @@
     background-color: #FF9326;
 }
 /* Button 1 */
+
+/* Button 2 */
+.btn-2 {
+    height: 30px;
+    padding: 0 .7rem;
+    border-radius: 15px;
+    background-color: #FFA242;
+    color: #fff;
+    box-shadow: 0 0 4px rgba(0, 0, 0, 0.25);
+    font-size: 0.875rem;
+    font-weight: 600;
+    outline: none;
+    border: none;
+    transition: all 0.2s;
+}
+.btn-2:hover {
+    background-color: #FF9326;
+}
+/* Button 2 */

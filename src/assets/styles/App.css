@@ -29,7 +29,7 @@ a {
 }
 
 .thai {
-    font-family: 'Prompt', sans-serif;
+    font-family: 'IBM Plex Sans Thai', sans-serif;
 }
 
 .cover-container {
@@ -386,15 +386,18 @@ a {
 }
 [data-title]::after::after {
     content: "";
-    position:absolute;
-    margin-top:-6px;
-    margin-left:-5px;
-    border-left: 12px solid transparent;
-    border-right: 12px solid transparent;
-    border-bottom: 12px solid #146f79;
-    transform:rotate(-45deg);
-    right: -15px; 
-    top: 10px;
+    position: absolute;
+    margin-top: -6px;
+    margin-left: -5px;
+    border-left: 12px solid #000;
+    border-right: 12px solid #000;
+    border-bottom: 12px solid #000;
+    transform: rotate(-45deg);
+    width: 12px;
+    height: 12px;
+    bottom: -200px;
+    right: -15px;
+    background-color: #000;
 }
 [data-title] {
     position: relative;

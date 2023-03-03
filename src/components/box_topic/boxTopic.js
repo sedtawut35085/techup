@@ -1,10 +1,11 @@
 import React from 'react'
 
+import { Link } from 'react-router-dom';
 import { RiVipCrown2Fill } from 'react-icons/ri'
 
 const TopicBox = ({data}) => {
   return (
-    <div className="topic-box col-3">
+    <Link className="topic-box col-3" to="/home/os">
         <div 
             className="body" 
             style={
@@ -35,7 +36,7 @@ const TopicBox = ({data}) => {
                 </li>
             </div>
         </div>
-    </div>
+    </Link>
   )
 }
 

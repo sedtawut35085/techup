@@ -185,6 +185,25 @@
     overflow: hidden;
 }
 
+.background-icon .filter {
+    z-index: -99;
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    top: 0;
+    left: 0;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+.background-icon img.invert {
+    opacity: .5;
+    /* -webkit-filter: invert(100%);
+    filter: invert(100%); */
+}
+
 @keyframes animate-icon-left {
     0%{
         transform: translateY(0px) rotate(0deg);

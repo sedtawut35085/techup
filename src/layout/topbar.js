@@ -7,27 +7,27 @@ import { IoPersonCircleOutline, IoPersonOutline, IoGiftOutline, IoSettingsOutlin
 
 const TopBar = () => {
 
-    const pathname = useLocation().pathname
+    const pathname = (useLocation().pathname).split("/")[1]
     const [dropdownActive, setDropdownActive] = useState(false)
 
     return (
         <div className="topbar" onMouseLeave={() => setDropdownActive(false)}>
             <nav>
-                <Link className={`nav hover ${pathname === "/home" ? "active" : ""}`} to="/home">
+                <Link className={`nav hover ${pathname === "home" ? "active" : ""}`} to="/home">
                     <div>
                         <img alt="logo-text(bold).png" src="/assets/images/logo/logo-text(bold).png" height="32"/>
                     </div>
                 </Link>
-                <Link className={`nav hover ${pathname === "/discuss" ? "active" : ""}`} to="/discuss">
+                <Link className={`nav hover ${pathname === "discuss" ? "active" : ""}`} to="/discuss">
                     <div>Discuss</div>
                 </Link>
-                <Link className={`nav hover ${pathname === "/raking" ? "active" : ""}`} to="/raking">
+                <Link className={`nav hover ${pathname === "raking" ? "active" : ""}`} to="/raking">
                     <div>Raking</div>
                 </Link>
-                <Link className={`nav hover ${pathname === "/store" ? "active" : ""}`} to="/store">
+                <Link className={`nav hover ${pathname === "store" ? "active" : ""}`} to="/store">
                     <div>Store</div>
                 </Link>
-                <Link className={`nav ${pathname === "/weekly" ? "active" : ""}`} to="/weekly">
+                <Link className={`nav ${pathname === "weekly" ? "active" : ""}`} to="/weekly">
                     <div>
                         <HiOutlineCalendar size={24} />
                         <span className="badge">.</span>
