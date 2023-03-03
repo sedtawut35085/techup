@@ -13,21 +13,6 @@ const TopBar = () => {
     const [dropdownActive, setDropdownActive] = useState(false)
 
     const navigate = useNavigate()
-    const refOne = useRef(null)
-
-    const handleClickOutside = (e) => {
-        if(!refOne.current.contains(e.target)) {
-            setDropdownActive(false)
-        }
-    }
-
-    useEffect(() => {
-        document.addEventListener("click", handleClickOutside, true)
-
-        return () => {
-            document.removeEventListener('click', handleClickOutside, true);
-        }
-    }, [])
 
     async function logout() {
         await Auth.signOut();
