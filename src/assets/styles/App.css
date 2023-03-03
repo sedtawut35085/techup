@@ -28,6 +28,10 @@ a {
     background: #585656;
 }
 
+.thai {
+    font-family: 'Prompt', sans-serif;
+}
+
 .cover-container {
     max-width: 1420px;
     min-height: 100vh;

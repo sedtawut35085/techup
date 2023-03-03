@@ -10,24 +10,8 @@ const TopBar = () => {
     const pathname = useLocation().pathname
     const [dropdownActive, setDropdownActive] = useState(false)
 
-    const refOne = useRef(null)
-
-    const handleClickOutside = (e) => {
-        if(!refOne.current.contains(e.target)) {
-            setDropdownActive(false)
-        }
-    }
-
-    useEffect(() => {
-        document.addEventListener("click", handleClickOutside, true)
-
-        return () => {
-            document.removeEventListener('click', handleClickOutside, true);
-        }
-    }, [])
-
     return (
-        <div className="topbar">
+        <div className="topbar" onMouseLeave={() => setDropdownActive(false)}>
             <nav>
                 <Link className={`nav hover ${pathname === "/home" ? "active" : ""}`} to="/home">
                     <div>
@@ -67,7 +51,7 @@ const TopBar = () => {
                         <div className="img" onClick={() => setDropdownActive(!dropdownActive)}>
                             <IoPersonCircleOutline />
                         </div>
-                        <div className={`dropdown ${dropdownActive ? "active" : ""}`} ref={refOne}>
+                        <div className={`dropdown ${dropdownActive ? "active" : ""}`}>
                             <div className="info">
                                 <span className="techup-id f-md">Techup_ID</span>
                                 <span className="full-name f-sm color-gray2">Name Surname</span>

@@ -4,6 +4,7 @@ import "./assets/styles/Components.css"
 import "./assets/styles/Sign.css"
 import "./assets/styles/Layout.css"
 import "./assets/styles/Pages.css"
+import "./assets/styles/Homepage.css"
 
 import { BrowserRouter, Route, Routes} from "react-router-dom";
 
