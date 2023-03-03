@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
+import Auth from '../../configuration/configuration-aws'
 
+import { useNavigate } from 'react-router-dom'
 import BackgroundAnimate from '../../components/background/bgAnimate.js'
 
 function SignUpForm() {
@@ -9,8 +11,46 @@ function SignUpForm() {
   const [cfPassword, setCfPassword] = useState('')
 
   const [errors, setErrors] = useState([])
+  const [isErrorPassword, setIsErrorPassword] = useState(false);
+  const [errorServerMessage, setErrorServerMessage] = useState(null)
+  const [errorRegisterMessage, setErrorRegisterMessage] = useState(null);
+  const [errorPasswordMessage, setErrorPasswordMessage] = useState(null);
 
-  function handleSignUp(event) {
+  const navigate = useNavigate()
+
+  function checkPassword (e) {
+    const Pass = e.target.value;
+    setPassword(Pass);
+    const uppercaseRegExp   = /([A-Z])/;
+    const lowercaseRegExp   = /([a-z])/;
+    const digitsRegExp      = /([0-9])/;
+    const specialCharRegExp = /([#?!@$%^&*-])/;
+    const minLengthRegExp   = /.{8,}/;
+    const uppercasePassword =   uppercaseRegExp.test(Pass);
+    const lowercasePassword =   lowercaseRegExp.test(Pass);
+    const digitsPassword    =   digitsRegExp.test(Pass);
+    const specialCharPassword = specialCharRegExp.test(Pass);
+    const minLengthPassword =   minLengthRegExp.test(Pass);
+    setIsErrorPassword(false)
+    if(Pass.length === 0){
+        setErrorPasswordMessage('Please enter password')
+    }else if(!uppercasePassword){
+        setErrorPasswordMessage('Must contain at least 1 capital letter')
+    }else if(!lowercasePassword){
+        setErrorPasswordMessage('Must contain at least 1 lowercase letter')
+    }else if(!digitsPassword){
+        setErrorPasswordMessage('Must contain at least 1 number')
+    }else if(!specialCharPassword){
+        setErrorPasswordMessage('Must contain at least 1 special character')
+    }else if(!minLengthPassword){
+        setErrorPasswordMessage('Password length must be at least 8 characters.')
+    }else{
+        setIsErrorPassword(true)
+        setErrorPasswordMessage(null)
+    }
+  }
+
+  async function handleSignUp(event) {
 
     setErrors([])
 
@@ -22,17 +62,40 @@ function SignUpForm() {
       }
     } else if(!email.includes('@mail.kmutt.ac.th') && !email.includes('@kmutt.ac.th')) {
         setErrors(errors => [...errors, 'kmutt_email'])
-    } else if(password === '') {
-        setErrors(errors => [...errors, 'password'])
+    } else if(!isErrorPassword) {
+    
     } else if(cfPassword === '') {
         setErrors(errors => [...errors, 'cf_password'])
     } else if(password !== cfPassword) {
         setErrors(errors => [...errors, 'wrong_cf_password'])
     } else {
-        window.location.href = '/select-role'
+      await Signup(event)
     }
-
     event.preventDefault();
+  }
+
+  async function Signup(e) {
+    e.preventDefault();
+    await Auth.signUp({
+      username: email,
+      password: password,
+      attributes: {
+          name : null,       
+          email: email, 
+      }
+    })
+    .then(() => {
+        setErrorRegisterMessage(null)
+        setErrorServerMessage(null)
+        navigate('/verify-code-email', { state: { email: email,password: password} })
+    })
+    .catch(err =>{
+      if(err.toString().includes('An account with the given email already exists.')){
+        setErrorRegisterMessage('email account ' + email + ' already exists.');
+      }else{
+        setErrorServerMessage('Server Error, please try again.');
+      }
+    });
   }
 
   function removeError(error) {
@@ -76,8 +139,9 @@ function SignUpForm() {
                     : errors.includes('kmutt_email')
                     ? <label className="f-xs color-5" htmlFor="email">Please enter a KMUTT email address</label>
                     : null
-                  }                  
-              </div>
+                  }    
+                  <div className='f-xs color-5'>{errorRegisterMessage}</div>              
+              </div> 
               <div className="form-group pb-4">
                   <label className="f-md color-black pb-2" htmlFor="password">Password</label>
                   <input
@@ -85,7 +149,7 @@ function SignUpForm() {
                   id="password"
                   className="sign-form-input"
                   value={password}
-                  onChange={event => setPassword(event.target.value)}
+                  onChange={(e) => checkPassword(e)}
                   onClick={() => {removeError('password')}}
                   style={
                     errors.includes('password')
@@ -98,6 +162,7 @@ function SignUpForm() {
                     ? <label className="f-xs color-5" htmlFor="email">Please enter your password</label>
                     : null
                   }
+                  <div className='f-xs color-5'>{errorPasswordMessage}</div>
               </div>
               <div className="form-group pb-4">
                   <label className="f-md color-black pb-2" htmlFor="cf-password">Confirm password</label>
@@ -123,7 +188,10 @@ function SignUpForm() {
                     : null
                   }
               </div>
-              <div className="sp-vertical py-3"></div>
+              <div className="sp-vertical pt-3"></div>
+              <div className="px-4 text-center py-3">
+                <span className="color-5 h8 fw-600 text-center">{errorServerMessage}</span>
+              </div>
               <button type="submit" className="sign-form-button">Sign up</button>
             </form>
             <div className="sp-vertical py-3"></div>

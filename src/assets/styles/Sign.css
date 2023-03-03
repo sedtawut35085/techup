@@ -237,3 +237,14 @@
     box-shadow: 0 0 12px rgba(0, 0, 0, 0.25);
     color: #fff;
 }
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Works for Firefox */
+input[type="number"] {
+  -moz-appearance: textfield;
+}

@@ -11,6 +11,8 @@ import { BrowserRouter, Route, Routes} from "react-router-dom";
 import SignInForm from "./pages/Sign/signIn.js"
 import SignUpForm from "./pages/Sign/signUp.js"
 import SelectRole from "./pages/Sign/selectRole.js"
+import VerifyCodeEmail from "./pages/Sign/verifyCodeEmail"
+import { AuthProvider } from "./auth";
 import PendingProf from "./pages/Sign/pendingProf.js"
 
 import AppLayout from "./layout/index.js"
@@ -25,12 +27,13 @@ function App() {
     <div className="App">
       <BrowserRouter>
         <Routes>
+          <Route path="/verify-code-email" element={<VerifyCodeEmail />}></Route>
+          <Route path="/select-role" element={<AuthProvider><SelectRole /></AuthProvider>}></Route>
           <Route exact path="/" element={<SignInForm />} />
           <Route exact path="/sign-up" element={<SignUpForm />} />
-          <Route exact path="/select-role" element={<SelectRole />} />
           <Route exact path="/pending-prof" element={<PendingProf />} />
           <Route element={<AppLayout />}>
-            <Route path="/home" element={<Homepage />}/>
+            <Route path="/home" element={<AuthProvider><Homepage /></AuthProvider>}/>
             <Route path="/discuss" element={<Discuss/>}/>
             <Route path="/raking" element={<Raking />}/>
             <Route path="/store" element={<Store />}/>
