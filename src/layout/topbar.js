@@ -1,14 +1,38 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link, useLocation } from 'react-router-dom';
+import Auth from '../configuration/configuration-aws'
 
 import { HiOutlineCalendar, HiOutlineBell } from 'react-icons/hi'
 import { FiChevronRight } from 'react-icons/fi'
+import { useNavigate } from 'react-router-dom'
 import { IoPersonCircleOutline, IoPersonOutline, IoGiftOutline, IoSettingsOutline, IoExitOutline } from 'react-icons/io5'
 
 const TopBar = () => {
 
     const pathname = (useLocation().pathname).split("/")[1]
     const [dropdownActive, setDropdownActive] = useState(false)
+
+    const navigate = useNavigate()
+    const refOne = useRef(null)
+
+    const handleClickOutside = (e) => {
+        if(!refOne.current.contains(e.target)) {
+            setDropdownActive(false)
+        }
+    }
+
+    useEffect(() => {
+        document.addEventListener("click", handleClickOutside, true)
+
+        return () => {
+            document.removeEventListener('click', handleClickOutside, true);
+        }
+    }, [])
+
+    async function logout() {
+        await Auth.signOut();
+        navigate('/')
+    }
 
     return (
         <div className="topbar" onMouseLeave={() => setDropdownActive(false)}>
@@ -78,7 +102,7 @@ const TopBar = () => {
                                     </div>
                                     <FiChevronRight size={28} />
                                 </Link>
-                                <Link>
+                                <Link onClick={logout} >
                                     <IoExitOutline size={32} className="me-3" />Sign out
                                 </Link>
                             </div>
