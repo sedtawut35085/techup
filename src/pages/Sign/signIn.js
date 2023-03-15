@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { IoIosArrowBack } from 'react-icons/io'
 import Auth from '../../configuration/configuration-aws'
 import BackgroundAnimate from '../../components/background/bgAnimate.js'
 import { useNavigate } from 'react-router-dom'
-import { getStudent } from '../../service';
+import { getStudent } from '../../service/student'
+import { getProfessor } from '../../service/professor'
 
 function SignInForm() {
 
@@ -24,6 +25,19 @@ function SignInForm() {
   const [errorCodeMessage, setErrorCodeMessage] = useState(null);
 
   const navigate = useNavigate()
+
+  useEffect(() => {
+    checkAuthen();
+  });
+
+  async function checkAuthen() {
+    await Auth.currentAuthenticatedUser()
+    .then(async(response) => {
+      navigate('/home');
+    })
+    .catch(() => {
+    })
+  }
 
   function clear() {
     setErrors([])
@@ -89,7 +103,7 @@ function SignInForm() {
       if(email.includes('@mail.kmutt.ac.th')){
         //student
         let res = await getStudent()
-        console.log('res ',res[0])
+        // console.log('res ',res[0])
         if(res[0] === undefined){
           navigate('/select-role')
         }else{
@@ -97,6 +111,13 @@ function SignInForm() {
         }
       }else{
         //professor
+        let res = await getProfessor()
+        // console.log('res ',res[0])
+        if(res[0] === undefined){
+          navigate('/select-role')
+        }else{
+          navigate('/home')
+        }
       }
     })
     .catch(err => {
