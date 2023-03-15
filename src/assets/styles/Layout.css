@@ -1,4 +1,5 @@
 .topbar {
+    z-index: 999;
     position: fixed;
     background-color: #fff;
     box-shadow: 0 5px 12px rgba(0, 0, 0, 0.25);
@@ -87,13 +88,25 @@
     min-width: 220px;
     background-color: #fff;
     position: absolute;
-    right: 0;
+    right: -24px;
     top: 30px;
     box-shadow: 0 0 12px rgba(0, 0, 0, 0.25);
     border-radius: 12px;
     transition: all .2s;
     opacity: 0;
     visibility: hidden;
+}
+.topbar .profile-section .profile-pic .dropdown::before {
+    content: "";
+    background: inherit;
+    border-top: 1px solid #e1e1e1;
+    border-right: 1px solid #e1e1e1;
+    position: absolute;
+    top: -7px;
+    right: 38px;
+    width: 12px;
+    height: 12px;
+    rotate: -45deg;
 }
 .topbar .profile-section .profile-pic .dropdown.active {
     top: 46px;
@@ -146,18 +159,18 @@
 }
 
 .badge {
-    height: 14px;
-    width: 14px;
-    border-radius: 7px;
+    height: 18px;
+    width: 18px;
+    border: 2px solid #fff;
+    border-radius: 9px;
     background: #FF333D;
     font-size: 1px;
     color: #FF333D;
     position: absolute;
-    top: 14px;
+    top: 12px;
     right: -4px;
     display: flex;
     justify-content: center;
     align-items: center;
-    opacity: .9;
 }
 /* Notification badge */

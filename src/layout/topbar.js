@@ -9,25 +9,10 @@ import { IoPersonCircleOutline, IoPersonOutline, IoGiftOutline, IoSettingsOutlin
 
 const TopBar = () => {
 
-    const pathname = useLocation().pathname
+    const pathname = (useLocation().pathname).split("/")[1]
     const [dropdownActive, setDropdownActive] = useState(false)
 
     const navigate = useNavigate()
-    const refOne = useRef(null)
-
-    const handleClickOutside = (e) => {
-        if(!refOne.current.contains(e.target)) {
-            setDropdownActive(false)
-        }
-    }
-
-    useEffect(() => {
-        document.addEventListener("click", handleClickOutside, true)
-
-        return () => {
-            document.removeEventListener('click', handleClickOutside, true);
-        }
-    }, [])
 
     async function logout() {
         await Auth.signOut();
@@ -35,23 +20,23 @@ const TopBar = () => {
     }
 
     return (
-        <div className="topbar">
+        <div className="topbar" onMouseLeave={() => setDropdownActive(false)}>
             <nav>
-                <Link className={`nav hover ${pathname === "/home" ? "active" : ""}`} to="/home">
+                <Link className={`nav hover ${pathname === "home" ? "active" : ""}`} to="/home">
                     <div>
                         <img alt="logo-text(bold).png" src="/assets/images/logo/logo-text(bold).png" height="32"/>
                     </div>
                 </Link>
-                <Link className={`nav hover ${pathname === "/discuss" ? "active" : ""}`} to="/discuss">
+                <Link className={`nav hover ${pathname === "discuss" ? "active" : ""}`} to="/discuss">
                     <div>Discuss</div>
                 </Link>
-                <Link className={`nav hover ${pathname === "/raking" ? "active" : ""}`} to="/raking">
+                <Link className={`nav hover ${pathname === "raking" ? "active" : ""}`} to="/raking">
                     <div>Raking</div>
                 </Link>
-                <Link className={`nav hover ${pathname === "/store" ? "active" : ""}`} to="/store">
+                <Link className={`nav hover ${pathname === "store" ? "active" : ""}`} to="/store">
                     <div>Store</div>
                 </Link>
-                <Link className={`nav ${pathname === "/weekly" ? "active" : ""}`} to="/weekly">
+                <Link className={`nav ${pathname === "weekly" ? "active" : ""}`} to="/weekly">
                     <div>
                         <HiOutlineCalendar size={24} />
                         <span className="badge">.</span>
@@ -75,7 +60,7 @@ const TopBar = () => {
                         <div className="img" onClick={() => setDropdownActive(!dropdownActive)}>
                             <IoPersonCircleOutline />
                         </div>
-                        <div className={`dropdown ${dropdownActive ? "active" : ""}`} ref={refOne}>
+                        <div className={`dropdown ${dropdownActive ? "active" : ""}`}>
                             <div className="info">
                                 <span className="techup-id f-md">Techup_ID</span>
                                 <span className="full-name f-sm color-gray2">Name Surname</span>
