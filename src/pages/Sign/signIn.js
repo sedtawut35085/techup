@@ -3,8 +3,8 @@ import { IoIosArrowBack } from 'react-icons/io'
 import Auth from '../../configuration/configuration-aws'
 import BackgroundAnimate from '../../components/background/bgAnimate.js'
 import { useNavigate } from 'react-router-dom'
-import { getStudent } from '../../service/student'
-import { getProfessor } from '../../service/professor'
+import { getStudent } from '../../service/student';
+import { getProfessor } from '../../service/professor';
 
 function SignInForm() {
 
@@ -17,11 +17,16 @@ function SignInForm() {
   const [emailForgot, setEmailForgot] = useState('')
   const [password, setPassword] = useState('');
   const [code, setCode] = useState('');
+  const [newPassword, setNewPassword] = useState('');
+  const [cfNewPassword, setCfNewPassword] = useState('')
+  const [isErrorPassword, setIsErrorPassword] = useState(false);
   const [isForgetPasswordMessage, setIsForgetPasswordMessage] = useState(false);
   const [isErrorSignIn, setIsErrorSignIn] = useState(false);
   const [keep, setKeep] = useState(false);
 
   const [errors, setErrors] = useState([])
+  const [errorConfirmPasswordMessage, setErrorConfirmPasswordMessage] = useState(null);
+  const [errorPasswordMessage, setErrorPasswordMessage] = useState(null);
   const [errorCodeMessage, setErrorCodeMessage] = useState(null);
 
   const navigate = useNavigate()
@@ -32,8 +37,26 @@ function SignInForm() {
 
   async function checkAuthen() {
     await Auth.currentAuthenticatedUser()
-    .then(async(response) => {
-      navigate('/home');
+    .then(async (response) => {
+      if(email.includes('@mail.kmutt.ac.th')){
+        //student
+        let res = await getStudent()
+        // console.log('res ',res[0])
+        if(res[0] === undefined){
+          navigate('/select-role')
+        }else{
+          navigate('/home')
+        }
+      }else{
+        //professor
+        let res = await getProfessor()
+        // console.log('res ',res[0])
+        if(res[0] === undefined){
+          navigate('/select-role')
+        }else{
+          navigate('/professor')
+        }
+      }
     })
     .catch(() => {
     })
@@ -48,13 +71,47 @@ function SignInForm() {
     setKeep(false)
     setIsReSend(false)
     setIsForgetPasswordMessage(false)
+    setNewPassword('')
+    setCfNewPassword('')
     setIsErrorSignIn(false)
+    setErrorConfirmPasswordMessage('')
     setErrorCodeMessage('')
+  }
+
+  function checkNewPassword (e) {
+    const Pass = e.target.value;
+    setNewPassword(Pass);
+    const uppercaseRegExp   = /([A-Z])/;
+    const lowercaseRegExp   = /([a-z])/;
+    const digitsRegExp      = /([0-9])/;
+    const specialCharRegExp = /([#?!@$%^&*-])/;
+    const minLengthRegExp   = /.{8,}/;
+    const uppercasePassword =   uppercaseRegExp.test(Pass);
+    const lowercasePassword =   lowercaseRegExp.test(Pass);
+    const digitsPassword    =   digitsRegExp.test(Pass);
+    const specialCharPassword = specialCharRegExp.test(Pass);
+    const minLengthPassword =   minLengthRegExp.test(Pass);
+    setIsErrorPassword(false)
+    if(Pass.length === 0){
+        setErrorPasswordMessage('Please enter password')
+    }else if(!uppercasePassword){
+        setErrorPasswordMessage('Must contain at least 1 capital letter')
+    }else if(!lowercasePassword){
+        setErrorPasswordMessage('Must contain at least 1 lowercase letter')
+    }else if(!digitsPassword){
+        setErrorPasswordMessage('Must contain at least 1 number')
+    }else if(!specialCharPassword){
+        setErrorPasswordMessage('Must contain at least 1 special character')
+    }else if(!minLengthPassword){
+        setErrorPasswordMessage('Password length must be at least 8 characters.')
+    }else{
+        setIsErrorPassword(true)
+        setErrorPasswordMessage(null)
+    }
   }
 
   async function handleSignIn(event) {
     setErrors([])
-    setIsErrorSignIn(false)
     if(!(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email))) {
       if(email === '') {
         setErrors(errors => [...errors, 'email'])
@@ -88,12 +145,47 @@ function SignInForm() {
   }
 
   async function handleSubmitNewPassword(event) {
-   
+    setErrors([])
+    setErrorConfirmPasswordMessage(null)
+    setErrorCodeMessage(null)
+    if(newPassword === '') {
+       setErrorPasswordMessage('please enter password')
+    } else if (!isErrorPassword){
+
+    }else if(cfNewPassword === '') {
+        setErrorConfirmPasswordMessage('please confirm password')
+    } else if(newPassword !== cfNewPassword) {
+        setErrorConfirmPasswordMessage('password not macthing')
+    } else if(code.length !== 6){
+      setErrorCodeMessage('Code Must consist of 6 digits')
+    } else{
+      await submitNewPassword(event)
+    }
+    event.preventDefault();
+  }
+
+  async function submitNewPassword (e){
+    e.preventDefault();
+    Auth.forgotPasswordSubmit(emailForgot, code, newPassword)
+    .then((data) =>  {
+      setIsSentSuccess(true)
+      clear()
+    })
+    .catch(err => {
+      setErrorCodeMessage('Wrong code, please try again')
+      console.log(err)
+    });   
   }
 
   async function Forgetemail (e){
     e.preventDefault();
-    setIsSent(true)
+    await Auth.forgotPassword(emailForgot)
+    .then((data) =>  {
+      setIsSent(true)
+    })
+    .catch(err => {
+      setIsForgetPasswordMessage(true)
+    });   
   }
 
   async function Signin (e){
@@ -116,7 +208,7 @@ function SignInForm() {
         if(res[0] === undefined){
           navigate('/select-role')
         }else{
-          navigate('/home')
+          navigate('/professor')
         }
       }
     })
@@ -132,9 +224,18 @@ function SignInForm() {
   }
 
   async function resentcode(e) {
+    await Auth.forgotPassword(emailForgot)
+    .then(() =>  {
+      setIsReSend(true)
+    })
+    .catch(err => {
+    });  
   }
 
   async function handleCodeChange(event) {
+    const limit = 6;
+    setErrorCodeMessage('')
+    setCode(event.target.value.slice(0, limit));
   };
 
   return (
@@ -308,11 +409,34 @@ function SignInForm() {
                             className="sign-form-input"
                             maxLength={5}
                             value={code}
-                            onChange={(e) => setCode(e.target.value)}
+                            onChange={(e) => handleCodeChange(e)}
                             />
                             <div className='f-xs color-5'> {errorCodeMessage}</div>
                         </div>
-                  
+                      <div className="form-group pb-4">
+                            <label className="f-md color-black pb-2" htmlFor="password">New Password</label>
+                            <input
+                            required
+                            type="password"
+                            id="password"
+                            className="sign-form-input"
+                            value={newPassword}
+                            onChange={(e) => checkNewPassword(e)}
+                            />
+                            <div className='f-xs color-5'> {errorPasswordMessage}</div>
+                        </div>
+                        <div className="form-group pb-4">
+                            <label className="f-md color-black pb-2" htmlFor="password">Confirm New Password</label>
+                            <input
+                            required
+                            type="password"
+                            id="cfpassword"
+                            className="sign-form-input"
+                            value={cfNewPassword}
+                            onChange={(e) => setCfNewPassword(e.target.value)}
+                            />
+                            <div className='f-xs color-5'> {errorConfirmPasswordMessage}</div>
+                        </div>
                       
                       <button className="sign-form-button mt-4" type='submit'>Submit</button>  
                       {/* <button className="sign-form-button" onClick={() => {setIsForgot(false); setIsSent(false)}}>Submit</button>          */}

@@ -18,6 +18,8 @@ import PendingProf from "./pages/Sign/pendingProf.js"
 
 import AppLayout from "./layout/index.js"
 import Homepage from "./pages/Home/index.js"
+import Professor from "./pages/Professor"
+import AddTopic from "./pages/Professor/addtopic"
 import Topic from "./pages/Topic/index.js"
 
 import Discuss from "./pages/Discuss/index.js"
@@ -35,10 +37,11 @@ function App() {
           <Route exact path="/" element={<SignInForm />} />
           <Route exact path="/sign-up" element={<SignUpForm />} />
           <Route exact path="/pending-prof" element={<PendingProf />} />
-          <Route element={<AppLayout />}>
-            <Route path="/home" element={<Homepage />}/>
+          <Route element={<AuthProvider><AppLayout /></AuthProvider>}>
+            <Route path="/addtopic" element={<AuthProvider><AddTopic /></AuthProvider>}/>
+            <Route path="/professor" element={<AuthProvider><Professor /></AuthProvider>}/>
+            <Route path="/home" element={<AuthProvider><Homepage /></AuthProvider>}/>
             <Route path="/home/:id" element={<Topic />}/>
-
             <Route path="/discuss" element={<Discuss/>}/>
             <Route path="/raking" element={<Raking />}/>
             <Route path="/store" element={<Store />}/>
