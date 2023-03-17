@@ -8,18 +8,18 @@ const TopicBox = ({data}) => {
         <div 
             className="body" 
             style={
-                data.type === "Computer Science"
+                data.Type === "Computer Science"
                 ? {backgroundColor: "#1B1F4B"}
-                : data.type === "Data Science"
+                : data.Type === "Data Science"
                 ? {backgroundColor: "#6A244D"}
                 : {backgroundColor: "#194D45"}
             }
         >
             <div className="title">
-                <span className="f-lg fw-700">{data.name}</span>
-                <span className="f-xs fw-400">{data.type}</span>
+                <span className="f-lg fw-700">{data.TopicName}</span>
+                <span className="f-xs fw-400">{data.Type}</span>
             </div>
-            <span className="professor-owner f-xs fw-500"><RiVipCrown2Fill className="color-1 me-1" size={20} />{data.owner}</span>
+            <span className="professor-owner f-xs fw-500"><RiVipCrown2Fill className="color-1 me-1" size={20} />{data.Name+" "+data.Surname}</span>
             <div className="bg-icon">
                 <li>
                     <img alt="icon" width="65px" src={"/assets/images/icons/" + data.icon + ".png"} />

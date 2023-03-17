@@ -18,7 +18,7 @@ async function getAccessToken () {
     return response
 }
 
-async function getCurrentUserId () {  
+export async function getCurrentUserId () {  
     let response = await Auth.currentAuthenticatedUser()
     .then((res) => {
         return res.attributes.email
