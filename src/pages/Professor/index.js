@@ -4,24 +4,21 @@ import { TbSwords, TbListDetails } from 'react-icons/tb'
 import { Link } from 'react-router-dom';
 import BackgroundIcon from '../../components/background/bgIcons.js';
 import TopicBox from '../../components/box_topic/boxTopic.js'
-import { getTopic } from '../../service/professor.js';
+import { getTopicfromProfessor } from '../../service/topic.js';
 
 function Professor() {
 
-    const [allTopic, setAllTopic] = useState([
-        {name: "Operating System", type: "Computer Science", owner: "Chukiat Worasucheep", icon: "idea"},
-        {name: "Finance", type: "Digital Business", owner: "Chukiat Worasucheep", icon: "piggy-bank"},
-        {name: "Data Science", type: "Data Science", owner: "Chukiat Worasucheep", icon: "connections"}
-    ])
+    const [allTopic, setAllTopic] = useState([])
 
-    // useEffect( () => {
-    //     getTopics();
-    //   }, []);
+    useEffect( () => {
+        getTopics();
+      }, []);
     
-    // async function getTopics() {
-    //     let res = await getTopic();
-    //     console.log('res',res)
-    // }
+    async function getTopics() {
+        let res = await getTopicfromProfessor();
+        console.log('res',res)
+        setAllTopic(res);
+    }
 
     return (
         <div className="homepage">
@@ -35,7 +32,7 @@ function Professor() {
                             data={topic}
                             />
                     ))}
-                    <Link className="topic-box col-3" to="/addprofessor">
+                    <Link className="topic-box col-3" to="/addtopic">
                         <div 
                             className="body" 
                             style={

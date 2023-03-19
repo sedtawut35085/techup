@@ -43,3 +43,22 @@ export async function getList () {
     console.log("topic : " + response.data)
     return response.data
 }
+
+export async function getTopicfromProfessor () {
+  //accessToken = await getAccessToken()
+  useremail = await getCurrentUserId()
+  await axios({
+      method: 'get',
+      url: `${baseUrl}/topic`,
+      params: {
+          "UserEmail" : useremail,
+          "getType": "getEachTopic"
+      },
+      }).then((res) => {
+        response = res
+      }).catch((err)=>{
+        response = err
+      })
+  console.log("topic : " + response.data)
+  return response.data
+}

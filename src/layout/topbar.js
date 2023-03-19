@@ -18,8 +18,6 @@ const TopBar = ({currentEmailUser,isProfessor}) => {
         navigate('/')
     }
 
-    console.log('isProfessor',isProfessor)
-
     return (
         <div className="topbar" onMouseLeave={() => setDropdownActive(false)}>
             <nav>
