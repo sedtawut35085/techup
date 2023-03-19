@@ -134,6 +134,28 @@
     overflow: hidden;
     text-overflow: ellipsis;
 }
+
+.tu-selectpickericon-box {
+    cursor: pointer;
+    background-color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 50%;
+    height: 60px;
+    padding: 0 20px;
+    font-size: 1rem;
+    border-radius: 12px;
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.25);
+    position: relative;
+    -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+    -khtml-user-select: none; /* Konqueror HTML */
+    -moz-user-select: none; /* Old versions of Firefox */
+    -ms-user-select: none; /* Internet Explorer/Edge */
+    user-select: none;
+}
+
 .tu-selectpicker-box .icon svg {
     transition: all .3s;
 }

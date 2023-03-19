@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom';
 import BackgroundIcon from '../../components/background/bgIcons.js';
 import { FaChevronLeft } from 'react-icons/fa';
 // import { Select, Option } from "@material-tailwind/react";
+import SelectPickerIcon from '../../components/picker_select_icon/selectPickerIcon.js';
+import SelectPicker from '../../components/picker_select/selectPicker.js';
 import { RiVipCrown2Fill } from 'react-icons/ri'
 import { getProfessor } from '../../service/professor.js';
 
@@ -20,12 +22,28 @@ function AddTopic() {
     }
 
     const [name,setName] = useState("")
-    const [icon,setIcon] = useState("analysis")
+    const [icon,setIcon] = useState({label: "analysis", data: "analysis"})
+    const [types,setTypes] = useState({label: "Computer Science", data: "Computer Science"})
     const [shortName,setShortName] = useState("")
     const [description,setDescription] = useState("")
-    const [type, setType] = useState("Computer Science");
 
     const [errors, setErrors] = useState([])
+
+    const iconAll = [
+        {label: "analysis", data: "analysis", img: "analysis"},
+        {label: "coins", data: "coins", img: "coins"},
+        {label: "connections", data: "connections", img: "connections"},
+        {label: "idea", data: "idea", img: "idea"},
+        {label: "handshake", data: "handshake", img: "handshake"},
+        {label: "rocket", data: "rocket", img: "rocket"},
+        {label: "target", data: "target", img: "target"}
+    ]
+
+    const typeAll = [
+        {label: "Computer Science", data: "Computer Science", img: "logo(black)"},
+        {label: "Data Science", data: "Data Science", img: "logo(black)"},
+        {label: "Digital Business", data: "Digital Business", img: "logo(black)"}
+    ]
 
     async function handleSubmit(event) {
         setErrors([]);
@@ -39,10 +57,10 @@ function AddTopic() {
         if(description === ""){
             arrayError.push('description');
         }
-        if(type == ""){
+        if(types == ""){
             arrayError.push('type');
         }
-        if(icon == ""){
+        if(icon.label == ""){
             arrayError.push('icon');
         }
         if(arrayError.length === 0) {
@@ -50,9 +68,9 @@ function AddTopic() {
             var data = {
                 "TopicName": name,
                 "Description": description,  
-                "Type": type,    
+                "Type": types.label,    
                 "Owner": inFoProfessor.ProfessorEmail,   
-                "Icon": icon
+                "Icon": icon.label
             }
             console.log(data)
         }
@@ -65,7 +83,7 @@ function AddTopic() {
         setIcon(value)
     };
     const handleChangetype = (value) => {
-        setType(value)
+        setTypes(value)
     };
 
     return (
@@ -101,7 +119,7 @@ function AddTopic() {
                                 onChange={(event) => setShortName(event.target.value)}
                             />
                             {errors.includes("shortName") && (<label className="f-xs color-5 pt-2" htmlFor="student-id">Please enter a shortname topic</label>)}
-                        </div>
+                        </div> 
                         <div className="col-12 pb-4">
                             <label className="f-lg pb-2" htmlFor="description-id">Description<span className="color-5">*</span></label>
                             <textarea
@@ -117,17 +135,28 @@ function AddTopic() {
                         </div>
                         <label className="f-lg pb-2" htmlFor="type-id">Type<span className="color-5">*</span></label>
                         <div className="col-12 pb-4">
-                            <select required id="type" name='type' type='text' label="Select type" className="input-dropdownbox " value={type} onChange={(event) => handleChangetype(event.target.value)} >
-                                <option>Computer Science</option>
-                                <option>Data Science</option>
-                                <option>Digital Business</option>
-                            </select>
+                        <SelectPickerIcon
+                                name="type" 
+                                id="type" 
+                                placeholder="-"
+                                data={typeAll}
+                                defaultValue={types}
+                                setValue={setTypes}
+                            />
                             {/* {errors.includes("stuId") && (<label className="f-xs color-5 pt-2" htmlFor="student-id">Please enter your Student ID</label>)}
                             {errors.includes("invalid_stuId") && (<label className="f-xs color-5 pt-2" htmlFor="student-id">Please enter a valid Student ID</label>)} */}
                         </div>
                         <label className="f-lg pb-2" htmlFor="icon-id">Icon<span className="color-5">*</span></label>
                         <div className="col-12 pb-4">
-                            <select required id="icon" name='type' type='text' label="Select icon" className="input-dropdownbox " value={icon} onChange={(event) => handleChangeicon(event.target.value)} >
+                            <SelectPickerIcon
+                                name="icon" 
+                                id="icon" 
+                                placeholder="-"
+                                data={iconAll}
+                                defaultValue={icon}
+                                setValue={setIcon}
+                            />
+                            {/* <select required id="icon" name='type' type='text' label="Select icon" className="input-dropdownbox " value={icon} onChange={(event) => handleChangeicon(event.target.value)} >
                                 <option>analysis</option>
                                 <option>coins</option>
                                 <option>connections</option>
@@ -135,7 +164,7 @@ function AddTopic() {
                                 <option>handshake</option>
                                 <option>rocket</option>
                                 <option>target</option>
-                            </select>
+                            </select> */}
                             {/* {errors.includes("stuId") && (<label className="f-xs color-5 pt-2" htmlFor="student-id">Please enter your Student ID</label>)}
                             {errors.includes("invalid_stuId") && (<label className="f-xs color-5 pt-2" htmlFor="student-id">Please enter a valid Student ID</label>)} */}
                         </div>
@@ -145,30 +174,30 @@ function AddTopic() {
                                 <div 
                                     className="body" 
                                     style={
-                                        type === "Computer Science"
+                                        types.label === "Computer Science"
                                         ? {backgroundColor: "#1B1F4B"}
-                                        : type === "Data Science"
+                                        : types.label === "Data Science"
                                         ? {backgroundColor: "#6A244D"}
                                         : {backgroundColor: "#194D45"}}
                                 >
                                      <div className="title">
                                         <span className="f-lg fw-700">{name || "Name"}</span>
-                                        <span className="f-xs fw-400">{type || "type"}</span>
+                                        <span className="f-xs fw-400">{types.label || "type"}</span>
                                     </div>
                                    
                                     <span className="professor-owner f-xs fw-500"><RiVipCrown2Fill className="color-1 me-1" size={20} />{inFoProfessor.Name + " " + inFoProfessor.Surname}</span>
                                     <div className="bg-icon">
                                         <li>
-                                            <img alt="icon" width="65px" src={"/assets/images/icons/" + icon + ".png"} />
+                                            <img alt="icon" width="65px" src={"/assets/images/icons/" + icon.label + ".png"} />
                                         </li>   
                                         <li>
-                                            <img alt="icon" width="25px" src={"/assets/images/icons/" + icon + ".png"} />
+                                            <img alt="icon" width="25px" src={"/assets/images/icons/" + icon.label + ".png"} />
                                         </li>                                  
                                         <li>
-                                            <img alt="icon" width="35px" src={"/assets/images/icons/" + icon + ".png"} />
+                                            <img alt="icon" width="35px" src={"/assets/images/icons/" + icon.label + ".png"} />
                                         </li>
                                         <li>
-                                            <img alt="icon" width="100px" src={"/assets/images/icons/" + icon + ".png"} />
+                                            <img alt="icon" width="100px" src={"/assets/images/icons/" + icon.label + ".png"} />
                                         </li>
                                     </div>
                                 </div>
