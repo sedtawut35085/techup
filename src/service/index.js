@@ -2,12 +2,9 @@ import Auth from '../configuration/configuration-aws'
 import axios from 'axios';
 
 const baseUrl = 'https://5ccp4x5xq5.execute-api.ap-southeast-1.amazonaws.com/dev'
-let response
-let accessToken
-let userEmail
-let convertedFile
+let response, accessToken
 
-async function getAccessToken () {  
+export async function getAccessToken () {  
     let response = await Auth.currentSession()
     .then(res => {
         return res.getAccessToken().getJwtToken()
@@ -18,7 +15,7 @@ async function getAccessToken () {
     return response
 }
 
-async function getCurrentUserId () {  
+export async function getCurrentUserId () {  
     let response = await Auth.currentAuthenticatedUser()
     .then((res) => {
         return res.attributes.email
@@ -29,44 +26,28 @@ async function getCurrentUserId () {
     return response
 }
 
-export async function getStudent () {
-    accessToken = await getAccessToken()
-    userEmail = await getCurrentUserId()
-    await axios({
-        method: 'get',
-        url: `${baseUrl}/student`,  
-        params: {
-          "UserEmail" : userEmail
-        },
-        headers: { 
-            'Authorization': accessToken, 
-            'Content-Type': 'text/plain'
-        },
-        }).then((res) => {
-          response = res
-        }).catch((err)=>{
-          response = err
-        })
-    return response.data
+export async function convertToBase64 (file){
+    return new Promise(resolve => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () => {
+          resolve(reader.result);
+        }
+      })
 }
 
-export async function saveStudent (bodydata, imageFile) {
+export async function uploadPhoto (file){
     accessToken = await getAccessToken()
-    userEmail = await getCurrentUserId()
-    await axios({
-        method: 'post',
-        url: `${baseUrl}/student`,
-        headers: { 
-            'Authorization': accessToken, 
-            'Content-Type': 'text/plain'
-        },
-        data: bodydata
-        }).then((res) => {
-          response = res
-        }).catch((err)=>{
-          response = err
-        })
-    return response
+    const headers = {
+        'Authorization': accessToken, 
+        'Content-Type': 'text/plain'
+    }
+    await axios.post(`${baseUrl}/file-upload`, file, { headers }).then((res) => {
+        response = res.data.Location
+      }).catch((err)=>{
+        response = err
+      })
+      return response
 }
 
 

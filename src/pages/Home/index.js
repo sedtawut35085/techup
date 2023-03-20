@@ -1,20 +1,36 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { TbSwords, TbListDetails } from 'react-icons/tb'
 
 import BackgroundIcon from '../../components/background/bgIcons.js';
 import TopicBox from '../../components/box_topic/boxTopic.js'
 import QuestionBox from '../../components/box_question/boxQuestion.js'
+import { getAllTopic , getList } from '../../service/topic.js';
 
 function Homepage() {
 
+    async function loadAllTopic() {
+        const res = await getAllTopic();
+        setAllTopic(res);
+    }
+    async function loadmyList() {
+        const res = await getList();
+        setMyList(res);
+    }
     const noneTopic = false;
-    const [allTopic, setAllTopic] = useState([
-        {name: "Operating System", type: "Computer Science", owner: "Chukiat Worasucheep", icon: "idea"},
-        {name: "Software Engineer", type: "Computer Science", owner: "Wittawin Susutti", icon: "rocket"},
-        {name: "Finance", type: "Digital Business", owner: "Chukiat Worasucheep", icon: "piggy-bank"},
-        {name: "Data Science", type: "Data Science", owner: "Chukiat Worasucheep", icon: "connections"}
-    ])
+    // const [allTopic, setAllTopic] = useState([
+    //     {name: "Operating System", type: "Computer Science", owner: "Chukiat Worasucheep", icon: "idea"},
+    //     {name: "Software Engineer", type: "Computer Science", owner: "Wittawin Susutti", icon: "rocket"},
+    //     {name: "Finance", type: "Digital Business", owner: "Chukiat Worasucheep", icon: "piggy-bank"},
+    //     {name: "Data Science", type: "Data Science", owner: "Chukiat Worasucheep", icon: "connections"}
+    // ])
+
+    const [allTopic, setAllTopic] = useState([])
+    const [myList, setMyList] = useState([])
+    useEffect(() => {
+        loadAllTopic();
+        loadmyList();
+    }, []);
 
     const [challenging, setChallenging] = useState([
         {name: "Kernel คืออะไร", date: "26-02-2023", point: "100", difficulty: "easy", topic: "Operating System", type: "Computer Science", icon: "idea"}
@@ -51,7 +67,7 @@ function Homepage() {
                             </div>         
                             <span className="mt-3 f-xl fw-700"><TbListDetails className="color-1 me-2" />My list</span>
                             <div className="topic-section">
-                                {allTopic.map((topic, key) => (
+                                {myList.map((topic, key) => (
                                     <TopicBox
                                         key={key}
                                         data={topic}
