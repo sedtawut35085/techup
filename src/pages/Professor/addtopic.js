@@ -7,6 +7,8 @@ import SelectPickerIcon from '../../components/picker_select_icon/selectPickerIc
 import SelectPicker from '../../components/picker_select/selectPicker.js';
 import { RiVipCrown2Fill } from 'react-icons/ri'
 import { getProfessor } from '../../service/professor.js';
+import { saveTopic } from '../../service/topic.js';
+import { useNavigate } from 'react-router-dom'
 
 function AddTopic() {
 
@@ -26,7 +28,8 @@ function AddTopic() {
     const [types,setTypes] = useState({label: "Computer Science", data: "Computer Science"})
     const [shortName,setShortName] = useState("")
     const [description,setDescription] = useState("")
-
+    const navigate = useNavigate()
+    const [errorsSubmit, setErrorsSubmit] = useState(false)
     const [errors, setErrors] = useState([])
 
     const iconAll = [
@@ -40,9 +43,9 @@ function AddTopic() {
     ]
 
     const typeAll = [
-        {label: "Computer Science", data: "Computer Science", img: "logo(black)"},
-        {label: "Data Science", data: "Data Science", img: "logo(black)"},
-        {label: "Digital Business", data: "Digital Business", img: "logo(black)"}
+        {label: "Computer Science", data: "Computer Science", img: "logo"},
+        {label: "Data Science", data: "Data Science", img: "logo"},
+        {label: "Digital Business", data: "Digital Business", img: "logo"}
     ]
 
     async function handleSubmit(event) {
@@ -73,18 +76,13 @@ function AddTopic() {
                 "Icon": icon.label
             }
             console.log(data)
+            await saveTopic(data).then(navigate('/professor')).catch(setErrorsSubmit(true))
+           
         }
         setErrors(arrayError);
         event.preventDefault();
         
     } 
-
-    const handleChangeicon = (value) => {
-        setIcon(value)
-    };
-    const handleChangetype = (value) => {
-        setTypes(value)
-    };
 
     return (
         <div className="topic-page">
@@ -130,8 +128,7 @@ function AddTopic() {
                                 placeholder="Detail about topic..."
                                 onChange={(event) => setDescription(event.target.value)}
                             />
-                            {/* {errors.includes("stuId") && (<label className="f-xs color-5 pt-2" htmlFor="student-id">Please enter your Student ID</label>)}
-                            {errors.includes("invalid_stuId") && (<label className="f-xs color-5 pt-2" htmlFor="student-id">Please enter a valid Student ID</label>)} */}
+                            {errors.includes("description") && (<label className="f-xs color-5 pt-2" htmlFor="student-id">Please enter a description of topic</label>)}
                         </div>
                         <label className="f-lg pb-2" htmlFor="type-id">Type<span className="color-5">*</span></label>
                         <div className="col-12 pb-4">
@@ -143,8 +140,6 @@ function AddTopic() {
                                 defaultValue={types}
                                 setValue={setTypes}
                             />
-                            {/* {errors.includes("stuId") && (<label className="f-xs color-5 pt-2" htmlFor="student-id">Please enter your Student ID</label>)}
-                            {errors.includes("invalid_stuId") && (<label className="f-xs color-5 pt-2" htmlFor="student-id">Please enter a valid Student ID</label>)} */}
                         </div>
                         <label className="f-lg pb-2" htmlFor="icon-id">Icon<span className="color-5">*</span></label>
                         <div className="col-12 pb-4">
@@ -165,8 +160,6 @@ function AddTopic() {
                                 <option>rocket</option>
                                 <option>target</option>
                             </select> */}
-                            {/* {errors.includes("stuId") && (<label className="f-xs color-5 pt-2" htmlFor="student-id">Please enter your Student ID</label>)}
-                            {errors.includes("invalid_stuId") && (<label className="f-xs color-5 pt-2" htmlFor="student-id">Please enter a valid Student ID</label>)} */}
                         </div>
                         <label className="f-lg pt-4" htmlFor="preview-id">Preview<span className="color-5"></span></label>
                         <div className='topic-section'>
@@ -210,7 +203,7 @@ function AddTopic() {
                         
                         <button type="submit" className="btn-01">Submit</button>
                     </div>
-                    {/* {errorsSubmit === false?
+                    {errorsSubmit === false?
                         <>
                             
                         </>
@@ -220,7 +213,7 @@ function AddTopic() {
                                 <label className="f-xm color-5" htmlFor="error">server error</label>
                             </div>
                         </>
-                    }  */}
+                    } 
                 </form>
                 
         </div>

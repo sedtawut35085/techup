@@ -16,7 +16,6 @@ function Professor() {
     
     async function getTopics() {
         let res = await getTopicfromProfessor();
-        console.log('res',res)
         setAllTopic(res);
     }
 
