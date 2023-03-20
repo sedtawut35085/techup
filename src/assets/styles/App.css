@@ -7,8 +7,8 @@ body {
 a {
     cursor: pointer;
     text-decoration: none !important;
-    color: #26262C;
     transition: all 0.2s;
+    color: unset;
 }
 
 ::-webkit-scrollbar {
