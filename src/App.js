@@ -3,8 +3,11 @@ import "./assets/styles/Background.css"
 import "./assets/styles/Components.css"
 import "./assets/styles/Sign.css"
 import "./assets/styles/Layout.css"
+import "./assets/styles/Pagination.css"
 import "./assets/styles/Pages.css"
 import "./assets/styles/Homepage.css"
+import "./assets/styles/Topic.css"
+import "./assets/styles/Ranking.css"
 
 import { BrowserRouter, Route, Routes} from "react-router-dom";
 
@@ -17,8 +20,11 @@ import PendingProf from "./pages/Sign/pendingProf.js"
 
 import AppLayout from "./layout/index.js"
 import Homepage from "./pages/Home/index.js"
+import Topic from "./pages/Topic/index.js"
+import Question from "./pages/Question/index.js"
+
 import Discuss from "./pages/Discuss/index.js"
-import Raking from "./pages/Raking/index.js"
+import Ranking from "./pages/Ranking/index.js"
 import Store from "./pages/Store/index.js"
 import Weekly from "./pages/Weekly/index.js"
 
@@ -33,9 +39,11 @@ function App() {
           <Route exact path="/sign-up" element={<SignUpForm />} />
           <Route exact path="/pending-prof" element={<PendingProf />} />
           <Route element={<AppLayout />}>
-            <Route path="/home" element={<AuthProvider><Homepage /></AuthProvider>}/>
+            <Route path="/home" element={<Homepage />}/>
+            <Route path="/topic/:topic" element={<Topic />}/>
+            <Route path="/topic/:topic/question/:question" element={<Question />}/>
             <Route path="/discuss" element={<Discuss/>}/>
-            <Route path="/raking" element={<Raking />}/>
+            <Route path="/ranking" element={<Ranking />}/>
             <Route path="/store" element={<Store />}/>
             <Route path="/weekly" element={<Weekly />}/>
           </Route>
