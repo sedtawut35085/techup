@@ -8,6 +8,7 @@ import "./assets/styles/Pages.css"
 import "./assets/styles/Homepage.css"
 import "./assets/styles/Topic.css"
 import "./assets/styles/Professor.css"
+import "./assets/styles/Ranking.css"
 
 import { BrowserRouter, Route, Routes} from "react-router-dom";
 
@@ -29,7 +30,7 @@ import TopicProf from "./pages/TopicProf/index.js"
 import SubmitProf from "./pages/Submit"
 
 import Discuss from "./pages/Discuss/index.js"
-import Raking from "./pages/Raking/index.js"
+import Ranking from "./pages/Ranking/index.js"
 import Store from "./pages/Store/index.js"
 import Weekly from "./pages/Weekly/index.js"
 
@@ -50,10 +51,10 @@ function App() {
             <Route path="/submit" element={<AuthProvider><SubmitProf /></AuthProvider>}/>
             <Route path="/professor/:topic" element={<AuthProvider><TopicProf /></AuthProvider>}/>
             <Route path="/home" element={<AuthProvider><Homepage /></AuthProvider>}/>
-            <Route path="/home/:topic" element={<Topic />}/>
-            <Route path="/home/:topic/:question" element={<Question />}/>
+            <Route path="/topic/:topic" element={<Topic />}/>
+            <Route path="/topic/:topic/question/:question" element={<Question />}/>
             <Route path="/discuss" element={<Discuss/>}/>
-            <Route path="/raking" element={<Raking />}/>
+            <Route path="/ranking" element={<Ranking />}/>
             <Route path="/store" element={<Store />}/>
             <Route path="/weekly" element={<Weekly />}/>
           </Route>

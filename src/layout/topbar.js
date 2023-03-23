@@ -42,8 +42,8 @@ const TopBar = ({currentEmailUser,isProfessor}) => {
                 <Link className={`nav hover ${pathname === "discuss" ? "active" : ""}`} to="/discuss">
                     <div>Discuss</div>
                 </Link>
-                <Link className={`nav hover ${pathname === "raking" ? "active" : ""}`} to="/raking">
-                    <div>Raking</div>
+                <Link className={`nav hover ${pathname === "ranking" ? "active" : ""}`} to="/ranking">
+                    <div>Ranking</div>
                 </Link>
                 {isProfessor === false?
                     <>

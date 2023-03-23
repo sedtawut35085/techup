@@ -4,14 +4,14 @@ import { Link } from 'react-router-dom';
 import { RiVipCrown2Fill } from 'react-icons/ri'
 
 const TopicBoxProf = ({data}) => {
-  return (
-    <Link className="topic-box col-3" to="/professor/os">
+  return ( 
+    <Link className="topic-box col-3" to={`/professor/${data.ShortName}`} state={data}>
         <div 
             className="body" 
             style={
                 data.Type === "Computer Science"
                 ? {backgroundColor: "#1B1F4B"}
-                : data.Type === "Data Science"
+                : data.Type === "Data Science" 
                 ? {backgroundColor: "#6A244D"}
                 : {backgroundColor: "#194D45"}
             }

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { Link } from 'react-router-dom';
+import { Link ,useLocation } from 'react-router-dom';
 import { FaChevronLeft, FaSort, FaFrownOpen } from 'react-icons/fa';
 import { FiSearch, FiChevronLeft, FiChevronRight, FiChevronsLeft, FiChevronsRight } from 'react-icons/fi'
 import { HiOutlineChartBar } from 'react-icons/hi'
@@ -14,15 +14,16 @@ import SelectPicker2 from '../../components/picker_select/selectPicker2.js'
 import BackgroundIcon from '../../components/background/bgIcons.js';
 
 function Topic() {
-
+    const location = useLocation();
     const [modal, setModal] = useState(false)
-
-    const [data, setData] = useState({
-        name: "Operation System",
-        type: "Computer Science",
-        icon: "idea",
-        description: "ระบบปฏิบัติการ(Operating System) หรือ โอเอส(OS) คือ ซอฟต์แวร์ที่ทำหน้าที่ควบคุมการทำงานของระบบคอมพิวเตอร์ ให้คอมพิวเตอร์และอุปกรณ์ต่อพ่วงต่าง ๆ ทำงานร่วมกันอย่างมีประสิทธิภาพ ซอฟต์แวร์ระบบที่รู้จักกันดี คือ ระบบปฏิบัติการ(OS-Operating System) เช่น MS-DOS, UNIX, OS/2, Windows, Linux และ Ubuntu เป็นต้น",
-    })
+ 
+    const data = location.state;
+    // const [data, setData] = useState({
+    //     name: "Operation System",
+    //     type: "Computer Science",
+    //     icon: "idea",
+    //     description: "ระบบปฏิบัติการ(Operating System) หรือ โอเอส(OS) คือ ซอฟต์แวร์ที่ทำหน้าที่ควบคุมการทำงานของระบบคอมพิวเตอร์ ให้คอมพิวเตอร์และอุปกรณ์ต่อพ่วงต่าง ๆ ทำงานร่วมกันอย่างมีประสิทธิภาพ ซอฟต์แวร์ระบบที่รู้จักกันดี คือ ระบบปฏิบัติการ(OS-Operating System) เช่น MS-DOS, UNIX, OS/2, Windows, Linux และ Ubuntu เป็นต้น",
+    // })
 
     const [owner, setOwner] = useState({
         name: "Chukiat",
@@ -66,14 +67,14 @@ function Topic() {
                 <div className="body">
                     <div className="main-section">
                         <div className="title">
-                            <span className="f-xl fw-700">{data.name}</span>
+                            <span className="f-xl fw-700">{data.TopicName}</span>
                             {
                                 join
                                 ?   <button className="btn-3" onClick={() => setModal(true)}><TbDoorExit /> Leave</button>
                                 :   <button className="btn-2" onClick={() => setJoin(true)}>+ Join</button>
                             }
                         </div>
-                        <p className="f-md thai fw-400 mt-4">{data.description}</p>
+                        <p className="f-md thai fw-400 mt-4">{data.Description}</p>
                         <div className="divider mt-5"></div>
                     </div>
                     <div className="info-section item">
