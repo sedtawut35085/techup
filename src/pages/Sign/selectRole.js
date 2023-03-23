@@ -294,7 +294,6 @@ function SelectRole() {
                                 </div>
                                 {errorsSubmit === false?
                                     <>
-                                        
                                     </>
                                         :                        
                                     <>

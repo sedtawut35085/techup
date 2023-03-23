@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { FaChevronLeft, FaSort, FaFrownOpen } from 'react-icons/fa';
 import { FiSearch, FiChevronLeft, FiChevronRight, FiChevronsLeft, FiChevronsRight } from 'react-icons/fi'
 import { HiOutlineChartBar } from 'react-icons/hi'
-import { TbDoorExit, TbArrowsShuffle, TbClock, TbClockOff, TbSwords } from 'react-icons/tb'
+import { TbDoorExit, TbClock, TbClockOff } from 'react-icons/tb'
 import { BiMessageSquareDetail } from 'react-icons/bi'
 import { RiVipCrown2Fill, RiInstagramFill, RiFacebookCircleFill, RiGithubFill, RiGlobalFill } from 'react-icons/ri'
 
@@ -13,10 +13,10 @@ import { IoCloseCircle } from 'react-icons/io5'
 import SelectPicker2 from '../../components/picker_select/selectPicker2.js'
 import BackgroundIcon from '../../components/background/bgIcons.js';
 
-function Topic() {
+function TopicProf() {
 
     const [modal, setModal] = useState(false)
-
+ 
     const [data, setData] = useState({
         name: "Operation System",
         type: "Computer Science",
@@ -60,18 +60,13 @@ function Topic() {
     return (
         <div className="topic-page">
             <div className="cover-container">
-                <Link className="btn-back" to="/home">
+                <Link className="btn-back" to="/professor">
                     <FaChevronLeft />
                 </Link>
                 <div className="body">
                     <div className="main-section">
                         <div className="title">
                             <span className="f-xl fw-700">{data.name}</span>
-                            {
-                                join
-                                ?   <button className="btn-3" onClick={() => setModal(true)}><TbDoorExit /> Leave</button>
-                                :   <button className="btn-2" onClick={() => setJoin(true)}>+ Join</button>
-                            }
                         </div>
                         <p className="f-md thai fw-400 mt-4">{data.description}</p>
                         <div className="divider mt-5"></div>
@@ -139,6 +134,7 @@ function Topic() {
                     </div>
                     <div className="question-section">
                         <span className="f-xl fw-700">Question</span>
+                        
                         <div className="top-question-section mt-4">
                             <div className="filter">
                                 <SelectPicker2
@@ -163,9 +159,7 @@ function Topic() {
                                     />
                                 </div>
                             </div>
-                            <button className="btn-4">
-                                Random<TbArrowsShuffle className="ms-2"/>
-                            </button>
+                            <Link className="btn-addquestion" to="/addquestion">Add Question + </Link> 
                         </div>
                         <div className="question-table">
                             <table className="table">
@@ -183,7 +177,6 @@ function Topic() {
                                     <tr>
                                         <td className="status">
                                             <TbClock className="color-1" size={24} /> 
-                                            <TbSwords className="color-5" size={24} />
                                         </td>
                                         <td className="title thai"><Link to="1">Pipeline ทำงานอย่างไร</Link></td>
                                         <td className="date">08-12-22</td>
@@ -214,7 +207,6 @@ function Topic() {
                                     <tr className="color-gray2">
                                         <td className="status">
                                             <TbClockOff size={24} /> 
-                                            <TbSwords className="color-5" size={24} />
                                         </td>
                                         <td className="title thai"><Link to="4">Explain why an operating system can be viewed as a resource allocator.</Link></td>
                                         <td className="date">01-01-21</td>
@@ -230,7 +222,7 @@ function Topic() {
                                         <td className="date">01-01-21</td>
                                         <td className="acceptance">10.00 %</td>
                                         <td className="difficulty color-5">Hard</td>
-                                        <td className="point-table"><span className="point" style={{backgroundColor: "#58A550"}}>Done</span></td>
+                                        <td className="point-table"><span className="point" style={{backgroundColor: "#FED470"}}>1 P</span></td>
                                     </tr>
                                 </tbody>
                             </table>                                                      
@@ -296,4 +288,4 @@ function Topic() {
     );
 }
 
-export default Topic;
+export default TopicProf;

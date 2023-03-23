@@ -21,11 +21,24 @@ const TopBar = ({currentEmailUser,isProfessor}) => {
     return (
         <div className="topbar" onMouseLeave={() => setDropdownActive(false)}>
             <nav>
-                <Link className={`nav hover ${pathname === "home" ? "active" : ""}`} to="/home">
-                    <div>
-                        <img alt="logo-text(bold).png" src="/assets/images/logo/logo-text(bold).png" height="32"/>
-                    </div>
-                </Link>
+                {isProfessor === false?
+                    <>
+                      <Link className={`nav hover ${pathname === "home" ? "active" : ""}`} to="/home">
+                            <div>
+                                <img alt="logo-text(bold).png" src="/assets/images/logo/logo-text(bold).png" height="32"/>
+                            </div>
+                        </Link>
+                    </>
+                    :                        
+                    <>
+                       <Link className={`nav hover ${pathname === "professor" ? "active" : ""}`} to="/professor">
+                            <div>
+                                <img alt="logo-text(bold).png" src="/assets/images/logo/logo-text(bold).png" height="32"/>
+                            </div>
+                        </Link>
+                    </>
+                } 
+                
                 <Link className={`nav hover ${pathname === "discuss" ? "active" : ""}`} to="/discuss">
                     <div>Discuss</div>
                 </Link>

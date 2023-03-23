@@ -10,7 +10,7 @@ import { getProfessor } from '../../service/professor.js';
 import { saveTopic } from '../../service/topic.js';
 import { useNavigate } from 'react-router-dom'
 
-function AddTopic() {
+function AddQuestion() {
 
     const [inFoProfessor, setInFoProfessor] = useState("")
     let res
@@ -70,6 +70,7 @@ function AddTopic() {
             event.preventDefault();
             var data = {
                 "TopicName": name,
+                "ShortName": shortName,
                 "Description": description,  
                 "Type": types.label,    
                 "Owner": inFoProfessor.ProfessorEmail,   
@@ -85,12 +86,12 @@ function AddTopic() {
     } 
 
     return (
-        <div className="topic-page">
+        <div className="addquestion-page">
         <div className="cover-container">
             <Link className="btn-back" to="/professor">
                 <FaChevronLeft />
             </Link>
-            <p className="title f-xl fw-800">Add topic</p>
+            <p className="title f-xl fw-800">Add Question</p>
                 <form className="pt-4 row" onSubmit={handleSubmit}>
                     <div className="px-4">
                         <div className="col-12 pb-4">
@@ -151,19 +152,10 @@ function AddTopic() {
                                 defaultValue={icon}
                                 setValue={setIcon}
                             />
-                            {/* <select required id="icon" name='type' type='text' label="Select icon" className="input-dropdownbox " value={icon} onChange={(event) => handleChangeicon(event.target.value)} >
-                                <option>analysis</option>
-                                <option>coins</option>
-                                <option>connections</option>
-                                <option>idea</option>
-                                <option>handshake</option>
-                                <option>rocket</option>
-                                <option>target</option>
-                            </select> */}
                         </div>
-                        <label className="f-lg pt-4" htmlFor="preview-id">Preview<span className="color-5"></span></label>
+                        <label className="f-lg pt-4" htmlFor="preview-id">Preview<span className="color-5"></span></label>   
                         <div className='topic-section'>
-                            <Link className="topic-box col-3" to="/addtopic">
+                            <div className="topic-box col-3">
                                 <div 
                                     className="body" 
                                     style={
@@ -171,13 +163,13 @@ function AddTopic() {
                                         ? {backgroundColor: "#1B1F4B"}
                                         : types.label === "Data Science"
                                         ? {backgroundColor: "#6A244D"}
-                                        : {backgroundColor: "#194D45"}}
+                                        : {backgroundColor: "#194D45"}
+                                    }
                                 >
-                                     <div className="title">
+                                    <div className="title">
                                         <span className="f-lg fw-700">{name || "Name"}</span>
                                         <span className="f-xs fw-400">{types.label || "type"}</span>
                                     </div>
-                                   
                                     <span className="professor-owner f-xs fw-500"><RiVipCrown2Fill className="color-1 me-1" size={20} />{inFoProfessor.Name + " " + inFoProfessor.Surname}</span>
                                     <div className="bg-icon">
                                         <li>
@@ -194,13 +186,12 @@ function AddTopic() {
                                         </li>
                                     </div>
                                 </div>
-                            </Link>
+                            </div>
                         </div>
                     </div>
                     <div className="mt-2 mb-5 divider"></div>
                     <div className="col-12 d-flex jc-center">
                         <a href='/professor' className="btn-02">Cancel</a>
-                        
                         <button type="submit" className="btn-01">Submit</button>
                     </div>
                     {errorsSubmit === false?
@@ -225,4 +216,4 @@ function AddTopic() {
     );
 }
 
-export default AddTopic;
+export default AddQuestion;

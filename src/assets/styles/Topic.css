@@ -1,10 +1,11 @@
 .topic-page .body {
-    display: flex;
-    justify-content: space-between;
+    display: grid;
+    grid-template-columns: 3fr 1fr;
+    gap: 2rem;
 }
 
-.topic-page .body .main-section {
-    max-width: 70%;
+.topic-page .body .item {
+    grid-row: span 2;
 }
 
 .topic-page .body .main-section .title {
@@ -13,12 +14,9 @@
     align-items: center;
 }
 
-.topic-page .body .info-section {
-    width: 25%;
-}
-
 .topic-page .body .info-section .info-box {
     width: 100%;
+    background-color: #fff;
     box-shadow: 0 0 4px rgba(0, 0, 0, 0.25);
     border-radius: 15px;
     padding: 1.2rem;
@@ -39,4 +37,185 @@
     height: 24px;
     border-radius: 8px;
     background-color: #FFA242;
+}
+
+.topic-page .body .info-section .info-box .contact-all .contact {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    margin-top: .6rem;
+}
+
+.topic-page .body .info-section .info-box .contact-all .contact .icon {
+    color: #FFA242;
+    width: 40px;
+}
+
+.topic-page .body .info-section .info-box .contact-all .contact span {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 220px;
+    white-space: nowrap;
+}
+
+.topic-page .body .question-section .top-question-section {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 1.5rem;
+}
+
+.topic-page .body .question-section .filter {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    column-gap: 1rem;
+    width: 65%;
+}
+
+.topic-page .question-section .question-table {
+    background-color: #fff;
+    width: 100%;
+    padding: 1rem;
+    border-radius: 12px;
+    box-shadow: 0 0 4px rgba(0, 0, 0, 0.25);
+}
+
+.topic-page .question-section .question-table .table thead tr th {
+    font-weight: 400;
+    color: #A5A3A2;
+}
+
+.topic-page .question-section .question-table .table tbody tr td {
+    border: none;
+}
+
+.topic-page .question-section .question-table .table tbody tr:nth-child(1) td {
+    padding-top: 1.5rem;
+}
+
+.topic-page .question-section .question-table .table tbody tr td span.point {
+    padding: .3rem .6rem;
+    color: #fff;
+    font-size: 0.875rem;
+    font-weight: 600;
+    border-radius: 25px;
+}
+
+.topic-page .question-section .question-table .table .status {
+    width: 100px;
+    max-width: 100px;
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.topic-page .question-section .question-table .table .title {
+    width: 320px;
+    max-width: 320px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.topic-page .question-section .question-table .table .date {
+    width: 120px;
+    max-width: 120px;
+    white-space: nowrap;
+    text-align: center;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.topic-page .question-section .question-table .table .acceptance {
+    width: 140px;
+    max-width: 140px;
+    white-space: nowrap;
+    text-align: center;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.topic-page .question-section .question-table .table .difficulty {
+    width: 120px;
+    max-width: 120px;
+    white-space: nowrap;
+    text-align: center;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.topic-page .question-section .question-table .table .point-table {
+    width: 100px;
+    max-width: 100px;
+    white-space: nowrap;
+    text-align: center;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.topic-page .body .detail-section .info-box {
+    width: 100%;
+    box-shadow: 0 0 4px rgba(0, 0, 0, 0.25);
+    border-radius: 15px;
+    padding: 1.2rem;
+}
+
+.topic-page .body .detail-section .info-box .bar span {
+    width: 45%;
+}
+
+.topic-page .body .detail-section .info-box .stat-bar {
+    height: 26px;
+    width: 100%;
+    border: solid 1px #FFA242;
+    border-radius: 10px;
+}
+
+.topic-page .body .detail-section .info-box .stat-bar .stat-val {
+    height: 24px;
+    border-radius: 8px;
+    background-color: #FFA242;
+}
+
+@media screen and (max-width: 1520px) {
+    .topic-page .question-section .question-table {
+        overflow-x: scroll;
+        max-width: 655px;
+    }
+}
+
+@media screen and (max-width: 1200px) {
+    .topic-page .body {
+        grid-template-columns: 2fr 1fr;
+    }
+
+    .topic-page .question-section .question-table {
+        max-width: 543px;
+    }
+}
+
+@media screen and (max-width: 992px) {
+    .topic-page .body {
+        grid-template-columns: 1fr;
+    }
+
+    .topic-page .question-section .question-table {
+        max-width: 643px;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .topic-page .question-section .question-table {
+        max-width: 463px;
+    }
+}
+
+@media screen and (max-width: 576px) {
+}
+
+.submit .submit-main .submit-section .filter {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    column-gap: 1rem;
+    width: 65%;
 }
