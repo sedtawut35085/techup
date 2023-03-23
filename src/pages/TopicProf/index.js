@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import { Link, useLocation } from 'react-router-dom';
 import { FaChevronLeft, FaSort, FaFrownOpen } from 'react-icons/fa';
@@ -10,6 +10,7 @@ import { RiVipCrown2Fill, RiInstagramFill, RiFacebookCircleFill, RiGithubFill, R
 import { AiTwotoneMail } from 'react-icons/ai'
 
 import { IoCloseCircle } from 'react-icons/io5'
+import { getQuestionForEachTopic, getCountOfQuestionForEachTopic } from '../../service/question.js';
 
 import SelectPicker2 from '../../components/picker_select/selectPicker2.js'
 import BackgroundIcon from '../../components/background/bgIcons.js';
@@ -19,19 +20,43 @@ function TopicProf() {
     const [modal, setModal] = useState(false)
 
     const data = location.state;
-    console.log(data)
+    const [currentpage,setCurrentpage] = useState(1);
+    const [lastQuestionID,setLastQuestionID] = useState(0);
+    let pageStart = 0;
+    let pageSize = 5;
+    let pageNumber
+    let todayDate = new Date().toISOString().slice(0, 10);
+    let todayDatetime = new Date(todayDate);
+    let duedatetime;
+
+    async function loadQuestionForEachTopic() {
+        const res = await getQuestionForEachTopic(data.TopicID,pageStart,pageSize);
+        setAllQuestion(res); 
+    }
+
+    async function loadCountofQuestionForEachTopic() {
+        const res = await getCountOfQuestionForEachTopic(data.TopicID);
+        const Pagenumberlist = []
+        pageNumber = Math.ceil(res[0]["count(*)"] / pageSize);
+        for(let i=1;i<=pageNumber;i++){
+            Pagenumberlist.push(i)
+        }
+        setNumberPage(Pagenumberlist)
+    }
+
+    const [allQuestion, setAllQuestion] = useState([])
+    const [numberPage, setNumberPage] = useState([])
+
+    useEffect(() => {
+        loadCountofQuestionForEachTopic();
+        loadQuestionForEachTopic();
+    }, []);
+
     const contact = JSON.parse(data.Contact)
-    console.log(contact.inst)
-    const [join, setJoin] = useState(true);
-
-    const [question, setQuestion] = useState([
-
-    ])
 
     const statusAll = [
-        {label: "Available", data: "available"},
-        {label: "Ongoing", data: "ongoing"},
-        {label: "Submitted", data: "submitted"}
+        {label: "Ontime", data: "ontime"},
+        {label: "Outtime", data: "outtime"},
     ]
     const [status, setStatus] = useState({label: "", data: ""})
 
@@ -44,6 +69,34 @@ function TopicProf() {
 
     const [search, setSearch] = useState("")
 
+    const listQuestions = allQuestion.map((question, i) => 
+    <tr key={i}>
+        <td className="status">
+            {duedatetime = new Date(question.DueDate) < todayDatetime ?
+            <>
+                <TbClockOff size={24} /> 
+            </>
+            :
+            <>
+                <TbClock className="color-1" size={24} /> 
+            </>
+            }
+        </td>
+        <td className="title thai"><Link to="1">{question.QuestionName}</Link></td>
+        <td className="date">{question.DueDate}</td>
+        <td className="acceptance">10.00 %</td>
+        <td className="difficulty color-1">{question.Difficulty}</td>
+        <td className="point-table"><span className="point" style={{backgroundColor: "#FED470"}}>{question.Point} P</span></td>
+    </tr>
+    )
+
+    async function changepage(event) {
+        event.preventDefault();
+        setCurrentpage(event.target.value)
+        pageStart = 5*(event.target.value - 1)
+        await loadQuestionForEachTopic()
+    }
+    
     return (
         <div className="topic-page">
             <div className="cover-container">
@@ -191,7 +244,7 @@ function TopicProf() {
                                     />
                                 </div>
                             </div>
-                            <Link className="btn-addquestion" to="/addquestion">Add Question + </Link> 
+                            <Link className="btn-addquestion" to="/addquestion" state={data} >Add Question + </Link> 
                         </div>
                         <div className="question-table">
                             <table className="table">
@@ -206,7 +259,8 @@ function TopicProf() {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
+                                    {listQuestions}
+                                    {/* <tr>
                                         <td className="status">
                                             <TbClock className="color-1" size={24} /> 
                                         </td>
@@ -215,38 +269,8 @@ function TopicProf() {
                                         <td className="acceptance">10.00 %</td>
                                         <td className="difficulty color-1">Normal</td>
                                         <td className="point-table"><span className="point" style={{backgroundColor: "#FED470"}}>150 P</span></td>
-                                    </tr>
-                                    <tr>
-                                        <td className="status">
-                                            <TbClock className="color-1" size={24} /> 
-                                        </td>
-                                        <td className="title thai"><Link to="2">Kernel คืออะไร</Link></td>
-                                        <td className="date">05-12-22</td>
-                                        <td className="acceptance">10.00 %</td>
-                                        <td className="difficulty color-3">Easy</td>
-                                        <td className="point-table"><span className="point" style={{backgroundColor: "#FED470"}}>100 P</span></td>
-                                    </tr>
-                                    <tr>
-                                        <td className="status">
-                                            <TbClock className="color-1" size={24} /> 
-                                        </td>
-                                        <td className="title thai"><Link to="3">อธิบายความแตกต่าง virtualization and simulation</Link></td>
-                                        <td className="date">05-12-22</td>
-                                        <td className="acceptance">10.00 %</td>
-                                        <td className="difficulty color-5">Hard</td>
-                                        <td className="point-table"><span className="point" style={{backgroundColor: "#FED470"}}>100 P</span></td>
-                                    </tr>
-                                    <tr className="color-gray2">
-                                        <td className="status">
-                                            <TbClockOff size={24} /> 
-                                        </td>
-                                        <td className="title thai"><Link to="4">Explain why an operating system can be viewed as a resource allocator.</Link></td>
-                                        <td className="date">01-01-21</td>
-                                        <td className="acceptance">10.00 %</td>
-                                        <td className="difficulty color-5">Hard</td>
-                                        <td className="point-table"><span className="point" style={{backgroundColor: "#FED470"}}>1 P</span></td>
-                                    </tr>
-                                    <tr className="color-gray2">
+                                    </tr> */}
+                                    {/* <tr className="color-gray2">
                                         <td className="status">
                                             <TbClockOff size={24} /> 
                                         </td>
@@ -255,51 +279,39 @@ function TopicProf() {
                                         <td className="acceptance">10.00 %</td>
                                         <td className="difficulty color-5">Hard</td>
                                         <td className="point-table"><span className="point" style={{backgroundColor: "#FED470"}}>1 P</span></td>
-                                    </tr>
+                                    </tr> */}
                                 </tbody>
                             </table>                                                      
                         </div>
                         <div className="pagination1">
                             <div className="display-per-page">
-                                <span>Display per page</span>
+                                {/* <span>Display per page</span>
                                 <select className="page">
-                                    <option default>5</option>
+                                    <option default>1</option>
                                     <option>10</option>
                                     <option>25</option>
-                                </select>
+                                </select> */}
                             </div>
                             <div className="pagination-number">
                                 <span className="arrow disable"><FiChevronsLeft /></span>
                                 <span className="arrow disable"><FiChevronLeft /></span>
-                                <span className="number active">1</span>
+                                {numberPage.map((key, i) => (
+                                    <button key={i} name={key} value={key} className={
+                                        currentpage === key
+                                        ? "number active"
+                                        : "number"
+                                    } onClick={changepage}>{key}</button>
+                                ))}
+                                {/* <span className="number active">1</span>
                                 <span className="number">2</span>
                                 <span className="number">3</span>
                                 <span className="number">4</span>
                                 <span className="number">5</span>
+                                 */}
                                 <span className="arrow"><FiChevronRight /></span>
                                 <span className="arrow"><FiChevronsRight /></span>
                             </div>
                         </div>  
-                    </div>
-                </div>
-            </div>
-
-            {/* Modal */}
-            <div className="tu-modal" style={modal ? {opacity: "1", visibility: "visible"} : {}}>
-                <div className="tu-modal-card">
-                    <IoCloseCircle className="close-button" onClick={() => setModal(false)} />
-                    <div className="tu-modal-head">
-                        <FaFrownOpen className="icon" />
-                        <span>
-                            Are you sure you want to leave ?
-                        </span>
-                    </div>
-                    <div className="tu-modal-body">
-                        <p>If you leave this topic all questions that you're challenging will forced to give up, all questions that you have submitted and pending to professor will disappear. And you'll not receive all notifications from this topic</p>
-                    </div>
-                    <div className="tu-modal-footer">
-                        <div className="cancel-button" onClick={() => setModal(false)}>No, keep me remain.</div>
-                        <div className="accept-button" onClick={() => {setModal(false); setJoin(false)}}>Yes, I want to leave.</div>
                     </div>
                 </div>
             </div>

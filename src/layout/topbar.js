@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import Auth from '../configuration/configuration-aws'
 import { HiOutlineCalendar, HiOutlineBell } from 'react-icons/hi'
 import { FiChevronRight } from 'react-icons/fi'
-import { useNavigate } from 'react-router-dom'
 import { IoPersonCircleOutline, IoPersonOutline, IoGiftOutline, IoSettingsOutline, IoExitOutline } from 'react-icons/io5'
 
 const TopBar = ({currentEmailUser,isProfessor}) => {
@@ -116,7 +115,7 @@ const TopBar = ({currentEmailUser,isProfessor}) => {
                                     </div>
                                     <FiChevronRight size={28} />
                                 </Link>
-                                <Link onClick={logout} >
+                                <Link onClick={logout} to="/">
                                     <IoExitOutline size={32} className="me-3" />Sign out
                                 </Link>
                             </div>

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import BackgroundIcon from '../../components/background/bgIcons.js';
 import { FaChevronLeft } from 'react-icons/fa';
 // import { Select, Option } from "@material-tailwind/react";
@@ -12,6 +12,9 @@ import { useNavigate } from 'react-router-dom'
 
 function AddQuestion() {
 
+    const location = useLocation();
+
+    const data = location.state;
     const [inFoProfessor, setInFoProfessor] = useState("")
     let res
     useEffect( () => {
@@ -82,13 +85,12 @@ function AddQuestion() {
         }
         setErrors(arrayError);
         event.preventDefault();
-        
     } 
 
     return (
         <div className="addquestion-page">
         <div className="cover-container">
-            <Link className="btn-back" to="/professor">
+            <Link className="btn-back" to={`/professor/${data.ShortName}`} state={data}>
                 <FaChevronLeft />
             </Link>
             <p className="title f-xl fw-800">Add Question</p>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState ,useEffect } from 'react';
 
 import { Link ,useLocation } from 'react-router-dom';
 import { FaChevronLeft, FaSort, FaFrownOpen } from 'react-icons/fa';
@@ -6,7 +6,9 @@ import { FiSearch, FiChevronLeft, FiChevronRight, FiChevronsLeft, FiChevronsRigh
 import { HiOutlineChartBar } from 'react-icons/hi'
 import { TbDoorExit, TbArrowsShuffle, TbClock, TbClockOff, TbSwords } from 'react-icons/tb'
 import { BiMessageSquareDetail } from 'react-icons/bi'
-import { RiVipCrown2Fill, RiInstagramFill, RiFacebookCircleFill, RiGithubFill, RiGlobalFill } from 'react-icons/ri'
+import { RiVipCrown2Fill, RiInstagramFill, RiFacebookCircleFill, RiGithubFill, RiGlobalFill , RiLineFill } from 'react-icons/ri'
+import { getQuestionForEachTopic } from '../../service/question.js';
+import { AiTwotoneMail} from 'react-icons/ai'
 
 import { IoCloseCircle } from 'react-icons/io5'
 
@@ -18,12 +20,32 @@ function Topic() {
     const [modal, setModal] = useState(false)
  
     const data = location.state;
-    // const [data, setData] = useState({
-    //     name: "Operation System",
-    //     type: "Computer Science",
-    //     icon: "idea",
-    //     description: "ระบบปฏิบัติการ(Operating System) หรือ โอเอส(OS) คือ ซอฟต์แวร์ที่ทำหน้าที่ควบคุมการทำงานของระบบคอมพิวเตอร์ ให้คอมพิวเตอร์และอุปกรณ์ต่อพ่วงต่าง ๆ ทำงานร่วมกันอย่างมีประสิทธิภาพ ซอฟต์แวร์ระบบที่รู้จักกันดี คือ ระบบปฏิบัติการ(OS-Operating System) เช่น MS-DOS, UNIX, OS/2, Windows, Linux และ Ubuntu เป็นต้น",
-    // })
+
+    async function loadQuestionForEachTopic() {
+        const res = await getQuestionForEachTopic(data.TopicID);
+        setAllQuestion(res);
+    }
+
+    const [allQuestion, setAllQuestion] = useState([])
+    useEffect(() => {
+        loadQuestionForEachTopic();
+    }, []);
+
+    const listQuestions = allQuestion.map((question) => 
+    <tr>
+        <td className="status">
+            <TbClock className="color-1" size={24} /> 
+            <TbSwords className="color-5" size={24} />
+        </td>
+        <td className="title thai"><Link to="1">{question.QuestionName}</Link></td>
+        <td className="date">{question.DueDate}</td>
+        <td className="acceptance">10.00 %</td>
+        <td className="difficulty color-1">{question.Difficulty}</td>
+        <td className="point-table"><span className="point" style={{backgroundColor: "#FED470"}}>{question.Point} P</span></td>
+    </tr>
+    )
+
+    const contact = JSON.parse(data.Contact)
 
     const [owner, setOwner] = useState({
         name: "Chukiat",
@@ -105,34 +127,85 @@ function Topic() {
                                 <div className="pt-4 d-flex fd-col jc-center ai-center">
                                     <img width="100px" className="profile-pic" src="/assets/images/icons/profile.png" />
                                     <div className="d-flex jc-center ai-center mt-4 f-md">
-                                        <RiVipCrown2Fill className="color-1 me-1" size={24} /> Chukiat Worasucheep
+                                        <RiVipCrown2Fill className="color-1 me-1" size={24} /> {data.Name} {data.Surname}
                                     </div>
                                 </div>
                                 <div className="divider mt-3"></div>
                                 <div className="contact-all">
-                                    <div className="contact">
-                                        <div className="icon">
-                                            <RiFacebookCircleFill size={32} />
+                                    {contact.Email === undefined ?
+                                        <>
+
+                                        </>
+                                        :
+                                        <>
+                                            <div className="contact">
+                                                <div className="icon">
+                                                    <AiTwotoneMail size={32} />
+                                                </div>
+                                                <span>{contact.Email}</span>
+                                            </div>
+                                        </>
+                                    }
+                                   {contact.Facebook === undefined ?
+                                    <>
+
+                                    </>
+                                    :
+                                    <>
+                                        <div className="contact">
+                                            <div className="icon">
+                                                <RiFacebookCircleFill size={32} />
+                                            </div>
+                                            <span>{contact.Facebook}</span>
                                         </div>
-                                        <span>Chukiat Woras</span>
-                                    </div>
-                                    <div className="contact">
-                                        <div className="icon">
-                                            <RiInstagramFill size={32} />
+                                    </>
+                                    }
+                                    {contact.Instagram === undefined ?
+                                    <>
+
+                                    </>
+                                    :
+                                    <>
+                                        <div className="contact">
+                                            <div className="icon">
+                                                <RiInstagramFill size={32} />
+                                            </div>
+                                            <span>{contact.Instagram}</span>
                                         </div>
-                                        <span>chukiat_woras</span>
-                                    </div>
-                                    <div className="contact">
-                                        <div className="icon">
-                                            <RiGithubFill size={32} />
+                                    </>
+                                    }
+                                    {contact.LineID === undefined ?
+                                    <>
+
+                                    </>
+                                    :
+                                    <>
+                                        <div className="contact">
+                                            <div className="icon">
+                                                <RiLineFill size={32} />
+                                            </div>
+                                            <span>{contact.LineID}</span>
                                         </div>
-                                        <span>Chukiat Worasucheep</span>
-                                    </div>
+                                    </>
+                                    }
+                                    {contact.ETC === undefined ?
+                                    <>
+                                    </>
+                                    :
+                                    <>
+                                        <div className="contact">
+                                            <div className="icon">
+                                                <RiGlobalFill size={32} />
+                                            </div>
+                                            <span>{contact.ETC}</span>
+                                        </div>
+                                    </>
+                                    }
                                     <div className="contact">
                                         <div className="icon">
                                             <RiGlobalFill size={32} />
                                         </div>
-                                        <span>https://math.kmutt.ac.th/index.php/staff-directory/staff/lecturer/applied-computer-science/41-assoc-prof-chukiat-worasucheep</span>
+                                        <span>ppppppppppppppppppppppppppppppppppppppppppppp</span>
                                     </div>
                                 </div>
                             </div>                      
@@ -181,7 +254,8 @@ function Topic() {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
+                                    {listQuestions}
+                                    {/* <tr>
                                         <td className="status">
                                             <TbClock className="color-1" size={24} /> 
                                             <TbSwords className="color-5" size={24} />
@@ -191,8 +265,8 @@ function Topic() {
                                         <td className="acceptance">10.00 %</td>
                                         <td className="difficulty color-1">Normal</td>
                                         <td className="point-table"><span className="point" style={{backgroundColor: "#FED470"}}>150 P</span></td>
-                                    </tr>
-                                    <tr>
+                                    </tr> */}
+                                    {/* <tr>
                                         <td className="status">
                                             <TbClock className="color-1" size={24} /> 
                                         </td>
@@ -232,7 +306,7 @@ function Topic() {
                                         <td className="acceptance">10.00 %</td>
                                         <td className="difficulty color-5">Hard</td>
                                         <td className="point-table"><span className="point" style={{backgroundColor: "#58A550"}}>Done</span></td>
-                                    </tr>
+                                    </tr> */}
                                 </tbody>
                             </table>                                                      
                         </div>
