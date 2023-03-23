@@ -21,7 +21,6 @@ export async function getAllTopic () {
         }).catch((err)=>{
           response = err
         })
-    console.log("topic : " + response.data)
     return response.data
 }
 
@@ -40,6 +39,5 @@ export async function getList () {
         }).catch((err)=>{
           response = err
         })
-    console.log("topic : " + response.data)
     return response.data
 }
