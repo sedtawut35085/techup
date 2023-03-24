@@ -7,6 +7,7 @@ import "./assets/styles/Pagination.css"
 import "./assets/styles/Pages.css"
 import "./assets/styles/Homepage.css"
 import "./assets/styles/Topic.css"
+import "./assets/styles/Professor.css"
 import "./assets/styles/Ranking.css"
 
 import { BrowserRouter, Route, Routes} from "react-router-dom";
@@ -20,8 +21,13 @@ import PendingProf from "./pages/Sign/pendingProf.js"
 
 import AppLayout from "./layout/index.js"
 import Homepage from "./pages/Home/index.js"
+import Professor from "./pages/HomeProf/index"
+import AddTopic from "./pages/HomeProf/addtopic"
+import AddQuestion from "./pages/HomeProf/addquestion"
 import Topic from "./pages/Topic/index.js"
 import Question from "./pages/Question/index.js"
+import TopicProf from "./pages/TopicProf/index.js"
+import SubmitProf from "./pages/Submit"
 
 import Discuss from "./pages/Discuss/index.js"
 import Ranking from "./pages/Ranking/index.js"
@@ -38,8 +44,13 @@ function App() {
           <Route exact path="/" element={<SignInForm />} />
           <Route exact path="/sign-up" element={<SignUpForm />} />
           <Route exact path="/pending-prof" element={<PendingProf />} />
-          <Route element={<AppLayout />}>
-            <Route path="/home" element={<Homepage />}/>
+          <Route element={<AuthProvider><AppLayout /></AuthProvider>}>
+            <Route path="/addtopic" element={<AuthProvider><AddTopic /></AuthProvider>}/>
+            <Route path="/addquestion" element={<AuthProvider><AddQuestion /></AuthProvider>}/>
+            <Route path="/professor" element={<AuthProvider><Professor /></AuthProvider>}/>
+            <Route path="/submit" element={<AuthProvider><SubmitProf /></AuthProvider>}/>
+            <Route path="/professor/:topic" element={<AuthProvider><TopicProf /></AuthProvider>}/>
+            <Route path="/home" element={<AuthProvider><Homepage /></AuthProvider>}/>
             <Route path="/topic/:topic" element={<Topic />}/>
             <Route path="/topic/:topic/question/:question" element={<Question />}/>
             <Route path="/discuss" element={<Discuss/>}/>

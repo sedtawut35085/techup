@@ -4,14 +4,15 @@ import React, { useState, useContext } from 'react';
 import { FaUserGraduate, FaChalkboardTeacher, FaChevronLeft, FaUserCircle, FaUpload } from 'react-icons/fa';
 
 import Moment from 'moment';
-import { isNumber, isEmail } from '../../assets/js/helper'
+import { isNumber } from '../../assets/js/helper'
 import BackgroundIcon from '../../components/background/bgIcons.js';
 import SelectPicker from '../../components/picker_select/selectPicker.js'
 import TuDatePicker from '../../components/picker_date/datePicker.js'
 import ContactInfo from '../../components/contact_info/contactInfo.js'
 import { useNavigate } from 'react-router-dom'
 import { AuthContext } from '../../auth';
-import { saveStudent } from '../../service';
+import { saveStudent } from '../../service/student';
+import { saveProfessor } from '../../service/professor';
 
 function SelectRole() {
 
@@ -29,7 +30,7 @@ function SelectRole() {
     const [gender, setGender] = useState({label: "", data: ""})
     const [birthday, setBirthday] = useState("")
     const [contacts, setContacts] = useState([])
-    const [location, setLocation] = useState("")
+    const [location, setLocation] = useState(null)
     
     const [errors, setErrors] = useState([])
     const [errorsSubmit, setErrorsSubmit] = useState(false)
@@ -54,7 +55,7 @@ function SelectRole() {
         setLocation("")
         setContacts([])
         setErrors([])
-        setErrorsSubmit(true)
+        setErrorsSubmit(false)
 
     }
     
@@ -75,6 +76,9 @@ function SelectRole() {
                 } else {
                     arrayError.push('invalid_stuId');
                 }
+            }
+            if(location == ""){
+                arrayError.push('location');
             }
         }
         if(role === "professor") {
@@ -101,13 +105,35 @@ function SelectRole() {
         if(birthday == ""){
             arrayError.push('birthday');
         }
-        if(location == ""){
-            arrayError.push('location');
-        }
-
+        
         if(arrayError.length === 0) {
             if(role === "professor") {
                 console.log('pass pro')
+                let website = [];
+                for(let i =0;i<contacts.length;i++){
+                    let label = contacts[i].type.label
+                    let value = contacts[i].contact
+                    website = {...website, [label]: value}
+                }
+                var data = {
+                    "ProfessorEmail": currentEmailUser,
+                    "ProfessorID": professorID,  
+                    "Name": name,    
+                    "SurName": surname,   
+                    "Gender": gender.label,    
+                    "Birthday": Moment(birthday).format('YYYY-MM-DD'),
+                    "Contact": website,
+                    "Notification": false,
+                    "Point": 0,
+                    "ImageURL": 'image'
+                }
+                event.preventDefault();
+                let response = await saveProfessor(data, imageFile)
+                if(response.status === 200){
+                    navigate('/home')
+                }else{
+                    setErrorsSubmit(true)
+                }
             }else{
                 let website = [];
                 for(let i =0;i<contacts.length;i++){
@@ -119,7 +145,7 @@ function SelectRole() {
                     "UserEmail": currentEmailUser,
                     "TechUpID": techupID,    
                     "StudentID": studentID,    
-                    "FirstName": name,    
+                    "Name": name,    
                     "SurName": surname,   
                     "Gender": gender.label,    
                     "Birthday": Moment(birthday).format('YYYY-MM-DD'),
@@ -131,7 +157,6 @@ function SelectRole() {
                 }
                 event.preventDefault();
                 let response = await saveStudent(data, imageFile)
-                console.log(response.status)
                 if(response.status === 200){
                     navigate('/home')
                 }else{
@@ -148,7 +173,6 @@ function SelectRole() {
         setImage(URL.createObjectURL(event.target.files[0]))
         setImageFile(event.target.files[0])
     }
-
 
     return (
         <div className="select-role">
@@ -270,7 +294,6 @@ function SelectRole() {
                                 </div>
                                 {errorsSubmit === false?
                                     <>
-                                        
                                     </>
                                         :                        
                                     <>
@@ -288,14 +311,15 @@ function SelectRole() {
                             </div>
                             <p className="title f-xl fw-800">Information - Professor</p>
                             <form className="input-section pt-4 row" onSubmit={handleSubmit}>
-                                <div className="col-lg-6 col-md-12 d-flex fd-col ai-center jc-center profile-image">
+                            <div className="col-lg-6 col-md-12 d-flex fd-col ai-center jc-center profile-image">
                                     {
                                         image === ""
                                         ?   <FaUserCircle className="icon" />
                                         :   <img src={image} />
                                     }
-                                    <input type="file" accept="image/*" name="profile-img" id="profile-img" onChange={(event) => setImage(URL.createObjectURL(event.target.files[0]))} />
+                                    <input id="profile-img" name="profile-img" type="file" accept="image/*" onChange={onSelectFile}/>
                                     <label htmlFor="profile-img"><FaUpload className="me-2" />Upload</label>
+                                    {errors.includes("image") && (<p className="f-xs color-5 pt-2" htmlFor="image-id">Please upload you image</p>)}
                                 </div>
                                 <div className="col-lg-6 col-md-12 px-4">
                                     <div className="col-12 pt-4">
@@ -333,13 +357,13 @@ function SelectRole() {
                                             placeholder="Enter KMUTT professor ID (Ex. xx090500xxx)"
                                             maxLength="15"
                                             onKeyPress={(event) => isNumber(event)}
-                                            onChange={(event) => setStudentID(event.target.value)}
+                                            onChange={(event) => setProfessorID(event.target.value)}
                                         />
                                         {errors.includes("profId") && (<label className="f-xs color-5 pt-2" htmlFor="professor-id">Please enter your Professor ID</label>)}
                                         {errors.includes("invalid_profId") && (<label className="f-xs color-5 pt-2" htmlFor="professor-id">Please enter a valid Professor ID</label>)}
                                 </div>
                                 <div className="col-lg-6 col-md-12 pt-4 px-4">
-                                    <label className="f-lg pb-2" htmlFor="gender">Gender</label>
+                                    <label className="f-lg pb-2" htmlFor="gender">Gender<span className="color-5">*</span></label>
                                     <SelectPicker 
                                         name="gender" 
                                         id="gender" 
@@ -351,7 +375,7 @@ function SelectRole() {
                                     {errors.includes("gender") && (<label className="f-xs color-5 pt-2" htmlFor="gender">Please select your Gender</label>)}
                                 </div>
                                 <div className="col-lg-6 col-md-12 pt-4 px-4">
-                                    <label className="f-lg pb-2" htmlFor="birthday">Birthday</label>
+                                    <label className="f-lg pb-2" htmlFor="birthday">Birthday<span className="color-5">*</span></label>
                                     <TuDatePicker
                                         name="birthday"
                                         id="birthday"
@@ -369,6 +393,16 @@ function SelectRole() {
                                 <div className="col-12 pt-5 d-flex jc-center">
                                     <button type="submit" className="btn-01">Submit</button>
                                 </div>
+                                {errorsSubmit === false?
+                                    <>  
+                                    </>
+                                        :                        
+                                    <>
+                                        <div className="col-12 pt-5 d-flex jc-center">
+                                            <label className="f-xm color-5" htmlFor="error">server error</label>
+                                        </div>
+                                    </>
+                                } 
                             </form>
                         </div>
                     :   <div className="main-page py-5">
