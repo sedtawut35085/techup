@@ -9,6 +9,7 @@ import { BiMessageSquareDetail } from 'react-icons/bi'
 import { RiVipCrown2Fill, RiInstagramFill, RiFacebookCircleFill, RiGithubFill, RiGlobalFill , RiLineFill } from 'react-icons/ri'
 import { getQuestionForEachTopic } from '../../service/question.js';
 import { AiTwotoneMail} from 'react-icons/ai'
+import { addJoinTopic , getJoin , deleteJoinedTopic } from '../../service/joinTopic'
 
 import { IoCloseCircle } from 'react-icons/io5'
 
@@ -21,14 +22,37 @@ function Topic() {
  
     const data = location.state;
 
+    function leaveTopic(topicID) {
+        deleteJoinedTopic(topicID);
+        setJoin(false);
+    }
+
+    function joinTopic(topicID) {
+        setJoin(true);
+        addJoinTopic(topicID);
+    }
+
     async function loadQuestionForEachTopic() {
         const res = await getQuestionForEachTopic(data.TopicID);
         setAllQuestion(res);
     }
 
+    async function getJoinedList() {
+        const res = await getJoin();
+        const found = res.some(joined => joined.TopicID === (data.TopicID))
+        if (!found)
+        {
+            setJoin(false);
+        } else {
+            setJoin(true)
+        }
+    }
+
     const [allQuestion, setAllQuestion] = useState([])
+    const [joinedList, setJoinedList] = useState([])
     useEffect(() => {
-        loadQuestionForEachTopic();
+        // loadQuestionForEachTopic();
+        getJoinedList();
     }, []);
 
     const listQuestions = allQuestion.map((question) => 
@@ -58,7 +82,7 @@ function Topic() {
         ]
     })
 
-    const [join, setJoin] = useState(true);
+    const [join, setJoin] = useState();
 
     const [question, setQuestion] = useState([
 
@@ -93,7 +117,7 @@ function Topic() {
                             {
                                 join
                                 ?   <button className="btn-3" onClick={() => setModal(true)}><TbDoorExit /> Leave</button>
-                                :   <button className="btn-2" onClick={() => setJoin(true)}>+ Join</button>
+                                :   <button className="btn-2" onClick={() => joinTopic(data.TopicID)}>+ Join</button>
                             }
                         </div>
                         <p className="f-md thai fw-400 mt-4">{data.Description}</p>
@@ -350,7 +374,7 @@ function Topic() {
                     </div>
                     <div className="tu-modal-footer">
                         <div className="cancel-button" onClick={() => setModal(false)}>No, keep me remain.</div>
-                        <div className="accept-button" onClick={() => {setModal(false); setJoin(false)}}>Yes, I want to leave.</div>
+                        <div className="accept-button" onClick={() => {setModal(false); leaveTopic(data.TopicID)}}>Yes, I want to leave.</div>
                     </div>
                 </div>
             </div>
