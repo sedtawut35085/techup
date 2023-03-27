@@ -1,5 +1,17 @@
+import prettyBytes from 'pretty-bytes'
+import { 
+    FaRegFileArchive, 
+    FaRegFileCode, 
+    FaRegFileExcel, 
+    FaRegFileImage, 
+    FaRegFilePdf,
+    FaRegFilePowerpoint,
+    FaRegFileWord,
+    FaRegFile
+} from 'react-icons/fa'
+
 export function formatDate(dateTime) {
-    if (dateTime != null && dateTime != undefined) {
+    if (dateTime !== null && dateTime !== undefined) {
         var date = dateTime.getDate() < 10 ? "0" + dateTime.getDate() : dateTime.getDate()
         var month = (parseInt(dateTime.getMonth()) + 1) < 10 ? "0" + (parseInt(dateTime.getMonth()) + 1) : (parseInt(dateTime.getMonth()) + 1)
         var year = dateTime.getFullYear()
@@ -10,7 +22,7 @@ export function formatDate(dateTime) {
 }
 
 export function convertToDate(dateTime) {
-    if (dateTime != null && dateTime != undefined) {
+    if (dateTime !== null && dateTime !== undefined) {
         var date = (dateTime.split("-"))[0];
         var month = (dateTime.split("-"))[1];
         var year = (dateTime.split("-"))[2];
@@ -32,9 +44,26 @@ export function isNumber(evt) {
 }
 
 export function isEmail(input) {
+    // eslint-disable-next-line
     if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(input))
     {
         return (true)
     }
     return (false)
+}
+
+export function fileSize(fileSize) {
+    return prettyBytes(fileSize, {maximumFractionDigits: 2});
+}
+
+export function fileType(filename) {
+    let array = filename.split('.')
+    let type = array[array.length - 1]
+
+    switch (type) {
+        case 'pdf':
+            return <FaRegFilePdf />
+        default:
+            return <FaRegFile />
+    }
 }

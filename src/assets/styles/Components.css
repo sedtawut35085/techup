@@ -487,6 +487,74 @@
 }
 /* Button 4 */
 
+/* Button 5 */
+.btn-5 {
+    overflow: hidden;
+    height: 36px;
+    padding: 0 .8rem;
+    border-radius: 20px;
+    background-color: #fff;
+    color: #FFA242;
+    box-shadow: 0 0 4px rgba(0, 0, 0, 0.25);
+    font-size: 1.125rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    outline: none;
+    border: none;
+    transition: all 0.2s;
+}
+.btn-5:hover {
+    color: #fff;
+    background-color: #FFA242;
+}
+.btn-5.active {
+    background-color: #FFA242;
+    color: #fff;
+}
+/* Button 5 */
+
+/* Button 6 */
+.btn-6 {
+    overflow: hidden;
+    height: 36px;
+    width: 36px;
+    border-radius: 20px;
+    background-color: #FF333D;
+    color: #fff;
+    box-shadow: 0 0 4px rgba(0, 0, 0, 0.25);
+    font-size: 1.125rem;
+    display: flex;
+    align-items: center;
+    outline: none;
+    border: none;
+    transition: all 0.2s;
+}
+.btn-6:hover {
+    color: #fff;
+    background-color: #d1272f;
+}
+/* Button 6 */
+
+/* Button 7 */
+.btn-7 {
+    height: 36px;
+    padding: 0 .7rem;
+    border-radius: 10px;
+    background-color: #FF333D;
+    color: #fff;
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.25);
+    font-size: 0.875rem;
+    font-weight: 600;
+    outline: none;
+    border: none;
+    transition: all 0.2s;
+}
+.btn-7:hover {
+    background-color: #d1272f;
+}
+/* Button 7 */
+
 /* Modal */
 .tu-modal {
     z-index: 9999;
@@ -507,6 +575,7 @@
 .tu-modal .tu-modal-card {
     position: relative;
     width: 700px;
+    min-height: 280px;
     padding: 2rem;
     background-color: #fff;
     border-radius: 20px;
@@ -559,12 +628,80 @@
     cursor: pointer;
     padding: .5rem 1rem;
     border-radius: 12px;
-    background-color: #FF333D;
+    background-color: #FFA242;
     color: #fff;
     font-weight: 700;
     transition: all .2s;
 }
 .tu-modal .tu-modal-card .tu-modal-footer .accept-button:hover {
-    background-color: #d1272f;
+    background-color: #FF9326;
+}
+
+.tu-modal .tu-modal-card.hint {
+    width: 500px;
+}
+.tu-modal .tu-modal-card.hint .tu-modal-body {
+    position: relative;
+    font-size: 1.125rem;
+    margin: 2rem 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.tu-modal .tu-modal-card.hint .tu-modal-body .count-vote {
+    position: absolute;
+    background-color: #fff;
+    border-radius: 8px 8px 8px 0;
+    height: 28px;
+    padding: 0 .5rem;
+    font-size: .75rem;
+    box-shadow: 0 0 4px rgba(0, 0, 0, 0.25);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    right: 12px;
+    top: 12px;
+}
+.tu-modal .tu-modal-card.hint .tu-modal-body .vote-section {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: .6rem 0;
+}
+.tu-modal .tu-modal-card.hint .tu-modal-body .vote-section .vote {
+    position: relative;
+    cursor: pointer;
+    width: 180px;
+    display: flex;
+    align-items: center;
+    margin: 0 .6rem;
+    font-size: 1rem;
+    font-weight: 700;
+    transition: all .2s;
+}
+.tu-modal .tu-modal-card.hint .tu-modal-body .vote-section .vote.active {
+    color: #FFA242;
+}
+.tu-modal .tu-modal-card.hint .tu-modal-body .vote-section .vote:hover {
+    color: #FFA242;
+}
+.tu-modal .tu-modal-card.hint .tu-modal-body .vote-section .number {
+    width: 32px;
+    height: 32px;
+    border-radius: 12px;
+    box-shadow: 0 0 4px rgba(0, 0, 0, 0.25);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 0.875rem;
+    font-weight: 700;
+}
+.tu-modal .tu-modal-card.hint .tu-modal-body .info {
+    font-size: 0.875rem;
+    margin-top: 1rem;
+    color: #A5A3A2;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 /* Modal */

@@ -7,6 +7,7 @@ import "./assets/styles/Pagination.css"
 import "./assets/styles/Pages.css"
 import "./assets/styles/Homepage.css"
 import "./assets/styles/Topic.css"
+import "./assets/styles/Question.css"
 
 import { BrowserRouter, Route, Routes} from "react-router-dom";
 
