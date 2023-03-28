@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useState } from 'react';
+import React, { ChangeEvent, useState , useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import $ from 'jquery'
 
@@ -12,9 +12,25 @@ import { HiOutlineExclamation } from 'react-icons/hi'
 
 import { IoCloseCircle, IoCaretUp, IoCaretDown } from 'react-icons/io5'
 
+import { getQuestion } from '../../service/question';
+
 import BackgroundIcon from '../../components/background/bgIcons.js';
 
+import Moment from 'moment'
+
 function Question() {
+    const [inFoQuestion, setInFoQuestion] = useState("")
+    let topicID = window.location.href.split("/")[4];
+    let QuestionId = window.location.href.split("/")[6];
+
+    useEffect( () => {
+        getQuestionFromQuestionID(); 
+      }, []);
+
+    async function getQuestionFromQuestionID() {
+        let res = await getQuestion(QuestionId);
+        setInFoQuestion(res[0])
+    }
 
     const isHintShow = false;
     const [guModal, setGuModal] = useState(false);
@@ -27,6 +43,7 @@ function Question() {
         icon: "idea",
         description: "ระบบปฏิบัติการ(Operating System) หรือ โอเอส(OS) คือ ซอฟต์แวร์ที่ทำหน้าที่ควบคุมการทำงานของระบบคอมพิวเตอร์ ให้คอมพิวเตอร์และอุปกรณ์ต่อพ่วงต่าง ๆ ทำงานร่วมกันอย่างมีประสิทธิภาพ ซอฟต์แวร์ระบบที่รู้จักกันดี คือ ระบบปฏิบัติการ(OS-Operating System) เช่น MS-DOS, UNIX, OS/2, Windows, Linux และ Ubuntu เป็นต้น",
     });
+
 
     const [commentDiscuss, setCommentDiscuss] = useState("")
     const [commentSubmission, setCommentSubmission] = useState("")
@@ -157,24 +174,24 @@ function Question() {
     return(
         <div className="question-page">
             <div className="cover-container">
-                <Link className="btn-back" to="/home/os">
+                <Link className="btn-back" to={`/topic/${topicID}`}>
                     <FaChevronLeft />
                 </Link>
                 <div className="body">
                     <div className="top-section">
                         <div className="left-side">
-                            <p className="question-name">Kernel คืออะไร</p>
+                            <p className="question-name">{inFoQuestion.QuestionName}</p>
                             <p className="subject-name">
                                 <div className="icon">
                                     <img width="24px" alt="icon" src={"/assets/images/icons/" + data.icon + ".png"} />
                                 </div>
-                                Operating System -&nbsp;<span className="color-3">Easy</span>
+                                Operating System -&nbsp;<span className="color-3">{inFoQuestion.Difficulty}</span>
                             </p>
                             <p className="due-date">
                                 <div className="icon">
                                     <TbCalendarTime size={24} />
                                 </div>
-                                Due date - 05/12/2022
+                                Due date - {Moment(inFoQuestion.DueDate).format('YYYY-MM-DD')}
                             </p>
                         </div>
                         <div className="right-side">
@@ -255,63 +272,7 @@ function Question() {
                         <div className={`detail-section ${menuActive === 1 ? "description" : menuActive === 2 ? "discuss" : "submission"}`}>
                             <div className={`description ${menuActive === 1 ? "active" : ""}`}>
                                 <p>
-                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Eget aliquet tempus vitae viverra. 
-                                    Dapibus quisque ac dictumst quam sit porttitor nec quis feugiat. Libero egestas amet, hendrerit sagittis lectus venenatis. 
-                                    Vitae dui amet varius ac consectetur urna. Vestibulum vulputate nulla amet ornare nibh at scelerisque. 
-                                    Semper mauris pretium purus a id adipiscing. Mi tortor in ultricies commodo pulvinar facilisis senectus. 
-                                    At vitae imperdiet pretium pharetra. Urna tincidunt id id fermentum auctor maecenas nec.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Eget aliquet tempus vitae viverra. 
-                                    Dapibus quisque ac dictumst quam sit porttitor nec quis feugiat. Libero egestas amet, hendrerit sagittis lectus venenatis. 
-                                    Vitae dui amet varius ac consectetur urna. Vestibulum vulputate nulla amet ornare nibh at scelerisque. 
-                                    Semper mauris pretium purus a id adipiscing. Mi tortor in ultricies commodo pulvinar facilisis senectus. 
-                                    At vitae imperdiet pretium pharetra. Urna tincidunt id id fermentum auctor maecenas nec.
-                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Eget aliquet tempus vitae viverra. 
-                                    Dapibus quisque ac dictumst quam sit porttitor nec quis feugiat. Libero egestas amet, hendrerit sagittis lectus venenatis. 
-                                    Vitae dui amet varius ac consectetur urna. Vestibulum vulputate nulla amet ornare nibh at scelerisque. 
-                                    Semper mauris pretium purus a id adipiscing. Mi tortor in ultricies commodo pulvinar facilisis senectus. 
-                                    At vitae imperdiet pretium pharetra. Urna tincidunt id id fermentum auctor maecenas nec.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Eget aliquet tempus vitae viverra. 
-                                    Dapibus quisque ac dictumst quam sit porttitor nec quis feugiat. Libero egestas amet, hendrerit sagittis lectus venenatis. 
-                                    Vitae dui amet varius ac consectetur urna. Vestibulum vulputate nulla amet ornare nibh at scelerisque. 
-                                    Semper mauris pretium purus a id adipiscing. Mi tortor in ultricies commodo pulvinar facilisis senectus. 
-                                    At vitae imperdiet pretium pharetra. Urna tincidunt id id fermentum auctor maecenas nec.
-                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Eget aliquet tempus vitae viverra.
-                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Eget aliquet tempus vitae viverra. 
-                                    Dapibus quisque ac dictumst quam sit porttitor nec quis feugiat. Libero egestas amet, hendrerit sagittis lectus venenatis. 
-                                    Vitae dui amet varius ac consectetur urna. Vestibulum vulputate nulla amet ornare nibh at scelerisque. 
-                                    Semper mauris pretium purus a id adipiscing. Mi tortor in ultricies commodo pulvinar facilisis senectus. 
-                                    At vitae imperdiet pretium pharetra. Urna tincidunt id id fermentum auctor maecenas nec.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Eget aliquet tempus vitae viverra. 
-                                    Dapibus quisque ac dictumst quam sit porttitor nec quis feugiat. Libero egestas amet, hendrerit sagittis lectus venenatis. 
-                                    Vitae dui amet varius ac consectetur urna. Vestibulum vulputate nulla amet ornare nibh at scelerisque. 
-                                    Semper mauris pretium purus a id adipiscing. Mi tortor in ultricies commodo pulvinar facilisis senectus. 
-                                    At vitae imperdiet pretium pharetra. Urna tincidunt id id fermentum auctor maecenas nec.
-                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Eget aliquet tempus vitae viverra. 
-                                    Dapibus quisque ac dictumst quam sit porttitor nec quis feugiat. Libero egestas amet, hendrerit sagittis lectus venenatis. 
-                                    Vitae dui amet varius ac consectetur urna. Vestibulum vulputate nulla amet ornare nibh at scelerisque. 
-                                    Semper mauris pretium purus a id adipiscing. Mi tortor in ultricies commodo pulvinar facilisis senectus. 
-                                    At vitae imperdiet pretium pharetra. Urna tincidunt id id fermentum auctor maecenas nec.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Eget aliquet tempus vitae viverra. 
-                                    Dapibus quisque ac dictumst quam sit porttitor nec quis feugiat. Libero egestas amet, hendrerit sagittis lectus venenatis. 
-                                    Vitae dui amet varius ac consectetur urna. Vestibulum vulputate nulla amet ornare nibh at scelerisque. 
-                                    Semper mauris pretium purus a id adipiscing. Mi tortor in ultricies commodo pulvinar facilisis senectus. 
-                                    At vitae imperdiet pretium pharetra. Urna tincidunt id id fermentum auctor maecenas nec.
-                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Eget aliquet tempus vitae viverra.
-                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Eget aliquet tempus vitae viverra. 
-                                    Dapibus quisque ac dictumst quam sit porttitor nec quis feugiat. Libero egestas amet, hendrerit sagittis lectus venenatis. 
-                                    Vitae dui amet varius ac consectetur urna. Vestibulum vulputate nulla amet ornare nibh at scelerisque. 
-                                    Semper mauris pretium purus a id adipiscing. Mi tortor in ultricies commodo pulvinar facilisis senectus. 
-                                    At vitae imperdiet pretium pharetra. Urna tincidunt id id fermentum auctor maecenas nec.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Eget aliquet tempus vitae viverra. 
-                                    Dapibus quisque ac dictumst quam sit porttitor nec quis feugiat. Libero egestas amet, hendrerit sagittis lectus venenatis. 
-                                    Vitae dui amet varius ac consectetur urna. Vestibulum vulputate nulla amet ornare nibh at scelerisque. 
-                                    Semper mauris pretium purus a id adipiscing. Mi tortor in ultricies commodo pulvinar facilisis senectus. 
-                                    At vitae imperdiet pretium pharetra. Urna tincidunt id id fermentum auctor maecenas nec.
-                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Eget aliquet tempus vitae viverra. 
-                                    Dapibus quisque ac dictumst quam sit porttitor nec quis feugiat. Libero egestas amet, hendrerit sagittis lectus venenatis. 
-                                    Vitae dui amet varius ac consectetur urna. Vestibulum vulputate nulla amet ornare nibh at scelerisque. 
-                                    Semper mauris pretium purus a id adipiscing. Mi tortor in ultricies commodo pulvinar facilisis senectus. 
-                                    At vitae imperdiet pretium pharetra. Urna tincidunt id id fermentum auctor maecenas nec.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Eget aliquet tempus vitae viverra. 
-                                    Dapibus quisque ac dictumst quam sit porttitor nec quis feugiat. Libero egestas amet, hendrerit sagittis lectus venenatis. 
-                                    Vitae dui amet varius ac consectetur urna. Vestibulum vulputate nulla amet ornare nibh at scelerisque. 
-                                    Semper mauris pretium purus a id adipiscing. Mi tortor in ultricies commodo pulvinar facilisis senectus. 
-                                    At vitae imperdiet pretium pharetra. Urna tincidunt id id fermentum auctor maecenas nec.
-                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Eget aliquet tempus vitae viverra.
+                                    {inFoQuestion.Description}
                                 </p>
                             </div>
                             <div className={`discuss ${menuActive === 2 ? "active" : ""}`}>
