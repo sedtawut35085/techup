@@ -30,12 +30,12 @@ function Topic() {
     let todayDatetime = new Date(todayDate);
     let duedatetime;
 
-    async function loadQuestionForEachTopic() {
-        const res = await getQuestionForEachTopic(data.TopicID,pageStart,pageSize);
+    async function loadQuestionForEachTopic(pageStart,value) {
+        const res = await getQuestionForEachTopic(data.TopicID,pageStart,value);
         setAllQuestion(res); 
     }
 
-    async function loadCountofQuestionForEachTopic() {
+    async function loadCountofQuestionForEachTopic(pageSize) {
         const res = await getCountOfQuestionForEachTopic(data.TopicID);
         const Pagenumberlist = []
         pageNumber = Math.ceil(res[0]["count(*)"] / pageSize);
@@ -55,7 +55,6 @@ function Topic() {
         addJoinTopic(topicID);
     }
 
-
     async function getJoinedList() {
         const res = await getJoin();
         const found = res.some(joined => joined.TopicID === (data.TopicID))
@@ -67,20 +66,13 @@ function Topic() {
         }
     }
 
-    async function changepage(event) {
-        event.preventDefault();
-        setCurrentpage(event.target.value)
-        pageStart = pageSize*(event.target.value - 1)
-        await loadQuestionForEachTopic()
-    }
-
     const [allQuestion, setAllQuestion] = useState([])
     const [joinedList, setJoinedList] = useState([])
     useEffect(() => {
         // loadQuestionForEachTopic();
         getJoinedList();
-        loadCountofQuestionForEachTopic();
-        loadQuestionForEachTopic();
+        loadCountofQuestionForEachTopic(pageSize);
+        loadQuestionForEachTopic(pageStart,pageSize);
     }, []);
 
     const listQuestions = allQuestion.map((question, i) => 
@@ -143,6 +135,13 @@ function Topic() {
 
     const [search, setSearch] = useState("")
 
+    async function changepage(event) {
+        let temp = event.target.value
+        setCurrentpage(Number(temp))
+        pageStart = pageSize*(event.target.value - 1)
+        await loadQuestionForEachTopic(pageStart,pageSize)
+    }
+
     async function gotofirstpage(event) {
         setCurrentpage(1)
         pageStart = pageSize*(1 - 1)
@@ -167,7 +166,14 @@ function Topic() {
         pageStart = pageSize*(currentpage)
         await loadQuestionForEachTopic(pageStart,pageSize)
     }
-    
+
+    async function changepagesize(pageSize) {
+        setPageSize(Number(pageSize))
+        setCurrentpage(1)
+        pageStart = pageSize*(1 - 1)
+        await loadCountofQuestionForEachTopic(Number(pageSize))
+        await loadQuestionForEachTopic(pageStart,Number(pageSize))
+    }
 
     return (
         <div className="topic-page">
@@ -401,12 +407,12 @@ function Topic() {
                         </div>
                         <div className="pagination1">
                             <div className="display-per-page">
-                                {/* <span>Display per page</span>
-                                <select className="page">
+                                <span>Display per page</span>
+                                <select onChange={(event) => {changepagesize(event.target.value)}} className="page">
                                     <option default>5</option>
                                     <option>10</option>
                                     <option>25</option>
-                                </select> */}
+                                </select>
                             </div>
                             <div className="pagination-number">
                             <button onClick={gotofirstpage} className={

@@ -3,7 +3,7 @@ import $ from 'jquery'
 
 import { FaChevronDown, FaTimes } from 'react-icons/fa';
 
-const SelectPicker2 = ({id, className, data, defaultValue, setValue, placeholder}) => {
+const SelectPicker2 = ({id, className, data, defaultValue, setValue, placeholder, changefilter}) => {
 
     const [isShow, setIsShow] = useState(false);
     const [width, setWidth] = useState("");
@@ -14,10 +14,19 @@ const SelectPicker2 = ({id, className, data, defaultValue, setValue, placeholder
         setIsShow(!isShow);
     }
 
-    function selectOption(option) {
+    async function selectOption(option) {
         setIsShow(false)
         setSelected(option)
         setValue(option)
+        console.log("data.title ",option.title)
+        console.log("data.label ",option.label)
+        if(option.title === "Difficulty"){
+            changefilter(option.title,option.label)
+        }else if(option.title === "Date"){
+            console.log("date")
+        }
+      
+        
     }
 
     function clearOption() {

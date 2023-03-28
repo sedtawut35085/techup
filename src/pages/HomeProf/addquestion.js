@@ -2,13 +2,15 @@ import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import BackgroundIcon from '../../components/background/bgIcons.js';
 import { FaChevronLeft } from 'react-icons/fa';
+import TuDatePicker from '../../components/picker_date/datePicker.js'
 // import { Select, Option } from "@material-tailwind/react";
-import SelectPickerIcon from '../../components/picker_select_icon/selectPickerIcon.js';
 import SelectPicker from '../../components/picker_select/selectPicker.js';
 import { RiVipCrown2Fill } from 'react-icons/ri'
 import { getProfessor } from '../../service/professor.js';
+import { saveQuestionForEachTopic } from '../../service/question.js';
 import { saveTopic } from '../../service/topic.js';
 import { useNavigate } from 'react-router-dom'
+import Moment from 'moment';
 
 function AddQuestion() {
 
@@ -26,65 +28,62 @@ function AddQuestion() {
         setInFoProfessor(res[0]);
     }
 
-    const [name,setName] = useState("")
-    const [icon,setIcon] = useState({label: "analysis", data: "analysis"})
-    const [types,setTypes] = useState({label: "Computer Science", data: "Computer Science"})
-    const [shortName,setShortName] = useState("")
-    const [description,setDescription] = useState("")
+    const datatopic = data.TopicID
+    const datashortname = data.ShortName
     const navigate = useNavigate()
+    const [name,setName] = useState("")
+    const [description,setDescription] = useState("")
+    const [point,setPoint] = useState("")
+    const [dificulty,setDificulty] = useState({label: "", data: ""})
+    const [duedate,setDueDate] = useState("")
+    const [hint,setHint] = useState("")
     const [errorsSubmit, setErrorsSubmit] = useState(false)
     const [errors, setErrors] = useState([])
 
-    const iconAll = [
-        {label: "analysis", data: "analysis", img: "analysis"},
-        {label: "coins", data: "coins", img: "coins"},
-        {label: "connections", data: "connections", img: "connections"},
-        {label: "idea", data: "idea", img: "idea"},
-        {label: "handshake", data: "handshake", img: "handshake"},
-        {label: "rocket", data: "rocket", img: "rocket"},
-        {label: "target", data: "target", img: "target"}
-    ]
-
-    const typeAll = [
-        {label: "Computer Science", data: "Computer Science", img: "logo"},
-        {label: "Data Science", data: "Data Science", img: "logo"},
-        {label: "Digital Business", data: "Digital Business", img: "logo"}
+    const dificultyAll = [
+        {label: "Easy", data: "Easy"},
+        {label: "Normal", data: "Normal"},
+        {label: "Hard", data: "Hard"}
     ]
 
     async function handleSubmit(event) {
+        event.preventDefault();
         setErrors([]);
         const arrayError = [];
         if(name == ""){
             arrayError.push('name');
         }
-        if(shortName === ""){
-            arrayError.push('shortName');
-        }
         if(description === ""){
             arrayError.push('description');
         }
-        if(types == ""){
-            arrayError.push('type');
+        if(dificulty.label === ""){
+            arrayError.push('dificulty');
         }
-        if(icon.label == ""){
-            arrayError.push('icon');
+        if(point === ""){
+            arrayError.push('point');
+        }
+        if(duedate === ""){
+            arrayError.push('duedate');
+        }
+        if(hint === ""){
+            arrayError.push('hint');
         }
         if(arrayError.length === 0) {
             event.preventDefault();
-            var data = {
-                "TopicName": name,
-                "ShortName": shortName,
+            var bodydata = {
+                "TopicID": datatopic,
+                "QuestionName": name,
                 "Description": description,  
-                "Type": types.label,    
-                "Owner": inFoProfessor.ProfessorEmail,   
-                "Icon": icon.label
+                "Dificulty": dificulty.data,    
+                "Point": point,
+                "DueDate": Moment(duedate).format('YYYY-MM-DD'),
+                "Hint": hint
             }
-            console.log(data)
-            await saveTopic(data).then(navigate('/professor')).catch(setErrorsSubmit(true))
-           
+            console.log(bodydata)
+            console.log(dificulty)
+            await saveQuestionForEachTopic(bodydata).then(navigate(`/professor/${data.ShortName}`, {state: data})).catch()
         }
-        setErrors(arrayError);
-        event.preventDefault();
+        // setErrors(arrayError);
     } 
 
     return (
@@ -103,23 +102,10 @@ function AddQuestion() {
                                 name="name-id" 
                                 id="name-id" 
                                 className="input-box"
-                                placeholder="Machine learning, Operating System, etc."
+                                placeholder="What is operating system ?"
                                 onChange={(event) => setName(event.target.value)}
                             />
-                            {errors.includes("name") && (<label className="f-xs color-5 pt-2" htmlFor="student-id">Please enter a name topic</label>)}
-                        </div>
-                        <div className="col-12 pb-4">
-                            <label className="f-lg pb-2" htmlFor="student-id">Short Name<span className="color-5">*</span></label>
-                            <input
-                                type="text" 
-                                name="shortname-id" 
-                                id="shortname-id" 
-                                className="input-box"
-                                placeholder="ML, OS, etc."
-                                maxLength="15"
-                                onChange={(event) => setShortName(event.target.value)}
-                            />
-                            {errors.includes("shortName") && (<label className="f-xs color-5 pt-2" htmlFor="student-id">Please enter a shortname topic</label>)}
+                            {errors.includes("name") && (<label className="f-xs color-5 pt-2" htmlFor="name-id">Please enter a name topic</label>)}
                         </div> 
                         <div className="col-12 pb-4">
                             <label className="f-lg pb-2" htmlFor="description-id">Description<span className="color-5">*</span></label>
@@ -131,31 +117,56 @@ function AddQuestion() {
                                 placeholder="Detail about topic..."
                                 onChange={(event) => setDescription(event.target.value)}
                             />
-                            {errors.includes("description") && (<label className="f-xs color-5 pt-2" htmlFor="student-id">Please enter a description of topic</label>)}
+                            {errors.includes("description") && (<label className="f-xs color-5 pt-2" htmlFor="description-id">Please enter a description of topic</label>)}
                         </div>
-                        <label className="f-lg pb-2" htmlFor="type-id">Type<span className="color-5">*</span></label>
-                        <div className="col-12 pb-4">
-                        <SelectPickerIcon
-                                name="type" 
-                                id="type" 
+                        <label className="f-lg pb-2" htmlFor="dificulty-id">Difficulty<span className="color-5">*</span></label>
+                        <div className="col-6 pb-4 ">
+                            <SelectPicker
+                                name="dificulty" 
+                                id="dificulty" 
                                 placeholder="-"
-                                data={typeAll}
-                                defaultValue={types}
-                                setValue={setTypes}
+                                data={dificultyAll}
+                                defaultValue={dificulty}
+                                setValue={setDificulty}
                             />
+                            {errors.includes("dificulty") && (<label className="f-xs color-5 pt-2" htmlFor="dificulty-id">Please enter dificulty</label>)}
                         </div>
-                        <label className="f-lg pb-2" htmlFor="icon-id">Icon<span className="color-5">*</span></label>
-                        <div className="col-12 pb-4">
-                            <SelectPickerIcon
-                                name="icon" 
-                                id="icon" 
-                                placeholder="-"
-                                data={iconAll}
-                                defaultValue={icon}
-                                setValue={setIcon}
+                        <div className="col-6 pb-4">
+                            <label className="f-lg pb-2" htmlFor="point-id">Point<span className="color-5">*</span></label>
+                            <input
+                                type="int" 
+                                name="point-id" 
+                                id="point-id" 
+                                className="input-box"
+                                placeholder="10, 20, 30, etc."
+                                onChange={(event) => setPoint(event.target.value)}
                             />
+                            {errors.includes("point") && (<label className="f-xs color-5 pt-2" htmlFor="point-id">Please enter point</label>)}
                         </div>
-                        <label className="f-lg pt-4" htmlFor="preview-id">Preview<span className="color-5"></span></label>   
+                        <label className="f-lg pb-2" htmlFor="duedate-id">Due Date<span className="color-5">*</span></label>
+                        <div className="col-6 pb-4 ">
+                            <TuDatePicker
+                                name="duedate"
+                                id="duedate"
+                                defaultValue={duedate}
+                                setValue={setDueDate}
+                                min={new Date()}
+                            />
+                            {errors.includes("duedate") && (<label className="f-xs color-5 pt-2" htmlFor="duedate-id">Please enter duedate</label>)}
+                        </div>
+                        <div className="col-6 pb-4">
+                            <label className="f-lg pb-2" htmlFor="hint-id">Hint<span className="color-5">*</span></label>
+                            <input
+                                type="text" 
+                                name="hint-id" 
+                                id="hint-id" 
+                                className="input-box"
+                                placeholder="Some hint?"
+                                onChange={(event) => setHint(event.target.value)}
+                            />
+                            {errors.includes("hint") && (<label className="f-xs color-5 pt-2" htmlFor="hint-id">Please enter hint</label>)}
+                        </div>
+                        {/* <label className="f-lg pt-4" htmlFor="preview-id">Preview<span className="color-5"></span></label>   
                         <div className='topic-section'>
                             <div className="topic-box col-3">
                                 <div 
@@ -189,11 +200,13 @@ function AddQuestion() {
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </div> */}
                     </div>
                     <div className="mt-2 mb-5 divider"></div>
                     <div className="col-12 d-flex jc-center">
-                        <a href='/professor' className="btn-02">Cancel</a>
+                        <Link className='btn-02' to={`/professor/${data.ShortName}`} state={data}>
+                            <span>Cancel</span>
+                        </Link>
                         <button type="submit" className="btn-01">Submit</button>
                     </div>
                     {errorsSubmit === false?

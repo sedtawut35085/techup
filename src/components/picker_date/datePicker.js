@@ -6,7 +6,7 @@ import { formatDate, convertToDate } from '../../assets/js/helper'
 import { FaChevronDown, FaTimes } from 'react-icons/fa';
 import { FiCalendar } from 'react-icons/fi'
 
-const TuDatePicker = ({id, defaultValue, setValue, max}) => {
+const TuDatePicker = ({id, defaultValue, setValue, max, min}) => {
 
     const [isShow, setIsShow] = useState(false);
     const [width, setWidth] = useState("");
@@ -55,7 +55,7 @@ const TuDatePicker = ({id, defaultValue, setValue, max}) => {
                 </div>
             </div>
             <div className={"tu-datepicker-calendar " + (isShow ? "showed" : "")} style={{marginLeft: width - 220}}>
-                <DatePicker onChange={onChangeDate} value={date} maxDate={max} />
+                <DatePicker onChange={onChangeDate} value={date} maxDate={max} minDate={min} />
             </div>
         </div>
         // <div>

@@ -28,14 +28,11 @@ function TopicProf() {
     let duedatetime;
 
     async function loadQuestionForEachTopic(pageStart,value) {
-        console.log("pageStart " + pageStart)
-        console.log("pageSize " + value)
         const res = await getQuestionForEachTopic(data.TopicID,pageStart,value);
         setAllQuestion(res); 
     }
 
     async function loadCountofQuestionForEachTopic(pageSize) {
-        console.log("pageSize " + pageSize)
         const res = await getCountOfQuestionForEachTopic(data.TopicID);
         const Pagenumberlist = []
         pageNumber = Math.ceil(res[0]["count(*)"] / pageSize);
@@ -56,15 +53,15 @@ function TopicProf() {
     const contact = JSON.parse(data.Contact)
 
     const statusAll = [
-        {label: "Ontime", data: "ontime"},
-        {label: "Outtime", data: "outtime"},
+        {label: "Ontime", data: "ontime", title: "Date"},
+        {label: "Outtime", data: "outtime", title: "Date"},
     ]
     const [status, setStatus] = useState({label: "", data: ""})
 
     const difficultyAll = [
-        {label: "Easy", data: "Easy"},
-        {label: "Normal", data: "Normal"},
-        {label: "Hard", data: "Hard"}
+        {label: "Easy", data: "Easy", title: "Difficulty"},
+        {label: "Normal", data: "Normal", title: "Difficulty"},
+        {label: "Hard", data: "Hard", title: "Difficulty"}
     ]
     const [difficulty, setDifficulty] = useState({label: "", data: ""})
 
@@ -93,7 +90,7 @@ function TopicProf() {
 
     async function changepage(event) {
         let temp = event.target.value
-        setCurrentpage(temp)
+        setCurrentpage(Number(temp))
         pageStart = pageSize*(event.target.value - 1)
         await loadQuestionForEachTopic(pageStart,pageSize)
     }
@@ -121,6 +118,22 @@ function TopicProf() {
         setCurrentpage(currentpage+1)
         pageStart = pageSize*(currentpage)
         await loadQuestionForEachTopic(pageStart,pageSize)
+    }
+
+    async function changepagesize(pageSize) {
+        setPageSize(Number(pageSize))
+        setCurrentpage(1)
+        pageStart = pageSize*(1 - 1)
+        await loadCountofQuestionForEachTopic(Number(pageSize))
+        await loadQuestionForEachTopic(pageStart,Number(pageSize))
+    }
+
+    async function changefilter() {
+        console.log('ddd')
+        // setCurrentpage(1)
+        // pageStart = pageSize*(1 - 1)
+        // await loadCountofQuestionForEachTopic(Number(pageSize))
+        // await loadQuestionForEachTopic(pageStart,Number(pageSize))
     }
     
     return (
@@ -252,12 +265,14 @@ function TopicProf() {
                                 id='status'
                                 placeholder="Status"
                                 data={statusAll}
+                                changefilter={changefilter}
                                 defaultValue={status}
                                 setValue={setStatus}
                                 />
                                 <SelectPicker2
                                 id='difficulty'
                                 placeholder="Difficulty"
+                                changefilter={changefilter}
                                 data={difficultyAll}
                                 defaultValue={difficulty}
                                 setValue={setDifficulty}
@@ -311,12 +326,12 @@ function TopicProf() {
                         </div>
                         <div className="pagination1">
                             <div className="display-per-page">
-                                {/* <span>Display per page</span>
+                                <span>Display per page</span>
                                 <select onChange={(event) => {changepagesize(event.target.value)}} className="page">
                                     <option default>5</option>
-                                    <option>3</option>
                                     <option>10</option>
-                                </select> */}
+                                    <option>25</option>
+                                </select>
                             </div>
                             <div className="pagination-number">
                                 <button onClick={gotofirstpage} className={
