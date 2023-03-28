@@ -9,6 +9,8 @@ import {
     FaRegFileWord,
     FaRegFile
 } from 'react-icons/fa'
+import JsZip from 'jszip';
+import { saveAs } from 'file-saver';
 
 export function formatDate(dateTime) {
     if (dateTime !== null && dateTime !== undefined) {
@@ -63,7 +65,73 @@ export function fileType(filename) {
     switch (type) {
         case 'pdf':
             return <FaRegFilePdf />
+        case 'png':
+            return <FaRegFileImage />
+        case 'jpg':
+            return <FaRegFileImage />
+        case 'jpeg':
+            return <FaRegFileImage />
+        case 'gif':
+            return <FaRegFileImage />
+        case 'docx':
+            return <FaRegFileWord />
+        case 'doc':
+            return <FaRegFileWord />
+        case 'pptx':
+            return <FaRegFilePowerpoint />
+        case 'ppt':
+            return <FaRegFilePowerpoint />
+        case 'xlsx':
+            return <FaRegFileExcel />
+        case 'xls':
+            return <FaRegFileExcel />
+        case 'zip':
+            return <FaRegFileArchive />
+        case 'ZIP':
+            return <FaRegFileArchive />
+        case 'js':
+            return <FaRegFileCode />
+        case 'html':
+            return <FaRegFileCode />
+        case 'c':
+            return <FaRegFileCode />
+        case 'cpp':
+            return <FaRegFileCode />
+        case 'css':
+            return <FaRegFileCode />
+        case 'java':
+            return <FaRegFileCode />
         default:
             return <FaRegFile />
     }
+}
+
+export function download(url, name) {
+    const a = document.createElement('a')
+    a.href = url
+    a.download = name
+    document.body.appendChild(a)
+    a.click()
+    document.body.removeChild(a)
+}
+
+export function downloadAll(files, filename) {
+    var zip = new JsZip();
+    let count = 0;
+    files.map((e) => {
+      const blob = e.src;
+      zip.file(e.name, blob, {
+        binary: true
+      });
+      ++count;
+      if (count == files.length) {
+        zip
+          .generateAsync({
+            type: "blob"
+          })
+          .then(function (content) {
+            saveAs(content, filename + ".zip");
+          });
+      }
+    });
 }

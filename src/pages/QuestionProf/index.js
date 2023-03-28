@@ -1,14 +1,14 @@
 import React, { ChangeEvent, useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import $ from 'jquery'
+import Moment from 'moment';
 
 import { fileSize, fileType } from '../../assets/js/helper'
-import Moment from 'moment';
-import { FaChevronLeft } from 'react-icons/fa';
-import { TbCalendarTime, TbBulb, TbSwords, TbLock, TbInfoCircle, TbFileDescription, TbMessage2, TbFileUpload, TbMessageCircle, TbPaperclip, TbTrash } from 'react-icons/tb'
-import { GiFlyingFlag } from 'react-icons/gi'
-import { BsReplyAll } from 'react-icons/bs'
 import { getQuestion } from '../../service/question';
+
+import { FaChevronLeft, FaSort } from 'react-icons/fa';
+import { TbCalendarTime, TbBulb, TbLock, TbInfoCircle, TbFileDescription, TbMessage2, TbFileUpload, TbMessageCircle, } from 'react-icons/tb'
+import { BsReplyAll } from 'react-icons/bs'
 import { HiOutlineExclamation } from 'react-icons/hi'
 import { FiSearch, FiChevronLeft, FiChevronRight, FiChevronsLeft, FiChevronsRight } from 'react-icons/fi'
 import { IoCloseCircle, IoCaretUp, IoCaretDown } from 'react-icons/io5'
@@ -168,19 +168,7 @@ function QuestionProf() {
                                     }}
                                 >
                                     <TbBulb size={22} className="me-1" />Hint
-                                </button>
-                                <button 
-                                    className="btn-6" 
-                                    onClick={() => setGuModal(true)}
-                                    style={
-                                        challenge 
-                                        ? {opacity: 1, visibility: "visible", width: "unset"} 
-                                        : {opacity: 0, visibility: "hidden", width: 0, padding: 0, margin: 0}
-                                    }
-                                >
-                                    <GiFlyingFlag size={22} />
-                                </button>
-                               
+                                </button>                               
                             </div>
                             <div className="point">100 P</div>
                         </div>
@@ -308,7 +296,61 @@ function QuestionProf() {
                                 }
                             </div>
                             <div className={`submission ${menuActive === 3 ? "active" : ""}`}>
-                            <div className="submit-table">
+                                <div className="submission-table">
+                                    <table className="table">
+                                        <thead>
+                                            <tr>
+                                                <th className="status">Status <FaSort /></th>
+                                                <th className="name">Name <FaSort /></th>
+                                                <th className="date">Date submission <FaSort /></th>
+                                                <th className="action text-center">Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td className="status color-1">Unchecked</td>
+                                                <td className="name">Sedtawut Chalothornnarumit</td>
+                                                <td className="date">05-12-2022, 00:00</td>
+                                                <td className="action">
+                                                    <Link className="btn-view-detail" to="submission/1">View Detail</Link>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td className="status color-1">Unchecked</td>
+                                                <td className="name">Wattanasiri Uparakkitanon</td>
+                                                <td className="date">05-12-2022, 00:00</td>
+                                                <td className="action">
+                                                    <Link className="btn-view-detail" to="submission/1">View Detail</Link>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td className="status color-1">Unchecked</td>
+                                                <td className="name">Phongrawit Phiphatbawornchat</td>
+                                                <td className="date">05-12-2022, 00:00</td>
+                                                <td className="action">
+                                                    <Link className="btn-view-detail" to="submission/1">View Detail</Link>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td className="status color-3">Checked</td>
+                                                <td className="name">Nattapat Sittichai</td>
+                                                <td className="date">05-12-2022, 00:00</td>
+                                                <td className="action">
+                                                    <Link className="btn-view-detail" to="submission/1">View Detail</Link>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td className="status color-3">Checked</td>
+                                                <td className="name">Pisit Jaiton</td>
+                                                <td className="date">05-12-2022, 00:00</td>
+                                                <td className="action">
+                                                    <Link className="btn-view-detail" to="submission/1">View Detail</Link>
+                                                </td>
+                                            </tr>                                                                                        
+                                        </tbody>
+                                    </table>                                                      
+                                </div>
+                                {/* <div className="submit-table">
                                     <table className="table">
                                         <thead>
                                             <tr>
@@ -359,54 +401,38 @@ function QuestionProf() {
                                             </tr>
                                         </tbody>
                                     </table>                                                     
+                                </div>                                 */}
+                            </div>                            
+                        </div>                       
+                    </div>
+                    {
+                        menuActive === 3
+                        ?   <div className="pagination1">                                    
+                                <div className="pagination-number">
+                                    <span className="arrow disable"><FiChevronsLeft /></span>
+                                    <span className="arrow disable"><FiChevronLeft /></span>
+                                    <span className="number active">1</span>
+                                    <span className="number">2</span>
+                                    <span className="number">3</span>
+                                    <span className="number">4</span>
+                                    <span className="number">5</span>
+                                    <span className="arrow"><FiChevronRight /></span>
+                                    <span className="arrow"><FiChevronsRight /></span>
                                 </div>
-                                <div className="pagination1">
-                            <div className="display-per-page">
-                                <span>Display per page</span>
-                                <select className="page">
-                                    <option default>5</option>
-                                    <option>10</option>
-                                    <option>25</option>
-                                </select>
+                                <div className="display-per-page">
+                                    <span>Display per page</span>
+                                    <select className="page">
+                                        <option default>5</option>
+                                        <option>10</option>
+                                        <option>25</option>
+                                    </select>
+                                    <span>Showing 1-5 of 25</span>
+                                </div>
                             </div>
-                            <div className="pagination-number">
-                                <span className="arrow disable"><FiChevronsLeft /></span>
-                                <span className="arrow disable"><FiChevronLeft /></span>
-                                <span className="number active">1</span>
-                                <span className="number">2</span>
-                                <span className="number">3</span>
-                                <span className="number">4</span>
-                                <span className="number">5</span>
-                                <span className="arrow"><FiChevronRight /></span>
-                                <span className="arrow"><FiChevronsRight /></span>
-                            </div>
-                        </div>
-                            </div>
-                        </div>
-                       
-                    </div>
+                        : null
+                    }                    
                 </div>
-            </div>
-
-            {/* Give up Modal */}
-            <div className="tu-modal" style={guModal ? {opacity: "1", visibility: "visible"} : {}}>
-                <div className="tu-modal-card">
-                    <IoCloseCircle className="close-button" onClick={() => setGuModal(false)} />
-                    <div className="tu-modal-head">
-                        <GiFlyingFlag className="icon" />
-                        <span>
-                            Are you sure you want to give up ?
-                        </span>
-                    </div>
-                    <div className="tu-modal-body">
-                        <p>If you give up this question, submission that you have submitted before will disappear. And you’ll not earn points that you should have received.</p>
-                    </div>
-                    <div className="tu-modal-footer">
-                        <div className="cancel-button" onClick={() => setGuModal(false)}>No, keep me challenging.</div>
-                        <div className="accept-button" onClick={() => {setGuModal(false); setChallenge(false)}}>Yes, I want to give up.</div>
-                    </div>
-                </div>
-            </div>
+            </div>            
 
             {/* Hint show Modal */}
             <div className="tu-modal" style={hintModal ? {opacity: "1", visibility: "visible"} : {}}>
