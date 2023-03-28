@@ -28,6 +28,7 @@ import AddQuestion from "./pages/HomeProf/addquestion"
 import Topic from "./pages/Topic/index.js"
 import Question from "./pages/Question/index.js"
 import QuestionProf from "./pages/QuestionProf"
+import SubmissionProf from "./pages/QuestionProf/submission.js"
 import TopicProf from "./pages/TopicProf/index.js"
 import SubmitProf from "./pages/Submit"
 
@@ -53,6 +54,7 @@ function App() {
             <Route path="/submit" element={<AuthProvider><SubmitProf /></AuthProvider>}/>
             <Route path="/professor/:topic" element={<AuthProvider><TopicProf /></AuthProvider>}/>
             <Route path="/professor/:topic/question/:question" element={<QuestionProf />}/>
+            <Route path="/professor/:topic/question/:question/submission/:submission" element={<SubmissionProf />}/>
             <Route path="/home" element={<AuthProvider><Homepage /></AuthProvider>}/>
             <Route path="/topic/:topic" element={<Topic />}/>
             <Route path="/topic/:topic/question/:question" element={<Question />}/>

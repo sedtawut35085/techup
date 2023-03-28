@@ -117,40 +117,6 @@ function QuestionProf() {
         setFileList(fileList.filter(fileList => fileList !== file))
     }
 
-    const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
-        let array = [...fileList]
-        for(let i=0; i<e.target.files.length; i++){
-            if(fileList.indexOf(e.target.files[i]) < 0) {
-                array.push(e.target.files[i]);
-            }
-        }
-        console.log(e.target.files)
-        console.log(array)
-    };
-
-    const handleUploadClick = () => {
-        if (!fileList) {
-            return;
-        }
-    
-        // 👇 Create new FormData object and append files
-        const data = new FormData();
-        files.forEach((file, i) => {
-            data.append(`file-${i}`, file, file.name);
-        });
-    
-        // 👇 Uploading the files using the fetch API to the server
-        fetch('https://httpbin.org/post', {
-            method: 'POST',
-            body: data,
-        })
-        .then((res) => res.json())
-        .then((data) => console.log(data))
-        .catch((err) => console.error(err));
-    };
-
-    const files = fileList ? [...fileList] : [];
-
     function autosize(){
         var text = $('.autosize');
     
