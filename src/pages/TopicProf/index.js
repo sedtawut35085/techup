@@ -17,24 +17,25 @@ import BackgroundIcon from '../../components/background/bgIcons.js';
 
 function TopicProf() {
     const location = useLocation();
-    const [modal, setModal] = useState(false)
 
     const data = location.state;
     const [currentpage,setCurrentpage] = useState(1);
-    const [lastQuestionID,setLastQuestionID] = useState(0);
+    const [pageSize,setPageSize] = useState(5);
     let pageStart = 0;
-    let pageSize = 5;
     let pageNumber
     let todayDate = new Date().toISOString().slice(0, 10);
     let todayDatetime = new Date(todayDate);
     let duedatetime;
 
-    async function loadQuestionForEachTopic() {
-        const res = await getQuestionForEachTopic(data.TopicID,pageStart,pageSize);
+    async function loadQuestionForEachTopic(pageStart,value) {
+        console.log("pageStart " + pageStart)
+        console.log("pageSize " + value)
+        const res = await getQuestionForEachTopic(data.TopicID,pageStart,value);
         setAllQuestion(res); 
     }
 
-    async function loadCountofQuestionForEachTopic() {
+    async function loadCountofQuestionForEachTopic(pageSize) {
+        console.log("pageSize " + pageSize)
         const res = await getCountOfQuestionForEachTopic(data.TopicID);
         const Pagenumberlist = []
         pageNumber = Math.ceil(res[0]["count(*)"] / pageSize);
@@ -48,8 +49,8 @@ function TopicProf() {
     const [numberPage, setNumberPage] = useState([])
 
     useEffect(() => {
-        loadCountofQuestionForEachTopic();
-        loadQuestionForEachTopic();
+        loadCountofQuestionForEachTopic(pageSize);
+        loadQuestionForEachTopic(pageStart,pageSize);
     }, []);
 
     const contact = JSON.parse(data.Contact)
@@ -91,10 +92,35 @@ function TopicProf() {
     )
 
     async function changepage(event) {
+        let temp = event.target.value
+        setCurrentpage(temp)
+        pageStart = pageSize*(event.target.value - 1)
+        await loadQuestionForEachTopic(pageStart,pageSize)
+    }
+
+    async function gotofirstpage(event) {
+        setCurrentpage(1)
+        pageStart = pageSize*(1 - 1)
+        await loadQuestionForEachTopic(pageStart,pageSize)
+    }
+
+    async function gotolastpage(event) {
+        setCurrentpage(numberPage.length)
+        pageStart = pageSize*(numberPage.length - 1)
+        await loadQuestionForEachTopic(pageStart,pageSize)
+    }
+
+    async function gotobackpage(event) {
         event.preventDefault();
-        setCurrentpage(event.target.value)
-        pageStart = 5*(event.target.value - 1)
-        await loadQuestionForEachTopic()
+        setCurrentpage(currentpage-1)
+        pageStart = pageSize*(currentpage - 2)
+        await loadQuestionForEachTopic(pageStart,pageSize)
+    }
+
+    async function gotonextpage(event) {
+        setCurrentpage(currentpage+1)
+        pageStart = pageSize*(currentpage)
+        await loadQuestionForEachTopic(pageStart,pageSize)
     }
     
     return (
@@ -286,15 +312,23 @@ function TopicProf() {
                         <div className="pagination1">
                             <div className="display-per-page">
                                 {/* <span>Display per page</span>
-                                <select className="page">
-                                    <option default>1</option>
+                                <select onChange={(event) => {changepagesize(event.target.value)}} className="page">
+                                    <option default>5</option>
+                                    <option>3</option>
                                     <option>10</option>
-                                    <option>25</option>
                                 </select> */}
                             </div>
                             <div className="pagination-number">
-                                <span className="arrow disable"><FiChevronsLeft /></span>
-                                <span className="arrow disable"><FiChevronLeft /></span>
+                                <button onClick={gotofirstpage} className={
+                                    currentpage !== 1 
+                                    ? "arrow"
+                                    : "arrow disable"
+                                    }><FiChevronsLeft /></button>
+                                <button onClick={gotobackpage} className={
+                                    currentpage !== 1 
+                                    ? "arrow"
+                                    : "arrow disable"
+                                    }><FiChevronLeft /></button>
                                 {numberPage.map((key, i) => (
                                     <button key={i} name={key} value={key} className={
                                         currentpage === key
@@ -308,8 +342,16 @@ function TopicProf() {
                                 <span className="number">4</span>
                                 <span className="number">5</span>
                                  */}
-                                <span className="arrow"><FiChevronRight /></span>
-                                <span className="arrow"><FiChevronsRight /></span>
+                                 <button onClick={gotonextpage} className={
+                                    currentpage < numberPage.length
+                                    ? "arrow"
+                                    : "arrow disable"
+                                    }><FiChevronRight /></button>
+                                <button onClick={gotolastpage} className={
+                                    currentpage < numberPage.length
+                                    ? "arrow"
+                                    : "arrow disable"
+                                    }><FiChevronsRight /></button>
                             </div>
                         </div>  
                     </div>

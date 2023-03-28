@@ -7,10 +7,9 @@ import { HiOutlineChartBar } from 'react-icons/hi'
 import { TbDoorExit, TbArrowsShuffle, TbClock, TbClockOff, TbSwords } from 'react-icons/tb'
 import { BiMessageSquareDetail } from 'react-icons/bi'
 import { RiVipCrown2Fill, RiInstagramFill, RiFacebookCircleFill, RiGithubFill, RiGlobalFill , RiLineFill } from 'react-icons/ri'
-import { getQuestionForEachTopic } from '../../service/question.js';
 import { AiTwotoneMail} from 'react-icons/ai'
 import { addJoinTopic , getJoin , deleteJoinedTopic } from '../../service/joinTopic'
-
+import { getQuestionForEachTopic, getCountOfQuestionForEachTopic } from '../../service/question.js';
 import { IoCloseCircle } from 'react-icons/io5'
 
 import SelectPicker2 from '../../components/picker_select/selectPicker2.js'
@@ -22,6 +21,30 @@ function Topic() {
  
     const data = location.state;
 
+    const [currentpage,setCurrentpage] = useState(1);
+    const [numberPage, setNumberPage] = useState([])
+    let pageStart = 0;
+    const [pageSize,setPageSize] = useState(5);
+    let pageNumber
+    let todayDate = new Date().toISOString().slice(0, 10);
+    let todayDatetime = new Date(todayDate);
+    let duedatetime;
+
+    async function loadQuestionForEachTopic() {
+        const res = await getQuestionForEachTopic(data.TopicID,pageStart,pageSize);
+        setAllQuestion(res); 
+    }
+
+    async function loadCountofQuestionForEachTopic() {
+        const res = await getCountOfQuestionForEachTopic(data.TopicID);
+        const Pagenumberlist = []
+        pageNumber = Math.ceil(res[0]["count(*)"] / pageSize);
+        for(let i=1;i<=pageNumber;i++){
+            Pagenumberlist.push(i)
+        }
+        setNumberPage(Pagenumberlist)
+    }
+
     function leaveTopic(topicID) {
         deleteJoinedTopic(topicID);
         setJoin(false);
@@ -32,10 +55,6 @@ function Topic() {
         addJoinTopic(topicID);
     }
 
-    async function loadQuestionForEachTopic() {
-        const res = await getQuestionForEachTopic(data.TopicID);
-        setAllQuestion(res);
-    }
 
     async function getJoinedList() {
         const res = await getJoin();
@@ -48,19 +67,39 @@ function Topic() {
         }
     }
 
+    async function changepage(event) {
+        event.preventDefault();
+        setCurrentpage(event.target.value);
+        pageStart = pageSize*(event.target.value - 1)
+        await loadQuestionForEachTopic()
+    }
+
     const [allQuestion, setAllQuestion] = useState([])
     const [joinedList, setJoinedList] = useState([])
     useEffect(() => {
         loadQuestionForEachTopic();
         getJoinedList();
+        loadCountofQuestionForEachTopic();
+        loadQuestionForEachTopic();
     }, []);
 
-    const listQuestions = allQuestion.map((question) => 
-    <tr>
+    const listQuestions = allQuestion.map((question, i) => 
+    <tr key={i}>
         <td className="status">
+            {duedatetime = new Date(question.DueDate) < todayDatetime ?
+            <>
+                <TbClockOff size={24} /> 
+            </>
+            :
+            <>
+                <TbClock className="color-1" size={24} /> 
+            </>
+            }
+        </td>
+        {/* <td className="status">
             <TbClock className="color-1" size={24} /> 
             <TbSwords className="color-5" size={24} />
-        </td>
+        </td> */}
         <td className="title thai"><Link to="1">{question.QuestionName}</Link></td>
         <td className="date">{question.DueDate}</td>
         <td className="acceptance">10.00 %</td>
@@ -103,6 +142,32 @@ function Topic() {
     const [difficulty, setDifficulty] = useState({label: "", data: ""})
 
     const [search, setSearch] = useState("")
+
+    async function gotofirstpage(event) {
+        setCurrentpage(1)
+        pageStart = pageSize*(1 - 1)
+        await loadQuestionForEachTopic(pageStart,pageSize)
+    }
+
+    async function gotolastpage(event) {
+        setCurrentpage(numberPage.length)
+        pageStart = pageSize*(numberPage.length - 1)
+        await loadQuestionForEachTopic(pageStart,pageSize)
+    }
+
+    async function gotobackpage(event) {
+        event.preventDefault();
+        setCurrentpage(currentpage-1)
+        pageStart = pageSize*(currentpage - 2)
+        await loadQuestionForEachTopic(pageStart,pageSize)
+    }
+
+    async function gotonextpage(event) {
+        setCurrentpage(currentpage+1)
+        pageStart = pageSize*(currentpage)
+        await loadQuestionForEachTopic(pageStart,pageSize)
+    }
+    
 
     return (
         <div className="topic-page">
@@ -336,23 +401,47 @@ function Topic() {
                         </div>
                         <div className="pagination1">
                             <div className="display-per-page">
-                                <span>Display per page</span>
+                                {/* <span>Display per page</span>
                                 <select className="page">
                                     <option default>5</option>
                                     <option>10</option>
                                     <option>25</option>
-                                </select>
+                                </select> */}
                             </div>
                             <div className="pagination-number">
-                                <span className="arrow disable"><FiChevronsLeft /></span>
-                                <span className="arrow disable"><FiChevronLeft /></span>
-                                <span className="number active">1</span>
+                            <button onClick={gotofirstpage} className={
+                                    currentpage !== 1 
+                                    ? "arrow"
+                                    : "arrow disable"
+                                    }><FiChevronsLeft /></button>
+                                <button onClick={gotobackpage} className={
+                                    currentpage !== 1 
+                                    ? "arrow"
+                                    : "arrow disable"
+                                    }><FiChevronLeft /></button>
+                                {numberPage.map((key, i) => (
+                                    <button key={i} name={key} value={key} className={
+                                        currentpage === key
+                                        ? "number active"
+                                        : "number"
+                                    } onClick={changepage}>{key}</button>
+                                ))}
+                                {/* <span className="number active">1</span>
                                 <span className="number">2</span>
                                 <span className="number">3</span>
                                 <span className="number">4</span>
                                 <span className="number">5</span>
-                                <span className="arrow"><FiChevronRight /></span>
-                                <span className="arrow"><FiChevronsRight /></span>
+                                 */}
+                                 <button onClick={gotonextpage} className={
+                                    currentpage < numberPage.length
+                                    ? "arrow"
+                                    : "arrow disable"
+                                    }><FiChevronRight /></button>
+                                <button onClick={gotolastpage} className={
+                                    currentpage < numberPage.length
+                                    ? "arrow"
+                                    : "arrow disable"
+                                    }><FiChevronsRight /></button>
                             </div>
                         </div>  
                     </div>

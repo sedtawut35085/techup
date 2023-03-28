@@ -1,18 +1,32 @@
 import React, { useState, useEffect } from 'react';
 
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import BackgroundIcon from '../../components/background/bgIcons.js';
 import TopicBoxProf from '../../components/box_topic/boxTopicProf.js'
 import { getTopicfromProfessor } from '../../service/topic.js';
-
+import Auth from '../../configuration/configuration-aws'
 import { FiChevronRight } from 'react-icons/fi'
 import { TbListDetails } from 'react-icons/tb'
 
 function Professor() {
 
     const [allTopic, setAllTopic] = useState([])
+    const navigate = useNavigate()
+
+    async function checkAuthen() {
+        await Auth.currentAuthenticatedUser()
+        .then(async(response) => {
+            if(response.attributes.email.includes('@mail.kmutt.ac.th')){
+                navigate('/home');
+            }
+        })
+        .catch(() => {
+            navigate('/');
+        })
+    }
 
     useEffect( () => {
+        checkAuthen()
         getTopics();
       }, []);
     
@@ -61,7 +75,7 @@ function Professor() {
                     </Link>
                 </div>    
                 <div className="mt-3 mb-5 divider"></div>
-                <div className="homeprof-section">
+                {/* <div className="homeprof-section">
                         <div className="top-homeprof-section mb-4">
                             <div className='d-flex jc-btw'>
                                 <span className="f-lg fw-700">Recent Submissions</span>
@@ -123,7 +137,7 @@ function Professor() {
                                 </tbody>
                             </table>                                                     
                         </div>
-                    </div>                     
+                    </div>                      */}
             </div>
             </div>
             <div className="background-container"></div>
