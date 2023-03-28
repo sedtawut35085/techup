@@ -27,6 +27,7 @@ import AddTopic from "./pages/HomeProf/addtopic"
 import AddQuestion from "./pages/HomeProf/addquestion"
 import Topic from "./pages/Topic/index.js"
 import Question from "./pages/Question/index.js"
+import QuestionProf from "./pages/QuestionProf"
 import TopicProf from "./pages/TopicProf/index.js"
 import SubmitProf from "./pages/Submit"
 
@@ -45,12 +46,14 @@ function App() {
           <Route exact path="/" element={<SignInForm />} />
           <Route exact path="/sign-up" element={<SignUpForm />} />
           <Route exact path="/pending-prof" element={<PendingProf />} />
+          {/* <Route element={<AuthProvider><AppLayout /></AuthProvider>}> */}
           <Route element={<AppLayout />}>
             <Route path="/addtopic" element={<AuthProvider><AddTopic /></AuthProvider>}/>
             <Route path="/addquestion" element={<AuthProvider><AddQuestion /></AuthProvider>}/>
             <Route path="/professor" element={<AuthProvider><Professor /></AuthProvider>}/>
             <Route path="/submit" element={<AuthProvider><SubmitProf /></AuthProvider>}/>
             <Route path="/professor/:topic" element={<AuthProvider><TopicProf /></AuthProvider>}/>
+            <Route path="/professor/:topic/question/:question" element={<QuestionProf />}/>
             <Route path="/home" element={<AuthProvider><Homepage /></AuthProvider>}/>
             <Route path="/topic/:topic" element={<Topic />}/>
             <Route path="/topic/:topic/question/:question" element={<Question />}/>

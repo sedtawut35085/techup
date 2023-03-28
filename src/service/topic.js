@@ -50,7 +50,7 @@ export async function getTopicfromProfessor () {
       url: `${baseUrl}/topic`,
       params: {
           "UserEmail" : useremail,
-          "getType": "getEachTopic"
+          "getType": "getTopicFromProfessor"
       },
       }).then((res) => {
         response = res
@@ -58,6 +58,23 @@ export async function getTopicfromProfessor () {
         response = err
       })
   return response.data
+}
+
+export async function getEachTopic(topicID) {
+    await axios({
+        method: 'get',
+        url: `${baseUrl}/topic`,
+        params: {
+            "getType": "getEachTopic",
+            "TopicID": topicID
+        },
+        }).then((res) => {
+            response = res
+            console.log(res);
+        }).catch((err)=>{
+            response = err
+        })
+    return response.data
 }
 
 export async function saveTopic (bodydata) {
