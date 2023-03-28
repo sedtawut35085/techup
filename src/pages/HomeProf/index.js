@@ -82,7 +82,6 @@ function Professor() {
                                 <Link className="f-xm fw-700 color-gray3 pt-2" to="/submit">
                                     click to see all Submissions<FiChevronRight size={20} />
                                 </Link>
-                              
                             </div>
                         </div>
                         <div className="homeprof-table">

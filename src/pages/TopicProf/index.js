@@ -303,7 +303,7 @@ function TopicProf() {
                                     />
                                 </div>
                             </div>
-                            <Link className="btn-addquestion" to="/addquestion" state={data} >Add Question + </Link> 
+                            <Link className="btn-addquestion" to={`/professor/${TopicID}/addquestion`} >Add Question + </Link> 
                         </div>
                         <div className="question-table">
                             <table className="table">

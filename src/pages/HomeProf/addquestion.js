@@ -18,6 +18,8 @@ function AddQuestion() {
 
     const data = location.state;
     const [inFoProfessor, setInFoProfessor] = useState("")
+    let TopicID = window.location.href.split("/")[4];
+
     let res
     useEffect( () => {
         getProfessors(); 
@@ -27,9 +29,6 @@ function AddQuestion() {
         res = await getProfessor();
         setInFoProfessor(res[0]);
     }
-
-    const datatopic = data.TopicID
-    const datashortname = data.ShortName
     const navigate = useNavigate()
     const [name,setName] = useState("")
     const [description,setDescription] = useState("")
@@ -49,7 +48,6 @@ function AddQuestion() {
     async function handleSubmit(event) {
         event.preventDefault();
         const [day, month, year] =  duedate.split('-')
-        console.log(`${year}-${month}-${day}`)
         setErrors([]);
         const arrayError = [];
         if(name == ""){
@@ -72,9 +70,8 @@ function AddQuestion() {
         }
         if(arrayError.length === 0) {
             event.preventDefault();
-            
             var bodydata = {
-                "TopicID": datatopic,
+                "TopicID": TopicID,
                 "QuestionName": name,
                 "Description": description,  
                 "Difficulty": dificulty.data,    
@@ -82,9 +79,7 @@ function AddQuestion() {
                 "DueDate": `${year}-${month}-${day}`,
                 "Hint": hint
             }
-            console.log(bodydata)
-            console.log(dificulty)
-            await saveQuestionForEachTopic(bodydata).then(navigate(`/professor/${data.ShortName}`, {state: data})).catch()
+            await saveQuestionForEachTopic(bodydata).then(navigate(`/professor/${TopicID}`)).catch()
         }
         setErrors(arrayError);
     } 
@@ -92,7 +87,7 @@ function AddQuestion() {
     return (
         <div className="addquestion-page">
         <div className="cover-container">
-            <Link className="btn-back" to={`/professor/${data.ShortName}`} state={data}>
+            <Link className="btn-back" to={`/professor/${TopicID}`}>
                 <FaChevronLeft />
             </Link>
             <p className="title f-xl fw-800">Add Question</p>
@@ -207,7 +202,7 @@ function AddQuestion() {
                     </div>
                     <div className="mt-2 mb-5 divider"></div>
                     <div className="col-12 d-flex jc-center">
-                        <Link className='btn-02' to={`/professor/${data.ShortName}`} state={data}>
+                        <Link className='btn-02' to={`/professor/${TopicID}`}>
                             <span>Cancel</span>
                         </Link>
                         <button type="submit" className="btn-01">Submit</button>

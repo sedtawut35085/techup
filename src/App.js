@@ -48,11 +48,11 @@ function App() {
           <Route exact path="/pending-prof" element={<PendingProf />} />
           <Route element={<AppLayout />}>
             <Route path="/addtopic" element={<AuthProvider><AddTopic /></AuthProvider>}/>
-            <Route path="/addquestion" element={<AuthProvider><AddQuestion /></AuthProvider>}/>
             <Route path="/professor" element={<AuthProvider><Professor /></AuthProvider>}/>
             <Route path="/submit" element={<AuthProvider><SubmitProf /></AuthProvider>}/>
             <Route path="/professor/:topic" element={<AuthProvider><TopicProf /></AuthProvider>}/>
             <Route path="/professor/:topic/question/:question" element={<QuestionProf />}/>
+            <Route path="/professor/:topic/addquestion" element={<AuthProvider><AddQuestion /></AuthProvider>}/>
             <Route path="/home" element={<AuthProvider><Homepage /></AuthProvider>}/>
             <Route path="/topic/:topic" element={<Topic />}/>
             <Route path="/topic/:topic/question/:question" element={<Question />}/>
