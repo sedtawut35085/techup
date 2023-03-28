@@ -48,6 +48,8 @@ function AddQuestion() {
 
     async function handleSubmit(event) {
         event.preventDefault();
+        const [day, month, year] =  duedate.split('-')
+        console.log(`${year}-${month}-${day}`)
         setErrors([]);
         const arrayError = [];
         if(name == ""){
@@ -70,23 +72,21 @@ function AddQuestion() {
         }
         if(arrayError.length === 0) {
             event.preventDefault();
-            console.log(duedate)
-            console.log(Moment(duedate).format('YYYY-MM-DD'))
+            
             var bodydata = {
                 "TopicID": datatopic,
                 "QuestionName": name,
                 "Description": description,  
                 "Difficulty": dificulty.data,    
                 "Point": point,
-                "DueDate": Moment(duedate).format('YYYY-MM-DD'),
+                "DueDate": `${year}-${month}-${day}`,
                 "Hint": hint
             }
             console.log(bodydata)
             console.log(dificulty)
-            await saveQuestionForEachTopic(bodydata).then().catch()
-            //await saveQuestionForEachTopic(bodydata).then(navigate(`/professor/${data.ShortName}`, {state: data})).catch()
+            await saveQuestionForEachTopic(bodydata).then(navigate(`/professor/${data.ShortName}`, {state: data})).catch()
         }
-        // setErrors(arrayError);
+        setErrors(arrayError);
     } 
 
     return (

@@ -18,7 +18,7 @@ import BackgroundIcon from '../../components/background/bgIcons.js';
 function QuestionProf() {
     const [inFoQuestion, setInFoQuestion] = useState("")
     const location = useLocation();
-    let ShortName = window.location.href.split("/")[4];
+    let TopicID = window.location.href.split("/")[4];
     let QuestionId = window.location.href.split("/")[6];
 
     useEffect( () => {
@@ -30,7 +30,6 @@ function QuestionProf() {
         setInFoQuestion(res[0])
     }
     // console.log(inFoQuestion)
-
     
     const dataProf = location.state;
     const isHintShow = false;
@@ -174,7 +173,7 @@ function QuestionProf() {
     return(
         <div className="question-page">
             <div className="cover-container">
-                <Link className="btn-back" to={`/professor/${ShortName}`} state={dataProf}>
+                <Link className="btn-back" to={`/professor/${TopicID}`}>
                     <FaChevronLeft />
                 </Link>
                 <div className="body">

@@ -12,10 +12,10 @@ const TopBar = ({currentEmailUser,isProfessor}) => {
 
     const navigate = useNavigate()
 
-    // async function logout() {
-    //     await Auth.signOut();
-    //     navigate('/')
-    // }
+    async function logout() {
+        await Auth.signOut();
+        navigate('/')
+    }
 
     return (
         <div className="topbar" onMouseLeave={() => setDropdownActive(false)}>
@@ -115,7 +115,7 @@ const TopBar = ({currentEmailUser,isProfessor}) => {
                                     </div>
                                     <FiChevronRight size={28} />
                                 </Link>
-                                <Link className="d-flex jc-btw" onClick={async() => {await Auth.signOut();}} to="/">
+                                <Link className="d-flex jc-btw" onClick={logout}>
                                     <div>
                                         <IoExitOutline size={32} className="me-3" />Sign out
                                     </div>

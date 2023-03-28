@@ -8,18 +8,17 @@ import { TbDoorExit, TbClock, TbClockOff } from 'react-icons/tb'
 import { BiMessageSquareDetail } from 'react-icons/bi'
 import { RiVipCrown2Fill, RiInstagramFill, RiFacebookCircleFill, RiGithubFill, RiGlobalFill, RiLineFill } from 'react-icons/ri'
 import { AiTwotoneMail } from 'react-icons/ai'
-
 import { IoCloseCircle } from 'react-icons/io5'
 import { getQuestionForEachTopic, getCountOfQuestionForEachTopic } from '../../service/question.js';
-
+import { getEachTopic } from '../../service/topic'
 import SelectPicker2 from '../../components/picker_select/selectPicker2.js'
 import BackgroundIcon from '../../components/background/bgIcons.js';
 
 function TopicProf() {
-    const location = useLocation();
+    // const location = useLocation();
+    // const data = location.state;
 
-    const data = location.state;
-    // console.log(data)
+    const [data,setData] = useState([])
     const [currentpage,setCurrentpage] = useState(1);
     const [pageSize,setPageSize] = useState(5);
     let pageStart = 0;
@@ -27,14 +26,26 @@ function TopicProf() {
     let todayDate = new Date().toISOString().slice(0, 10);
     let todayDatetime = new Date(todayDate);
     let duedatetime;
+    let TopicID = window.location.href.split("/")[4];
+
+    useEffect(() => {
+        getTopicData()
+        loadCountofQuestionForEachTopic(pageSize);
+        loadQuestionForEachTopic(pageStart,pageSize);
+    }, []);
+    
+    async function getTopicData() {
+        let res = await getEachTopic(TopicID)
+        setData(res[0])
+    }
 
     async function loadQuestionForEachTopic(pageStart,value) {
-        const res = await getQuestionForEachTopic(data.TopicID,pageStart,value);
+        const res = await getQuestionForEachTopic(TopicID,pageStart,value);
         setAllQuestion(res); 
     }
 
     async function loadCountofQuestionForEachTopic(pageSize) {
-        const res = await getCountOfQuestionForEachTopic(data.TopicID);
+        const res = await getCountOfQuestionForEachTopic(TopicID);
         const Pagenumberlist = []
         pageNumber = Math.ceil(res[0]["count(*)"] / pageSize);
         for(let i=1;i<=pageNumber;i++){
@@ -46,12 +57,10 @@ function TopicProf() {
     const [allQuestion, setAllQuestion] = useState([])
     const [numberPage, setNumberPage] = useState([])
 
-    useEffect(() => {
-        loadCountofQuestionForEachTopic(pageSize);
-        loadQuestionForEachTopic(pageStart,pageSize);
-    }, []);
+    
 
-    const contact = JSON.parse(data.Contact)
+    // const contact = JSON.parse(data.Contact)
+    const contact = []
 
     const statusAll = [
         {label: "Ontime", data: "ontime", title: "Date"},
@@ -82,7 +91,7 @@ function TopicProf() {
             }
             
         </td>
-        <td className="title thai"><Link to={`/professor/${data.ShortName}/question/${question.QuestionID}`} state={data} >{question.QuestionName}</Link></td>
+        <td className="title thai"><Link to={`/professor/${TopicID}/question/${question.QuestionID}`} state={data} >{question.QuestionName}</Link></td>
         {/* <td className="title thai"><Link to ={{
             pathname: `/professor/${data.ShortName}/question/${question.QuestionID}`, 
             state: { 

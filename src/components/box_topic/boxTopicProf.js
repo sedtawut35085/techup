@@ -5,7 +5,7 @@ import { RiVipCrown2Fill } from 'react-icons/ri'
 
 const TopicBoxProf = ({data}) => {
   return ( 
-    <Link className="topic-box col-3" to={`/professor/${data.ShortName}`} state={data}>
+    <Link className="topic-box col-3" to={`/professor/${data.TopicID}`}>
         <div 
             className="body" 
             style={

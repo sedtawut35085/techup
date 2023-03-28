@@ -75,7 +75,7 @@ function Professor() {
                     </Link>
                 </div>    
                 <div className="mt-3 mb-5 divider"></div>
-                {/* <div className="homeprof-section">
+                <div className="homeprof-section">
                         <div className="top-homeprof-section mb-4">
                             <div className='d-flex jc-btw'>
                                 <span className="f-lg fw-700">Recent Submissions</span>
@@ -137,7 +137,7 @@ function Professor() {
                                 </tbody>
                             </table>                                                     
                         </div>
-                    </div>                      */}
+                    </div>                     
             </div>
             </div>
             <div className="background-container"></div>

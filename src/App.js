@@ -46,7 +46,6 @@ function App() {
           <Route exact path="/" element={<SignInForm />} />
           <Route exact path="/sign-up" element={<SignUpForm />} />
           <Route exact path="/pending-prof" element={<PendingProf />} />
-          {/* <Route element={<AuthProvider><AppLayout /></AuthProvider>}> */}
           <Route element={<AppLayout />}>
             <Route path="/addtopic" element={<AuthProvider><AddTopic /></AuthProvider>}/>
             <Route path="/addquestion" element={<AuthProvider><AddQuestion /></AuthProvider>}/>

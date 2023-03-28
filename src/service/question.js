@@ -92,15 +92,14 @@ export async function getCountOfQuestionForEachTopic(topicID){
 }
 
 export async function saveQuestionForEachTopic(bodydata){
-  console.log(bodydata)
-  // await axios({
-  //     method: 'post',
-  //     url: `${baseUrl}/question`,
-  //     data: bodydata
-  //     }).then((res) => {
-  //       response = res
-  //     }).catch((err)=>{
-  //       response = err
-  //     })
+  await axios({
+      method: 'post',
+      url: `${baseUrl}/question`,
+      data: bodydata
+      }).then((res) => {
+        response = res
+      }).catch((err)=>{
+        response = err
+      })
   return response.data
 }
