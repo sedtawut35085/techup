@@ -10,16 +10,18 @@ import { RiVipCrown2Fill, RiInstagramFill, RiFacebookCircleFill, RiGithubFill, R
 import { AiTwotoneMail} from 'react-icons/ai'
 import { addJoinTopic , getJoin , deleteJoinedTopic } from '../../service/joinTopic'
 import { getQuestionForEachTopic, getCountOfQuestionForEachTopic } from '../../service/question.js';
+import { getEachTopic } from '../../service/topic';
 import { IoCloseCircle } from 'react-icons/io5'
 
 import SelectPicker2 from '../../components/picker_select/selectPicker2.js'
 import BackgroundIcon from '../../components/background/bgIcons.js';
 
 function Topic() {
-    const location = useLocation();
     const [modal, setModal] = useState(false)
- 
-    const data = location.state;
+    let topicID = window.location.href.split("/")[4]
+    // const location = useLocation();
+    // const data = location.state;
+    const [data,setData] = useState([]);
 
     const [currentpage,setCurrentpage] = useState(1);
     const [numberPage, setNumberPage] = useState([])
@@ -30,13 +32,18 @@ function Topic() {
     let todayDatetime = new Date(todayDate);
     let duedatetime;
 
+    async function getTopicData() {
+        const res = await getEachTopic(topicID);
+        setData(res[0]);
+    }
+
     async function loadQuestionForEachTopic(pageStart,value) {
-        const res = await getQuestionForEachTopic(data.TopicID,pageStart,value);
+        const res = await getQuestionForEachTopic(topicID,pageStart,value);
         setAllQuestion(res); 
     }
 
     async function loadCountofQuestionForEachTopic(pageSize) {
-        const res = await getCountOfQuestionForEachTopic(data.TopicID);
+        const res = await getCountOfQuestionForEachTopic(topicID);
         const Pagenumberlist = []
         pageNumber = Math.ceil(res[0]["count(*)"] / pageSize);
         for(let i=1;i<=pageNumber;i++){
@@ -57,7 +64,7 @@ function Topic() {
 
     async function getJoinedList() {
         const res = await getJoin();
-        const found = res.some(joined => joined.TopicID === (data.TopicID))
+        const found = res.some(joined => joined.TopicID === (Number(topicID)))
         if (!found)
         {
             setJoin(false);
@@ -67,9 +74,10 @@ function Topic() {
     }
 
     const [allQuestion, setAllQuestion] = useState([])
-    const [joinedList, setJoinedList] = useState([])
+    // const [joinedList, setJoinedList] = useState([])
     useEffect(() => {
         // loadQuestionForEachTopic();
+        getTopicData();
         getJoinedList();
         loadCountofQuestionForEachTopic(pageSize);
         loadQuestionForEachTopic(pageStart,pageSize);
@@ -92,7 +100,7 @@ function Topic() {
             <TbClock className="color-1" size={24} /> 
             <TbSwords className="color-5" size={24} />
         </td> */}
-        <td className="title thai"><Link to="1">{question.QuestionName}</Link></td>
+        <td className="title thai"><Link to={`/topic/${topicID}/question/${question.QuestionID}`}>{question.QuestionName}</Link></td>
         <td className="date">{question.DueDate}</td>
         <td className="acceptance">10.00 %</td>
         <td className="difficulty color-1">{question.Difficulty}</td>
@@ -100,7 +108,8 @@ function Topic() {
     </tr>
     )
 
-    const contact = JSON.parse(data.Contact)
+    // const contact = JSON.parse(data.Contact)
+    const [contact,setContact] = useState([])
 
     const [owner, setOwner] = useState({
         name: "Chukiat",
