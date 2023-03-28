@@ -62,7 +62,6 @@ function SelectRole() {
     
 
     async function handleSubmit(event) {
-
         setErrors([]);
         const arrayError = [];
 
@@ -105,7 +104,6 @@ function SelectRole() {
         if(birthday == ""){
             arrayError.push('birthday');
         }
-        
         if(arrayError.length === 0) {
             if(role === "professor") {
                 console.log('pass pro')

@@ -1,21 +1,38 @@
-import React, { ChangeEvent, useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { ChangeEvent, useState, useEffect } from 'react';
+import { Link, useLocation } from 'react-router-dom';
 import $ from 'jquery'
 
 import { fileSize, fileType } from '../../assets/js/helper'
-
+import Moment from 'moment';
 import { FaChevronLeft } from 'react-icons/fa';
 import { TbCalendarTime, TbBulb, TbSwords, TbLock, TbInfoCircle, TbFileDescription, TbMessage2, TbFileUpload, TbMessageCircle, TbPaperclip, TbTrash } from 'react-icons/tb'
 import { GiFlyingFlag } from 'react-icons/gi'
 import { BsReplyAll } from 'react-icons/bs'
+import { getQuestion } from '../../service/question';
 import { HiOutlineExclamation } from 'react-icons/hi'
-
+import { FiSearch, FiChevronLeft, FiChevronRight, FiChevronsLeft, FiChevronsRight } from 'react-icons/fi'
 import { IoCloseCircle, IoCaretUp, IoCaretDown } from 'react-icons/io5'
 
 import BackgroundIcon from '../../components/background/bgIcons.js';
 
-function Question() {
+function QuestionProf() {
+    const [inFoQuestion, setInFoQuestion] = useState("")
+    const location = useLocation();
+    let ShortName = window.location.href.split("/")[4];
+    let QuestionId = window.location.href.split("/")[6];
 
+    useEffect( () => {
+        getQuestionFromQuestionID(); 
+      }, []);
+
+    async function getQuestionFromQuestionID() {
+        let res = await getQuestion(QuestionId);
+        setInFoQuestion(res[0])
+    }
+    // console.log(inFoQuestion)
+
+    
+    const dataProf = location.state;
     const isHintShow = false;
     const [guModal, setGuModal] = useState(false);
     const [hintModal, setHintModal] = useState(false);
@@ -157,13 +174,13 @@ function Question() {
     return(
         <div className="question-page">
             <div className="cover-container">
-                <Link className="btn-back" to="/home/os">
+                <Link className="btn-back" to={`/professor/${ShortName}`} state={dataProf}>
                     <FaChevronLeft />
                 </Link>
                 <div className="body">
                     <div className="top-section">
                         <div className="left-side">
-                            <p className="question-name">Kernel คืออะไร</p>
+                            <p className="question-name">{inFoQuestion.QuestionName}</p>
                             <p className="subject-name">
                                 <div className="icon">
                                     <img width="24px" alt="icon" src={"/assets/images/icons/" + data.icon + ".png"} />
@@ -174,7 +191,7 @@ function Question() {
                                 <div className="icon">
                                     <TbCalendarTime size={24} />
                                 </div>
-                                Due date - 05/12/2022
+                                Due date - {Moment(inFoQuestion.DueDate).format('YYYY-MM-DD')}
                             </p>
                         </div>
                         <div className="right-side">
@@ -182,25 +199,10 @@ function Question() {
                                 <button 
                                     className="btn-5"
                                     onClick={() => {
-                                        if(isHintShow) {
-                                            setHintModal(true);
-                                        } else {
-                                            setVoteModal(true);
-                                        }
+                                        setHintModal(true);
                                     }}
                                 >
                                     <TbBulb size={22} className="me-1" />Hint
-                                </button>
-                                <button 
-                                    className="btn-5 active" 
-                                    disabled
-                                    style={
-                                        challenge 
-                                        ? {opacity: 1, visibility: "visible", width: "unset"} 
-                                        : {opacity: 0, visibility: "hidden", width: 0, padding: 0, margin: 0}
-                                    }
-                                >
-                                    <TbSwords size={22} className="me-1" />Challenging
                                 </button>
                                 <button 
                                     className="btn-6" 
@@ -213,17 +215,7 @@ function Question() {
                                 >
                                     <GiFlyingFlag size={22} />
                                 </button>
-                                <button 
-                                    className="btn-5" 
-                                    onClick={() => setChallenge(true)}
-                                    style={
-                                        challenge 
-                                        ? {opacity: 0, visibility: "hidden", width: 0, padding: 0, margin: 0}
-                                        : {opacity: 1, visibility: "visible", width: "unset"} 
-                                    }
-                                >
-                                    <TbSwords size={22} className="me-1" />Challenge
-                                </button>
+                               
                             </div>
                             <div className="point">100 P</div>
                         </div>
@@ -255,63 +247,7 @@ function Question() {
                         <div className={`detail-section ${menuActive === 1 ? "description" : menuActive === 2 ? "discuss" : "submission"}`}>
                             <div className={`description ${menuActive === 1 ? "active" : ""}`}>
                                 <p>
-                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Eget aliquet tempus vitae viverra. 
-                                    Dapibus quisque ac dictumst quam sit porttitor nec quis feugiat. Libero egestas amet, hendrerit sagittis lectus venenatis. 
-                                    Vitae dui amet varius ac consectetur urna. Vestibulum vulputate nulla amet ornare nibh at scelerisque. 
-                                    Semper mauris pretium purus a id adipiscing. Mi tortor in ultricies commodo pulvinar facilisis senectus. 
-                                    At vitae imperdiet pretium pharetra. Urna tincidunt id id fermentum auctor maecenas nec.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Eget aliquet tempus vitae viverra. 
-                                    Dapibus quisque ac dictumst quam sit porttitor nec quis feugiat. Libero egestas amet, hendrerit sagittis lectus venenatis. 
-                                    Vitae dui amet varius ac consectetur urna. Vestibulum vulputate nulla amet ornare nibh at scelerisque. 
-                                    Semper mauris pretium purus a id adipiscing. Mi tortor in ultricies commodo pulvinar facilisis senectus. 
-                                    At vitae imperdiet pretium pharetra. Urna tincidunt id id fermentum auctor maecenas nec.
-                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Eget aliquet tempus vitae viverra. 
-                                    Dapibus quisque ac dictumst quam sit porttitor nec quis feugiat. Libero egestas amet, hendrerit sagittis lectus venenatis. 
-                                    Vitae dui amet varius ac consectetur urna. Vestibulum vulputate nulla amet ornare nibh at scelerisque. 
-                                    Semper mauris pretium purus a id adipiscing. Mi tortor in ultricies commodo pulvinar facilisis senectus. 
-                                    At vitae imperdiet pretium pharetra. Urna tincidunt id id fermentum auctor maecenas nec.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Eget aliquet tempus vitae viverra. 
-                                    Dapibus quisque ac dictumst quam sit porttitor nec quis feugiat. Libero egestas amet, hendrerit sagittis lectus venenatis. 
-                                    Vitae dui amet varius ac consectetur urna. Vestibulum vulputate nulla amet ornare nibh at scelerisque. 
-                                    Semper mauris pretium purus a id adipiscing. Mi tortor in ultricies commodo pulvinar facilisis senectus. 
-                                    At vitae imperdiet pretium pharetra. Urna tincidunt id id fermentum auctor maecenas nec.
-                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Eget aliquet tempus vitae viverra.
-                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Eget aliquet tempus vitae viverra. 
-                                    Dapibus quisque ac dictumst quam sit porttitor nec quis feugiat. Libero egestas amet, hendrerit sagittis lectus venenatis. 
-                                    Vitae dui amet varius ac consectetur urna. Vestibulum vulputate nulla amet ornare nibh at scelerisque. 
-                                    Semper mauris pretium purus a id adipiscing. Mi tortor in ultricies commodo pulvinar facilisis senectus. 
-                                    At vitae imperdiet pretium pharetra. Urna tincidunt id id fermentum auctor maecenas nec.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Eget aliquet tempus vitae viverra. 
-                                    Dapibus quisque ac dictumst quam sit porttitor nec quis feugiat. Libero egestas amet, hendrerit sagittis lectus venenatis. 
-                                    Vitae dui amet varius ac consectetur urna. Vestibulum vulputate nulla amet ornare nibh at scelerisque. 
-                                    Semper mauris pretium purus a id adipiscing. Mi tortor in ultricies commodo pulvinar facilisis senectus. 
-                                    At vitae imperdiet pretium pharetra. Urna tincidunt id id fermentum auctor maecenas nec.
-                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Eget aliquet tempus vitae viverra. 
-                                    Dapibus quisque ac dictumst quam sit porttitor nec quis feugiat. Libero egestas amet, hendrerit sagittis lectus venenatis. 
-                                    Vitae dui amet varius ac consectetur urna. Vestibulum vulputate nulla amet ornare nibh at scelerisque. 
-                                    Semper mauris pretium purus a id adipiscing. Mi tortor in ultricies commodo pulvinar facilisis senectus. 
-                                    At vitae imperdiet pretium pharetra. Urna tincidunt id id fermentum auctor maecenas nec.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Eget aliquet tempus vitae viverra. 
-                                    Dapibus quisque ac dictumst quam sit porttitor nec quis feugiat. Libero egestas amet, hendrerit sagittis lectus venenatis. 
-                                    Vitae dui amet varius ac consectetur urna. Vestibulum vulputate nulla amet ornare nibh at scelerisque. 
-                                    Semper mauris pretium purus a id adipiscing. Mi tortor in ultricies commodo pulvinar facilisis senectus. 
-                                    At vitae imperdiet pretium pharetra. Urna tincidunt id id fermentum auctor maecenas nec.
-                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Eget aliquet tempus vitae viverra.
-                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Eget aliquet tempus vitae viverra. 
-                                    Dapibus quisque ac dictumst quam sit porttitor nec quis feugiat. Libero egestas amet, hendrerit sagittis lectus venenatis. 
-                                    Vitae dui amet varius ac consectetur urna. Vestibulum vulputate nulla amet ornare nibh at scelerisque. 
-                                    Semper mauris pretium purus a id adipiscing. Mi tortor in ultricies commodo pulvinar facilisis senectus. 
-                                    At vitae imperdiet pretium pharetra. Urna tincidunt id id fermentum auctor maecenas nec.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Eget aliquet tempus vitae viverra. 
-                                    Dapibus quisque ac dictumst quam sit porttitor nec quis feugiat. Libero egestas amet, hendrerit sagittis lectus venenatis. 
-                                    Vitae dui amet varius ac consectetur urna. Vestibulum vulputate nulla amet ornare nibh at scelerisque. 
-                                    Semper mauris pretium purus a id adipiscing. Mi tortor in ultricies commodo pulvinar facilisis senectus. 
-                                    At vitae imperdiet pretium pharetra. Urna tincidunt id id fermentum auctor maecenas nec.
-                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Eget aliquet tempus vitae viverra. 
-                                    Dapibus quisque ac dictumst quam sit porttitor nec quis feugiat. Libero egestas amet, hendrerit sagittis lectus venenatis. 
-                                    Vitae dui amet varius ac consectetur urna. Vestibulum vulputate nulla amet ornare nibh at scelerisque. 
-                                    Semper mauris pretium purus a id adipiscing. Mi tortor in ultricies commodo pulvinar facilisis senectus. 
-                                    At vitae imperdiet pretium pharetra. Urna tincidunt id id fermentum auctor maecenas nec.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Eget aliquet tempus vitae viverra. 
-                                    Dapibus quisque ac dictumst quam sit porttitor nec quis feugiat. Libero egestas amet, hendrerit sagittis lectus venenatis. 
-                                    Vitae dui amet varius ac consectetur urna. Vestibulum vulputate nulla amet ornare nibh at scelerisque. 
-                                    Semper mauris pretium purus a id adipiscing. Mi tortor in ultricies commodo pulvinar facilisis senectus. 
-                                    At vitae imperdiet pretium pharetra. Urna tincidunt id id fermentum auctor maecenas nec.
-                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Eget aliquet tempus vitae viverra.
+                                   {inFoQuestion.Description}
                                 </p>
                             </div>
                             <div className={`discuss ${menuActive === 2 ? "active" : ""}`}>
@@ -407,53 +343,82 @@ function Question() {
                                 }
                             </div>
                             <div className={`submission ${menuActive === 3 ? "active" : ""}`}>
-                                <div className="comment-box">
-                                    <textarea 
-                                        className="autosize" 
-                                        placeholder="Type comment here ..." 
-                                        onChange={(e) => setCommentSubmission(e.target.value)} 
-                                    />
-                                    <div className="file-input">
-                                        <input
-                                            type="file"
-                                            name="file-input"
-                                            id="file-input"
-                                            className="file-input__input"
-                                            onChange={handleFileChange}
-                                            multiple
-                                        />
-                                        <label className="file-input__label" htmlFor="file-input">
-                                            <TbPaperclip size={24} />
-                                        </label>
-                                    </div>
+                            <div className="submit-table">
+                                    <table className="table">
+                                        <thead>
+                                            <tr>
+                                                <th className="title">Name </th>
+                                                <th className="topic">Topic - Question </th>
+                                                <th className="status">Status </th>
+                                                <th className="duedate">Due Date </th>
+                                                <th className="datesubmit">Date Submission </th>
+                                                <th className="action">Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td className="title thai">Sedtawut chalothornnarumit</td>
+                                                <td className="topic thai">OS - Kernel คืออะไร</td>
+                                                <td className="status thai color-12">Unchecked</td>
+                                                <td className="duedate thai">05-12-2022</td>
+                                                <td className="datesubmit thai">05-12-2022, 00:00</td>
+                                                <td className="point-table">
+                                                    <div className="col-12">
+                                                        <button type="submit" className="btnsubmit-viewdetail">View Detail</button>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td className="title thai">Sedtawut chalothornnarumit</td>
+                                                <td className="topic thai">OS - Kernel คืออะไร</td>
+                                                <td className="status thai color-12">Unchecked</td>
+                                                <td className="duedate thai">05-12-2022</td>
+                                                <td className="datesubmit thai">05-12-2022, 00:00</td>
+                                                <td className="point-table">
+                                                    <div className="col-12">
+                                                        <button type="submit" className="btnsubmit-viewdetail">View Detail</button>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td className="title thai">Sedtawut chalothornnarumit</td>
+                                                <td className="topic thai">OS - Kernel คืออะไร</td>
+                                                <td className="status thai color-3">checked</td>
+                                                <td className="duedate thai">05-12-2022</td>
+                                                <td className="datesubmit thai">05-12-2022, 00:00</td>
+                                                <td className="point-table">
+                                                    <div className="col-12">
+                                                        <button type="submit" className="btnsubmit-viewdetail">View Detail</button>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>                                                     
                                 </div>
-                                <div className="attachment">
-                                    <span className="f-md fw-700">Attachment ({files?.length || 0})</span>
-                                    <div className="sp-vertical"></div>
-                                    {files.map((file, key) => (
-                                    <div className="attach-file" key={key}>
-                                        <div className="d-flex jc-center ai-center">
-                                            <div className="file-icon">{fileType(file.name)}</div>
-                                            <div className="file-info">
-                                                <span className="file-name">{file.name}</span>
-                                                <span className="file-size">{fileSize(file.size)}</span>
-                                            </div>
-                                        </div>
-                                        <div className="file-action">
-                                            <button className="btn-7" onClick={() => deleteFile(file)}>
-                                                <TbTrash size={18} className="me-1" />
-                                                Delete
-                                            </button>
-                                        </div>
-                                    </div>
-                                    ))}
-                                </div>
-                                <div className="divider my-4"></div>
-                                <div className="d-flex jc-center ai-center">
-                                    <button className="btn-01">Submit</button>
-                                </div>
+                                <div className="pagination1">
+                            <div className="display-per-page">
+                                <span>Display per page</span>
+                                <select className="page">
+                                    <option default>5</option>
+                                    <option>10</option>
+                                    <option>25</option>
+                                </select>
+                            </div>
+                            <div className="pagination-number">
+                                <span className="arrow disable"><FiChevronsLeft /></span>
+                                <span className="arrow disable"><FiChevronLeft /></span>
+                                <span className="number active">1</span>
+                                <span className="number">2</span>
+                                <span className="number">3</span>
+                                <span className="number">4</span>
+                                <span className="number">5</span>
+                                <span className="arrow"><FiChevronRight /></span>
+                                <span className="arrow"><FiChevronsRight /></span>
                             </div>
                         </div>
+                            </div>
+                        </div>
+                       
                     </div>
                 </div>
             </div>
@@ -533,4 +498,4 @@ function Question() {
     )
 }
 
-export default Question;
+export default QuestionProf;

@@ -20,7 +20,7 @@ function AddQuestion() {
     const [inFoProfessor, setInFoProfessor] = useState("")
     let res
     useEffect( () => {
-        getProfessors();
+        getProfessors(); 
       }, []);
     
     async function getProfessors() {
@@ -70,18 +70,21 @@ function AddQuestion() {
         }
         if(arrayError.length === 0) {
             event.preventDefault();
+            console.log(duedate)
+            console.log(Moment(duedate).format('YYYY-MM-DD'))
             var bodydata = {
                 "TopicID": datatopic,
                 "QuestionName": name,
                 "Description": description,  
-                "Dificulty": dificulty.data,    
+                "Difficulty": dificulty.data,    
                 "Point": point,
                 "DueDate": Moment(duedate).format('YYYY-MM-DD'),
                 "Hint": hint
             }
             console.log(bodydata)
             console.log(dificulty)
-            await saveQuestionForEachTopic(bodydata).then(navigate(`/professor/${data.ShortName}`, {state: data})).catch()
+            await saveQuestionForEachTopic(bodydata).then().catch()
+            //await saveQuestionForEachTopic(bodydata).then(navigate(`/professor/${data.ShortName}`, {state: data})).catch()
         }
         // setErrors(arrayError);
     } 

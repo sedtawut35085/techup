@@ -19,6 +19,7 @@ function TopicProf() {
     const location = useLocation();
 
     const data = location.state;
+    // console.log(data)
     const [currentpage,setCurrentpage] = useState(1);
     const [pageSize,setPageSize] = useState(5);
     let pageStart = 0;
@@ -67,7 +68,7 @@ function TopicProf() {
 
     const [search, setSearch] = useState("")
 
-    const listQuestions = allQuestion.map((question, i) => 
+    const listQuestions = allQuestion.map((question, i) =>
     <tr key={i}>
         <td className="status">
             {duedatetime = new Date(question.DueDate) < todayDatetime ?
@@ -79,8 +80,16 @@ function TopicProf() {
                 <TbClock className="color-1" size={24} /> 
             </>
             }
+            
         </td>
-        <td className="title thai"><Link to="1">{question.QuestionName}</Link></td>
+        <td className="title thai"><Link to={`/professor/${data.ShortName}/question/${question.QuestionID}`} state={data} >{question.QuestionName}</Link></td>
+        {/* <td className="title thai"><Link to ={{
+            pathname: `/professor/${data.ShortName}/question/${question.QuestionID}`, 
+            state: { 
+                question
+            }
+        }}>{question.QuestionName}</Link>
+        </td> */}
         <td className="date">{question.DueDate}</td>
         <td className="acceptance">10.00 %</td>
         <td className="difficulty color-1">{question.Difficulty}</td>

@@ -41,6 +41,22 @@ export async function getQuestionForEachTopicWithFilter(topicID,pageStart,pageSi
   return response.data
 }
 
+export async function getQuestion(QuestionID){
+  await axios({
+      method: 'get',
+      url: `${baseUrl}/question`,
+      params: {
+          "QuestionID" : QuestionID,
+          "getType": "getEachQuestion"
+      },
+      }).then((res) => {
+        response = res
+      }).catch((err)=>{
+        response = err
+      })
+  return response.data
+}
+
 export async function getCountOfQuestionForEachTopicWithFilter(topicID,filterName,filterValue){
   await axios({
       method: 'get',
@@ -76,14 +92,15 @@ export async function getCountOfQuestionForEachTopic(topicID){
 }
 
 export async function saveQuestionForEachTopic(bodydata){
-  await axios({
-      method: 'post',
-      url: `${baseUrl}/question`,
-      data: bodydata
-      }).then((res) => {
-        response = res
-      }).catch((err)=>{
-        response = err
-      })
+  console.log(bodydata)
+  // await axios({
+  //     method: 'post',
+  //     url: `${baseUrl}/question`,
+  //     data: bodydata
+  //     }).then((res) => {
+  //       response = res
+  //     }).catch((err)=>{
+  //       response = err
+  //     })
   return response.data
 }
