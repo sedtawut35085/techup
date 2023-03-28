@@ -100,7 +100,7 @@ function Topic() {
             <TbClock className="color-1" size={24} /> 
             <TbSwords className="color-5" size={24} />
         </td> */}
-        <td className="title thai"><Link to="1">{question.QuestionName}</Link></td>
+        <td className="title thai"><Link to={`/topic/${data.ShortName}/question/1`}>{question.QuestionName}</Link></td>
         <td className="date">{question.DueDate}</td>
         <td className="acceptance">10.00 %</td>
         <td className="difficulty color-1">{question.Difficulty}</td>
