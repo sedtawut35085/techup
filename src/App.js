@@ -9,6 +9,7 @@ import "./assets/styles/Homepage.css"
 import "./assets/styles/Topic.css"
 import "./assets/styles/Professor.css"
 import "./assets/styles/Ranking.css"
+import "./assets/styles/Question.css"
 
 import { BrowserRouter, Route, Routes} from "react-router-dom";
 
@@ -44,7 +45,7 @@ function App() {
           <Route exact path="/" element={<SignInForm />} />
           <Route exact path="/sign-up" element={<SignUpForm />} />
           <Route exact path="/pending-prof" element={<PendingProf />} />
-          <Route element={<AuthProvider><AppLayout /></AuthProvider>}>
+          <Route element={<AppLayout />}>
             <Route path="/addtopic" element={<AuthProvider><AddTopic /></AuthProvider>}/>
             <Route path="/addquestion" element={<AuthProvider><AddQuestion /></AuthProvider>}/>
             <Route path="/professor" element={<AuthProvider><Professor /></AuthProvider>}/>
