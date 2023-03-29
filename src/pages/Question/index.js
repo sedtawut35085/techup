@@ -18,7 +18,29 @@ import BackgroundIcon from '../../components/background/bgIcons.js';
 
 import Moment from 'moment'
 
+import { convertToBase64, uploadPhoto } from '../../service';
+import AWS from 'aws-sdk'
+
+
+const S3_BUCKET ='techup-file-upload-storage';
+const REGION ='ap-southeast-1';
+const s3Subfolder = 'data-submit';
+
+AWS.config.update({
+    accessKeyId: 'AKIA6PZPD4TPDL2KG6KT',
+    secretAccessKey: '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'
+})
+
+const myBucket = new AWS.S3({
+    params: { Bucket: S3_BUCKET},
+    region: REGION,
+})
+
 function Question() {
+
+    const [progress , setProgress] = useState(0);
+    const [selectedFile, setSelectedFile] = useState(null);
+
     const [inFoQuestion, setInFoQuestion] = useState("")
     let topicID = window.location.href.split("/")[4];
     let QuestionId = window.location.href.split("/")[6];
@@ -118,37 +140,61 @@ function Question() {
         setFileList(fileList.filter(fileList => fileList !== file))
     }
 
-    const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const handleFileChange = (e) => {
         let array = [...fileList]
         for(let i=0; i<e.target.files.length; i++){
             if(fileList.indexOf(e.target.files[i]) < 0) {
                 array.push(e.target.files[i]);
             }
         }
-        console.log(e.target.files)
-        console.log(array)
+        setFileList(array)
     };
 
-    const handleUploadClick = () => {
-        if (!fileList) {
-            return;
-        }
-    
-        // 👇 Create new FormData object and append files
-        const data = new FormData();
-        files.forEach((file, i) => {
-            data.append(`file-${i}`, file, file.name);
+    // const handleFileInput = (e) => {
+    //     setSelectedFile(e.target.files[0]);
+    // }
+
+    const uploadFile = async (file) => {
+        console.log(commentSubmission)
+        file.forEach(async (files, i) => {
+            let currentDate = new Date()
+            console.log(files)
+            currentDate = Moment(currentDate).format('YYYY-MM-DD:HH-mm-ss')
+            const fileName = currentDate + "_" + files.name
+            const params = {
+                ACL: 'public-read',
+                Body: files,
+                Bucket: S3_BUCKET,
+                Key: `${s3Subfolder}/${fileName}`
+            };
+            let res = await myBucket.upload(params).promise();
+            console.log(res.Location)
         });
+      
+    }
+
+    // const handleUploadClick = () => {
+
+    //     console.log('11')
+    //     if (!fileList) {
+    //         return;
+    //     } 
     
-        // 👇 Uploading the files using the fetch API to the server
-        fetch('https://httpbin.org/post', {
-            method: 'POST',
-            body: data,
-        })
-        .then((res) => res.json())
-        .then((data) => console.log(data))
-        .catch((err) => console.error(err));
-    };
+    //     // 👇 Create new FormData object and append files
+    //     const data = new FormData();
+    //     files.forEach((file, i) => {
+    //         data.append(`file-${i}`, file, file.name);
+    //     });
+        
+    //     // 👇 Uploading the files using the fetch API to the server
+    //     fetch('https://httpbin.org/post', {
+    //         method: 'POST',
+    //         body: data,
+    //     })
+    //     .then((res) => res.json())
+    //     .then((data) => console.log(data))
+    //     .catch((err) => console.error(err));
+    // };
 
     const files = fileList ? [...fileList] : [];
 
@@ -170,6 +216,14 @@ function Question() {
         }
     }
     autosize();
+
+    // async function onSelectFile(event) {
+    //     const imageFile = event.target.files[0]
+    //     let convertedFile = await convertToBase64(imageFile)
+    //     convertedFile = imageFile.type + ' ' + convertedFile;
+    //     let responseLocationImage = await uploadPhoto(convertedFile)
+    //     console.log(responseLocationImage)
+    // }
 
     return(
         <div className="question-page">
@@ -382,6 +436,7 @@ function Question() {
                                             className="file-input__input"
                                             onChange={handleFileChange}
                                             multiple
+                                            // maxfilesize={175}
                                         />
                                         <label className="file-input__label" htmlFor="file-input">
                                             <TbPaperclip size={24} />
@@ -389,6 +444,9 @@ function Question() {
                                     </div>
                                 </div>
                                 <div className="attachment">
+                                    {/* <input type="file" onChange={handleFileInput}/> */}
+                                    {/* <button onClick={() => uploadFile(selectedFile)}> Upload to S3</button> */}
+                                    {/* <input id="profile-img" name="profile-img" type="file" accept="image/*" onChange={onSelectFile}/> */}
                                     <span className="f-md fw-700">Attachment ({files?.length || 0})</span>
                                     <div className="sp-vertical"></div>
                                     {files.map((file, key) => (
@@ -411,7 +469,7 @@ function Question() {
                                 </div>
                                 <div className="divider my-4"></div>
                                 <div className="d-flex jc-center ai-center">
-                                    <button className="btn-01">Submit</button>
+                                    <button onClick={() => uploadFile(fileList)} className="btn-01">Submit</button>
                                 </div>
                             </div>
                         </div>
