@@ -95,9 +95,14 @@
 .topic-page .question-section .question-table .table tbody tr td span.point {
     padding: .3rem .6rem;
     color: #fff;
+    background-color: #FED470;
     font-size: 0.875rem;
     font-weight: 600;
     border-radius: 25px;
+}
+
+.topic-page .question-section .question-table .table tbody tr td span.point.done {
+    background-color: #58A550;
 }
 
 .topic-page .question-section .question-table .table .status {

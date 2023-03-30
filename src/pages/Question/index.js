@@ -264,7 +264,18 @@ function Question() {
                                 <div className="icon">
                                     <img width="24px" alt="icon" src={"/assets/images/icons/" + inFoQuestion.Icon + ".png"} />
                                 </div>
-                                {inFoQuestion.TopicName} -&nbsp;<span className="color-3">{inFoQuestion.Difficulty}</span>
+                                {inFoQuestion.TopicName} -&nbsp;
+                                <span 
+                                    className={`${
+                                        inFoQuestion.Difficulty === "Easy"
+                                        ? "color-3"
+                                        : inFoQuestion.Difficulty === "Normal"
+                                        ? "color-1"
+                                        : "color-5"
+                                    }`}
+                                >
+                                    {inFoQuestion.Difficulty}
+                                </span>
                             </p>
                             <p className="due-date">
                                 <div className="icon">

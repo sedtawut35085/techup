@@ -212,7 +212,7 @@ function QuestionProf() {
                                 <div className="icon">
                                     <img width="24px" alt="icon" src={"/assets/images/icons/" + data.icon + ".png"} />
                                 </div>
-                                Operating System -&nbsp;<span className="color-3">Easy</span>
+                                {inFoQuestion.TopicName} -&nbsp;<span className="color-3">{inFoQuestion.Difficulty}</span>
                             </p>
                             <p className="due-date">
                                 <div className="icon">
@@ -232,7 +232,7 @@ function QuestionProf() {
                                     <TbBulb size={22} className="me-1" />Hint
                                 </button>                               
                             </div>
-                            <div className="point">100 P</div>
+                            <div className="point">{inFoQuestion.Point} P</div>
                         </div>
                     </div>
                     <div className="problem-section">

@@ -1,6 +1,7 @@
 import React, { useState ,useEffect } from 'react';
-
+import Moment from 'moment';
 import { Link ,useLocation } from 'react-router-dom';
+
 import { FaChevronLeft, FaSort, FaFrownOpen } from 'react-icons/fa';
 import { FiSearch, FiChevronLeft, FiChevronRight, FiChevronsLeft, FiChevronsRight } from 'react-icons/fi'
 import { HiOutlineChartBar } from 'react-icons/hi'
@@ -84,88 +85,39 @@ function Topic() {
         loadQuestionForEachTopic(pageStart,pageSize);
     }, []);
 
-    const listQuestions = allQuestion.map((question, i) => 
-    <tr key={i}>
+    const listQuestions = allQuestion.map((question, i) =>   
+    <tr 
+        className={`${question.SubmissionID === null ? "" : "color-3"}`} 
+        key={i}
+    >
         <td className="status">
-            {duedatetime = new Date(question.DueDate) < todayDatetime ?
-            <>
-                {question.SubmissionID === null?
-                    <>
-                        <TbClockOff size={24} /> 
-                    </>
-                    :
-                    <>
-                        <TbClockOff className='color-3' size={24} /> 
-                    </>
-                }   
-            </>
-            :
-            <>
-                {question.SubmissionID === null?
-                    <>
-                        <TbClock className="color-1" size={24} /> 
-                    </>
-                    :
-                    <>
-                        <TbClock className="color-3" size={24} /> 
-                    </>
-                }   
-                
-            </>
+            {
+                duedatetime = new Date(question.DueDate) < todayDatetime 
+                ?   <TbClockOff className={`${question.SubmissionID === null ? "color-gray2" : "color-3"}`} size={24} /> 
+                :   <TbClock className={`${question.SubmissionID === null ? "color-1" : "color-3"}`} size={24} /> 
             }
         </td>
-        {/* <td className="status">
-            <TbClock className="color-1" size={24} /> 
-            <TbSwords className="color-5" size={24} />
-        </td> */}
         <td className="title thai">
-            {question.SubmissionID === null?
-            <>
-                <Link to={`/topic/${topicID}/question/${question.QuestionID}`}>{question.QuestionName}</Link>
-            </>
-            :
-            <>
-                <div className='color-3'>{question.QuestionName}</div>
-            </>
-            }
+            <Link to={`/topic/${topicID}/question/${question.QuestionID}`}>{question.QuestionName}</Link>
         </td>
-        {question.SubmissionID === null?
-            <>
-                <td className="date">{question.DueDate}</td>
-            </>
-            :
-            <>
-                <td className="date color-3">{question.DueDate}</td>
-            </>
-        }
-        {question.SubmissionID === null?
-        <>
-            <td className="acceptance">10.00 %</td>
-        </>
-        :
-        <>
-            <td className="acceptance color-3">10.00 %</td>
-        </>
-        }
-        {question.SubmissionID === null?
-        <>
-            <td className="difficulty color-1">{question.Difficulty}</td>
-        </>
-        :
-        <>
-            <td className="difficulty color-3">{question.Difficulty}</td>
-        </>
-        }
-        
-        {question.SubmissionID === null?
-            <>
-                 <td className="point-table"><span className="point" style={{backgroundColor: "#FED470"}}>{question.Point} P</span></td>
-            </>
-            :
-            <>
-                 <td className="point-table"><span className="point" style={{backgroundColor: "green"}}>Done</span></td>
-            </>
-            }
+        <td className="date">{Moment(question.DueDate).format('YYYY-MM-DD')}</td>
+        <td className="acceptance">10.00 %</td>
+        <td 
+            className={`difficulty ${
+                question.Difficulty === "Easy" && question.SubmissionID === null
+                ? "color-3"
+                : question.Difficulty === "Normal" && question.SubmissionID === null
+                ? "color-1"
+                : question.Difficulty === "Hard" && question.SubmissionID === null
+                ? "color-5"
+                : "color-3"
+            }`}
+        >
+            {question.Difficulty}
+        </td>
+        <td className="point-table">
+            <span className={`point ${question.SubmissionID === null ? "" : "done"}`}>{question.SubmissionID === null ? (question.Point + "P") : "Done"}</span>
+        </td>
        
     </tr>
     )
@@ -547,11 +499,11 @@ function Topic() {
             {/* Background */}
             <div className="background-container"></div>
             <BackgroundIcon 
-                icon={data.icon} 
+                icon={data.Icon} 
                 color={
-                    data.type === "Computer Science"
+                    data.Type === "Computer Science"
                     ? "#1B1F4B"
-                    : data.type === "Data Science"
+                    : data.Type === "Data Science"
                     ? "#6A244D"
                     : "#194D45"
                 }
