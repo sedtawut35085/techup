@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router-dom';
 
 import { formatDate, convertToDate } from '../../assets/js/helper'
 
@@ -7,13 +8,13 @@ const QuestionBox = ({data}) => {
     
 
     return (
-        <div className="question-box col-3">
+        <Link className="question-box col-3" to={`/topic/${data.TopicID}/question/${data.QuestionID}`}>
             <div 
                 className="body" 
                 style={
-                    data.type === "Computer Science"
+                    data.Type === "Computer Science"
                     ? {backgroundColor: "#1B1F4B"}
-                    : data.type === "Data Science"
+                    : data.Type === "Data Science"
                     ? {backgroundColor: "#6A244D"}
                     : {backgroundColor: "#194D45"}
                 }
@@ -62,7 +63,7 @@ const QuestionBox = ({data}) => {
                     </li>
                 </div>
             </div>
-        </div>
+        </Link>
     )
 }
 
