@@ -13,6 +13,7 @@ import { HiOutlineExclamation } from 'react-icons/hi'
 import { IoCloseCircle, IoCaretUp, IoCaretDown } from 'react-icons/io5'
 
 import { getQuestion } from '../../service/question';
+import { getDiscussQuestion } from '../../service/discussQuestion';
 
 import BackgroundIcon from '../../components/background/bgIcons.js';
 
@@ -20,12 +21,21 @@ import Moment from 'moment'
 
 function Question() {
     const [inFoQuestion, setInFoQuestion] = useState("")
+    // const [discuss,setDiscuss] = useState([])
     let topicID = window.location.href.split("/")[4];
     let QuestionId = window.location.href.split("/")[6];
 
     useEffect( () => {
         getQuestionFromQuestionID(); 
+        // getDiscuss();
       }, []);
+
+
+    async function getDiscuss() {
+        let res = await getDiscussQuestion(QuestionId);
+        console.log(res);
+        setDiscuss(res)
+    }
 
     async function getQuestionFromQuestionID() {
         let res = await getQuestion(QuestionId);
@@ -125,6 +135,7 @@ function Question() {
                 array.push(e.target.files[i]);
             }
         }
+        setFileList(array)
         console.log(e.target.files)
         console.log(array)
     };
