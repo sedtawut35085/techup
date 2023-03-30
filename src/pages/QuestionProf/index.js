@@ -1,39 +1,100 @@
 import React, { ChangeEvent, useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import $ from 'jquery'
+import Moment from 'moment';
 
 import { fileSize, fileType } from '../../assets/js/helper'
-import Moment from 'moment';
-import { FaChevronLeft } from 'react-icons/fa';
-import { TbCalendarTime, TbBulb, TbSwords, TbLock, TbInfoCircle, TbFileDescription, TbMessage2, TbFileUpload, TbMessageCircle, TbPaperclip, TbTrash } from 'react-icons/tb'
-import { GiFlyingFlag } from 'react-icons/gi'
-import { BsReplyAll } from 'react-icons/bs'
 import { getQuestion } from '../../service/question';
+
+import { FaChevronLeft, FaSort } from 'react-icons/fa';
+import { TbCalendarTime, TbBulb, TbLock, TbInfoCircle, TbFileDescription, TbMessage2, TbFileUpload, TbMessageCircle, } from 'react-icons/tb'
+import { BsReplyAll } from 'react-icons/bs'
 import { HiOutlineExclamation } from 'react-icons/hi'
 import { FiSearch, FiChevronLeft, FiChevronRight, FiChevronsLeft, FiChevronsRight } from 'react-icons/fi'
 import { IoCloseCircle, IoCaretUp, IoCaretDown } from 'react-icons/io5'
+import { getCount, getAllSubmission } from '../../service/submission';
 
 import BackgroundIcon from '../../components/background/bgIcons.js';
+import { all } from 'axios';
 
 function QuestionProf() {
     const [inFoQuestion, setInFoQuestion] = useState("")
+    const [numberPage, setNumberPage] = useState([])
+    const [pageSize,setPageSize] = useState(5);
+    const [currentpage,setCurrentpage] = useState(1);
+    const [allSubmission,setAllSubmission] = useState([]);
     const location = useLocation();
-    let ShortName = window.location.href.split("/")[4];
+    let pageStart = 0;
+    let pageNumber
+    let TopicID = window.location.href.split("/")[4];
     let QuestionId = window.location.href.split("/")[6];
 
     useEffect( () => {
-        getQuestionFromQuestionID(); 
+        getQuestionFromQuestionID();
+        loadCount(pageSize); 
+        loadSubmission(pageStart,pageSize);
       }, []);
 
     async function getQuestionFromQuestionID() {
         let res = await getQuestion(QuestionId);
         setInFoQuestion(res[0])
     }
-    // console.log(inFoQuestion)
 
-    
-    const dataProf = location.state;
-    const isHintShow = false;
+    async function loadSubmission(pageStart,value) {
+        const res = await getAllSubmission(QuestionId,pageStart,value);
+        setAllSubmission(res)
+    }
+
+    async function loadCount(pageSize) {
+        const res = await getCount(QuestionId);
+        const Pagenumberlist = []
+        pageNumber = Math.ceil(res[0]["count(*)"] / pageSize);
+        for(let i=1;i<=pageNumber;i++){
+            Pagenumberlist.push(i)
+        }
+        setNumberPage(Pagenumberlist)
+    }
+
+    async function changepage(event) {
+        let temp = event.target.value
+        setCurrentpage(Number(temp))
+        pageStart = pageSize*(event.target.value - 1)
+        await loadSubmission(pageStart,pageSize)
+    }
+
+    async function gotofirstpage(event) {
+        setCurrentpage(1)
+        pageStart = pageSize*(1 - 1)
+        await loadSubmission(pageStart,pageSize)
+    }
+
+    async function gotolastpage(event) {
+        setCurrentpage(numberPage.length)
+        pageStart = pageSize*(numberPage.length - 1)
+        await loadSubmission(pageStart,pageSize)
+    }
+
+    async function gotobackpage(event) {
+        event.preventDefault();
+        setCurrentpage(currentpage-1)
+        pageStart = pageSize*(currentpage - 2)
+        await loadSubmission(pageStart,pageSize)
+    }
+
+    async function gotonextpage(event) {
+        setCurrentpage(currentpage+1)
+        pageStart = pageSize*(currentpage)
+        await loadSubmission(pageStart,pageSize)
+    }
+
+    async function changepagesize(pageSize) {
+        setPageSize(Number(pageSize))
+        setCurrentpage(1)
+        pageStart = pageSize*(1 - 1)
+        await loadCount(Number(pageSize))
+        await loadSubmission(pageStart,Number(pageSize))
+    }
+
     const [guModal, setGuModal] = useState(false);
     const [hintModal, setHintModal] = useState(false);
     const [voteModal, setVoteModal] = useState(false);
@@ -118,40 +179,6 @@ function QuestionProf() {
         setFileList(fileList.filter(fileList => fileList !== file))
     }
 
-    const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
-        let array = [...fileList]
-        for(let i=0; i<e.target.files.length; i++){
-            if(fileList.indexOf(e.target.files[i]) < 0) {
-                array.push(e.target.files[i]);
-            }
-        }
-        console.log(e.target.files)
-        console.log(array)
-    };
-
-    const handleUploadClick = () => {
-        if (!fileList) {
-            return;
-        }
-    
-        // 👇 Create new FormData object and append files
-        const data = new FormData();
-        files.forEach((file, i) => {
-            data.append(`file-${i}`, file, file.name);
-        });
-    
-        // 👇 Uploading the files using the fetch API to the server
-        fetch('https://httpbin.org/post', {
-            method: 'POST',
-            body: data,
-        })
-        .then((res) => res.json())
-        .then((data) => console.log(data))
-        .catch((err) => console.error(err));
-    };
-
-    const files = fileList ? [...fileList] : [];
-
     function autosize(){
         var text = $('.autosize');
     
@@ -174,7 +201,7 @@ function QuestionProf() {
     return(
         <div className="question-page">
             <div className="cover-container">
-                <Link className="btn-back" to={`/professor/${ShortName}`} state={dataProf}>
+                <Link className="btn-back" to={`/professor/${TopicID}`}>
                     <FaChevronLeft />
                 </Link>
                 <div className="body">
@@ -203,19 +230,7 @@ function QuestionProf() {
                                     }}
                                 >
                                     <TbBulb size={22} className="me-1" />Hint
-                                </button>
-                                <button 
-                                    className="btn-6" 
-                                    onClick={() => setGuModal(true)}
-                                    style={
-                                        challenge 
-                                        ? {opacity: 1, visibility: "visible", width: "unset"} 
-                                        : {opacity: 0, visibility: "hidden", width: 0, padding: 0, margin: 0}
-                                    }
-                                >
-                                    <GiFlyingFlag size={22} />
-                                </button>
-                               
+                                </button>                               
                             </div>
                             <div className="point">100 P</div>
                         </div>
@@ -343,7 +358,63 @@ function QuestionProf() {
                                 }
                             </div>
                             <div className={`submission ${menuActive === 3 ? "active" : ""}`}>
-                            <div className="submit-table">
+                                <div className="submission-table">
+                                    <table className="table">
+                                        <thead>
+                                            <tr>
+                                                <th className="status">Status <FaSort /></th>
+                                                <th className="name">Name <FaSort /></th>
+                                                <th className="date">Date submission <FaSort /></th>
+                                                <th className="action text-center">Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        {allSubmission.map((submit, i) => 
+                                        <tr key={i}>
+                                            <td className={`status ${submit.Status === "Checked" ? "color-3" : "color-1"} `}>{submit.Status}</td>
+                                            <td className="name">{submit.FirstName + " " + submit.SurName}</td>
+                                            <td className="date">{submit.DateSubmit}</td>
+                                            <td className="action">
+                                                <Link className="btn-view-detail" to={`submission/${submit.SubmissionID}`}>View Detail</Link>
+                                            </td>
+                                        </tr>
+                                        )}
+                                            {/* <tr>
+                                                <td className="status color-1">Unchecked</td>
+                                                <td className="name">Wattanasiri Uparakkitanon</td>
+                                                <td className="date">05-12-2022, 00:00</td>
+                                                <td className="action">
+                                                    <Link className="btn-view-detail" to="submission/1">View Detail</Link>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td className="status color-1">Unchecked</td>
+                                                <td className="name">Phongrawit Phiphatbawornchat</td>
+                                                <td className="date">05-12-2022, 00:00</td>
+                                                <td className="action">
+                                                    <Link className="btn-view-detail" to="submission/1">View Detail</Link>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td className="status color-3">Checked</td>
+                                                <td className="name">Nattapat Sittichai</td>
+                                                <td className="date">05-12-2022, 00:00</td>
+                                                <td className="action">
+                                                    <Link className="btn-view-detail" to="submission/1">View Detail</Link>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td className="status color-3">Checked</td>
+                                                <td className="name">Pisit Jaiton</td>
+                                                <td className="date">05-12-2022, 00:00</td>
+                                                <td className="action">
+                                                    <Link className="btn-view-detail" to="submission/1">View Detail</Link>
+                                                </td>
+                                            </tr>                                                                                         */}
+                                        </tbody>
+                                    </table>                                                      
+                                </div>
+                                {/* <div className="submit-table">
                                     <table className="table">
                                         <thead>
                                             <tr>
@@ -394,54 +465,58 @@ function QuestionProf() {
                                             </tr>
                                         </tbody>
                                     </table>                                                     
+                                </div>                                 */}
+                            </div>                            
+                        </div>                       
+                    </div>
+                    {
+                        menuActive === 3
+                        ?   
+                        <div className="pagination1">                                    
+                                           <div className="pagination-number">
+                            <button onClick={gotofirstpage} className={
+                                    currentpage !== 1 
+                                    ? "arrow"
+                                    : "arrow disable"
+                                    }><FiChevronsLeft /></button>
+                                <button onClick={gotobackpage} className={
+                                    currentpage !== 1 
+                                    ? "arrow"
+                                    : "arrow disable"
+                                    }><FiChevronLeft /></button>
+                                {numberPage.map((key, i) => (
+                                    <button key={i} name={key} value={key} className={
+                                        currentpage === key
+                                        ? "number active"
+                                        : "number"
+                                    } onClick={changepage}>{key}</button>
+                                ))}
+                                 <button onClick={gotonextpage} className={
+                                    currentpage < numberPage.length
+                                    ? "arrow"
+                                    : "arrow disable"
+                                    }><FiChevronRight /></button>
+                                <button onClick={gotolastpage} className={
+                                    currentpage < numberPage.length
+                                    ? "arrow"
+                                    : "arrow disable"
+                                    }><FiChevronsRight /></button>
+                            </div>
+                                <div className="display-per-page">
+                                    <span>Display per page</span>
+                                    <select onChange={(event) => {changepagesize(event.target.value)}} className="page">
+                                        <option default>5</option>
+                                        <option>10</option>
+                                        <option>25</option>
+                                    </select>
+                                    {/* <span>Showing 1-5 of 25</span> */}
                                 </div>
-                                <div className="pagination1">
-                            <div className="display-per-page">
-                                <span>Display per page</span>
-                                <select className="page">
-                                    <option default>5</option>
-                                    <option>10</option>
-                                    <option>25</option>
-                                </select>
                             </div>
-                            <div className="pagination-number">
-                                <span className="arrow disable"><FiChevronsLeft /></span>
-                                <span className="arrow disable"><FiChevronLeft /></span>
-                                <span className="number active">1</span>
-                                <span className="number">2</span>
-                                <span className="number">3</span>
-                                <span className="number">4</span>
-                                <span className="number">5</span>
-                                <span className="arrow"><FiChevronRight /></span>
-                                <span className="arrow"><FiChevronsRight /></span>
-                            </div>
-                        </div>
-                            </div>
-                        </div>
-                       
-                    </div>
+            
+                        : null
+                    }                    
                 </div>
-            </div>
-
-            {/* Give up Modal */}
-            <div className="tu-modal" style={guModal ? {opacity: "1", visibility: "visible"} : {}}>
-                <div className="tu-modal-card">
-                    <IoCloseCircle className="close-button" onClick={() => setGuModal(false)} />
-                    <div className="tu-modal-head">
-                        <GiFlyingFlag className="icon" />
-                        <span>
-                            Are you sure you want to give up ?
-                        </span>
-                    </div>
-                    <div className="tu-modal-body">
-                        <p>If you give up this question, submission that you have submitted before will disappear. And you’ll not earn points that you should have received.</p>
-                    </div>
-                    <div className="tu-modal-footer">
-                        <div className="cancel-button" onClick={() => setGuModal(false)}>No, keep me challenging.</div>
-                        <div className="accept-button" onClick={() => {setGuModal(false); setChallenge(false)}}>Yes, I want to give up.</div>
-                    </div>
-                </div>
-            </div>
+            </div>            
 
             {/* Hint show Modal */}
             <div className="tu-modal" style={hintModal ? {opacity: "1", visibility: "visible"} : {}}>

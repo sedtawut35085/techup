@@ -39,6 +39,7 @@ function Topic() {
 
     async function loadQuestionForEachTopic(pageStart,value) {
         const res = await getQuestionForEachTopic(topicID,pageStart,value);
+        console.log(res)
         setAllQuestion(res); 
     }
 
@@ -88,11 +89,28 @@ function Topic() {
         <td className="status">
             {duedatetime = new Date(question.DueDate) < todayDatetime ?
             <>
-                <TbClockOff size={24} /> 
+                {question.SubmissionID === null?
+                    <>
+                        <TbClockOff size={24} /> 
+                    </>
+                    :
+                    <>
+                        <TbClockOff className='color-3' size={24} /> 
+                    </>
+                }   
             </>
             :
             <>
-                <TbClock className="color-1" size={24} /> 
+                {question.SubmissionID === null?
+                    <>
+                        <TbClock className="color-1" size={24} /> 
+                    </>
+                    :
+                    <>
+                        <TbClock className="color-3" size={24} /> 
+                    </>
+                }   
+                
             </>
             }
         </td>
@@ -100,17 +118,60 @@ function Topic() {
             <TbClock className="color-1" size={24} /> 
             <TbSwords className="color-5" size={24} />
         </td> */}
-        <td className="title thai"><Link to={`/topic/${topicID}/question/${question.QuestionID}`}>{question.QuestionName}</Link></td>
-        <td className="date">{question.DueDate}</td>
-        <td className="acceptance">10.00 %</td>
-        <td className="difficulty color-1">{question.Difficulty}</td>
-        <td className="point-table"><span className="point" style={{backgroundColor: "#FED470"}}>{question.Point} P</span></td>
+        <td className="title thai">
+            {question.SubmissionID === null?
+            <>
+                <Link to={`/topic/${topicID}/question/${question.QuestionID}`}>{question.QuestionName}</Link>
+            </>
+            :
+            <>
+                <div className='color-3'>{question.QuestionName}</div>
+            </>
+            }
+        </td>
+        {question.SubmissionID === null?
+            <>
+                <td className="date">{question.DueDate}</td>
+            </>
+            :
+            <>
+                <td className="date color-3">{question.DueDate}</td>
+            </>
+        }
+        {question.SubmissionID === null?
+        <>
+            <td className="acceptance">10.00 %</td>
+        </>
+        :
+        <>
+            <td className="acceptance color-3">10.00 %</td>
+        </>
+        }
+        {question.SubmissionID === null?
+        <>
+            <td className="difficulty color-1">{question.Difficulty}</td>
+        </>
+        :
+        <>
+            <td className="difficulty color-3">{question.Difficulty}</td>
+        </>
+        }
+        
+        {question.SubmissionID === null?
+            <>
+                 <td className="point-table"><span className="point" style={{backgroundColor: "#FED470"}}>{question.Point} P</span></td>
+            </>
+            :
+            <>
+                 <td className="point-table"><span className="point" style={{backgroundColor: "green"}}>Done</span></td>
+            </>
+            }
+       
     </tr>
     )
 
     // const contact = JSON.parse(data.Contact)
     const [contact,setContact] = useState([])
-
     const [owner, setOwner] = useState({
         name: "Chukiat",
         surname: "Worasucheep",
@@ -236,6 +297,12 @@ function Topic() {
                                 </div>
                                 <div className="divider mt-3"></div>
                                 <div className="contact-all">
+                                    <div className="contact">
+                                        <div className="icon">
+                                            <AiTwotoneMail size={32} />
+                                        </div>
+                                        <span>Professor.pro@kmutt.ac.th</span>
+                                    </div>
                                     {contact.Email === undefined ?
                                         <>
 
@@ -305,12 +372,6 @@ function Topic() {
                                         </div>
                                     </>
                                     }
-                                    <div className="contact">
-                                        <div className="icon">
-                                            <RiGlobalFill size={32} />
-                                        </div>
-                                        <span>ppppppppppppppppppppppppppppppppppppppppppppp</span>
-                                    </div>
                                 </div>
                             </div>                      
                         </div>
@@ -424,7 +485,7 @@ function Topic() {
                                 </select>
                             </div>
                             <div className="pagination-number">
-                            <button onClick={gotofirstpage} className={
+                                <button onClick={gotofirstpage} className={
                                     currentpage !== 1 
                                     ? "arrow"
                                     : "arrow disable"

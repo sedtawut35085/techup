@@ -75,14 +75,13 @@ function Professor() {
                     </Link>
                 </div>    
                 <div className="mt-3 mb-5 divider"></div>
-                {/* <div className="homeprof-section">
+                <div className="homeprof-section">
                         <div className="top-homeprof-section mb-4">
                             <div className='d-flex jc-btw'>
                                 <span className="f-lg fw-700">Recent Submissions</span>
                                 <Link className="f-xm fw-700 color-gray3 pt-2" to="/submit">
                                     click to see all Submissions<FiChevronRight size={20} />
                                 </Link>
-                              
                             </div>
                         </div>
                         <div className="homeprof-table">
@@ -137,7 +136,7 @@ function Professor() {
                                 </tbody>
                             </table>                                                     
                         </div>
-                    </div>                      */}
+                    </div>                     
             </div>
             </div>
             <div className="background-container"></div>

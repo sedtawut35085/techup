@@ -8,18 +8,17 @@ import { TbDoorExit, TbClock, TbClockOff } from 'react-icons/tb'
 import { BiMessageSquareDetail } from 'react-icons/bi'
 import { RiVipCrown2Fill, RiInstagramFill, RiFacebookCircleFill, RiGithubFill, RiGlobalFill, RiLineFill } from 'react-icons/ri'
 import { AiTwotoneMail } from 'react-icons/ai'
-
 import { IoCloseCircle } from 'react-icons/io5'
 import { getQuestionForEachTopic, getCountOfQuestionForEachTopic } from '../../service/question.js';
-
+import { getEachTopic } from '../../service/topic'
 import SelectPicker2 from '../../components/picker_select/selectPicker2.js'
 import BackgroundIcon from '../../components/background/bgIcons.js';
 
 function TopicProf() {
-    const location = useLocation();
+    // const location = useLocation();
+    // const data = location.state;
 
-    const data = location.state;
-    // console.log(data)
+    const [data,setData] = useState([])
     const [currentpage,setCurrentpage] = useState(1);
     const [pageSize,setPageSize] = useState(5);
     let pageStart = 0;
@@ -27,14 +26,28 @@ function TopicProf() {
     let todayDate = new Date().toISOString().slice(0, 10);
     let todayDatetime = new Date(todayDate);
     let duedatetime;
+    let TopicID = window.location.href.split("/")[4];
+    const [contact,setContact] = useState([])
+
+    useEffect(() => {
+        getTopicData()
+        loadCountofQuestionForEachTopic(pageSize);
+        loadQuestionForEachTopic(pageStart,pageSize);
+    }, []);
+    
+    async function getTopicData() {
+        let res = await getEachTopic(TopicID)
+        setData(res[0])
+        setContact(JSON.parse(res[0].Contact))
+    }
 
     async function loadQuestionForEachTopic(pageStart,value) {
-        const res = await getQuestionForEachTopic(data.TopicID,pageStart,value);
+        const res = await getQuestionForEachTopic(TopicID,pageStart,value);
         setAllQuestion(res); 
     }
 
     async function loadCountofQuestionForEachTopic(pageSize) {
-        const res = await getCountOfQuestionForEachTopic(data.TopicID);
+        const res = await getCountOfQuestionForEachTopic(TopicID);
         const Pagenumberlist = []
         pageNumber = Math.ceil(res[0]["count(*)"] / pageSize);
         for(let i=1;i<=pageNumber;i++){
@@ -45,13 +58,6 @@ function TopicProf() {
 
     const [allQuestion, setAllQuestion] = useState([])
     const [numberPage, setNumberPage] = useState([])
-
-    useEffect(() => {
-        loadCountofQuestionForEachTopic(pageSize);
-        loadQuestionForEachTopic(pageStart,pageSize);
-    }, []);
-
-    const contact = JSON.parse(data.Contact)
 
     const statusAll = [
         {label: "Ontime", data: "ontime", title: "Date"},
@@ -82,7 +88,7 @@ function TopicProf() {
             }
             
         </td>
-        <td className="title thai"><Link to={`/professor/${data.ShortName}/question/${question.QuestionID}`} state={data} >{question.QuestionName}</Link></td>
+        <td className="title thai"><Link to={`/professor/${TopicID}/question/${question.QuestionID}`} state={data} >{question.QuestionName}</Link></td>
         {/* <td className="title thai"><Link to ={{
             pathname: `/professor/${data.ShortName}/question/${question.QuestionID}`, 
             state: { 
@@ -192,6 +198,13 @@ function TopicProf() {
                                 </div>
                                 <div className="divider mt-3"></div>
                                 <div className="contact-all">
+
+                                    <div className="contact">
+                                        <div className="icon">
+                                            <AiTwotoneMail size={32} />
+                                        </div>
+                                        <span>Professor.pro@kmutt.ac.th</span>
+                                    </div>
                                 {contact.Email === undefined ?
                                     <>
                                     
@@ -294,7 +307,7 @@ function TopicProf() {
                                     />
                                 </div>
                             </div>
-                            <Link className="btn-addquestion" to="/addquestion" state={data} >Add Question + </Link> 
+                            <Link className="btn-addquestion" to={`/professor/${TopicID}/addquestion`} >Add Question + </Link> 
                         </div>
                         <div className="question-table">
                             <table className="table">

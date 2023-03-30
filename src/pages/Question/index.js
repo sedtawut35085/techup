@@ -1,5 +1,5 @@
 import React, { ChangeEvent, useState , useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import $ from 'jquery'
 
 import { fileSize, fileType } from '../../assets/js/helper'
@@ -14,22 +14,47 @@ import { IoCloseCircle, IoCaretUp, IoCaretDown } from 'react-icons/io5'
 
 import { getQuestion } from '../../service/question';
 import { getDiscussQuestion } from '../../service/discussQuestion';
+import { saveSubmission } from '../../service/submission'
+import { getStudent } from '../../service/student';
 
 import BackgroundIcon from '../../components/background/bgIcons.js';
 
 import Moment from 'moment'
 
+import { convertToBase64, uploadPhoto } from '../../service';
+import AWS from 'aws-sdk'
+import { getChallenge,addChallengeUser,deleteChallengedUser } from '../../service/challenge';
+
+
+const S3_BUCKET ='techup-file-upload-storage';
+const REGION ='ap-southeast-1';
+const s3Subfolder = 'data-submit';
+
+AWS.config.update({
+    accessKeyId: 'AKIA6PZPD4TPJJAKDW6Q',
+    secretAccessKey: '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'
+})
+
+const myBucket = new AWS.S3({
+    params: { Bucket: S3_BUCKET},
+    region: REGION,
+})
+
 function Question() {
+
+    const navigate = useNavigate()
+    const [inFoUser, setInFoUser] = useState("")
     const [inFoQuestion, setInFoQuestion] = useState("")
     // const [discuss,setDiscuss] = useState([])
     let topicID = window.location.href.split("/")[4];
     let QuestionId = window.location.href.split("/")[6];
 
     useEffect( () => {
-        getQuestionFromQuestionID(); 
+        getQuestionFromQuestionID();
+        getChallengedStatus();
         // getDiscuss();
+        getInfoUser()
       }, []);
-
 
     async function getDiscuss() {
         let res = await getDiscussQuestion(QuestionId);
@@ -40,6 +65,32 @@ function Question() {
     async function getQuestionFromQuestionID() {
         let res = await getQuestion(QuestionId);
         setInFoQuestion(res[0])
+        console.log(res[0])
+    }
+
+    async function getInfoUser() {
+        let resUser = await getStudent();
+        setInFoUser(resUser[0])
+    }
+
+    async function getChallengedStatus() {
+        const res = await getChallenge(QuestionId);
+        if (res.length > 0)
+        {
+            setChallenge(true);
+        } else {
+            setChallenge(false);
+        }
+    }
+
+    function addChallenge(){
+        addChallengeUser(QuestionId)
+        setChallenge(true)
+    }
+
+    function deleteChallenge(){
+        deleteChallengedUser(QuestionId)
+        setChallenge(false)
     }
 
     const isHintShow = false;
@@ -48,12 +99,11 @@ function Question() {
     const [voteModal, setVoteModal] = useState(false);
 
     const [data, setData] = useState({
-        name: "Operation System",
+        name: "Machine Learning",
         type: "Computer Science",
         icon: "idea",
         description: "ระบบปฏิบัติการ(Operating System) หรือ โอเอส(OS) คือ ซอฟต์แวร์ที่ทำหน้าที่ควบคุมการทำงานของระบบคอมพิวเตอร์ ให้คอมพิวเตอร์และอุปกรณ์ต่อพ่วงต่าง ๆ ทำงานร่วมกันอย่างมีประสิทธิภาพ ซอฟต์แวร์ระบบที่รู้จักกันดี คือ ระบบปฏิบัติการ(OS-Operating System) เช่น MS-DOS, UNIX, OS/2, Windows, Linux และ Ubuntu เป็นต้น",
     });
-
 
     const [commentDiscuss, setCommentDiscuss] = useState("")
     const [commentSubmission, setCommentSubmission] = useState("")
@@ -128,7 +178,7 @@ function Question() {
         setFileList(fileList.filter(fileList => fileList !== file))
     }
 
-    const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const handleFileChange = (e) => {
         let array = [...fileList]
         for(let i=0; i<e.target.files.length; i++){
             if(fileList.indexOf(e.target.files[i]) < 0) {
@@ -136,30 +186,79 @@ function Question() {
             }
         }
         setFileList(array)
-        console.log(e.target.files)
-        console.log(array)
     };
 
-    const handleUploadClick = () => {
-        if (!fileList) {
-            return;
-        }
-    
-        // 👇 Create new FormData object and append files
-        const data = new FormData();
-        files.forEach((file, i) => {
-            data.append(`file-${i}`, file, file.name);
+    const uploadFile = async (file) => {
+        const convertFiles = []
+        console.log(file)
+        file.forEach(async (files, i) => {
+            let currentDate = new Date()
+            currentDate = Moment(currentDate).format('YYYY-MM-DD:HH-mm-ss')
+            const fileName = currentDate + "_" + files.name
+            const params = {
+                ACL: 'public-read',
+                Body: files,
+                Bucket: S3_BUCKET,
+                Key: `${s3Subfolder}/${fileName}`
+            };
+            let name = files.name
+            let size = files.size
+            const convertFile = await myBucket.upload(params).promise().then((res) => {
+                convertFiles.push(
+                {
+                    "name" : name,
+                    "size" : size,
+                    "Url" : res.Location
+                })
+                i = i+1
+                if(i === file.length){
+                    setTimeout(() => {
+                        var body = {
+                            "StudentEmail": inFoUser.UserEmail,
+                            "FirstName": inFoUser.FirstName,
+                            "SurName": inFoUser.SurName,
+                            "DateSubmit": Moment(new Date()).format('YYYY-MM-DD'),
+                            "DueDate": Moment(inFoQuestion.DueDate).format('YYYY-MM-DD'),
+                            "Status":"UnChecked",
+                            "FileAttachment": convertFiles,
+                            "QuestionID": inFoQuestion.QuestionID,
+                            "QuestionName":inFoQuestion.QuestionName,
+                            "TopicID": inFoQuestion.TopicID,
+                            "TopicName": inFoQuestion.TopicName,
+                            "Answer": commentSubmission
+                        }
+                        let ressavesubmit = saveSubmission(body).then((res)=>{
+                            navigate(`/topic/${topicID}`)
+                        })
+                        console.log(ressavesubmit)
+                      }, 3000);
+                }
+            });
         });
+    }
+
+    // const handleUploadClick = () => {
+
+    //     console.log('11')
+    //     if (!fileList) {
+    //         return;
+    //     } 
     
-        // 👇 Uploading the files using the fetch API to the server
-        fetch('https://httpbin.org/post', {
-            method: 'POST',
-            body: data,
-        })
-        .then((res) => res.json())
-        .then((data) => console.log(data))
-        .catch((err) => console.error(err));
-    };
+    //     // 👇 Create new FormData object and append files
+    //     const data = new FormData();
+    //     files.forEach((file, i) => {
+    //         data.append(`file-${i}`, file, file.name);
+    //     });
+        
+    //     // 👇 Uploading the files using the fetch API to the server
+    //     fetch('https://httpbin.org/post', {
+    //         method: 'POST',
+    //         body: data,
+    //     })
+    //     .then((res) => res.json())
+    //     .then((data) => console.log(data))
+    //     .catch((err) => console.error(err));
+    // };
 
     const files = fileList ? [...fileList] : [];
 
@@ -194,9 +293,9 @@ function Question() {
                             <p className="question-name">{inFoQuestion.QuestionName}</p>
                             <p className="subject-name">
                                 <div className="icon">
-                                    <img width="24px" alt="icon" src={"/assets/images/icons/" + data.icon + ".png"} />
+                                    <img width="24px" alt="icon" src={"/assets/images/icons/" + inFoQuestion.Icon + ".png"} />
                                 </div>
-                                Operating System -&nbsp;<span className="color-3">{inFoQuestion.Difficulty}</span>
+                                {inFoQuestion.TopicName} -&nbsp;<span className="color-3">{inFoQuestion.Difficulty}</span>
                             </p>
                             <p className="due-date">
                                 <div className="icon">
@@ -243,7 +342,7 @@ function Question() {
                                 </button>
                                 <button 
                                     className="btn-5" 
-                                    onClick={() => setChallenge(true)}
+                                    onClick={() => addChallenge()}
                                     style={
                                         challenge 
                                         ? {opacity: 0, visibility: "hidden", width: 0, padding: 0, margin: 0}
@@ -253,7 +352,7 @@ function Question() {
                                     <TbSwords size={22} className="me-1" />Challenge
                                 </button>
                             </div>
-                            <div className="point">100 P</div>
+                            <div className="point">{inFoQuestion.Point} P</div>
                         </div>
                     </div>
                     <div className="problem-section">
@@ -393,6 +492,7 @@ function Question() {
                                             className="file-input__input"
                                             onChange={handleFileChange}
                                             multiple
+                                            // maxfilesize={175}
                                         />
                                         <label className="file-input__label" htmlFor="file-input">
                                             <TbPaperclip size={24} />
@@ -400,6 +500,9 @@ function Question() {
                                     </div>
                                 </div>
                                 <div className="attachment">
+                                    {/* <input type="file" onChange={handleFileInput}/> */}
+                                    {/* <button onClick={() => uploadFile(selectedFile)}> Upload to S3</button> */}
+                                    {/* <input id="profile-img" name="profile-img" type="file" accept="image/*" onChange={onSelectFile}/> */}
                                     <span className="f-md fw-700">Attachment ({files?.length || 0})</span>
                                     <div className="sp-vertical"></div>
                                     {files.map((file, key) => (
@@ -422,7 +525,7 @@ function Question() {
                                 </div>
                                 <div className="divider my-4"></div>
                                 <div className="d-flex jc-center ai-center">
-                                    <button className="btn-01">Submit</button>
+                                    <button onClick={() => uploadFile(fileList)} className="btn-01">Submit</button>
                                 </div>
                             </div>
                         </div>
@@ -445,7 +548,7 @@ function Question() {
                     </div>
                     <div className="tu-modal-footer">
                         <div className="cancel-button" onClick={() => setGuModal(false)}>No, keep me challenging.</div>
-                        <div className="accept-button" onClick={() => {setGuModal(false); setChallenge(false)}}>Yes, I want to give up.</div>
+                        <div className="accept-button" onClick={() => {setGuModal(false); deleteChallenge()}}>Yes, I want to give up.</div>
                     </div>
                 </div>
             </div>
@@ -492,11 +595,11 @@ function Question() {
             {/* Background */}
             <div className="background-container"></div>
             <BackgroundIcon 
-                icon={data.icon} 
+                icon={inFoQuestion.Icon} 
                 color={
-                    data.type === "Computer Science"
+                    inFoQuestion.Type === "Computer Science"
                     ? "#1B1F4B"
-                    : data.type === "Data Science"
+                    : inFoQuestion.Type === "Data Science"
                     ? "#6A244D"
                     : "#194D45"
                 }

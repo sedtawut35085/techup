@@ -411,6 +411,46 @@
 }
 /* Contact */
 
+/* Button download */
+.btn-download {
+    height: 36px;
+    padding: 0 1rem;
+    border-radius: 10px;
+    background-color: #FFA242;
+    color: #fff;
+    box-shadow: 0 0 4px rgba(0, 0, 0, 0.25);
+    font-size: 0.875rem;
+    font-weight: 700;
+    outline: none;
+    border: none;
+    transition: all 0.2s;
+}
+.btn-download:hover {
+    background-color: #FF9326;
+}
+/* Button download*/
+
+/* Button view detail */
+.btn-view-detail {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 32px;
+    padding: 0 1rem;
+    border-radius: 10px;
+    background-color: #FFA242;
+    color: #fff;
+    box-shadow: 0 0 4px rgba(0, 0, 0, 0.25);
+    font-size: 0.875rem;
+    outline: none;
+    border: none;
+    transition: all 0.2s;
+}
+.btn-view-detail:hover {
+    background-color: #FF9326;
+}
+/* Button download*/
+
 /* Button 1 */
 .btn-01 {
     height: 45px;

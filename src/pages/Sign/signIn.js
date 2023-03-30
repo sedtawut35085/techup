@@ -38,10 +38,9 @@ function SignInForm() {
   async function checkAuthen() {
     await Auth.currentAuthenticatedUser()
     .then(async (response) => {
-      if(email.includes('@mail.kmutt.ac.th')){
+      if(response.attributes.email.includes('@mail.kmutt.ac.th')){
         //student
         let res = await getStudent()
-        // console.log('res ',res[0])
         if(res[0] === undefined){
           navigate('/select-role')
         }else{
