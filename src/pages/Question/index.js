@@ -13,6 +13,7 @@ import { HiOutlineExclamation } from 'react-icons/hi'
 import { IoCloseCircle, IoCaretUp, IoCaretDown } from 'react-icons/io5'
 
 import { getQuestion } from '../../service/question';
+import { getDiscussQuestion } from '../../service/discussQuestion';
 import { saveSubmission } from '../../service/submission'
 import { getStudent } from '../../service/student';
 
@@ -22,6 +23,7 @@ import Moment from 'moment'
 
 import { convertToBase64, uploadPhoto } from '../../service';
 import AWS from 'aws-sdk'
+import { getChallenge,addChallengeUser,deleteChallengedUser } from '../../service/challenge';
 
 
 const S3_BUCKET ='techup-file-upload-storage';
@@ -43,13 +45,22 @@ function Question() {
     const navigate = useNavigate()
     const [inFoUser, setInFoUser] = useState("")
     const [inFoQuestion, setInFoQuestion] = useState("")
+    // const [discuss,setDiscuss] = useState([])
     let topicID = window.location.href.split("/")[4];
     let QuestionId = window.location.href.split("/")[6];
 
     useEffect( () => {
-        getQuestionFromQuestionID(); 
+        getQuestionFromQuestionID();
+        getChallengedStatus();
+        // getDiscuss();
         getInfoUser()
       }, []);
+
+    async function getDiscuss() {
+        let res = await getDiscussQuestion(QuestionId);
+        console.log(res);
+        setDiscuss(res)
+    }
 
     async function getQuestionFromQuestionID() {
         let res = await getQuestion(QuestionId);
@@ -60,6 +71,26 @@ function Question() {
     async function getInfoUser() {
         let resUser = await getStudent();
         setInFoUser(resUser[0])
+    }
+
+    async function getChallengedStatus() {
+        const res = await getChallenge(QuestionId);
+        if (res.length > 0)
+        {
+            setChallenge(true);
+        } else {
+            setChallenge(false);
+        }
+    }
+
+    function addChallenge(){
+        addChallengeUser(QuestionId)
+        setChallenge(true)
+    }
+
+    function deleteChallenge(){
+        deleteChallengedUser(QuestionId)
+        setChallenge(false)
     }
 
     const isHintShow = false;
@@ -322,7 +353,7 @@ function Question() {
                                 </button>
                                 <button 
                                     className="btn-5" 
-                                    onClick={() => setChallenge(true)}
+                                    onClick={() => addChallenge()}
                                     style={
                                         challenge 
                                         ? {opacity: 0, visibility: "hidden", width: 0, padding: 0, margin: 0}
@@ -528,7 +559,7 @@ function Question() {
                     </div>
                     <div className="tu-modal-footer">
                         <div className="cancel-button" onClick={() => setGuModal(false)}>No, keep me challenging.</div>
-                        <div className="accept-button" onClick={() => {setGuModal(false); setChallenge(false)}}>Yes, I want to give up.</div>
+                        <div className="accept-button" onClick={() => {setGuModal(false); deleteChallenge()}}>Yes, I want to give up.</div>
                     </div>
                 </div>
             </div>
