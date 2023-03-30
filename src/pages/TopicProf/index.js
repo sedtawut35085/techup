@@ -27,6 +27,7 @@ function TopicProf() {
     let todayDatetime = new Date(todayDate);
     let duedatetime;
     let TopicID = window.location.href.split("/")[4];
+    const [contact,setContact] = useState([])
 
     useEffect(() => {
         getTopicData()
@@ -37,6 +38,7 @@ function TopicProf() {
     async function getTopicData() {
         let res = await getEachTopic(TopicID)
         setData(res[0])
+        setContact(JSON.parse(res[0].Contact))
     }
 
     async function loadQuestionForEachTopic(pageStart,value) {
@@ -56,11 +58,6 @@ function TopicProf() {
 
     const [allQuestion, setAllQuestion] = useState([])
     const [numberPage, setNumberPage] = useState([])
-
-    
-
-    // const contact = JSON.parse(data.Contact)
-    const contact = []
 
     const statusAll = [
         {label: "Ontime", data: "ontime", title: "Date"},
@@ -201,6 +198,13 @@ function TopicProf() {
                                 </div>
                                 <div className="divider mt-3"></div>
                                 <div className="contact-all">
+
+                                    <div className="contact">
+                                        <div className="icon">
+                                            <AiTwotoneMail size={32} />
+                                        </div>
+                                        <span>Professor.pro@kmutt.ac.th</span>
+                                    </div>
                                 {contact.Email === undefined ?
                                     <>
                                     

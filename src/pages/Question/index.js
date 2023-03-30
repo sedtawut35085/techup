@@ -1,5 +1,5 @@
 import React, { ChangeEvent, useState , useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import $ from 'jquery'
 
 import { fileSize, fileType } from '../../assets/js/helper'
@@ -13,6 +13,8 @@ import { HiOutlineExclamation } from 'react-icons/hi'
 import { IoCloseCircle, IoCaretUp, IoCaretDown } from 'react-icons/io5'
 
 import { getQuestion } from '../../service/question';
+import { saveSubmission } from '../../service/submission'
+import { getStudent } from '../../service/student';
 
 import BackgroundIcon from '../../components/background/bgIcons.js';
 
@@ -27,8 +29,8 @@ const REGION ='ap-southeast-1';
 const s3Subfolder = 'data-submit';
 
 AWS.config.update({
-    accessKeyId: 'AKIA6PZPD4TPDL2KG6KT',
-    secretAccessKey: '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'
+    accessKeyId: 'AKIA6PZPD4TPJJAKDW6Q',
+    secretAccessKey: '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'
 })
 
 const myBucket = new AWS.S3({
@@ -38,20 +40,26 @@ const myBucket = new AWS.S3({
 
 function Question() {
 
-    const [progress , setProgress] = useState(0);
-    const [selectedFile, setSelectedFile] = useState(null);
-
+    const navigate = useNavigate()
+    const [inFoUser, setInFoUser] = useState("")
     const [inFoQuestion, setInFoQuestion] = useState("")
     let topicID = window.location.href.split("/")[4];
     let QuestionId = window.location.href.split("/")[6];
 
     useEffect( () => {
         getQuestionFromQuestionID(); 
+        getInfoUser()
       }, []);
 
     async function getQuestionFromQuestionID() {
         let res = await getQuestion(QuestionId);
         setInFoQuestion(res[0])
+        console.log(res[0])
+    }
+
+    async function getInfoUser() {
+        let resUser = await getStudent();
+        setInFoUser(resUser[0])
     }
 
     const isHintShow = false;
@@ -60,12 +68,11 @@ function Question() {
     const [voteModal, setVoteModal] = useState(false);
 
     const [data, setData] = useState({
-        name: "Operation System",
+        name: "Machine Learning",
         type: "Computer Science",
         icon: "idea",
         description: "ระบบปฏิบัติการ(Operating System) หรือ โอเอส(OS) คือ ซอฟต์แวร์ที่ทำหน้าที่ควบคุมการทำงานของระบบคอมพิวเตอร์ ให้คอมพิวเตอร์และอุปกรณ์ต่อพ่วงต่าง ๆ ทำงานร่วมกันอย่างมีประสิทธิภาพ ซอฟต์แวร์ระบบที่รู้จักกันดี คือ ระบบปฏิบัติการ(OS-Operating System) เช่น MS-DOS, UNIX, OS/2, Windows, Linux และ Ubuntu เป็นต้น",
     });
-
 
     const [commentDiscuss, setCommentDiscuss] = useState("")
     const [commentSubmission, setCommentSubmission] = useState("")
@@ -150,15 +157,11 @@ function Question() {
         setFileList(array)
     };
 
-    // const handleFileInput = (e) => {
-    //     setSelectedFile(e.target.files[0]);
-    // }
-
     const uploadFile = async (file) => {
-        console.log(commentSubmission)
+        const convertFiles = []
+        console.log(file)
         file.forEach(async (files, i) => {
             let currentDate = new Date()
-            console.log(files)
             currentDate = Moment(currentDate).format('YYYY-MM-DD:HH-mm-ss')
             const fileName = currentDate + "_" + files.name
             const params = {
@@ -167,10 +170,40 @@ function Question() {
                 Bucket: S3_BUCKET,
                 Key: `${s3Subfolder}/${fileName}`
             };
-            let res = await myBucket.upload(params).promise();
-            console.log(res.Location)
+            let name = files.name
+            let size = files.size
+            const convertFile = await myBucket.upload(params).promise().then((res) => {
+                convertFiles.push(
+                {
+                    "name" : name,
+                    "size" : size,
+                    "Url" : res.Location
+                })
+                i = i+1
+                if(i === file.length){
+                    setTimeout(() => {
+                        var body = {
+                            "StudentEmail": inFoUser.UserEmail,
+                            "FirstName": inFoUser.FirstName,
+                            "SurName": inFoUser.SurName,
+                            "DateSubmit": Moment(new Date()).format('YYYY-MM-DD'),
+                            "DueDate": Moment(inFoQuestion.DueDate).format('YYYY-MM-DD'),
+                            "Status":"UnChecked",
+                            "FileAttachment": convertFiles,
+                            "QuestionID": inFoQuestion.QuestionID,
+                            "QuestionName":inFoQuestion.QuestionName,
+                            "TopicID": inFoQuestion.TopicID,
+                            "TopicName": inFoQuestion.TopicName,
+                            "Answer": commentSubmission
+                        }
+                        let ressavesubmit = saveSubmission(body).then((res)=>{
+                            navigate(`/topic/${topicID}`)
+                        })
+                        console.log(ressavesubmit)
+                      }, 3000);
+                }
+            });
         });
-      
     }
 
     // const handleUploadClick = () => {
@@ -217,14 +250,6 @@ function Question() {
     }
     autosize();
 
-    // async function onSelectFile(event) {
-    //     const imageFile = event.target.files[0]
-    //     let convertedFile = await convertToBase64(imageFile)
-    //     convertedFile = imageFile.type + ' ' + convertedFile;
-    //     let responseLocationImage = await uploadPhoto(convertedFile)
-    //     console.log(responseLocationImage)
-    // }
-
     return(
         <div className="question-page">
             <div className="cover-container">
@@ -237,9 +262,9 @@ function Question() {
                             <p className="question-name">{inFoQuestion.QuestionName}</p>
                             <p className="subject-name">
                                 <div className="icon">
-                                    <img width="24px" alt="icon" src={"/assets/images/icons/" + data.icon + ".png"} />
+                                    <img width="24px" alt="icon" src={"/assets/images/icons/" + inFoQuestion.Icon + ".png"} />
                                 </div>
-                                Operating System -&nbsp;<span className="color-3">{inFoQuestion.Difficulty}</span>
+                                {inFoQuestion.TopicName} -&nbsp;<span className="color-3">{inFoQuestion.Difficulty}</span>
                             </p>
                             <p className="due-date">
                                 <div className="icon">
@@ -296,7 +321,7 @@ function Question() {
                                     <TbSwords size={22} className="me-1" />Challenge
                                 </button>
                             </div>
-                            <div className="point">100 P</div>
+                            <div className="point">{inFoQuestion.Point} P</div>
                         </div>
                     </div>
                     <div className="problem-section">
@@ -539,11 +564,11 @@ function Question() {
             {/* Background */}
             <div className="background-container"></div>
             <BackgroundIcon 
-                icon={data.icon} 
+                icon={inFoQuestion.Icon} 
                 color={
-                    data.type === "Computer Science"
+                    inFoQuestion.Type === "Computer Science"
                     ? "#1B1F4B"
-                    : data.type === "Data Science"
+                    : inFoQuestion.Type === "Data Science"
                     ? "#6A244D"
                     : "#194D45"
                 }

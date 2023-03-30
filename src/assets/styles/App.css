@@ -81,6 +81,10 @@ textarea::-webkit-scrollbar-thumb:hover {
     width: 100%;
 }
 
+.table {
+    margin: 0;
+}
+
 @media screen and (max-width: 1520px) {
     .cover-container {
         max-width: 1100px;

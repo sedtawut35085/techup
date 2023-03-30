@@ -42,24 +42,6 @@ export async function getList () {
     return response.data
 }
 
-export async function getEachTopic (TopicID) {
-  //accessToken = await getAccessToken()
-  useremail = await getCurrentUserId()
-  await axios({
-      method: 'get',
-      url: `${baseUrl}/topic`,
-      params: {
-          "getType": "getEachTopic",
-          "TopicID": TopicID
-      },
-      }).then((res) => {
-        response = res
-      }).catch((err)=>{
-        response = err
-      })
-  return response.data
-}
-
 export async function getTopicfromProfessor () {
   //accessToken = await getAccessToken()
   useremail = await getCurrentUserId()
@@ -91,5 +73,23 @@ export async function saveTopic (bodydata) {
         response = err
       })
   console.log("topic : " + response.data)
+  return response.data
+}
+
+export async function getEachTopic (TopicID) {
+  //accessToken = await getAccessToken()
+  useremail = await getCurrentUserId()
+  await axios({
+      method: 'get',
+      url: `${baseUrl}/topic`,
+      params: {
+          "getType": "getEachTopic",
+          "TopicID": TopicID
+      },
+      }).then((res) => {
+        response = res
+      }).catch((err)=>{
+        response = err
+      })
   return response.data
 }
