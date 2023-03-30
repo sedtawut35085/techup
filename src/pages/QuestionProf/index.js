@@ -370,7 +370,7 @@ function QuestionProf() {
                                         </thead>
                                         <tbody>
                                         {allSubmission.map((submit, i) => 
-                                        <tr key={i}>
+                                        <tr key={i}> 
                                             <td className={`status ${submit.Status === "Checked" ? "color-3" : "color-1"} `}>{submit.Status}</td>
                                             <td className="name">{submit.FirstName + " " + submit.SurName}</td>
                                             <td className="date">{submit.DateSubmit}</td>

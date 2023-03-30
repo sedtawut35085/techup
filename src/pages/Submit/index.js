@@ -1,13 +1,19 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import { Link } from 'react-router-dom';
 import BackgroundIcon from '../../components/background/bgIcons.js';
-
+import { getAllSubmissionFromProfessorID } from '../../service/submission.js';
 import { FaChevronLeft} from 'react-icons/fa';
 import { FiSearch, FiChevronLeft, FiChevronRight, FiChevronsLeft, FiChevronsRight } from 'react-icons/fi'
 import SelectPicker2 from '../../components/picker_select/selectPicker2.js'
 
 function SubmitProf() {
+    
+    const [numberPage, setNumberPage] = useState([])
+    const [pageSize,setPageSize] = useState(5);
+    const [currentpage,setCurrentpage] = useState(1);
+    let pageStart = 0;
+    let pageNumber
 
     const statusAll = [
         {label: "Available", data: "available"},
@@ -22,8 +28,19 @@ function SubmitProf() {
         {label: "Hard", data: "Hard"}
     ]
     const [difficulty, setDifficulty] = useState({label: "", data: ""})
-
+    const [submission, setSubmission] = useState([])
     const [search, setSearch] = useState("")
+    
+    useEffect( () => {
+        loadAllSubmissionFromProfessorID()
+      }, []);
+
+    async function loadAllSubmissionFromProfessorID() {
+        let res = await getAllSubmissionFromProfessorID(0,5);
+        setSubmission(res);
+    }
+
+    console.log(submission)
 
     return (
         <div className="submit">

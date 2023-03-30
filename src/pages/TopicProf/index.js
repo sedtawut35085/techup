@@ -398,11 +398,11 @@ function TopicProf() {
             {/* Background */}
             <div className="background-container"></div>
             <BackgroundIcon 
-                icon={data.icon} 
+                icon={data.Icon} 
                 color={
-                    data.type === "Computer Science"
+                    data.Type === "Computer Science"
                     ? "#1B1F4B"
-                    : data.type === "Data Science"
+                    : data.Type === "Data Science"
                     ? "#6A244D"
                     : "#194D45"
                 }
