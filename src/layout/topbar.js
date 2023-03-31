@@ -1,16 +1,16 @@
-import React, { useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import Auth from '../configuration/configuration-aws'
 import { HiOutlineCalendar, HiOutlineBell } from 'react-icons/hi'
 import { FiChevronRight } from 'react-icons/fi'
-import { useNavigate } from 'react-router-dom'
 import { IoPersonCircleOutline, IoPersonOutline, IoGiftOutline, IoSettingsOutline, IoExitOutline } from 'react-icons/io5'
+import { getStudent } from '../service/student'
 
 const TopBar = ({currentEmailUser,isProfessor}) => {
 
     const pathname = (useLocation().pathname).split("/")[1]
     const [dropdownActive, setDropdownActive] = useState(false)
-
+    const [inFoUser, setInFoUser] = useState("")
     const navigate = useNavigate()
 
     async function logout() {
@@ -18,19 +18,41 @@ const TopBar = ({currentEmailUser,isProfessor}) => {
         navigate('/')
     }
 
+    async function loadinfoUser() {
+        let resUser = await getStudent();
+        setInFoUser(resUser[0])
+    }
+
+    useEffect( () => {
+        loadinfoUser()
+      }, []);
+
     return (
         <div className="topbar" onMouseLeave={() => setDropdownActive(false)}>
             <nav>
-                <Link className={`nav hover ${pathname === "home" ? "active" : ""}`} to="/home">
-                    <div>
-                        <img alt="logo-text(bold).png" src="/assets/images/logo/logo-text(bold).png" height="32"/>
-                    </div>
-                </Link>
+                {isProfessor === false?
+                    <>
+                      <Link className={`nav hover ${pathname === "home" ? "active" : ""}`} to="/home">
+                            <div>
+                                <img alt="logo-text(bold).png" src="/assets/images/logo/logo-text(bold).png" height="32"/>
+                            </div>
+                        </Link>
+                    </>
+                    :                        
+                    <>
+                       <Link className={`nav hover ${pathname === "professor" ? "active" : ""}`} to="/professor">
+                            <div>
+                                <img alt="logo-text(bold).png" src="/assets/images/logo/logo-text(bold).png" height="32"/>
+                            </div>
+                        </Link>
+                    </>
+                } 
+                
                 <Link className={`nav hover ${pathname === "discuss" ? "active" : ""}`} to="/discuss">
                     <div>Discuss</div>
                 </Link>
-                <Link className={`nav hover ${pathname === "raking" ? "active" : ""}`} to="/raking">
-                    <div>Raking</div>
+                <Link className={`nav hover ${pathname === "ranking" ? "active" : ""}`} to="/ranking">
+                    <div>Ranking</div>
                 </Link>
                 {isProfessor === false?
                     <>
@@ -64,7 +86,7 @@ const TopBar = ({currentEmailUser,isProfessor}) => {
                 {isProfessor === false?
                     <>
                        <div className="nav">
-                            <div className="point">999 P</div>
+                            <div className="point">{inFoUser.Point} P</div>
                         </div>
                     </>
                     :                        
@@ -78,7 +100,6 @@ const TopBar = ({currentEmailUser,isProfessor}) => {
                         </div>
                         <div className={`dropdown ${dropdownActive ? "active" : ""}`}>
                             <div className="info">
-                                {/* <span className="techup-id f-md">Current Email</span> */}
                                 <span className="full-name f-sm">{currentEmailUser.substring(0, 20) + "..."}</span>
                             </div>
                             <div className="px-2">
@@ -103,8 +124,11 @@ const TopBar = ({currentEmailUser,isProfessor}) => {
                                     </div>
                                     <FiChevronRight size={28} />
                                 </Link>
-                                <Link onClick={logout} >
-                                    <IoExitOutline size={32} className="me-3" />Sign out
+                                <Link className="d-flex jc-btw" onClick={logout}>
+                                    <div>
+                                        <IoExitOutline size={32} className="me-3" />Sign out
+                                    </div>
+                                    <FiChevronRight size={28} />
                                 </Link>
                             </div>
                         </div>

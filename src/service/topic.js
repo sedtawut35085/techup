@@ -1,4 +1,4 @@
-import Auth from '../configuration/configuration-aws'
+
 import axios from 'axios';
 import { getCurrentUserId } from '.';
 
@@ -21,7 +21,6 @@ export async function getAllTopic () {
         }).catch((err)=>{
           response = err
         })
-    console.log("topic : " + response.data)
     return response.data
 }
 
@@ -40,7 +39,6 @@ export async function getList () {
         }).catch((err)=>{
           response = err
         })
-    console.log("topic : " + response.data)
     return response.data
 }
 
@@ -52,13 +50,46 @@ export async function getTopicfromProfessor () {
       url: `${baseUrl}/topic`,
       params: {
           "UserEmail" : useremail,
-          "getType": "getEachTopic"
+          "getType": "getTopicFromProfessor"
       },
       }).then((res) => {
         response = res
       }).catch((err)=>{
         response = err
       })
+  return response.data
+}
+
+export async function saveTopic (bodydata) {
+  //accessToken = await getAccessToken()
+  // useremail = await getCurrentUserId()
+  await axios({
+      method: 'post',
+      url: `${baseUrl}/topic`,
+      data: bodydata
+      }).then((res) => {
+        response = res
+      }).catch((err)=>{
+        response = err
+      })
   console.log("topic : " + response.data)
+  return response.data
+}
+
+export async function getEachTopic (TopicID) {
+  //accessToken = await getAccessToken()
+  useremail = await getCurrentUserId()
+  await axios({
+      method: 'get',
+      url: `${baseUrl}/topic`,
+      params: {
+          "getType": "getEachTopic",
+          "TopicID": TopicID
+      },
+      }).then((res) => {
+        response = res
+      }).catch((err)=>{
+        response = err
+      })
   return response.data
 }

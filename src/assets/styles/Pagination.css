@@ -1,0 +1,98 @@
+.pagination1 {
+    padding-top: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.pagination1 .display-per-page select {
+    cursor: pointer;
+    width: 40px;
+    height: 30px;
+    border: none;
+    outline: none;
+    border-radius: 15px;
+    margin: 0 .6rem;
+    text-align: center;
+    box-shadow: 0 0 4px rgba(0, 0, 0, 0.25);
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    transition: all .2s;
+}
+
+.pagination1 .display-per-page select:hover {
+    color: #fff;
+    background-color: #FFA242;
+}
+
+.pagination1 .display-per-page select option {
+    color: #26262C;
+    background-color: #fff;
+}
+
+.pagination1 .display-per-page select::-ms-expand {
+    display: none;
+}
+
+.pagination1 .pagination-number {
+    display: flex;
+}
+
+.pagination1 .pagination-number .arrow {
+    cursor: pointer;
+    margin: 0 .3rem;
+    font-size: 1.25rem;
+    color: #FFA242;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    background-color: #fff;
+    border: white;
+    justify-content: center;
+    align-items: center;
+    border-radius: 15px;
+    box-shadow: 0 0 4px rgba(0, 0, 0, 0.25);
+    transition: all .2s;
+}
+
+.pagination1 .pagination-number .arrow:hover {
+    background-color: #FFA242;
+    color: #fff;
+}
+
+.pagination1 .pagination-number .arrow.disable {
+    cursor: not-allowed;
+    color: #D7D7D6;
+}
+
+.pagination1 .pagination-number .arrow.disable:hover {
+    background-color: #fff;
+    color: #D7D7D6;
+}
+
+.pagination1 .pagination-number .number {
+    cursor: pointer;
+    margin: 0 .3rem;
+    font-size: 1.125rem;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    background-color: #fff;
+    border: white;
+    justify-content: center;
+    align-items: center;
+    border-radius: 15px;
+    box-shadow: 0 0 4px rgba(0, 0, 0, 0.25);
+    transition: all .2s;
+}
+
+.pagination1 .pagination-number .number.active {
+    background-color: #FFA242;
+    color: #fff;
+    font-weight: 700;
+}
+
+.pagination1 .pagination-number .number:hover {
+    background-color: #FFA242;
+    color: #fff;
+}

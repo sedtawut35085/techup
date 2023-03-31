@@ -1,4 +1,6 @@
 import React from 'react'
+import { Link } from 'react-router-dom';
+import Moment from 'moment';
 
 import { formatDate, convertToDate } from '../../assets/js/helper'
 
@@ -7,62 +9,64 @@ const QuestionBox = ({data}) => {
     
 
     return (
-        <div className="question-box col-3">
+        <Link className="question-box col-3" to={`/topic/${data.TopicID}/question/${data.QuestionID}`}>
             <div 
                 className="body" 
                 style={
-                    data.type === "Computer Science"
+                    data.Type === "Computer Science"
                     ? {backgroundColor: "#1B1F4B"}
-                    : data.type === "Data Science"
+                    : data.Type === "Data Science"
                     ? {backgroundColor: "#6A244D"}
-                    : {backgroundColor: "#194D45"}
+                    : data.Type === "Digital Business"
+                    ? {backgroundColor: "#194D45"}
+                    : {backgroundColor: "#fff"}
                 }
             >
-                <div className="point">{data.point} P</div>
+                <div className="point">{data.Point} P</div>
                 <div className="title">
-                    <span className="f-lg fw-600 thai">{data.name}</span>
+                    <span className="f-lg fw-600 thai">{data.QuestionName}</span>
                     <span className="f-xs fw-400">Due date:&nbsp;
                         {   
-                            data.date == formatDate(new Date())
+                            Moment(data.DueDate).isSame(new Date())
                             ? <span className="color-5 fw-600">Today</span>
-                            : convertToDate(data.date) < new Date()
+                            : Moment(data.DueDate).isBefore(new Date())
                             ? <span className="color-gray2 fw-600">Out time</span>
-                            : convertToDate(data.date) > new Date()
-                            ? <span className="color-1 fw-600">{data.date}</span>
+                            : Moment(data.DueDate).isAfter(new Date())
+                            ? <span className="color-1 fw-600">{Moment(data.DueDate).format('DD-MM-YYYY')}</span>
                             : <span>-</span>
                         }
                     </span>
                 </div>
                 <div className="bottom f-sm">
-                    <span>{data.topic}</span>
+                    <span>{data.TopicName}</span>
                     <span 
                         className={`text-capitalize fw-700 ${
-                            data.difficulty === "easy"
+                            data.Difficulty === "Easy"
                             ? "color-3"
-                            : data.difficulty === "normal"
+                            : data.Difficulty === "Normal"
                             ? "color-1"
                             : "color-5"
                         }`}
                     >
-                        {data.difficulty}
+                        {data.Difficulty}
                     </span>
                 </div>
                 <div className="bg-icon">
                     <li>
-                        <img alt="icon" width="65px" src={"/assets/images/icons/" + data.icon + ".png"} />
+                        <img alt="icon" width="65px" src={"/assets/images/icons/" + data.Icon + ".png"} />
                     </li>   
                     <li>
-                        <img alt="icon" width="25px" src={"/assets/images/icons/" + data.icon + ".png"} />
+                        <img alt="icon" width="25px" src={"/assets/images/icons/" + data.Icon + ".png"} />
                     </li>                                  
                     <li>
-                        <img alt="icon" width="35px" src={"/assets/images/icons/" + data.icon + ".png"} />
+                        <img alt="icon" width="35px" src={"/assets/images/icons/" + data.Icon + ".png"} />
                     </li>
                     <li>
-                        <img alt="icon" width="100px" src={"/assets/images/icons/" + data.icon + ".png"} />
+                        <img alt="icon" width="100px" src={"/assets/images/icons/" + data.Icon + ".png"} />
                     </li>
                 </div>
             </div>
-        </div>
+        </Link>
     )
 }
 

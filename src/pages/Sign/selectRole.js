@@ -56,16 +56,11 @@ function SelectRole() {
         setContacts([])
         setErrors([])
         setErrorsSubmit(false)
-
     }
     
-    
-
     async function handleSubmit(event) {
-
         setErrors([]);
         const arrayError = [];
-
         if(role === "student") {
             if(techupID === "") {
                 arrayError.push('techupId');
@@ -105,7 +100,6 @@ function SelectRole() {
         if(birthday == ""){
             arrayError.push('birthday');
         }
-        
         if(arrayError.length === 0) {
             if(role === "professor") {
                 console.log('pass pro')
@@ -118,7 +112,7 @@ function SelectRole() {
                 var data = {
                     "ProfessorEmail": currentEmailUser,
                     "ProfessorID": professorID,  
-                    "Name": name,    
+                    "FirstName": name,    
                     "SurName": surname,   
                     "Gender": gender.label,    
                     "Birthday": Moment(birthday).format('YYYY-MM-DD'),
@@ -145,7 +139,7 @@ function SelectRole() {
                     "UserEmail": currentEmailUser,
                     "TechUpID": techupID,    
                     "StudentID": studentID,    
-                    "Name": name,    
+                    "FirstName": name,    
                     "SurName": surname,   
                     "Gender": gender.label,    
                     "Birthday": Moment(birthday).format('YYYY-MM-DD'),
@@ -294,7 +288,6 @@ function SelectRole() {
                                 </div>
                                 {errorsSubmit === false?
                                     <>
-                                        
                                     </>
                                         :                        
                                     <>

@@ -6,8 +6,14 @@ import BackgroundIcon from '../../components/background/bgIcons.js';
 import TopicBox from '../../components/box_topic/boxTopic.js'
 import QuestionBox from '../../components/box_question/boxQuestion.js'
 import { getAllTopic , getList } from '../../service/topic.js';
+import { getChallengeList } from '../../service/challenge.js';
 
 function Homepage() {
+
+    async function loadChallengeList() {
+        const res = await getChallengeList();
+        setChallengeList(res);
+    }
 
     async function loadAllTopic() {
         const res = await getAllTopic();
@@ -25,9 +31,11 @@ function Homepage() {
     //     {name: "Data Science", type: "Data Science", owner: "Chukiat Worasucheep", icon: "connections"}
     // ])
 
+    const [challengeList ,setChallengeList] = useState([])
     const [allTopic, setAllTopic] = useState([])
     const [myList, setMyList] = useState([])
     useEffect(() => {
+        loadChallengeList();
         loadAllTopic();
         loadmyList();
     }, []);
@@ -40,7 +48,7 @@ function Homepage() {
         <div className="homepage">
             <div className="cover-container">
                 {
-                    noneTopic
+                    challengeList?.length === 0 && myList.length === 0
                     ?   <div className="none-topic">
                             <p className="f-xl fw-700 text-center">
                                 <img className="me-2" alt="logo" width="38px" src="/assets/images/logo/logo.png" />
@@ -56,24 +64,34 @@ function Homepage() {
                             </div>
                         </div>
                     :   <div className="homepage-main d-flex fd-col">
-                            <span className="f-xl fw-700"><TbSwords className="color-1 me-2" />Challenging</span>
-                            <div className="topic-section">
-                                {challenging.map((question, key) => (
-                                    <QuestionBox
-                                        key={key}
-                                        data={question}
-                                     />
-                                ))}
-                            </div>         
-                            <span className="mt-3 f-xl fw-700"><TbListDetails className="color-1 me-2" />My list</span>
-                            <div className="topic-section">
-                                {myList.map((topic, key) => (
-                                    <TopicBox
-                                        key={key}
-                                        data={topic}
-                                     />
-                                ))}
-                            </div>    
+                            {
+                                challengeList?.length !== 0 &&
+                                <>
+                                    <span className="f-xl fw-700"><TbSwords className="color-1 me-2" />Challenging</span>
+                                    <div className="topic-section">
+                                        {challengeList.map((question, key) => (
+                                            <QuestionBox
+                                                key={key}
+                                                data={question}
+                                            />
+                                        ))}
+                                    </div>
+                                </>
+                            }
+                            {
+                                myList?.length !== 0 &&
+                                <>
+                                    <span className="mt-3 f-xl fw-700"><TbListDetails className="color-1 me-2" />My list</span>
+                                    <div className="topic-section">
+                                        {myList.map((topic, key) => (
+                                            <TopicBox
+                                                key={key}
+                                                data={topic}
+                                            />
+                                        ))}
+                                    </div>  
+                                </>
+                            }
                             <div className="mt-3 mb-5 divider"></div>             
                             <p className="f-xl fw-700">
                                 <img className="me-2" alt="logo" width="36px" src="/assets/images/logo/logo.png" />

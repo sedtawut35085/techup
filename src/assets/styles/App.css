@@ -7,8 +7,8 @@ body {
 a {
     cursor: pointer;
     text-decoration: none !important;
-    color: #26262C;
     transition: all 0.2s;
+    color: unset;
 }
 
 ::-webkit-scrollbar {
@@ -26,6 +26,27 @@ a {
   
 ::-webkit-scrollbar-thumb:hover {
     background: #585656;
+}
+
+textarea {
+    font-family: 'IBM Plex Sans Thai', sans-serif;
+}
+
+textarea::-webkit-scrollbar {
+    width: 6px;
+}
+  
+textarea::-webkit-scrollbar-track {
+    background-color: transparent;
+}
+  
+textarea::-webkit-scrollbar-thumb {
+    background: #ffb56a;
+    border-radius: 3px;
+}
+  
+textarea::-webkit-scrollbar-thumb:hover {
+    background: #FFA242;
 }
 
 .thai {
@@ -58,6 +79,10 @@ a {
     background-color: #fff;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.25);
     width: 100%;
+}
+
+.table {
+    margin: 0;
 }
 
 @media screen and (max-width: 1520px) {
@@ -383,21 +408,6 @@ a {
     opacity: 0;
     z-index: 99999;
     visibility: hidden;
-}
-[data-title]::after::after {
-    content: "";
-    position: absolute;
-    margin-top: -6px;
-    margin-left: -5px;
-    border-left: 12px solid #000;
-    border-right: 12px solid #000;
-    border-bottom: 12px solid #000;
-    transform: rotate(-45deg);
-    width: 12px;
-    height: 12px;
-    bottom: -200px;
-    right: -15px;
-    background-color: #000;
 }
 [data-title] {
     position: relative;

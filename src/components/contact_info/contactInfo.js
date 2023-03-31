@@ -14,8 +14,8 @@ const ContactInfo = ({defaultValue , setValue}) => {
         {label: "Email", data: "email"},
         {label: "Facebook", data: "fb"},
         {label: "Instagram", data: "ig"},
-        {label: "Line ID", data: "line"},
-        {label: "ETC.", data: "etc"}
+        {label: "LineID", data: "line"},
+        {label: "ETC", data: "etc"}
     ]
 
     function toggleOption(key) {

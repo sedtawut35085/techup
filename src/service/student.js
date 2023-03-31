@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { getAccessToken, getCurrentUserId,convertToBase64,uploadPhoto } from './index'
 const baseUrl = 'https://5ccp4x5xq5.execute-api.ap-southeast-1.amazonaws.com/dev'
-let response, accessToken, userEmail, professorEmail, convertedFile
+let response, accessToken, userEmail, convertedFile
 
 
 export async function getStudent () {
@@ -25,6 +25,26 @@ export async function getStudent () {
     return response.data
 }
 
+export async function getStudentFromStudentEmail (StudentEmail) {
+  accessToken = await getAccessToken()
+  await axios({
+      method: 'get',
+      url: `${baseUrl}/student`,  
+      params: {
+        "UserEmail" : StudentEmail
+      },
+      headers: { 
+          'Authorization': accessToken, 
+          'Content-Type': 'text/plain'
+      },
+      }).then((res) => {
+        response = res
+      }).catch((err)=>{
+        response = err
+      })
+  return response.data
+}
+
 export async function saveStudent (bodydata, imageFile) {
     accessToken = await getAccessToken()
     convertedFile = await convertToBase64(imageFile);
@@ -45,4 +65,25 @@ export async function saveStudent (bodydata, imageFile) {
           response = err
         })
     return response
+}
+
+export async function updateStudentText (bodydata,StudentEmail) {
+  accessToken = await getAccessToken()
+  await axios({
+      method: 'patch',
+      url: `${baseUrl}/student`,
+      headers: { 
+          'Authorization': accessToken, 
+          'Content-Type': 'text/plain'
+      },
+      params: {
+        "UserEmail" : StudentEmail
+      }, 
+      data: bodydata
+      }).then((res) => {
+        response = res
+      }).catch((err)=>{
+        response = err
+      })
+  return response
 }

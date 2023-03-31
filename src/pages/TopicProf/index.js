@@ -1,50 +1,53 @@
-import React, { useState ,useEffect } from 'react';
-import Moment from 'moment';
-import { Link ,useLocation } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
 
+import { Link, useLocation } from 'react-router-dom';
 import { FaChevronLeft, FaSort, FaFrownOpen } from 'react-icons/fa';
 import { FiSearch, FiChevronLeft, FiChevronRight, FiChevronsLeft, FiChevronsRight } from 'react-icons/fi'
 import { HiOutlineChartBar } from 'react-icons/hi'
-import { TbDoorExit, TbArrowsShuffle, TbClock, TbClockOff, TbSwords } from 'react-icons/tb'
+import { TbDoorExit, TbClock, TbClockOff } from 'react-icons/tb'
 import { BiMessageSquareDetail } from 'react-icons/bi'
-import { RiVipCrown2Fill, RiMailFill, RiInstagramFill, RiFacebookCircleFill, RiGithubFill, RiGlobalFill , RiLineFill } from 'react-icons/ri'
-import { addJoinTopic , getJoin , deleteJoinedTopic } from '../../service/joinTopic'
-import { getQuestionForEachTopic, getCountOfQuestionForEachTopic } from '../../service/question.js';
-import { getEachTopic } from '../../service/topic';
+import { RiVipCrown2Fill, RiInstagramFill, RiFacebookCircleFill, RiGithubFill, RiGlobalFill, RiLineFill } from 'react-icons/ri'
+import { AiTwotoneMail } from 'react-icons/ai'
 import { IoCloseCircle } from 'react-icons/io5'
-
+import { getQuestionForEachTopic, getCountOfQuestionForEachTopic } from '../../service/question.js';
+import { getEachTopic } from '../../service/topic'
 import SelectPicker2 from '../../components/picker_select/selectPicker2.js'
 import BackgroundIcon from '../../components/background/bgIcons.js';
 
-function Topic() {
-    const [modal, setModal] = useState(false)
-    let topicID = window.location.href.split("/")[4]
+function TopicProf() {
     // const location = useLocation();
     // const data = location.state;
-    const [data,setData] = useState([]);
 
+    const [data,setData] = useState([])
     const [currentpage,setCurrentpage] = useState(1);
-    const [numberPage, setNumberPage] = useState([])
-    let pageStart = 0;
     const [pageSize,setPageSize] = useState(5);
+    let pageStart = 0;
     let pageNumber
     let todayDate = new Date().toISOString().slice(0, 10);
     let todayDatetime = new Date(todayDate);
     let duedatetime;
+    let TopicID = window.location.href.split("/")[4];
+    const [contact,setContact] = useState([])
 
+    useEffect(() => {
+        getTopicData()
+        loadCountofQuestionForEachTopic(pageSize);
+        loadQuestionForEachTopic(pageStart,pageSize);
+    }, []);
+    
     async function getTopicData() {
-        const res = await getEachTopic(topicID);
-        setData(res[0]);
+        let res = await getEachTopic(TopicID)
+        setData(res[0])
         setContact(JSON.parse(res[0].Contact))
     }
 
     async function loadQuestionForEachTopic(pageStart,value) {
-        const res = await getQuestionForEachTopic(topicID,pageStart,value);
+        const res = await getQuestionForEachTopic(TopicID,pageStart,value);
         setAllQuestion(res); 
     }
 
     async function loadCountofQuestionForEachTopic(pageSize) {
-        const res = await getCountOfQuestionForEachTopic(topicID);
+        const res = await getCountOfQuestionForEachTopic(TopicID);
         const Pagenumberlist = []
         pageNumber = Math.ceil(res[0]["count(*)"] / pageSize);
         for(let i=1;i<=pageNumber;i++){
@@ -53,97 +56,52 @@ function Topic() {
         setNumberPage(Pagenumberlist)
     }
 
-    function leaveTopic(topicID) {
-        deleteJoinedTopic(topicID);
-        setJoin(false);
-    }
-
-    function joinTopic(topicID) {
-        setJoin(true);
-        addJoinTopic(topicID);
-    }
-
-    async function getJoinedList() {
-        const res = await getJoin();
-        const found = res.some(joined => joined.TopicID === (Number(topicID)))
-        if (!found)
-        {
-            setJoin(false);
-        } else {
-            setJoin(true)
-        }
-    }
-
     const [allQuestion, setAllQuestion] = useState([])
-    // const [joinedList, setJoinedList] = useState([])
-    useEffect(() => {
-        // loadQuestionForEachTopic();
-        getTopicData();
-        getJoinedList();
-        loadCountofQuestionForEachTopic(pageSize);
-        loadQuestionForEachTopic(pageStart,pageSize);
-    }, []);
-
-    const listQuestions = allQuestion.map((question, i) =>   
-    <tr 
-        className={`${question.SubmissionID === null ? "" : "color-3"}`} 
-        key={i}
-    >
-        <td className="status">
-            {
-                duedatetime = new Date(question.DueDate) < todayDatetime 
-                ?   <TbClockOff className={`${question.SubmissionID === null ? "color-gray2" : "color-3"}`} size={24} /> 
-                :   <TbClock className={`${question.SubmissionID === null ? "color-1" : "color-3"}`} size={24} /> 
-            }
-        </td>
-        <td className="title thai">
-            <Link to={`/topic/${topicID}/question/${question.QuestionID}`}>{question.QuestionName}</Link>
-        </td>
-        <td className="date">{Moment(question.DueDate).format('YYYY-MM-DD')}</td>
-        <td className="acceptance">10.00 %</td>
-        <td 
-            className={`difficulty ${
-                question.Difficulty === "Easy" && question.SubmissionID === null
-                ? "color-3"
-                : question.Difficulty === "Normal" && question.SubmissionID === null
-                ? "color-1"
-                : question.Difficulty === "Hard" && question.SubmissionID === null
-                ? "color-5"
-                : "color-3"
-            }`}
-        >
-            {question.Difficulty}
-        </td>
-        <td className="point-table">
-            <span className={`point ${question.SubmissionID === null ? "" : "done"}`}>{question.SubmissionID === null ? (question.Point + "P") : "Done"}</span>
-        </td>
-       
-    </tr>
-    )
-
-    const [contact, setContact] = useState([])
-
-    const [join, setJoin] = useState();
-
-    const [question, setQuestion] = useState([
-
-    ])
+    const [numberPage, setNumberPage] = useState([])
 
     const statusAll = [
-        {label: "Available", data: "available"},
-        {label: "Ongoing", data: "ongoing"},
-        {label: "Submitted", data: "submitted"}
+        {label: "Ontime", data: "ontime", title: "Date"},
+        {label: "Outtime", data: "outtime", title: "Date"},
     ]
     const [status, setStatus] = useState({label: "", data: ""})
 
     const difficultyAll = [
-        {label: "Easy", data: "Easy"},
-        {label: "Normal", data: "Normal"},
-        {label: "Hard", data: "Hard"}
+        {label: "Easy", data: "Easy", title: "Difficulty"},
+        {label: "Normal", data: "Normal", title: "Difficulty"},
+        {label: "Hard", data: "Hard", title: "Difficulty"}
     ]
     const [difficulty, setDifficulty] = useState({label: "", data: ""})
 
     const [search, setSearch] = useState("")
+
+    const listQuestions = allQuestion.map((question, i) =>
+    <tr key={i}>
+        <td className="status">
+            {duedatetime = new Date(question.DueDate) < todayDatetime ?
+            <>
+                <TbClockOff size={24} /> 
+            </>
+            :
+            <>
+                <TbClock className="color-1" size={24} /> 
+            </>
+            }
+            
+        </td>
+        <td className="title thai"><Link to={`/professor/${TopicID}/question/${question.QuestionID}`} state={data} >{question.QuestionName}</Link></td>
+        {/* <td className="title thai"><Link to ={{
+            pathname: `/professor/${data.ShortName}/question/${question.QuestionID}`, 
+            state: { 
+                question
+            }
+        }}>{question.QuestionName}</Link>
+        </td> */}
+        <td className="date">{question.DueDate}</td>
+        <td className="acceptance">10.00 %</td>
+        <td className="difficulty color-1">{question.Difficulty}</td>
+        <td className="point-table"><span className="point" style={{backgroundColor: "#FED470"}}>{question.Point} P</span></td>
+    </tr>
+    )
 
     async function changepage(event) {
         let temp = event.target.value
@@ -185,26 +143,29 @@ function Topic() {
         await loadQuestionForEachTopic(pageStart,Number(pageSize))
     }
 
+    async function changefilter() {
+        console.log('ddd')
+        // setCurrentpage(1)
+        // pageStart = pageSize*(1 - 1)
+        // await loadCountofQuestionForEachTopic(Number(pageSize))
+        // await loadQuestionForEachTopic(pageStart,Number(pageSize))
+    }
+    
     return (
         <div className="topic-page">
             <div className="cover-container">
-                <Link className="btn-back" to="/home">
+                <Link className="btn-back" to="/professor">
                     <FaChevronLeft />
                 </Link>
                 <div className="body">
                     <div className="main-section">
                         <div className="title">
                             <span className="f-xl fw-700">{data.TopicName}</span>
-                            {
-                                join
-                                ?   <button className="btn-3" onClick={() => setModal(true)}><TbDoorExit /> Leave</button>
-                                :   <button className="btn-2" onClick={() => joinTopic(data.TopicID)}>+ Join</button>
-                            }
                         </div>
                         <p className="f-md thai fw-400 mt-4">{data.Description}</p>
                         <div className="divider mt-5"></div>
                     </div>
-                    <div className="info-section">
+                    <div className="info-section item">
                         <div className="info-box">
                             <span className="color-1 f-lg fw-700 d-flex ai-center">Stats Session<HiOutlineChartBar className="ms-2" size={28} /></span>
                             <div className="d-flex ai-center mt-3 jc-btw bar">
@@ -226,7 +187,7 @@ function Topic() {
                                 </div>
                             </div>
                         </div>
-                        <div className="info-box">
+                        <div className="info-box mt-5">
                             <span className="color-1 f-lg fw-700 d-flex ai-center">Detail Session<BiMessageSquareDetail className="ms-2" size={28} /></span>      
                             <div className="detail">
                                 <div className="pt-4 d-flex fd-col jc-center ai-center">
@@ -237,46 +198,83 @@ function Topic() {
                                 </div>
                                 <div className="divider mt-3"></div>
                                 <div className="contact-all">
-                                    {contact.Email &&
+
+                                    <div className="contact">
+                                        <div className="icon">
+                                            <AiTwotoneMail size={32} />
+                                        </div>
+                                        <span>Professor.pro@kmutt.ac.th</span>
+                                    </div>
+                                {contact.Email === undefined ?
+                                    <>
+                                    
+                                    </>
+                                    :                        
+                                    <>
                                         <div className="contact">
                                             <div className="icon">
-                                                <RiMailFill size={28} />
+                                                <AiTwotoneMail size={32} />
                                             </div>
                                             <span>{contact.Email}</span>
                                         </div>
-                                    }
-                                   {contact.Facebook && 
+                                    </>
+                                } 
+                                {contact.Facebook === undefined ?
+                                    <>
+                                    
+                                    </>
+                                    :                        
+                                    <>
                                         <div className="contact">
                                             <div className="icon">
-                                                <RiFacebookCircleFill size={28} />
+                                                <RiFacebookCircleFill size={32} />
                                             </div>
                                             <span>{contact.Facebook}</span>
                                         </div>
-                                    }
-                                    {contact.Instagram &&
+                                    </>
+                                }
+                                {contact.Instagram === undefined ?
+                                    <>
+                                    
+                                    </>
+                                    :                        
+                                    <>
                                         <div className="contact">
                                             <div className="icon">
-                                                <RiInstagramFill size={28} />
+                                                <RiInstagramFill size={32} />
                                             </div>
                                             <span>{contact.Instagram}</span>
                                         </div>
-                                    }
-                                    {contact.LineID &&
+                                    </>
+                                } 
+                                {contact.LineID === undefined ?
+                                    <>
+                                    
+                                    </>
+                                    :                        
+                                    <>
                                         <div className="contact">
                                             <div className="icon">
-                                                <RiLineFill size={28} />
+                                                <RiLineFill size={32} />
                                             </div>
                                             <span>{contact.LineID}</span>
                                         </div>
-                                    }
-                                    {contact.ETC &&
+                                    </>
+                                } 
+                                {contact.ETC === undefined ?
+                                    <>
+                                    
+                                    </>
+                                    :                        
+                                    <>
                                         <div className="contact">
                                             <div className="icon">
-                                                <RiGlobalFill size={28} />
+                                                <RiGlobalFill size={32} />
                                             </div>
                                             <span>{contact.ETC}</span>
                                         </div>
-                                    }
+                                    </>
+                                }   
                                 </div>
                             </div>                      
                         </div>
@@ -289,12 +287,14 @@ function Topic() {
                                 id='status'
                                 placeholder="Status"
                                 data={statusAll}
+                                changefilter={changefilter}
                                 defaultValue={status}
                                 setValue={setStatus}
                                 />
                                 <SelectPicker2
                                 id='difficulty'
                                 placeholder="Difficulty"
+                                changefilter={changefilter}
                                 data={difficultyAll}
                                 defaultValue={difficulty}
                                 setValue={setDifficulty}
@@ -307,9 +307,7 @@ function Topic() {
                                     />
                                 </div>
                             </div>
-                            <button className="btn-4">
-                                Random<TbArrowsShuffle className="ms-2"/>
-                            </button>
+                            <Link className="btn-addquestion" to={`/professor/${TopicID}/addquestion`} >Add Question + </Link> 
                         </div>
                         <div className="question-table">
                             <table className="table">
@@ -328,7 +326,6 @@ function Topic() {
                                     {/* <tr>
                                         <td className="status">
                                             <TbClock className="color-1" size={24} /> 
-                                            <TbSwords className="color-5" size={24} />
                                         </td>
                                         <td className="title thai"><Link to="1">Pipeline ทำงานอย่างไร</Link></td>
                                         <td className="date">08-12-22</td>
@@ -336,38 +333,7 @@ function Topic() {
                                         <td className="difficulty color-1">Normal</td>
                                         <td className="point-table"><span className="point" style={{backgroundColor: "#FED470"}}>150 P</span></td>
                                     </tr> */}
-                                    {/* <tr>
-                                        <td className="status">
-                                            <TbClock className="color-1" size={24} /> 
-                                        </td>
-                                        <td className="title thai"><Link to="2">Kernel คืออะไร</Link></td>
-                                        <td className="date">05-12-22</td>
-                                        <td className="acceptance">10.00 %</td>
-                                        <td className="difficulty color-3">Easy</td>
-                                        <td className="point-table"><span className="point" style={{backgroundColor: "#FED470"}}>100 P</span></td>
-                                    </tr>
-                                    <tr>
-                                        <td className="status">
-                                            <TbClock className="color-1" size={24} /> 
-                                        </td>
-                                        <td className="title thai"><Link to="3">อธิบายความแตกต่าง virtualization and simulation</Link></td>
-                                        <td className="date">05-12-22</td>
-                                        <td className="acceptance">10.00 %</td>
-                                        <td className="difficulty color-5">Hard</td>
-                                        <td className="point-table"><span className="point" style={{backgroundColor: "#FED470"}}>100 P</span></td>
-                                    </tr>
-                                    <tr className="color-gray2">
-                                        <td className="status">
-                                            <TbClockOff size={24} /> 
-                                            <TbSwords className="color-5" size={24} />
-                                        </td>
-                                        <td className="title thai"><Link to="4">Explain why an operating system can be viewed as a resource allocator.</Link></td>
-                                        <td className="date">01-01-21</td>
-                                        <td className="acceptance">10.00 %</td>
-                                        <td className="difficulty color-5">Hard</td>
-                                        <td className="point-table"><span className="point" style={{backgroundColor: "#FED470"}}>1 P</span></td>
-                                    </tr>
-                                    <tr className="color-gray2">
+                                    {/* <tr className="color-gray2">
                                         <td className="status">
                                             <TbClockOff size={24} /> 
                                         </td>
@@ -375,7 +341,7 @@ function Topic() {
                                         <td className="date">01-01-21</td>
                                         <td className="acceptance">10.00 %</td>
                                         <td className="difficulty color-5">Hard</td>
-                                        <td className="point-table"><span className="point" style={{backgroundColor: "#58A550"}}>Done</span></td>
+                                        <td className="point-table"><span className="point" style={{backgroundColor: "#FED470"}}>1 P</span></td>
                                     </tr> */}
                                 </tbody>
                             </table>                                                      
@@ -429,26 +395,6 @@ function Topic() {
                 </div>
             </div>
 
-            {/* Modal */}
-            <div className="tu-modal" style={modal ? {opacity: "1", visibility: "visible"} : {}}>
-                <div className="tu-modal-card">
-                    <IoCloseCircle className="close-button" onClick={() => setModal(false)} />
-                    <div className="tu-modal-head">
-                        <FaFrownOpen className="icon" />
-                        <span>
-                            Are you sure you want to leave ?
-                        </span>
-                    </div>
-                    <div className="tu-modal-body">
-                        <p>If you leave this topic all questions that you're challenging will forced to give up, all questions that you have submitted and pending to professor will disappear. And you'll not receive all notifications from this topic</p>
-                    </div>
-                    <div className="tu-modal-footer">
-                        <div className="cancel-button" onClick={() => setModal(false)}>No, keep me remain.</div>
-                        <div className="accept-button" onClick={() => {setModal(false); leaveTopic(data.TopicID)}}>Yes, I want to leave.</div>
-                    </div>
-                </div>
-            </div>
-
             {/* Background */}
             <div className="background-container"></div>
             <BackgroundIcon 
@@ -458,13 +404,11 @@ function Topic() {
                     ? "#1B1F4B"
                     : data.Type === "Data Science"
                     ? "#6A244D"
-                    : data.Type === "Digital Business"
-                    ? "#194D45"
-                    : "#FFA242"
+                    : "#194D45"
                 }
             />
         </div>
     );
 }
 
-export default Topic;
+export default TopicProf;

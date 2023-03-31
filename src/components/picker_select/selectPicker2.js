@@ -3,21 +3,30 @@ import $ from 'jquery'
 
 import { FaChevronDown, FaTimes } from 'react-icons/fa';
 
-const SelectPicker = ({id, data, defaultValue, setValue, placeholder}) => {
+const SelectPicker2 = ({id, className, data, defaultValue, setValue, placeholder, changefilter}) => {
 
     const [isShow, setIsShow] = useState(false);
     const [width, setWidth] = useState("");
     const [selected, setSelected] = useState(defaultValue)
 
     function toggleOption() {
-        setWidth($(`#tu-selectpicker-box-${id}`).width());
+        setWidth($(`#tu-selectpicker2-box-${id}`).width());
         setIsShow(!isShow);
     }
 
-    function selectOption(option) {
+    async function selectOption(option) {
         setIsShow(false)
         setSelected(option)
         setValue(option)
+        console.log("data.title ",option.title)
+        console.log("data.label ",option.label)
+        if(option.title === "Difficulty"){
+            changefilter(option.title,option.label)
+        }else if(option.title === "Date"){
+            console.log("date")
+        }
+      
+        
     }
 
     function clearOption() {
@@ -29,13 +38,13 @@ const SelectPicker = ({id, data, defaultValue, setValue, placeholder}) => {
     }
     
     return (
-        <div className="tu-selectpicker" onMouseLeave={() => setIsShow(false)}>
-            <div className="tu-selectpicker-box" id={"tu-selectpicker-box-" + id} onClick={() => toggleOption()}>
+        <div className="tu-selectpicker2" onMouseLeave={() => setIsShow(false)}>
+            <div className="tu-selectpicker2-box" id={"tu-selectpicker2-box-" + id} onClick={() => toggleOption()}>
                 {
                     selected.label === "" && selected.data === ""
-                    ?   <span className="color-gray2">{placeholder}</span>
+                    ?   <span>{placeholder}</span>
                     :   <span>{selected.label}</span>
-                } 
+                }
                 <div className="icon">
                     <FaTimes 
                         className="delete" 
@@ -45,7 +54,7 @@ const SelectPicker = ({id, data, defaultValue, setValue, placeholder}) => {
                     <FaChevronDown style={isShow ? {transform: "rotate(0.5turn)"} : {}} />
                 </div>
             </div>
-            <div className={"tu-selectpicker-options " + (isShow ? "showed" : "")} style={{width: width + 40}}>
+            <div className={"tu-selectpicker2-options " + (isShow ? "showed" : "")} style={{width: width + 40}}>
                 {data.map((item, key) => (
                     <div key={key} className={"option " + (item.label === selected.label ? "selected" : "")} onClick={() => selectOption(item)}>{item.label}</div>
                 ))}
@@ -55,4 +64,4 @@ const SelectPicker = ({id, data, defaultValue, setValue, placeholder}) => {
 
 }
 
-export default SelectPicker
+export default SelectPicker2
