@@ -40,7 +40,6 @@ function Topic() {
 
     async function loadQuestionForEachTopic(pageStart,value) {
         const res = await getQuestionForEachTopic(topicID,pageStart,value);
-        console.log(res)
         setAllQuestion(res); 
     }
 

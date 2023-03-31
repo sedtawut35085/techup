@@ -9,6 +9,7 @@ import { TbCalendarTime, TbBulb, TbLock, TbInfoCircle, TbFileUpload, TbFileZip, 
 import { GiFlyingFlag } from 'react-icons/gi'
 import { BsReplyAll } from 'react-icons/bs'
 import { getQuestion } from '../../service/question';
+import { updateStudentText, getStudentFromStudentEmail } from '../../service/student'
 import { HiOutlineExclamation } from 'react-icons/hi'
 import { FiSearch, FiChevronLeft, FiChevronRight, FiChevronsLeft, FiChevronsRight } from 'react-icons/fi'
 import { IoCloseCircle, IoCaretUp, IoCaretDown } from 'react-icons/io5'
@@ -17,6 +18,7 @@ import BackgroundIcon from '../../components/background/bgIcons.js';
 
 function SubmissionProf() {
     const [inFoQuestion, setInFoQuestion] = useState("")
+    const [inFoUser, setInFoUser] = useState("")
     const [inFoSubmission, setInFoSubmission] = useState("")
     const location = useLocation();
     let TopicID = window.location.href.split("/")[4];
@@ -40,6 +42,8 @@ function SubmissionProf() {
         setFileList(JSON.parse(res[0].FileAttachment))
         setScore(res[0].Score)
         setCommentScore(res[0].CommentFromProf)
+        let resUser = await getStudentFromStudentEmail(res[0].StudentEmail);
+        setInFoUser(resUser[0])
     }
     
     const [guModal, setGuModal] = useState(false);
@@ -97,7 +101,13 @@ function SubmissionProf() {
             let resupdatestatus = await updateSubmission(SubmissionId,bodystatus)
             let resupdatescore = await updateSubmission(SubmissionId,bodyscore)
             let resupdatecommentscore = await updateSubmission(SubmissionId,bodyCommentscore)
-            // let resupdaterealscore = await updateSubmission(SubmissionId,bodyscore)
+            const point = score*inFoQuestion.Point/100
+            var body = {
+                "updateType": "Text",
+                "updateKey": "Point",
+                "updateValue": Number(point) + Number(inFoUser.Point)
+            }
+            let resupdateresult = await updateStudentText(body,inFoUser.UserEmail)
             navigate(`/professor/${TopicID}/question/${QuestionId}`)
         }
     }

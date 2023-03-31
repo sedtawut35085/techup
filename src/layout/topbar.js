@@ -4,21 +4,27 @@ import Auth from '../configuration/configuration-aws'
 import { HiOutlineCalendar, HiOutlineBell } from 'react-icons/hi'
 import { FiChevronRight } from 'react-icons/fi'
 import { IoPersonCircleOutline, IoPersonOutline, IoGiftOutline, IoSettingsOutline, IoExitOutline } from 'react-icons/io5'
+import { getStudent } from '../service/student'
 
 const TopBar = ({currentEmailUser,isProfessor}) => {
 
     const pathname = (useLocation().pathname).split("/")[1]
     const [dropdownActive, setDropdownActive] = useState(false)
-
+    const [inFoUser, setInFoUser] = useState("")
     const navigate = useNavigate()
 
     async function logout() {
         await Auth.signOut();
         navigate('/')
     }
-    
+
+    async function loadinfoUser() {
+        let resUser = await getStudent();
+        setInFoUser(resUser[0])
+    }
+
     useEffect( () => {
-        
+        loadinfoUser()
       }, []);
 
     return (
@@ -80,7 +86,7 @@ const TopBar = ({currentEmailUser,isProfessor}) => {
                 {isProfessor === false?
                     <>
                        <div className="nav">
-                            <div className="point">999 P</div>
+                            <div className="point">{inFoUser.Point} P</div>
                         </div>
                     </>
                     :                        
@@ -94,7 +100,6 @@ const TopBar = ({currentEmailUser,isProfessor}) => {
                         </div>
                         <div className={`dropdown ${dropdownActive ? "active" : ""}`}>
                             <div className="info">
-                                {/* <span className="techup-id f-md">Current Email</span> */}
                                 <span className="full-name f-sm">{currentEmailUser.substring(0, 20) + "..."}</span>
                             </div>
                             <div className="px-2">

@@ -211,7 +211,7 @@ function Question() {
 
     const uploadFile = async (file) => {
         const convertFiles = []
-        if(file.length === 0){
+        if(file.length !== 0){
             file.forEach(async (files, i) => {
                 let currentDate = new Date()
                 currentDate = Moment(currentDate).format('YYYY-MM-DD:HH-mm-ss')

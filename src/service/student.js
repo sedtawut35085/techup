@@ -25,6 +25,26 @@ export async function getStudent () {
     return response.data
 }
 
+export async function getStudentFromStudentEmail (StudentEmail) {
+  accessToken = await getAccessToken()
+  await axios({
+      method: 'get',
+      url: `${baseUrl}/student`,  
+      params: {
+        "UserEmail" : StudentEmail
+      },
+      headers: { 
+          'Authorization': accessToken, 
+          'Content-Type': 'text/plain'
+      },
+      }).then((res) => {
+        response = res
+      }).catch((err)=>{
+        response = err
+      })
+  return response.data
+}
+
 export async function saveStudent (bodydata, imageFile) {
     accessToken = await getAccessToken()
     convertedFile = await convertToBase64(imageFile);
@@ -45,4 +65,25 @@ export async function saveStudent (bodydata, imageFile) {
           response = err
         })
     return response
+}
+
+export async function updateStudentText (bodydata,StudentEmail) {
+  accessToken = await getAccessToken()
+  await axios({
+      method: 'patch',
+      url: `${baseUrl}/student`,
+      headers: { 
+          'Authorization': accessToken, 
+          'Content-Type': 'text/plain'
+      },
+      params: {
+        "UserEmail" : StudentEmail
+      }, 
+      data: bodydata
+      }).then((res) => {
+        response = res
+      }).catch((err)=>{
+        response = err
+      })
+  return response
 }
