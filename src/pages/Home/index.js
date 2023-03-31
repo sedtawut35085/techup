@@ -6,8 +6,14 @@ import BackgroundIcon from '../../components/background/bgIcons.js';
 import TopicBox from '../../components/box_topic/boxTopic.js'
 import QuestionBox from '../../components/box_question/boxQuestion.js'
 import { getAllTopic , getList } from '../../service/topic.js';
+import { getChallengeList } from '../../service/challenge.js';
 
 function Homepage() {
+
+    async function loadChallengeList() {
+        const res = await getChallengeList();
+        setChallengeList(res);
+    }
 
     async function loadAllTopic() {
         const res = await getAllTopic();
@@ -25,9 +31,11 @@ function Homepage() {
     //     {name: "Data Science", type: "Data Science", owner: "Chukiat Worasucheep", icon: "connections"}
     // ])
 
+    const [challengeList ,setChallengeList] = useState([])
     const [allTopic, setAllTopic] = useState([])
     const [myList, setMyList] = useState([])
     useEffect(() => {
+        loadChallengeList();
         loadAllTopic();
         loadmyList();
     }, []);
@@ -58,7 +66,7 @@ function Homepage() {
                     :   <div className="homepage-main d-flex fd-col">
                             <span className="f-xl fw-700"><TbSwords className="color-1 me-2" />Challenging</span>
                             <div className="topic-section">
-                                {challenging.map((question, key) => (
+                                {challengeList.map((question, key) => (
                                     <QuestionBox
                                         key={key}
                                         data={question}
