@@ -180,9 +180,9 @@ function SubmissionProf() {
                                     </p>
                                 </div>      
                                 <div className="attachment">
-                                    <span className="f-md fw-700">Attachment ({fileList.length})</span>
+                                    <span className="f-md fw-700">Attachment ({fileList?.length || 0})</span>
                                     <div className="sp-vertical"></div>
-                                    {fileList.map((file, key) => ( 
+                                    {fileList?.map((file, key) => ( 
                                         <div className="attach-file" key={key}>
                                             <div className="d-flex jc-center ai-center">
                                                 <div className="file-icon">{fileType(file.name)}</div>
@@ -203,17 +203,22 @@ function SubmissionProf() {
                                                 </button>
                                             </div>
                                         </div>
-                                    ))}                                    
-                                    <div className="divider my-4"></div>
-                                    <div className="d-flex jc-center ai-center">
-                                        <button 
-                                            className="btn-01 d-flex jc-center ai-center" 
-                                            onClick={() => downloadAll(fileList, (inFoQuestion.FirstName + "_" + inFoQuestion.QuestionName))}
-                                        >
-                                            <TbFileZip size={24} className="me-1" />
-                                            Download All
-                                        </button>
-                                    </div>
+                                    ))}        
+                                    {
+                                        fileList &&
+                                        <>                          
+                                            <div className="divider my-4"></div>
+                                            <div className="d-flex jc-center ai-center">
+                                                <button 
+                                                    className="btn-01 d-flex jc-center ai-center" 
+                                                    onClick={() => downloadAll(fileList, (inFoQuestion.FirstName + "_" + inFoQuestion.QuestionName))}
+                                                >
+                                                    <TbFileZip size={24} className="me-1" />
+                                                    Download All
+                                                </button>
+                                            </div>
+                                        </>
+                                    }  
                                 </div>                       
                             </div>
                             <div className={`score ${menuActive === 2 ? "active" : ""}`}>

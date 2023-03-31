@@ -1,3 +1,59 @@
+/* Loading */
+div.loader {
+    z-index: 999;
+    position: absolute;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.25);
+    transition: all .5s;
+}
+.lds-ring {
+    top: 50%;
+    left: 50%;
+    display: inline-block;
+    position: relative;
+    width: 80px;
+    height: 80px;
+    transform: translate(-50% , -50%);
+}
+.lds-ring div {
+    box-sizing: border-box;
+    display: block;
+    position: absolute;
+    width: 100px;
+    height: 100px;
+    border: 12px solid #fff;
+    border-radius: 50%;
+    animation: lds-ring 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+    border-color: #fff transparent transparent transparent;
+}
+.lds-ring div:nth-child(1) {
+    animation-delay: -0.45s;
+}
+.lds-ring div:nth-child(2) {
+    animation-delay: -0.3s;
+}
+.lds-ring div:nth-child(3) {
+    animation-delay: -0.15s;
+}
+@keyframes lds-ring {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+  
+@keyframes rotate {
+    0% , 100% {
+        transform: rotate(-45deg)  translate(-50% , -50%)
+    }
+    50% {
+        transform: rotate(-245deg)  translate(-50% , -50%)
+    }
+}    
+/* Loading */
 /* Back button */
 .btn-back {
     cursor: pointer;

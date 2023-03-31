@@ -48,7 +48,7 @@ function Homepage() {
         <div className="homepage">
             <div className="cover-container">
                 {
-                    noneTopic
+                    challengeList?.length === 0 && myList.length === 0
                     ?   <div className="none-topic">
                             <p className="f-xl fw-700 text-center">
                                 <img className="me-2" alt="logo" width="38px" src="/assets/images/logo/logo.png" />
@@ -64,24 +64,34 @@ function Homepage() {
                             </div>
                         </div>
                     :   <div className="homepage-main d-flex fd-col">
-                            <span className="f-xl fw-700"><TbSwords className="color-1 me-2" />Challenging</span>
-                            <div className="topic-section">
-                                {challengeList.map((question, key) => (
-                                    <QuestionBox
-                                        key={key}
-                                        data={question}
-                                     />
-                                ))}
-                            </div>         
-                            <span className="mt-3 f-xl fw-700"><TbListDetails className="color-1 me-2" />My list</span>
-                            <div className="topic-section">
-                                {myList.map((topic, key) => (
-                                    <TopicBox
-                                        key={key}
-                                        data={topic}
-                                     />
-                                ))}
-                            </div>    
+                            {
+                                challengeList?.length !== 0 &&
+                                <>
+                                    <span className="f-xl fw-700"><TbSwords className="color-1 me-2" />Challenging</span>
+                                    <div className="topic-section">
+                                        {challengeList.map((question, key) => (
+                                            <QuestionBox
+                                                key={key}
+                                                data={question}
+                                            />
+                                        ))}
+                                    </div>
+                                </>
+                            }
+                            {
+                                myList?.length !== 0 &&
+                                <>
+                                    <span className="mt-3 f-xl fw-700"><TbListDetails className="color-1 me-2" />My list</span>
+                                    <div className="topic-section">
+                                        {myList.map((topic, key) => (
+                                            <TopicBox
+                                                key={key}
+                                                data={topic}
+                                            />
+                                        ))}
+                                    </div>  
+                                </>
+                            }
                             <div className="mt-3 mb-5 divider"></div>             
                             <p className="f-xl fw-700">
                                 <img className="me-2" alt="logo" width="36px" src="/assets/images/logo/logo.png" />

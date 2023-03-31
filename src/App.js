@@ -10,6 +10,7 @@ import "./assets/styles/Topic.css"
 import "./assets/styles/Professor.css"
 import "./assets/styles/Ranking.css"
 import "./assets/styles/Question.css"
+import 'react-toastify/dist/ReactToastify.css';
 
 import { BrowserRouter, Route, Routes} from "react-router-dom";
 

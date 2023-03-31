@@ -1,6 +1,7 @@
 import React, { ChangeEvent, useState , useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import $ from 'jquery'
+import { ToastContainer, toast } from 'react-toastify';
 
 import { fileSize, fileType, download, downloadAll } from '../../assets/js/helper'
 import { FaChevronLeft } from 'react-icons/fa';
@@ -108,25 +109,19 @@ function Question() {
         setChallenge(false)
     }
 
-    const isHintShow = false;
+    const [loading, setLoading] = useState(false);
+    const [isHintShow, setIsHintShow] = useState(false)
     const [isDone, setIsDone] = useState(false);
     const [isDoneEstimate, setIsDoneEstimate] = useState(false);
-    const commentProf = "Comment from Professor";
-    const commentStu = "Your submission";
 
+    const [voteShow, setVoteShow] = useState("")
+    const [countVote, setCountVote] = useState(19)
     const [guModal, setGuModal] = useState(false);
     const [hintModal, setHintModal] = useState(false);
     const [voteModal, setVoteModal] = useState(false);
 
-    const [data, setData] = useState({
-        name: "Machine Learning",
-        type: "Computer Science",
-        icon: "idea",
-        description: "ระบบปฏิบัติการ(Operating System) หรือ โอเอส(OS) คือ ซอฟต์แวร์ที่ทำหน้าที่ควบคุมการทำงานของระบบคอมพิวเตอร์ ให้คอมพิวเตอร์และอุปกรณ์ต่อพ่วงต่าง ๆ ทำงานร่วมกันอย่างมีประสิทธิภาพ ซอฟต์แวร์ระบบที่รู้จักกันดี คือ ระบบปฏิบัติการ(OS-Operating System) เช่น MS-DOS, UNIX, OS/2, Windows, Linux และ Ubuntu เป็นต้น",
-    });
-
-    const [commentDiscuss, setCommentDiscuss] = useState("")
-    const [commentSubmission, setCommentSubmission] = useState("")
+    const [commentDiscuss, setCommentDiscuss] = useState("");
+    const [commentSubmission, setCommentSubmission] = useState("");
     const [fileList, setFileList] = useState([]);
     const [fileListSubmit, setFileListSubmit] = useState([]);
 
@@ -183,7 +178,7 @@ function Question() {
                 }
             ]
         }
-    ])
+    ]);
 
     function toggleReply(id) {
         let array = [...showReply];
@@ -210,8 +205,61 @@ function Question() {
     };
 
     const uploadFile = async (file) => {
+        setLoading(true)
         const convertFiles = []
-        if(file.length !== 0){
+
+        if(file.length === 0 && commentSubmission === "") {
+            toast.error('Please enter answer!', {
+                position: "bottom-left",
+                autoClose: 2000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                theme: "light",
+            });
+            setLoading(false)
+        } else if (file.length === 0) {            
+            var body = {
+                "StudentEmail": inFoUser.UserEmail,
+                "FirstName": inFoUser.FirstName,
+                "SurName": inFoUser.SurName,
+                "DateSubmit": Moment(new Date()).format('YYYY-MM-DD'),
+                "DueDate": Moment(inFoQuestion.DueDate).format('YYYY-MM-DD'),
+                "Status":"UnChecked",
+                "QuestionID": inFoQuestion.QuestionID,
+                "QuestionName":inFoQuestion.QuestionName,
+                "TopicID": inFoQuestion.TopicID,
+                "TopicName": inFoQuestion.TopicName,
+                "Answer": commentSubmission
+            }
+            let ressavesubmit = saveSubmission(body)
+                .then((res)=>{    
+                    setLoading(false)
+                    toast.success('Success submission!', {
+                        position: "bottom-left",
+                        autoClose: 2000,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        theme: "light",
+                    });                
+                    navigate(`/topic/${topicID}`)  
+                })
+                .catch((err) => {
+                    toast.error('Server error, please try again', {
+                        position: "bottom-left",
+                        autoClose: 2000,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        theme: "light",
+                    });
+                    setLoading(false)
+                })
+        } else if(file.length !== 0){
             file.forEach(async (files, i) => {
                 let currentDate = new Date()
                 currentDate = Moment(currentDate).format('YYYY-MM-DD:HH-mm-ss')
@@ -248,58 +296,67 @@ function Question() {
                                 "TopicName": inFoQuestion.TopicName,
                                 "Answer": commentSubmission
                             }
-                            let ressavesubmit = saveSubmission(body).then((res)=>{
-                                navigate(`/topic/${topicID}`)
-                            })
+                            let ressavesubmit = saveSubmission(body)
+                                .then((res)=>{
+                                    setLoading(false)
+                                    toast.success('Success submission!', {
+                                        position: "bottom-left",
+                                        autoClose: 2000,
+                                        hideProgressBar: false,
+                                        closeOnClick: true,
+                                        pauseOnHover: true,
+                                        draggable: true,
+                                        theme: "light",
+                                    });     
+                                    navigate(`/topic/${topicID}`)
+                                })
+                                .catch((err) => {
+                                    toast.error('Server error, please try again', {
+                                        position: "bottom-left",
+                                        autoClose: 2000,
+                                        hideProgressBar: false,
+                                        closeOnClick: true,
+                                        pauseOnHover: true,
+                                        draggable: true,
+                                        theme: "light",
+                                    });
+                                    setLoading(false)
+                                })
                           }, 3000);
                     }
                 });
             });
-        }else{
-            var body = {
-                "StudentEmail": inFoUser.UserEmail,
-                "FirstName": inFoUser.FirstName,
-                "SurName": inFoUser.SurName,
-                "DateSubmit": Moment(new Date()).format('YYYY-MM-DD'),
-                "DueDate": Moment(inFoQuestion.DueDate).format('YYYY-MM-DD'),
-                "Status":"UnChecked",
-                "QuestionID": inFoQuestion.QuestionID,
-                "QuestionName":inFoQuestion.QuestionName,
-                "TopicID": inFoQuestion.TopicID,
-                "TopicName": inFoQuestion.TopicName,
-                "Answer": commentSubmission
-            }
-            let ressavesubmit = saveSubmission(body).then((res)=>{
-                navigate(`/topic/${topicID}`)
-            })
+        } else {
+            toast.error('Server error, please try again', {
+                position: "bottom-left",
+                autoClose: 2000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                theme: "light",
+            });
         }
         
     }
 
-    // const handleUploadClick = () => {
-
-    //     console.log('11')
-    //     if (!fileList) {
-    //         return;
-    //     } 
-    
-    //     // 👇 Create new FormData object and append files
-    //     const data = new FormData();
-    //     files.forEach((file, i) => {
-    //         data.append(`file-${i}`, file, file.name);
-    //     });
-        
-    //     // 👇 Uploading the files using the fetch API to the server
-    //     fetch('https://httpbin.org/post', {
-    //         method: 'POST',
-    //         body: data,
-    //     })
-    //     .then((res) => res.json())
-    //     .then((data) => console.log(data))
-    //     .catch((err) => console.error(err));
-    // };
-
     const files = fileList ? [...fileList] : [];
+
+    function showHint(vote) {
+        if(vote === "Y" && voteShow !== "Y") {
+            setVoteShow(vote)
+            setCountVote(20)            
+            setIsHintShow(true)
+            setVoteModal(false)
+            setHintModal(true)
+        } else if(vote === "N" && voteShow !== "N") {
+            setVoteShow(vote)
+            setCountVote(18)
+        } else {
+            setVoteShow("")
+            setCountVote(19)
+        }
+    }
 
     function autosize(){
         var text = $('.autosize');
@@ -322,8 +379,14 @@ function Question() {
 
     return(
         <div className="question-page">
+            {
+                loading &&
+                <div className="loader">
+                    <div class="lds-ring"><div></div><div></div><div></div><div></div></div>
+                </div>
+            }
             <div className="cover-container">
-                <Link className="btn-back" to={`/topic/${topicID}`}>
+                <Link className="btn-back" to={-1}>
                     <FaChevronLeft />
                 </Link>
                 <div className="body">
@@ -555,7 +618,7 @@ function Question() {
                             </div>
                             <div className={`submission ${menuActive === 3 ? "active" : ""}`}>
                                 {
-                                    isDone
+                                    isDone 
                                     ?   <>
                                             <span className="fw-700 f-md">Comment from professor</span>
                                             <div className="sp-vertical"></div>
@@ -579,7 +642,7 @@ function Question() {
                                             <div className="attachment">
                                                 <span className="f-md fw-700">Attachment ({fileList.length})</span>
                                                 <div className="sp-vertical"></div>
-                                                {fileListSubmit.map((file, key) => ( 
+                                                {fileListSubmit?.map((file, key) => ( 
                                                     <div className="attach-file" key={key}>
                                                         <div className="d-flex jc-center ai-center">
                                                             <div className="file-icon">{fileType(file.name)}</div>
@@ -600,17 +663,22 @@ function Question() {
                                                             </button>
                                                         </div>
                                                     </div>
-                                                ))}                                    
-                                                <div className="divider my-4"></div>
-                                                <div className="d-flex jc-center ai-center">
-                                                    <button 
-                                                        className="btn-01 d-flex jc-center ai-center" 
-                                                        onClick={() => downloadAll(fileList, (inFoQuestion.FirstName + "_" + inFoQuestion.QuestionName))}
-                                                    >
-                                                        <TbFileZip size={24} className="me-1" />
-                                                        Download All
-                                                    </button>
-                                                </div>
+                                                ))}                
+                                                {
+                                                    fileListSubmit &&
+                                                    <>
+                                                    <div className="divider my-4"></div>
+                                                    <div className="d-flex jc-center ai-center">
+                                                        <button 
+                                                            className="btn-01 d-flex jc-center ai-center" 
+                                                            onClick={() => downloadAll(fileList, (inFoQuestion.FirstName + "_" + inFoQuestion.QuestionName))}
+                                                        >
+                                                            <TbFileZip size={24} className="me-1" />
+                                                            Download All
+                                                        </button>
+                                                    </div>
+                                                    </>
+                                                }
                                             </div>    
                                         </>
                                     :   <>
@@ -628,7 +696,6 @@ function Question() {
                                                         className="file-input__input"
                                                         onChange={handleFileChange}
                                                         multiple
-                                                        // maxfilesize={175}
                                                     />
                                                     <label className="file-input__label" htmlFor="file-input">
                                                         <TbPaperclip size={24} />
@@ -702,7 +769,7 @@ function Question() {
                         </span>
                     </div>
                     <div className="tu-modal-body">
-                        <p>Kernel is Kernel :p</p>
+                        <p>{inFoQuestion.Hint}</p>
                     </div>
                 </div>
             </div>
@@ -721,14 +788,14 @@ function Question() {
                         <TbLock className="color-1" size={140} />
                         <span className="count-vote">1 vote left to show hint</span>
                         <div className="vote-section">
-                            <span className="vote active jc-end">Show<IoCaretUp className="ms-1" size={14} /></span>
-                            <span className="number">19</span>
-                            <span className="vote jc-start"><IoCaretDown className="me-1" size={14} />Not show</span>
+                            <span className={`vote jc-end ${voteShow === "Y" ? "active" : ""}`} onClick={() => showHint("Y")}>Show<IoCaretUp className="ms-1" size={14} /></span>
+                            <span className="number">{countVote}</span>
+                            <span className={`vote jc-start ${voteShow === "N" ? "active" : ""}`} onClick={() => showHint("N")}><IoCaretDown className="me-1" size={14} />Not show</span>
                         </div>
                         <span className="info"><TbInfoCircle className="me-1" size={21} />If hint showed point will decrease by 10%</span>
                     </div>
                 </div>
-            </div>
+            </div>            
 
             {/* Background */}
             <div className="background-container"></div>
