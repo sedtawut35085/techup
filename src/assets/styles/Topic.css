@@ -44,6 +44,7 @@
 }
 
 .topic-page .body .info-section .info-box .contact-all .contact {
+    font-size: .875rem;
     display: flex;
     justify-content: flex-start;
     align-items: center;
@@ -52,13 +53,13 @@
 
 .topic-page .body .info-section .info-box .contact-all .contact .icon {
     color: #FFA242;
-    width: 40px;
+    width: 34px;
 }
 
 .topic-page .body .info-section .info-box .contact-all .contact span {
     overflow: hidden;
     text-overflow: ellipsis;
-    max-width: 220px;
+    max-width: 240px;
     white-space: nowrap;
 }
 
@@ -258,9 +259,16 @@
         grid-template-columns: 1fr;
         row-gap: 2rem;
     }
+    
+    .topic-page .body .info-section .info-box .contact-all .contact span {
+        max-width: 380px;
+    }
 }
 
 @media screen and (max-width: 576px) {
+    .topic-page .body .info-section .info-box .contact-all .contact span {
+        max-width: 240px;
+    }
 }
 
 .submit .submit-main .submit-section .filter {

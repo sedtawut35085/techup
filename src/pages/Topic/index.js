@@ -7,8 +7,7 @@ import { FiSearch, FiChevronLeft, FiChevronRight, FiChevronsLeft, FiChevronsRigh
 import { HiOutlineChartBar } from 'react-icons/hi'
 import { TbDoorExit, TbArrowsShuffle, TbClock, TbClockOff, TbSwords } from 'react-icons/tb'
 import { BiMessageSquareDetail } from 'react-icons/bi'
-import { RiVipCrown2Fill, RiInstagramFill, RiFacebookCircleFill, RiGithubFill, RiGlobalFill , RiLineFill } from 'react-icons/ri'
-import { AiTwotoneMail} from 'react-icons/ai'
+import { RiVipCrown2Fill, RiMailFill, RiInstagramFill, RiFacebookCircleFill, RiGithubFill, RiGlobalFill , RiLineFill } from 'react-icons/ri'
 import { addJoinTopic , getJoin , deleteJoinedTopic } from '../../service/joinTopic'
 import { getQuestionForEachTopic, getCountOfQuestionForEachTopic } from '../../service/question.js';
 import { getEachTopic } from '../../service/topic';
@@ -238,11 +237,11 @@ function Topic() {
                                     </div>
                                 </div>
                                 <div className="divider mt-3"></div>
-                                <div className="contact-all">                                    
+                                <div className="contact-all">
                                     {contact.Email &&
                                         <div className="contact">
                                             <div className="icon">
-                                                <AiTwotoneMail size={32} />
+                                                <RiMailFill size={28} />
                                             </div>
                                             <span>{contact.Email}</span>
                                         </div>
@@ -250,7 +249,7 @@ function Topic() {
                                    {contact.Facebook && 
                                         <div className="contact">
                                             <div className="icon">
-                                                <RiFacebookCircleFill size={32} />
+                                                <RiFacebookCircleFill size={28} />
                                             </div>
                                             <span>{contact.Facebook}</span>
                                         </div>
@@ -258,7 +257,7 @@ function Topic() {
                                     {contact.Instagram &&
                                         <div className="contact">
                                             <div className="icon">
-                                                <RiInstagramFill size={32} />
+                                                <RiInstagramFill size={28} />
                                             </div>
                                             <span>{contact.Instagram}</span>
                                         </div>
@@ -266,7 +265,7 @@ function Topic() {
                                     {contact.LineID &&
                                         <div className="contact">
                                             <div className="icon">
-                                                <RiLineFill size={32} />
+                                                <RiLineFill size={28} />
                                             </div>
                                             <span>{contact.LineID}</span>
                                         </div>
@@ -274,7 +273,7 @@ function Topic() {
                                     {contact.ETC &&
                                         <div className="contact">
                                             <div className="icon">
-                                                <RiGlobalFill size={32} />
+                                                <RiGlobalFill size={28} />
                                             </div>
                                             <span>{contact.ETC}</span>
                                         </div>
