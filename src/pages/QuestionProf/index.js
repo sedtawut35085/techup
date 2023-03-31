@@ -374,9 +374,22 @@ function QuestionProf() {
                                             <td className={`status ${submit.Status === "Checked" ? "color-3" : "color-1"} `}>{submit.Status}</td>
                                             <td className="name">{submit.FirstName + " " + submit.SurName}</td>
                                             <td className="date">{submit.DateSubmit}</td>
-                                            <td className="action">
-                                                <Link className="btn-view-detail" to={`submission/${submit.SubmissionID}`}>View Detail</Link>
-                                            </td>
+                                            { submit.Status === "UnChecked"
+                                            ?
+                                            <>
+                                                <td className="action">
+                                                    <Link className="btn-view-detail" to={`submission/${submit.SubmissionID}`}>View Detail</Link>
+                                                </td>
+                                            </>
+                                            :
+                                            <>
+                                                <td className="action">
+                                                    <div className="btn-view-detail">View Detail</div>
+                                                </td>
+                                            </>
+
+                                            }
+                                           
                                         </tr>
                                         )}
                                             {/* <tr>
