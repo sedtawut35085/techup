@@ -1,7 +1,7 @@
 import axios from 'axios';
-
+import { getCurrentUserId } from '.';
 const baseUrl = 'https://5ccp4x5xq5.execute-api.ap-southeast-1.amazonaws.com/dev';
-let response
+let response,userEmail
 
 export async function getAllSubmission(QuestionID,pageStart,pageSize){
     await axios({
@@ -19,6 +19,43 @@ export async function getAllSubmission(QuestionID,pageStart,pageSize){
           response = err
         })
     return response.data
+}
+
+export async function getEachSubmissionFromUserIDandQuestionID(QuestionID){
+  let UserID = await getCurrentUserId()
+  await axios({
+      method: 'get',
+      url: `${baseUrl}/submission`,
+      params: {
+          "QuestionID" : QuestionID,
+          "getType": "getEachSubmissionFromUserIDandQuestionID",
+          "UserEmail": UserID
+      },
+      }).then((res) => {
+        response = res
+      }).catch((err)=>{
+        response = err
+      })
+  return response.data
+}
+
+export async function getAllSubmissionFromProfessorID(pageStart,pageSize){
+  let PrefessorID = await getCurrentUserId()
+  await axios({
+      method: 'get',
+      url: `${baseUrl}/submission`,
+      params: {
+          "ProfessorID" : PrefessorID,
+          "getType": "getAllSubmissionFromProfessorID",
+          "pageStart": pageStart,
+          "pageSize": pageSize
+      },
+      }).then((res) => {
+        response = res
+      }).catch((err)=>{
+        response = err
+      })
+  return response.data
 }
 
 export async function getEachSubmission(SubmissionID){

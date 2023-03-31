@@ -105,7 +105,7 @@ function QuestionProf() {
         icon: "idea",
         description: "ระบบปฏิบัติการ(Operating System) หรือ โอเอส(OS) คือ ซอฟต์แวร์ที่ทำหน้าที่ควบคุมการทำงานของระบบคอมพิวเตอร์ ให้คอมพิวเตอร์และอุปกรณ์ต่อพ่วงต่าง ๆ ทำงานร่วมกันอย่างมีประสิทธิภาพ ซอฟต์แวร์ระบบที่รู้จักกันดี คือ ระบบปฏิบัติการ(OS-Operating System) เช่น MS-DOS, UNIX, OS/2, Windows, Linux และ Ubuntu เป็นต้น",
     });
-
+ 
     const [commentDiscuss, setCommentDiscuss] = useState("")
     const [commentSubmission, setCommentSubmission] = useState("")
     const [fileList, setFileList] = useState([]);
@@ -370,7 +370,7 @@ function QuestionProf() {
                                         </thead>
                                         <tbody>
                                         {allSubmission.map((submit, i) => 
-                                        <tr key={i}>
+                                        <tr key={i}> 
                                             <td className={`status ${submit.Status === "Checked" ? "color-3" : "color-1"} `}>{submit.Status}</td>
                                             <td className="name">{submit.FirstName + " " + submit.SurName}</td>
                                             <td className="date">{submit.DateSubmit}</td>

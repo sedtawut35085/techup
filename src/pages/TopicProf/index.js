@@ -402,7 +402,7 @@ function TopicProf() {
                 color={
                     data.Type === "Computer Science"
                     ? "#1B1F4B"
-                    : data.type === "Data Science"
+                    : data.Type === "Data Science"
                     ? "#6A244D"
                     : "#194D45"
                 }

@@ -7,10 +7,12 @@ import { getTopicfromProfessor } from '../../service/topic.js';
 import Auth from '../../configuration/configuration-aws'
 import { FiChevronRight } from 'react-icons/fi'
 import { TbListDetails } from 'react-icons/tb'
+import { getAllSubmissionFromProfessorID } from '../../service/submission.js';
 
 function Professor() {
 
     const [allTopic, setAllTopic] = useState([])
+    const [recentSubmission, setRecentSubmission] = useState([])
     const navigate = useNavigate()
 
     async function checkAuthen() {
@@ -28,11 +30,17 @@ function Professor() {
     useEffect( () => {
         checkAuthen()
         getTopics();
+        loadAllSubmissionFromProfessorID()
       }, []);
     
     async function getTopics() {
         let res = await getTopicfromProfessor();
         setAllTopic(res);
+    }
+
+    async function loadAllSubmissionFromProfessorID() {
+        let res = await getAllSubmissionFromProfessorID(0,5);
+        setRecentSubmission(res);
     }
 
     return (
@@ -79,12 +87,12 @@ function Professor() {
                         <div className="top-homeprof-section mb-4">
                             <div className='d-flex jc-btw'>
                                 <span className="f-lg fw-700">Recent Submissions</span>
-                                <Link className="f-xm fw-700 color-gray3 pt-2" to="/submit">
+                                {/* <Link className="f-xm fw-700 color-gray3 pt-2" to="/submit">
                                     click to see all Submissions<FiChevronRight size={20} />
-                                </Link>
+                                </Link> */}
                             </div>
                         </div>
-                        <div className="homeprof-table">
+                        <div className="homeprof-table"> 
                             <table className="table">
                             <thead>
                                     <tr>
@@ -93,15 +101,17 @@ function Professor() {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td className="title thai"><Link to="3">Sedtawut chalothornnarumit <br/><span className='f-xs color-gray2'>Submission Date 01/01/22 - Kernel คืออะไร - Operating System</span></Link></td>
+                                {recentSubmission.map((recentsubmission, i) => 
+                                    <tr key={i}>
+                                        <td className="title thai"><Link to={`/professor/${recentsubmission.TopicID}/question/${recentsubmission.QuestionID_Submissions}/submission/${recentsubmission.SubmissionID}`}>{recentsubmission.FirstName + " " + recentsubmission.SurName}<br/><span className='f-xs color-gray2'>{"Submission Date - " + recentsubmission.DateSubmit + " - " + recentsubmission.TopicName + " - " + recentsubmission.QuestionName_Submissions}</span></Link></td>
                                         <td className="point-table">
-                                            <div className="col-12 pt-2">
-                                                <button type="submit" className="btn-viewdetail">View Detail</button>
+                                            <div className="col-8 pt-2">
+                                                <Link className="btn-view-detail" to={`/professor/${recentsubmission.TopicID}/question/${recentsubmission.QuestionID_Submissions}/submission/${recentsubmission.SubmissionID}`}>View Detail</Link>
                                             </div>
                                         </td>
                                     </tr>
-                                    <tr>
+                                )}
+                                    {/* <tr>
                                         <td className="title thai"><Link to="3">Sedtawut chalothornnarumit <br/><span className='f-xs color-gray2'>Submission Date 01/01/22 - Kernel คืออะไร - Operating System</span></Link></td>
                                         <td className="point-table">
                                             <div className="col-12 pt-2">
@@ -132,7 +142,7 @@ function Professor() {
                                                 <button type="submit" className="btn-viewdetail">View Detail</button>
                                             </div>
                                         </td>
-                                    </tr>
+                                    </tr> */}
                                 </tbody>
                             </table>                                                     
                         </div>

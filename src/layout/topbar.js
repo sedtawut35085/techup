@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import Auth from '../configuration/configuration-aws'
 import { HiOutlineCalendar, HiOutlineBell } from 'react-icons/hi'
@@ -16,6 +16,10 @@ const TopBar = ({currentEmailUser,isProfessor}) => {
         await Auth.signOut();
         navigate('/')
     }
+    
+    useEffect( () => {
+        
+      }, []);
 
     return (
         <div className="topbar" onMouseLeave={() => setDropdownActive(false)}>
