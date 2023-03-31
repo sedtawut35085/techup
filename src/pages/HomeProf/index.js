@@ -92,61 +92,37 @@ function Professor() {
                                 </Link> */}
                             </div>
                         </div>
-                        <div className="homeprof-table"> 
-                            <table className="table">
-                            <thead>
-                                    <tr>
-                                        <th className="title">Title </th>
-                                        <th className="action">Action</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                {recentSubmission.map((recentsubmission, i) => 
-                                    <tr key={i}>
-                                        <td className="title thai"><Link to={`/professor/${recentsubmission.TopicID}/question/${recentsubmission.QuestionID_Submissions}/submission/${recentsubmission.SubmissionID}`}>{recentsubmission.FirstName + " " + recentsubmission.SurName}<br/><span className='f-xs color-gray2'>{"Submission Date - " + recentsubmission.DateSubmit + " - " + recentsubmission.TopicName + " - " + recentsubmission.QuestionName_Submissions}</span></Link></td>
-                                        <td className="point-table">
-                                            <div className="col-8 pt-2">
-                                                <Link className="btn-view-detail" to={`/professor/${recentsubmission.TopicID}/question/${recentsubmission.QuestionID_Submissions}/submission/${recentsubmission.SubmissionID}`}>View Detail</Link>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                )}
-                                    {/* <tr>
-                                        <td className="title thai"><Link to="3">Sedtawut chalothornnarumit <br/><span className='f-xs color-gray2'>Submission Date 01/01/22 - Kernel คืออะไร - Operating System</span></Link></td>
-                                        <td className="point-table">
-                                            <div className="col-12 pt-2">
-                                                <button type="submit" className="btn-viewdetail">View Detail</button>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr> 
-                                        <td className="title thai"><Link to="3">Sedtawut chalothornnarumit <br/><span className='f-xs color-gray2'>Submission Date 01/01/22 - Kernel คืออะไร - Operating System</span></Link></td>
-                                        <td className="point-table">
-                                            <div className="col-12 pt-2">
-                                                <button type="submit" className="btn-viewdetail">View Detail</button>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td className="title thai"><Link to="3">Sedtawut chalothornnarumit <br/><span className='f-xs color-gray2'>Submission Date 01/01/22 - Kernel คืออะไร - Operating System</span></Link></td>
-                                        <td className="point-table">
-                                            <div className="col-12 pt-2">
-                                                <button type="submit" className="btn-viewdetail">View Detail</button>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td className="title thai"><Link to="3">Sedtawut chalothornnarumit <br/><span className='f-xs color-gray2'>Submission Date 01/01/22 - Kernel คืออะไร - Operating System</span></Link></td>
-                                        <td className="point-table">
-                                            <div className="col-12 pt-2">
-                                                <button type="submit" className="btn-viewdetail">View Detail</button>
-                                            </div>
-                                        </td>
-                                    </tr> */}
-                                </tbody>
-                            </table>                                                     
-                        </div>
-                    </div>                     
+                        {recentSubmission.length !== 0
+                        ?
+                        <>
+                            <div className="homeprof-table"> 
+                                <table className="table">
+                                <thead>
+                                        <tr>
+                                            <th className="title">Title </th>
+                                            <th className="action">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    {recentSubmission.map((recentsubmission, i) => 
+                                        <tr key={i}>
+                                            <td className="title thai"><Link to={`/professor/${recentsubmission.TopicID}/question/${recentsubmission.QuestionID_Submissions}/submission/${recentsubmission.SubmissionID}`}>{recentsubmission.FirstName + " " + recentsubmission.SurName}<br/><span className='f-xs color-gray2'>{"Submission Date - " + recentsubmission.DateSubmit + " - " + recentsubmission.TopicName + " - " + recentsubmission.QuestionName_Submissions}</span></Link></td>
+                                            <td className="point-table">
+                                                <div className="col-8 pt-2">
+                                                    <Link className="btn-view-detail" to={`/professor/${recentsubmission.TopicID}/question/${recentsubmission.QuestionID_Submissions}/submission/${recentsubmission.SubmissionID}`}>View Detail</Link>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    )}
+                                    </tbody>
+                                </table>                                                     
+                            </div>
+                        </>
+                        :
+                        <>
+                        </>
+                    }
+                </div>                     
             </div>
             </div>
             <div className="background-container"></div>
