@@ -4,14 +4,14 @@
     gap: 2rem;
 }
 
-.topic-page .body .item {
-    grid-row: span 2;
-}
-
 .topic-page .body .main-section .title {
     display: flex;
     justify-content: space-between;
     align-items: center;
+}
+
+.topic-page .body .info-section {
+    grid-row: span 2;
 }
 
 .topic-page .body .info-section .info-box {
@@ -20,6 +20,10 @@
     box-shadow: 0 0 4px rgba(0, 0, 0, 0.25);
     border-radius: 15px;
     padding: 1.2rem;
+}
+
+.topic-page .body .info-section .info-box:last-child {
+    margin-top: 2rem;
 }
 
 .topic-page .body .info-section .info-box .bar span {
@@ -183,19 +187,32 @@
 }
 
 @media screen and (max-width: 1520px) {
-    .topic-page .question-section .question-table {
-        overflow-x: scroll;
-        max-width: 655px;
-    }
-}
-
-@media screen and (max-width: 1200px) {
     .topic-page .body {
         grid-template-columns: 2fr 1fr;
     }
 
     .topic-page .question-section .question-table {
-        max-width: 543px;
+        overflow-x: scroll;
+        max-width: 655px;
+    }
+
+    .topic-page .question-section .question-table::-webkit-scrollbar {
+        height: 8px;
+    }
+    
+    .topic-page .question-section .question-table::-webkit-scrollbar-thumb {
+        background: #ffb56a;
+        border-radius: 5px;
+    }
+    
+    .topic-page .question-section .question-table::-webkit-scrollbar-thumb:hover {
+        background: #FFA242;
+    }
+}
+
+@media screen and (max-width: 1200px) {
+    .topic-page .question-section .question-table {
+        max-width: 561px;
     }
 }
 
@@ -204,14 +221,42 @@
         grid-template-columns: 1fr;
     }
 
+    .topic-page .body {
+        grid-template-columns: 1fr;
+    }
+
     .topic-page .question-section .question-table {
         max-width: 643px;
+    }    
+
+    .topic-page .body .info-section {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .topic-page .body .info-section {
+        column-gap: 2rem;
+    }
+
+    .topic-page .body .info-section .info-box:first-child {
+        margin: auto;
+        height: fit-content;
+        grid-row: span 2;
+    }
+
+    .topic-page .body .info-section .info-box:last-child {
+        margin-top: 0;
     }
 }
 
 @media screen and (max-width: 768px) {
     .topic-page .question-section .question-table {
         max-width: 463px;
+    }
+
+    .topic-page .body .info-section {
+        grid-template-columns: 1fr;
+        row-gap: 2rem;
     }
 }
 

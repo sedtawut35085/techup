@@ -36,6 +36,7 @@ function Topic() {
     async function getTopicData() {
         const res = await getEachTopic(topicID);
         setData(res[0]);
+        setContact(JSON.parse(res[0].Contact))
     }
 
     async function loadQuestionForEachTopic(pageStart,value) {
@@ -122,18 +123,7 @@ function Topic() {
     </tr>
     )
 
-    // const contact = JSON.parse(data.Contact)
-    const [contact,setContact] = useState([])
-    const [owner, setOwner] = useState({
-        name: "Chukiat",
-        surname: "Worasucheep",
-        contact: [
-            { contact: "Chukiat Woras", type: {label: "Facebook", data: "fb"}},
-            { contact: "chukiat_woras", type: {label: "Instagram", data: "ig"}},
-            { contact: "Chukiat Worasucheep", type: {label: "GitHub", data: "github"}},
-            { contact: "https://math.kmutt.ac.th/index.php/staff-directory/staff/lecturer/applied-computer-science/41-assoc-prof-chukiat-worasucheep", type: {label: "Link", data: "link"}}
-        ]
-    })
+    const [contact, setContact] = useState([])
 
     const [join, setJoin] = useState();
 
@@ -216,7 +206,7 @@ function Topic() {
                         <p className="f-md thai fw-400 mt-4">{data.Description}</p>
                         <div className="divider mt-5"></div>
                     </div>
-                    <div className="info-section item">
+                    <div className="info-section">
                         <div className="info-box">
                             <span className="color-1 f-lg fw-700 d-flex ai-center">Stats Session<HiOutlineChartBar className="ms-2" size={28} /></span>
                             <div className="d-flex ai-center mt-3 jc-btw bar">
@@ -238,7 +228,7 @@ function Topic() {
                                 </div>
                             </div>
                         </div>
-                        <div className="info-box mt-5">
+                        <div className="info-box">
                             <span className="color-1 f-lg fw-700 d-flex ai-center">Detail Session<BiMessageSquareDetail className="ms-2" size={28} /></span>      
                             <div className="detail">
                                 <div className="pt-4 d-flex fd-col jc-center ai-center">
@@ -248,81 +238,46 @@ function Topic() {
                                     </div>
                                 </div>
                                 <div className="divider mt-3"></div>
-                                <div className="contact-all">
-                                    <div className="contact">
-                                        <div className="icon">
-                                            <AiTwotoneMail size={32} />
-                                        </div>
-                                        <span>Professor.pro@kmutt.ac.th</span>
-                                    </div>
-                                    {contact.Email === undefined ?
-                                        <>
-
-                                        </>
-                                        :
-                                        <>
-                                            <div className="contact">
-                                                <div className="icon">
-                                                    <AiTwotoneMail size={32} />
-                                                </div>
-                                                <span>{contact.Email}</span>
+                                <div className="contact-all">                                    
+                                    {contact.Email &&
+                                        <div className="contact">
+                                            <div className="icon">
+                                                <AiTwotoneMail size={32} />
                                             </div>
-                                        </>
+                                            <span>{contact.Email}</span>
+                                        </div>
                                     }
-                                   {contact.Facebook === undefined ?
-                                    <>
-
-                                    </>
-                                    :
-                                    <>
+                                   {contact.Facebook && 
                                         <div className="contact">
                                             <div className="icon">
                                                 <RiFacebookCircleFill size={32} />
                                             </div>
                                             <span>{contact.Facebook}</span>
                                         </div>
-                                    </>
                                     }
-                                    {contact.Instagram === undefined ?
-                                    <>
-
-                                    </>
-                                    :
-                                    <>
+                                    {contact.Instagram &&
                                         <div className="contact">
                                             <div className="icon">
                                                 <RiInstagramFill size={32} />
                                             </div>
                                             <span>{contact.Instagram}</span>
                                         </div>
-                                    </>
                                     }
-                                    {contact.LineID === undefined ?
-                                    <>
-
-                                    </>
-                                    :
-                                    <>
+                                    {contact.LineID &&
                                         <div className="contact">
                                             <div className="icon">
                                                 <RiLineFill size={32} />
                                             </div>
                                             <span>{contact.LineID}</span>
                                         </div>
-                                    </>
                                     }
-                                    {contact.ETC === undefined ?
-                                    <>
-                                    </>
-                                    :
-                                    <>
+                                    {contact.ETC &&
                                         <div className="contact">
                                             <div className="icon">
                                                 <RiGlobalFill size={32} />
                                             </div>
                                             <span>{contact.ETC}</span>
                                         </div>
-                                    </>
                                     }
                                 </div>
                             </div>                      
