@@ -2,10 +2,9 @@ import React, { ChangeEvent, useState , useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import $ from 'jquery'
 
-import { fileSize, fileType } from '../../assets/js/helper'
-
+import { fileSize, fileType, download, downloadAll } from '../../assets/js/helper'
 import { FaChevronLeft } from 'react-icons/fa';
-import { TbCalendarTime, TbBulb, TbSwords, TbLock, TbInfoCircle, TbFileDescription, TbMessage2, TbFileUpload, TbMessageCircle, TbPaperclip, TbTrash, } from 'react-icons/tb'
+import { TbCalendarTime, TbBulb, TbSwords, TbLock, TbFileZip, TbInfoCircle, TbFileDescription, TbMessage2, TbFileUpload, TbMessageCircle, TbPaperclip, TbTrash, } from 'react-icons/tb'
 import { GiFlyingFlag } from 'react-icons/gi'
 import { BsReplyAll, BsCheckLg } from 'react-icons/bs'
 import { HiOutlineExclamation } from 'react-icons/hi'
@@ -20,7 +19,7 @@ import { getStudent } from '../../service/student';
 import BackgroundIcon from '../../components/background/bgIcons.js';
 
 import Moment from 'moment'
-
+import { getEachSubmissionFromUserIDandQuestionID } from '../../service/submission'
 import { convertToBase64, uploadPhoto } from '../../service';
 import AWS from 'aws-sdk'
 import { getChallenge,addChallengeUser,deleteChallengedUser } from '../../service/challenge';
@@ -43,6 +42,7 @@ const myBucket = new AWS.S3({
 function Question() {
 
     const navigate = useNavigate()
+    const [inFoSubmit, setInFoSubmit] = useState("")
     const [inFoUser, setInFoUser] = useState("")
     const [inFoQuestion, setInFoQuestion] = useState("")
     // const [discuss,setDiscuss] = useState([])
@@ -50,6 +50,7 @@ function Question() {
     let QuestionId = window.location.href.split("/")[6];
 
     useEffect( () => {
+        loadEachSubmissionFromUserIDandQuestionID()
         getQuestionFromQuestionID();
         getChallengedStatus();
         // getDiscuss();
@@ -58,14 +59,28 @@ function Question() {
 
     async function getDiscuss() {
         let res = await getDiscussQuestion(QuestionId);
-        console.log(res);
         setDiscuss(res)
+    }
+    
+    async function loadEachSubmissionFromUserIDandQuestionID() {
+        let res = await getEachSubmissionFromUserIDandQuestionID(QuestionId);
+        setInFoSubmit(res[0])
+        setFileListSubmit(JSON.parse(res[0].FileAttachment))
+        if(res[0] === undefined){
+            setIsDone(false)
+        }else{
+            setIsDone(true)
+            if(res[0].Score === null){
+                setIsDoneEstimate(false)
+            }else{
+                setIsDoneEstimate(true)
+            }
+        }
     }
 
     async function getQuestionFromQuestionID() {
         let res = await getQuestion(QuestionId);
         setInFoQuestion(res[0])
-        console.log(res[0])
     }
 
     async function getInfoUser() {
@@ -94,7 +109,8 @@ function Question() {
     }
 
     const isHintShow = false;
-    const isDone = true;
+    const [isDone, setIsDone] = useState(false);
+    const [isDoneEstimate, setIsDoneEstimate] = useState(false);
     const commentProf = "Comment from Professor";
     const commentStu = "Your submission";
 
@@ -112,6 +128,7 @@ function Question() {
     const [commentDiscuss, setCommentDiscuss] = useState("")
     const [commentSubmission, setCommentSubmission] = useState("")
     const [fileList, setFileList] = useState([]);
+    const [fileListSubmit, setFileListSubmit] = useState([]);
 
     const [challenge, setChallenge] = useState(false);
     const [menuActive, setMenuActive] = useState(1);
@@ -194,51 +211,69 @@ function Question() {
 
     const uploadFile = async (file) => {
         const convertFiles = []
-        console.log(file)
-        file.forEach(async (files, i) => {
-            let currentDate = new Date()
-            currentDate = Moment(currentDate).format('YYYY-MM-DD:HH-mm-ss')
-            const fileName = currentDate + "_" + files.name
-            const params = {
-                ACL: 'public-read',
-                Body: files,
-                Bucket: S3_BUCKET,
-                Key: `${s3Subfolder}/${fileName}`
-            };
-            let name = files.name
-            let size = files.size
-            const convertFile = await myBucket.upload(params).promise().then((res) => {
-                convertFiles.push(
-                {
-                    "name" : name,
-                    "size" : size,
-                    "Url" : res.Location
-                })
-                i = i+1
-                if(i === file.length){
-                    setTimeout(() => {
-                        var body = {
-                            "StudentEmail": inFoUser.UserEmail,
-                            "FirstName": inFoUser.FirstName,
-                            "SurName": inFoUser.SurName,
-                            "DateSubmit": Moment(new Date()).format('YYYY-MM-DD'),
-                            "DueDate": Moment(inFoQuestion.DueDate).format('YYYY-MM-DD'),
-                            "Status":"UnChecked",
-                            "FileAttachment": convertFiles,
-                            "QuestionID": inFoQuestion.QuestionID,
-                            "QuestionName":inFoQuestion.QuestionName,
-                            "TopicID": inFoQuestion.TopicID,
-                            "TopicName": inFoQuestion.TopicName,
-                            "Answer": commentSubmission
-                        }
-                        let ressavesubmit = saveSubmission(body).then((res)=>{
-                            navigate(`/topic/${topicID}`)
-                        })
-                        console.log(ressavesubmit)
-                      }, 3000);
-                }
+        if(file.length === 0){
+            file.forEach(async (files, i) => {
+                let currentDate = new Date()
+                currentDate = Moment(currentDate).format('YYYY-MM-DD:HH-mm-ss')
+                const fileName = currentDate + "_" + files.name
+                const params = {
+                    ACL: 'public-read',
+                    Body: files,
+                    Bucket: S3_BUCKET,
+                    Key: `${s3Subfolder}/${fileName}`
+                };
+                let name = files.name
+                let size = files.size
+                const convertFile = await myBucket.upload(params).promise().then((res) => {
+                    convertFiles.push(
+                    {
+                        "name" : name,
+                        "size" : size,
+                        "Url" : res.Location
+                    })
+                    i = i+1
+                    if(i === file.length){
+                        setTimeout(() => {
+                            var body = {
+                                "StudentEmail": inFoUser.UserEmail,
+                                "FirstName": inFoUser.FirstName,
+                                "SurName": inFoUser.SurName,
+                                "DateSubmit": Moment(new Date()).format('YYYY-MM-DD'),
+                                "DueDate": Moment(inFoQuestion.DueDate).format('YYYY-MM-DD'),
+                                "Status":"UnChecked",
+                                "FileAttachment": convertFiles,
+                                "QuestionID": inFoQuestion.QuestionID,
+                                "QuestionName":inFoQuestion.QuestionName,
+                                "TopicID": inFoQuestion.TopicID,
+                                "TopicName": inFoQuestion.TopicName,
+                                "Answer": commentSubmission
+                            }
+                            let ressavesubmit = saveSubmission(body).then((res)=>{
+                                navigate(`/topic/${topicID}`)
+                            })
+                          }, 3000);
+                    }
+                });
             });
-        });
+        }else{
+            var body = {
+                "StudentEmail": inFoUser.UserEmail,
+                "FirstName": inFoUser.FirstName,
+                "SurName": inFoUser.SurName,
+                "DateSubmit": Moment(new Date()).format('YYYY-MM-DD'),
+                "DueDate": Moment(inFoQuestion.DueDate).format('YYYY-MM-DD'),
+                "Status":"UnChecked",
+                "QuestionID": inFoQuestion.QuestionID,
+                "QuestionName":inFoQuestion.QuestionName,
+                "TopicID": inFoQuestion.TopicID,
+                "TopicName": inFoQuestion.TopicName,
+                "Answer": commentSubmission
+            }
+            let ressavesubmit = saveSubmission(body).then((res)=>{
+                navigate(`/topic/${topicID}`)
+            })
+        }
+        
     }
 
     // const handleUploadClick = () => {
@@ -384,7 +419,13 @@ function Question() {
                             <div className="point">
                                 {
                                     isDone
-                                    ?   <span>100 / {inFoQuestion.Point} P</span>
+                                    ?  
+                                    <>
+                                        { isDoneEstimate
+                                        ? <span>{inFoSubmit.Score*inFoQuestion.Point/100} / {inFoQuestion.Point} P</span>
+                                        :  <span>Waiting for professor to evaluate</span>
+                                         }
+                                    </>
                                     :   <span>{inFoQuestion.Point} P</span>
                                 }                                
                             </div>
@@ -520,9 +561,9 @@ function Question() {
                                             <div className="sp-vertical"></div>
                                             <div className="comment-box-edit">
                                                 {
-                                                    commentProf === ""
+                                                    inFoSubmit.CommentFromProf === null
                                                     ?   <p>No comment</p>
-                                                    :   <p>{commentProf}</p>
+                                                    :   <p>{inFoSubmit.CommentFromProf}</p>
                                                 }                                                
                                             </div>
                                             <div className="divider my-4"></div>
@@ -530,15 +571,15 @@ function Question() {
                                             <div className="sp-vertical"></div>
                                             <div className="comment-box-edit">
                                                 {
-                                                    commentStu === ""
-                                                    ?   <p>No comment</p>
-                                                    :   <p>{commentStu}</p>
+                                                    inFoSubmit.Answer === null
+                                                    ?   <p>No Text Answer</p>
+                                                    :   <p>{inFoSubmit.Answer}</p>
                                                 }                                                
                                             </div>
                                             <div className="attachment">
                                                 <span className="f-md fw-700">Attachment ({fileList.length})</span>
                                                 <div className="sp-vertical"></div>
-                                                {/* {fileList.map((file, key) => ( 
+                                                {fileListSubmit.map((file, key) => ( 
                                                     <div className="attach-file" key={key}>
                                                         <div className="d-flex jc-center ai-center">
                                                             <div className="file-icon">{fileType(file.name)}</div>
@@ -569,7 +610,7 @@ function Question() {
                                                         <TbFileZip size={24} className="me-1" />
                                                         Download All
                                                     </button>
-                                                </div> */}
+                                                </div>
                                             </div>    
                                         </>
                                     :   <>

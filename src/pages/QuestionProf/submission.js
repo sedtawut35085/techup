@@ -97,6 +97,7 @@ function SubmissionProf() {
             let resupdatestatus = await updateSubmission(SubmissionId,bodystatus)
             let resupdatescore = await updateSubmission(SubmissionId,bodyscore)
             let resupdatecommentscore = await updateSubmission(SubmissionId,bodyCommentscore)
+            // let resupdaterealscore = await updateSubmission(SubmissionId,bodyscore)
             navigate(`/professor/${TopicID}/question/${QuestionId}`)
         }
     }
@@ -104,7 +105,7 @@ function SubmissionProf() {
     return(
         <div className="question-page">
             <div className="cover-container">
-                <Link className="btn-back" to={`/professor/${TopicID}/question/${QuestionId}`}>
+                <Link className="btn-back" to={-1}>
                     <FaChevronLeft />
                 </Link>
                 <div className="body">

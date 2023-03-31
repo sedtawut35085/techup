@@ -21,6 +21,24 @@ export async function getAllSubmission(QuestionID,pageStart,pageSize){
     return response.data
 }
 
+export async function getEachSubmissionFromUserIDandQuestionID(QuestionID){
+  let UserID = await getCurrentUserId()
+  await axios({
+      method: 'get',
+      url: `${baseUrl}/submission`,
+      params: {
+          "QuestionID" : QuestionID,
+          "getType": "getEachSubmissionFromUserIDandQuestionID",
+          "UserEmail": UserID
+      },
+      }).then((res) => {
+        response = res
+      }).catch((err)=>{
+        response = err
+      })
+  return response.data
+}
+
 export async function getAllSubmissionFromProfessorID(pageStart,pageSize){
   let PrefessorID = await getCurrentUserId()
   await axios({
