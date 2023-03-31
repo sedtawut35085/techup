@@ -41,7 +41,7 @@ function Ranking() {
                             <div className="ranking-point bg-color-2 text-center color-white d-flex align-items-center jc-center mx-auto">
                                 <span>{userData[0].point} P</span>
                             </div>
-                            <hr></hr>
+                            <div className="divider mt-5 mb-3"></div>
                             <div className="color-gray2">
                                 <IoEyeSharp></IoEyeSharp>
                                 <span> See profile</span>
@@ -60,7 +60,7 @@ function Ranking() {
                             <div className="ranking-point bg-color-2 text-center color-white d-flex align-items-center jc-center mx-auto">
                                 <span>{userData[1].point} P</span>
                             </div>
-                            <hr></hr>
+                            <div className="divider mt-5 mb-3"></div>
                             <div className="color-gray2">
                                 <IoEyeSharp></IoEyeSharp>
                                 <span> See profile</span>
@@ -79,7 +79,7 @@ function Ranking() {
                             <div className="ranking-point bg-color-2 text-center color-white d-flex align-items-center jc-center mx-auto">
                                 <span>{userData[2].point} P</span>
                             </div>
-                            <hr></hr>
+                            <div className="divider mt-5 mb-3"></div>
                             <div className="color-gray2">
                                 <IoEyeSharp></IoEyeSharp>
                                 <span> See profile</span>
