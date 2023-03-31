@@ -5,9 +5,9 @@ import $ from 'jquery'
 import { fileSize, fileType } from '../../assets/js/helper'
 
 import { FaChevronLeft } from 'react-icons/fa';
-import { TbCalendarTime, TbBulb, TbSwords, TbLock, TbInfoCircle, TbFileDescription, TbMessage2, TbFileUpload, TbMessageCircle, TbPaperclip, TbTrash } from 'react-icons/tb'
+import { TbCalendarTime, TbBulb, TbSwords, TbLock, TbInfoCircle, TbFileDescription, TbMessage2, TbFileUpload, TbMessageCircle, TbPaperclip, TbTrash, } from 'react-icons/tb'
 import { GiFlyingFlag } from 'react-icons/gi'
-import { BsReplyAll } from 'react-icons/bs'
+import { BsReplyAll, BsCheckLg } from 'react-icons/bs'
 import { HiOutlineExclamation } from 'react-icons/hi'
 
 import { IoCloseCircle, IoCaretUp, IoCaretDown } from 'react-icons/io5'
@@ -94,6 +94,10 @@ function Question() {
     }
 
     const isHintShow = false;
+    const isDone = true;
+    const commentProf = "Comment from Professor";
+    const commentStu = "Your submission";
+
     const [guModal, setGuModal] = useState(false);
     const [hintModal, setHintModal] = useState(false);
     const [voteModal, setVoteModal] = useState(false);
@@ -302,7 +306,9 @@ function Question() {
                                         ? "color-3"
                                         : inFoQuestion.Difficulty === "Normal"
                                         ? "color-1"
-                                        : "color-5"
+                                        : inFoQuestion.Difficulty === "Hard"
+                                        ? "color-5"
+                                        : ""
                                     }`}
                                 >
                                     {inFoQuestion.Difficulty}
@@ -312,7 +318,7 @@ function Question() {
                                 <div className="icon">
                                     <TbCalendarTime size={24} />
                                 </div>
-                                Due date - {Moment(inFoQuestion.DueDate).format('YYYY-MM-DD')}
+                                Due date - {Moment(inFoQuestion.DueDate).format('DD/MM/YYYY')}
                             </p>
                         </div>
                         <div className="right-side">
@@ -329,41 +335,59 @@ function Question() {
                                 >
                                     <TbBulb size={22} className="me-1" />Hint
                                 </button>
-                                <button 
-                                    className="btn-5 active" 
-                                    disabled
-                                    style={
-                                        challenge 
-                                        ? {opacity: 1, visibility: "visible", width: "unset"} 
-                                        : {opacity: 0, visibility: "hidden", width: 0, padding: 0, margin: 0}
-                                    }
-                                >
-                                    <TbSwords size={22} className="me-1" />Challenging
-                                </button>
-                                <button 
-                                    className="btn-6" 
-                                    onClick={() => setGuModal(true)}
-                                    style={
-                                        challenge 
-                                        ? {opacity: 1, visibility: "visible", width: "unset"} 
-                                        : {opacity: 0, visibility: "hidden", width: 0, padding: 0, margin: 0}
-                                    }
-                                >
-                                    <GiFlyingFlag size={22} />
-                                </button>
-                                <button 
-                                    className="btn-5" 
-                                    onClick={() => addChallenge()}
-                                    style={
-                                        challenge 
-                                        ? {opacity: 0, visibility: "hidden", width: 0, padding: 0, margin: 0}
-                                        : {opacity: 1, visibility: "visible", width: "unset"} 
-                                    }
-                                >
-                                    <TbSwords size={22} className="me-1" />Challenge
-                                </button>
+                                {
+                                    isDone
+                                    ?   <>
+                                            <div className="is-done">
+                                                <BsCheckLg className="me-1" size={15} />
+                                                Done
+                                            </div>
+                                        </>
+                                    :   <>
+                                            <button 
+                                            className="btn-5 active" 
+                                            disabled
+                                            style={
+                                                challenge 
+                                                ? {opacity: 1, visibility: "visible", width: "unset"} 
+                                                : {opacity: 0, visibility: "hidden", width: 0, padding: 0, margin: 0}
+                                            }
+                                            >
+                                                <TbSwords size={22} className="me-1" />Challenging
+                                            </button>
+                                            <button 
+                                                className="btn-6" 
+                                                onClick={() => setGuModal(true)}
+                                                style={
+                                                    challenge 
+                                                    ? {opacity: 1, visibility: "visible", width: "unset"} 
+                                                    : {opacity: 0, visibility: "hidden", width: 0, padding: 0, margin: 0}
+                                                }
+                                            >
+                                                <GiFlyingFlag size={22} />
+                                            </button>
+                                            <button 
+                                                className="btn-5" 
+                                                onClick={() => addChallenge()}
+                                                style={
+                                                    challenge 
+                                                    ? {opacity: 0, visibility: "hidden", width: 0, padding: 0, margin: 0}
+                                                    : {opacity: 1, visibility: "visible", width: "unset"} 
+                                                }
+                                            >
+                                                <TbSwords size={22} className="me-1" />Challenge
+                                            </button>
+                                        </>
+                                }
+                                
                             </div>
-                            <div className="point">{inFoQuestion.Point} P</div>
+                            <div className="point">
+                                {
+                                    isDone
+                                    ?   <span>100 / {inFoQuestion.Point} P</span>
+                                    :   <span>{inFoQuestion.Point} P</span>
+                                }                                
+                            </div>
                         </div>
                     </div>
                     <div className="problem-section">
@@ -489,55 +513,117 @@ function Question() {
                                 }
                             </div>
                             <div className={`submission ${menuActive === 3 ? "active" : ""}`}>
-                                <div className="comment-box">
-                                    <textarea 
-                                        className="autosize" 
-                                        placeholder="Type comment here ..." 
-                                        onChange={(e) => setCommentSubmission(e.target.value)} 
-                                    />
-                                    <div className="file-input">
-                                        <input
-                                            type="file"
-                                            name="file-input"
-                                            id="file-input"
-                                            className="file-input__input"
-                                            onChange={handleFileChange}
-                                            multiple
-                                            // maxfilesize={175}
-                                        />
-                                        <label className="file-input__label" htmlFor="file-input">
-                                            <TbPaperclip size={24} />
-                                        </label>
-                                    </div>
-                                </div>
-                                <div className="attachment">
-                                    {/* <input type="file" onChange={handleFileInput}/> */}
-                                    {/* <button onClick={() => uploadFile(selectedFile)}> Upload to S3</button> */}
-                                    {/* <input id="profile-img" name="profile-img" type="file" accept="image/*" onChange={onSelectFile}/> */}
-                                    <span className="f-md fw-700">Attachment ({files?.length || 0})</span>
-                                    <div className="sp-vertical"></div>
-                                    {files.map((file, key) => (
-                                    <div className="attach-file" key={key}>
-                                        <div className="d-flex jc-center ai-center">
-                                            <div className="file-icon">{fileType(file.name)}</div>
-                                            <div className="file-info">
-                                                <span className="file-name">{file.name}</span>
-                                                <span className="file-size">{fileSize(file.size)}</span>
+                                {
+                                    isDone
+                                    ?   <>
+                                            <span className="fw-700 f-md">Comment from professor</span>
+                                            <div className="sp-vertical"></div>
+                                            <div className="comment-box-edit">
+                                                {
+                                                    commentProf === ""
+                                                    ?   <p>No comment</p>
+                                                    :   <p>{commentProf}</p>
+                                                }                                                
                                             </div>
-                                        </div>
-                                        <div className="file-action">
-                                            <button className="btn-7" onClick={() => deleteFile(file)}>
-                                                <TbTrash size={18} className="me-1" />
-                                                Delete
-                                            </button>
-                                        </div>
-                                    </div>
-                                    ))}
-                                </div>
-                                <div className="divider my-4"></div>
-                                <div className="d-flex jc-center ai-center">
-                                    <button onClick={() => uploadFile(fileList)} className="btn-01">Submit</button>
-                                </div>
+                                            <div className="divider my-4"></div>
+                                            <span className="fw-700 f-md">Your submission</span>
+                                            <div className="sp-vertical"></div>
+                                            <div className="comment-box-edit">
+                                                {
+                                                    commentStu === ""
+                                                    ?   <p>No comment</p>
+                                                    :   <p>{commentStu}</p>
+                                                }                                                
+                                            </div>
+                                            <div className="attachment">
+                                                <span className="f-md fw-700">Attachment ({fileList.length})</span>
+                                                <div className="sp-vertical"></div>
+                                                {/* {fileList.map((file, key) => ( 
+                                                    <div className="attach-file" key={key}>
+                                                        <div className="d-flex jc-center ai-center">
+                                                            <div className="file-icon">{fileType(file.name)}</div>
+                                                            <div className="file-info">
+                                                                <a 
+                                                                    className="file-name"
+                                                                    href={file.Url}
+                                                                    download={file.name}
+                                                                >
+                                                                    {file.name}
+                                                                </a>
+                                                                <span className="file-size">{fileSize(Number(file.size))}</span>
+                                                            </div>
+                                                        </div>
+                                                        <div className="file-action">
+                                                            <button className="btn-download" onClick={() => download(file.Url, file.name)}>
+                                                                Download
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                ))}                                    
+                                                <div className="divider my-4"></div>
+                                                <div className="d-flex jc-center ai-center">
+                                                    <button 
+                                                        className="btn-01 d-flex jc-center ai-center" 
+                                                        onClick={() => downloadAll(fileList, (inFoQuestion.FirstName + "_" + inFoQuestion.QuestionName))}
+                                                    >
+                                                        <TbFileZip size={24} className="me-1" />
+                                                        Download All
+                                                    </button>
+                                                </div> */}
+                                            </div>    
+                                        </>
+                                    :   <>
+                                            <div className="comment-box">
+                                                <textarea 
+                                                    className="autosize" 
+                                                    placeholder="Type comment here ..." 
+                                                    onChange={(e) => setCommentSubmission(e.target.value)} 
+                                                />
+                                                <div className="file-input">
+                                                    <input
+                                                        type="file"
+                                                        name="file-input"
+                                                        id="file-input"
+                                                        className="file-input__input"
+                                                        onChange={handleFileChange}
+                                                        multiple
+                                                        // maxfilesize={175}
+                                                    />
+                                                    <label className="file-input__label" htmlFor="file-input">
+                                                        <TbPaperclip size={24} />
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div className="attachment">
+                                                {/* <input type="file" onChange={handleFileInput}/> */}
+                                                {/* <button onClick={() => uploadFile(selectedFile)}> Upload to S3</button> */}
+                                                {/* <input id="profile-img" name="profile-img" type="file" accept="image/*" onChange={onSelectFile}/> */}
+                                                <span className="f-md fw-700">Attachment ({files?.length || 0})</span>
+                                                <div className="sp-vertical"></div>
+                                                {files.map((file, key) => (
+                                                <div className="attach-file" key={key}>
+                                                    <div className="d-flex jc-center ai-center">
+                                                        <div className="file-icon">{fileType(file.name)}</div>
+                                                        <div className="file-info">
+                                                            <span className="file-name">{file.name}</span>
+                                                            <span className="file-size">{fileSize(file.size)}</span>
+                                                        </div>
+                                                    </div>
+                                                    <div className="file-action">
+                                                        <button className="btn-7" onClick={() => deleteFile(file)}>
+                                                            <TbTrash size={18} className="me-1" />
+                                                            Delete
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                                ))}
+                                            </div>
+                                            <div className="divider my-4"></div>
+                                            <div className="d-flex jc-center ai-center">
+                                                <button onClick={() => uploadFile(fileList)} className="btn-01">Submit</button>
+                                            </div>
+                                        </>
+                                }                                    
                             </div>
                         </div>
                     </div>
@@ -612,7 +698,9 @@ function Question() {
                     ? "#1B1F4B"
                     : inFoQuestion.Type === "Data Science"
                     ? "#6A244D"
-                    : "#194D45"
+                    : inFoQuestion.Type === "Digital Business"
+                    ? "#194D45"
+                    : "#FFA242"
                 }
             />
         </div>

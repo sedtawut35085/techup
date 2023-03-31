@@ -1,5 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom';
+import Moment from 'moment';
 
 import { formatDate, convertToDate } from '../../assets/js/helper'
 
@@ -16,7 +17,9 @@ const QuestionBox = ({data}) => {
                     ? {backgroundColor: "#1B1F4B"}
                     : data.Type === "Data Science"
                     ? {backgroundColor: "#6A244D"}
-                    : {backgroundColor: "#194D45"}
+                    : data.Type === "Digital Business"
+                    ? {backgroundColor: "#194D45"}
+                    : {backgroundColor: "#fff"}
                 }
             >
                 <div className="point">{data.Point} P</div>
@@ -24,12 +27,12 @@ const QuestionBox = ({data}) => {
                     <span className="f-lg fw-600 thai">{data.QuestionName}</span>
                     <span className="f-xs fw-400">Due date:&nbsp;
                         {   
-                            data.DueDate == formatDate(new Date())
+                            Moment(data.DueDate).isSame(new Date())
                             ? <span className="color-5 fw-600">Today</span>
-                            : convertToDate(data.DueDate) < new Date()
+                            : Moment(data.DueDate).isBefore(new Date())
                             ? <span className="color-gray2 fw-600">Out time</span>
-                            : convertToDate(data.DueDate) > new Date()
-                            ? <span className="color-1 fw-600">{data.DueDate}</span>
+                            : Moment(data.DueDate).isAfter(new Date())
+                            ? <span className="color-1 fw-600">{Moment(data.DueDate).format('DD-MM-YYYY')}</span>
                             : <span>-</span>
                         }
                     </span>
