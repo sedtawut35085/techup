@@ -1,6 +1,6 @@
 .question-page .body .top-section {
-    display: flex;
-    justify-content: space-between;
+    display: grid;
+    grid-template-columns: 3fr 1fr;
 }
 
 .question-page .body .top-section .left-side p {
@@ -34,6 +34,7 @@
 }
 
 .question-page .body .top-section .right-side .action {
+    margin-top: .6rem;
     margin-bottom: 2rem;
     display: flex;
 }
@@ -58,6 +59,7 @@
 }
 
 .question-page .body .top-section .right-side .point {
+    white-space: nowrap;
     height: 36px;
     padding: 0 .6rem;
     font-weight: 700;
@@ -677,4 +679,40 @@
 }
 .question-page .body .problem-section .detail-section .score .score-bar .score-point.active::after {
     bottom: -54px;
+}
+
+@media screen and (max-width: 1520px) {
+}
+
+@media screen and (max-width: 1200px) {
+    .question-page .body .top-section {
+        grid-template-columns: 1fr;
+    }
+    .question-page .body .top-section .right-side {
+        margin: 1rem 0;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+    }
+    .question-page .body .top-section .right-side .action {
+        margin: 0;
+    }
+    .question-page .body .top-section .right-side .action button {
+        margin: 0 .6rem .6rem 0;
+    }
+}
+
+@media screen and (max-width: 992px) {
+}
+
+@media screen and (max-width: 768px) {
+}
+
+@media screen and (max-width: 576px) {
+    .question-page .body .top-section .right-side {
+        align-items: flex-start;
+    }
+    .question-page .body .top-section .right-side .action {
+        flex-wrap: wrap;
+    }
 }

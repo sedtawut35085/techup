@@ -69,11 +69,15 @@
     margin-bottom: 1.5rem;
 }
 
-.topic-page .body .question-section .filter {
+.topic-page .body .question-section .top-question-section .filter {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
     column-gap: 1rem;
     width: 65%;
+}
+
+.topic-page .body .question-section .top-question-section .random .icon {
+    margin-left: .5rem;
 }
 
 .topic-page .question-section .question-table {
@@ -192,6 +196,10 @@
         grid-template-columns: 2fr 1fr;
     }
 
+    .topic-page .body .question-section .top-question-section  .filter {
+        width: 75%;
+    }
+
     .topic-page .question-section .question-table {
         overflow-x: scroll;
         max-width: 655px;
@@ -212,6 +220,20 @@
 }
 
 @media screen and (max-width: 1200px) {
+    .topic-page .body .question-section .top-question-section  .filter {
+        width: 90%;
+    }
+    .topic-page .body .question-section .top-question-section .random {
+        padding: 0;
+        justify-content: center;
+        width: 40px;
+    }
+    .topic-page .body .question-section .top-question-section .random span {
+        display: none;
+    }
+    .topic-page .body .question-section .top-question-section .random .icon {
+        margin: 0;
+    }
     .topic-page .question-section .question-table {
         max-width: 561px;
     }
@@ -254,18 +276,27 @@
     .topic-page .question-section .question-table {
         max-width: 463px;
     }
-
+    .topic-page .body .question-section .top-question-section .filter {
+        width: 70%;
+        grid-template-columns: 1fr;
+        row-gap: 1.2rem;
+    }
     .topic-page .body .info-section {
         grid-template-columns: 1fr;
         row-gap: 2rem;
-    }
-    
+    }    
     .topic-page .body .info-section .info-box .contact-all .contact span {
         max-width: 380px;
     }
 }
 
 @media screen and (max-width: 576px) {
+    .topic-page .body .main-section .title {
+        flex-direction: column;
+    }    
+    .topic-page .question-section .question-table {
+        max-width: 70vw;
+    }
     .topic-page .body .info-section .info-box .contact-all .contact span {
         max-width: 240px;
     }

@@ -4,14 +4,16 @@ import "./assets/styles/Components.css"
 import "./assets/styles/Sign.css"
 import "./assets/styles/Layout.css"
 import "./assets/styles/Pagination.css"
-import "./assets/styles/Pages.css"
+import "./assets/styles/Store.css"
 import "./assets/styles/Homepage.css"
 import "./assets/styles/Topic.css"
 import "./assets/styles/Professor.css"
 import "./assets/styles/Ranking.css"
 import "./assets/styles/Question.css"
 import 'react-toastify/dist/ReactToastify.css';
+import 'aos/dist/aos.css';
 
+import AOS from 'aos';
 import { BrowserRouter, Route, Routes} from "react-router-dom";
 
 import SignInForm from "./pages/Sign/signIn.js"
@@ -39,6 +41,7 @@ import Store from "./pages/Store/index.js"
 import Weekly from "./pages/Weekly/index.js"
 
 function App() {
+  AOS.init({once: true});
   return (
     <div className="App">
       <BrowserRouter>

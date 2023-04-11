@@ -48,74 +48,19 @@ function Question() {
     const [inFoQuestion, setInFoQuestion] = useState("")
     // const [discuss,setDiscuss] = useState([])
     let topicID = window.location.href.split("/")[4];
-    let QuestionId = window.location.href.split("/")[6];
-
-    useEffect( () => {
-        loadEachSubmissionFromUserIDandQuestionID()
-        getQuestionFromQuestionID();
-        getChallengedStatus();
-        // getDiscuss();
-        getInfoUser()
-      }, []);
-
-    async function getDiscuss() {
-        let res = await getDiscussQuestion(QuestionId);
-        setDiscuss(res)
-    }
-    
-    async function loadEachSubmissionFromUserIDandQuestionID() {
-        let res = await getEachSubmissionFromUserIDandQuestionID(QuestionId);
-        setInFoSubmit(res[0])
-        setFileListSubmit(JSON.parse(res[0].FileAttachment))
-        if(res[0] === undefined){
-            setIsDone(false)
-        }else{
-            setIsDone(true)
-            if(res[0].Score === null){
-                setIsDoneEstimate(false)
-            }else{
-                setIsDoneEstimate(true)
-            }
-        }
-    }
-
-    async function getQuestionFromQuestionID() {
-        let res = await getQuestion(QuestionId);
-        setInFoQuestion(res[0])
-    }
-
-    async function getInfoUser() {
-        let resUser = await getStudent();
-        setInFoUser(resUser[0])
-    }
-
-    async function getChallengedStatus() {
-        const res = await getChallenge(QuestionId);
-        if (res.length > 0)
-        {
-            setChallenge(true);
-        } else {
-            setChallenge(false);
-        }
-    }
-
-    function addChallenge(){
-        addChallengeUser(QuestionId)
-        setChallenge(true)
-    }
-
-    function deleteChallenge(){
-        deleteChallengedUser(QuestionId)
-        setChallenge(false)
-    }
+    let QuestionId = window.location.href.split("/")[6];   
 
     const [loading, setLoading] = useState(false);
+    const [isLoading, setIsLoading] = useState([1, 2, 3, 4]);
+
     const [isHintShow, setIsHintShow] = useState(false)
+
     const [isDone, setIsDone] = useState(false);
     const [isDoneEstimate, setIsDoneEstimate] = useState(false);
 
     const [voteShow, setVoteShow] = useState("")
     const [countVote, setCountVote] = useState(19)
+
     const [guModal, setGuModal] = useState(false);
     const [hintModal, setHintModal] = useState(false);
     const [voteModal, setVoteModal] = useState(false);
@@ -180,6 +125,69 @@ function Question() {
         }
     ]);
 
+    async function getDiscuss() {
+        let res = await getDiscussQuestion(QuestionId);
+        setDiscuss(res)
+        setIsLoading(isLoading-1)
+    }    
+    async function loadEachSubmissionFromUserIDandQuestionID() {
+        let res = await getEachSubmissionFromUserIDandQuestionID(QuestionId);
+        setInFoSubmit(res[0])
+        setFileListSubmit(JSON.parse(res[0].FileAttachment))
+        if(res[0] === undefined){
+            setIsDone(false)
+        }else{
+            setIsDone(true)
+            if(res[0].Score === null){
+                setIsDoneEstimate(false)
+            }else{
+                setIsDoneEstimate(true)
+            }
+        }
+        setIsLoading(isLoading-1)
+        setIsLoading(isLoading.splice(isLoading.indexOf(1), 1))
+    }
+    async function getQuestionFromQuestionID() {
+        let res = await getQuestion(QuestionId);
+        setInFoQuestion(res[0])
+        setIsLoading(isLoading-1)
+        setIsLoading(isLoading.splice(isLoading.indexOf(2), 1))
+    }
+    async function getInfoUser() {
+        let resUser = await getStudent();
+        setInFoUser(resUser[0])
+        setIsLoading(isLoading-1)
+        setIsLoading(isLoading.splice(isLoading.indexOf(3), 1))
+    }
+    async function getChallengedStatus() {
+        const res = await getChallenge(QuestionId);
+        if (res.length > 0)
+        {
+            setChallenge(true);
+        } else {
+            setChallenge(false);
+        }
+        setIsLoading(isLoading-1)
+        setIsLoading(isLoading.splice(isLoading.indexOf(4), 1))
+    }    
+
+    useEffect( () => {
+        loadEachSubmissionFromUserIDandQuestionID()
+        getQuestionFromQuestionID();
+        getChallengedStatus();
+        // getDiscuss();
+        getInfoUser()
+    }, []);   
+
+    function addChallenge(){
+        addChallengeUser(QuestionId)
+        setChallenge(true)
+    }
+
+    function deleteChallenge(){
+        deleteChallengedUser(QuestionId)
+        setChallenge(false)
+    }
     function toggleReply(id) {
         let array = [...showReply];
         if(array.indexOf(id) > -1) {
@@ -188,12 +196,10 @@ function Question() {
             array.push(id);
         }
         setShowReply(array)
-    }
-    
+    }    
     function deleteFile(file) {
         setFileList(fileList.filter(fileList => fileList !== file))
     }
-
     const handleFileChange = (e) => {
         let array = [...fileList]
         for(let i=0; i<e.target.files.length; i++){
@@ -203,7 +209,6 @@ function Question() {
         }
         setFileList(array)
     };
-
     const uploadFile = async (file) => {
         setLoading(true)
         const convertFiles = []
@@ -339,7 +344,6 @@ function Question() {
         }
         
     }
-
     const files = fileList ? [...fileList] : [];
 
     function showHint(vote) {
@@ -386,356 +390,368 @@ function Question() {
                 </div>
             }
             <div className="cover-container">
-                <Link className="btn-back" to={-1}>
-                    <FaChevronLeft />
-                </Link>
-                <div className="body">
-                    <div className="top-section">
-                        <div className="left-side">
-                            <p className="question-name">{inFoQuestion.QuestionName}</p>
-                            <p className="subject-name">
-                                <div className="icon">
-                                    <img width="24px" alt="icon" src={"/assets/images/icons/" + inFoQuestion.Icon + ".png"} />
-                                </div>
-                                {inFoQuestion.TopicName} -&nbsp;
-                                <span 
-                                    className={`${
-                                        inFoQuestion.Difficulty === "Easy"
-                                        ? "color-3"
-                                        : inFoQuestion.Difficulty === "Normal"
-                                        ? "color-1"
-                                        : inFoQuestion.Difficulty === "Hard"
-                                        ? "color-5"
-                                        : ""
-                                    }`}
-                                >
-                                    {inFoQuestion.Difficulty}
-                                </span>
-                            </p>
-                            <p className="due-date">
-                                <div className="icon">
-                                    <TbCalendarTime size={24} />
-                                </div>
-                                Due date - {Moment(inFoQuestion.DueDate).format('DD/MM/YYYY')}
-                            </p>
+                {
+                    isLoading.length > 0 &&
+                    <div className="loader2">
+                        <div className="lds-roller"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div>
                         </div>
-                        <div className="right-side">
-                            <div className="action">
-                                <button 
-                                    className="btn-5"
-                                    onClick={() => {
-                                        if(isHintShow) {
-                                            setHintModal(true);
-                                        } else {
-                                            setVoteModal(true);
-                                        }
-                                    }}
-                                >
-                                    <TbBulb size={22} className="me-1" />Hint
-                                </button>
-                                {
-                                    isDone
-                                    ?   <>
-                                            <div className="is-done">
-                                                <BsCheckLg className="me-1" size={15} />
-                                                Done
-                                            </div>
-                                        </>
-                                    :   <>
-                                            <button 
-                                            className="btn-5 active" 
-                                            disabled
-                                            style={
-                                                challenge 
-                                                ? {opacity: 1, visibility: "visible", width: "unset"} 
-                                                : {opacity: 0, visibility: "hidden", width: 0, padding: 0, margin: 0}
+                    </div>
+                }   
+                {
+                    isLoading.length === 0 &&
+                    <>
+                    <Link data-aos="fade-right" data-aos-duration="1000" className="btn-back" to={-1}>
+                        <FaChevronLeft />
+                    </Link>
+                    <div data-aos="fade-left" data-aos-duration="1000" className="body">
+                        <div className="top-section">
+                            <div className="left-side">
+                                <p className="question-name">{inFoQuestion.QuestionName}</p>
+                                <p className="subject-name">
+                                    <div className="icon">
+                                        <img width="24px" alt="icon" src={"/assets/images/icons/" + inFoQuestion.Icon + ".png"} />
+                                    </div>
+                                    {inFoQuestion.TopicName} -&nbsp;
+                                    <span 
+                                        className={`${
+                                            inFoQuestion.Difficulty === "Easy"
+                                            ? "color-3"
+                                            : inFoQuestion.Difficulty === "Normal"
+                                            ? "color-1"
+                                            : inFoQuestion.Difficulty === "Hard"
+                                            ? "color-5"
+                                            : ""
+                                        }`}
+                                    >
+                                        {inFoQuestion.Difficulty}
+                                    </span>
+                                </p>
+                                <p className="due-date">
+                                    <div className="icon">
+                                        <TbCalendarTime size={24} />
+                                    </div>
+                                    Due date - {Moment(inFoQuestion.DueDate).format('DD/MM/YYYY')}
+                                </p>
+                            </div>
+                            <div className="right-side">
+                                <div className="action">
+                                    <button 
+                                        className="btn-5"
+                                        onClick={() => {
+                                            if(isHintShow) {
+                                                setHintModal(true);
+                                            } else {
+                                                setVoteModal(true);
                                             }
-                                            >
-                                                <TbSwords size={22} className="me-1" />Challenging
-                                            </button>
-                                            <button 
-                                                className="btn-6" 
-                                                onClick={() => setGuModal(true)}
+                                        }}
+                                    >
+                                        <TbBulb size={22} className="me-1" />Hint
+                                    </button>
+                                    {
+                                        isDone
+                                        ?   <>
+                                                <div className="is-done">
+                                                    <BsCheckLg className="me-1" size={15} />
+                                                    Done
+                                                </div>
+                                            </>
+                                        :   <>
+                                                <button 
+                                                className="btn-5 active" 
+                                                disabled
                                                 style={
                                                     challenge 
                                                     ? {opacity: 1, visibility: "visible", width: "unset"} 
                                                     : {opacity: 0, visibility: "hidden", width: 0, padding: 0, margin: 0}
                                                 }
-                                            >
-                                                <GiFlyingFlag size={22} />
-                                            </button>
-                                            <button 
-                                                className="btn-5" 
-                                                onClick={() => addChallenge()}
-                                                style={
-                                                    challenge 
-                                                    ? {opacity: 0, visibility: "hidden", width: 0, padding: 0, margin: 0}
-                                                    : {opacity: 1, visibility: "visible", width: "unset"} 
-                                                }
-                                            >
-                                                <TbSwords size={22} className="me-1" />Challenge
-                                            </button>
+                                                >
+                                                    <TbSwords size={22} className="me-1" />Challenging
+                                                </button>
+                                                <button 
+                                                    className="btn-6" 
+                                                    onClick={() => setGuModal(true)}
+                                                    style={
+                                                        challenge 
+                                                        ? {opacity: 1, visibility: "visible", width: "unset"} 
+                                                        : {opacity: 0, visibility: "hidden", width: 0, padding: 0, margin: 0}
+                                                    }
+                                                >
+                                                    <GiFlyingFlag size={22} />
+                                                </button>
+                                                <button 
+                                                    className="btn-5" 
+                                                    onClick={() => addChallenge()}
+                                                    style={
+                                                        challenge 
+                                                        ? {opacity: 0, visibility: "hidden", width: 0, padding: 0, margin: 0}
+                                                        : {opacity: 1, visibility: "visible", width: "unset"} 
+                                                    }
+                                                >
+                                                    <TbSwords size={22} className="me-1" />Challenge
+                                                </button>
+                                            </>
+                                    }
+                                    
+                                </div>
+                                <div className="point">
+                                    {
+                                        isDone
+                                        ?  
+                                        <>
+                                            { isDoneEstimate
+                                            ? <span>{inFoSubmit.Score*inFoQuestion.Point/100} / {inFoQuestion.Point} P</span>
+                                            :  <span>Waiting for professor to evaluate</span>
+                                            }
                                         </>
-                                }
-                                
-                            </div>
-                            <div className="point">
-                                {
-                                    isDone
-                                    ?  
-                                    <>
-                                        { isDoneEstimate
-                                        ? <span>{inFoSubmit.Score*inFoQuestion.Point/100} / {inFoQuestion.Point} P</span>
-                                        :  <span>Waiting for professor to evaluate</span>
-                                         }
-                                    </>
-                                    :   <span>{inFoQuestion.Point} P</span>
-                                }                                
+                                        :   <span>{inFoQuestion.Point} P</span>
+                                    }                                
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div className="problem-section">
-                        <div className="menu-section">
-                            <div 
-                                className={`menu des ${menuActive === 1 ? "active" : ""}`}
-                                onClick={() => setMenuActive(1)}
-                            >
-                                <TbFileDescription className="icon" />
-                                <span>Description</span>
-                            </div>
-                            <div 
-                                className={`menu dis ${menuActive === 2 ? "active" : ""}`}
-                                onClick={() => setMenuActive(2)}
-                            >
-                                <TbMessage2 className="icon" />
-                                <span>Discuss</span>
-                            </div>
-                            <div 
-                                className={`menu sub ${menuActive === 3 ? "active" : ""}`}
-                                onClick={() => setMenuActive(3)}
-                            >
-                                <TbFileUpload className="icon" />
-                                <span>Submission</span>
-                            </div>
-                        </div>
-                        <div className={`detail-section ${menuActive === 1 ? "description" : menuActive === 2 ? "discuss" : "submission"}`}>
-                            <div className={`description ${menuActive === 1 ? "active" : ""}`}>
-                                <p>
-                                    {inFoQuestion.Description}
-                                </p>
-                            </div>
-                            <div className={`discuss ${menuActive === 2 ? "active" : ""}`}>
-                                <div className="comment-box">
-                                    <textarea 
-                                        className="autosize" 
-                                        placeholder="Type comment here ..." 
-                                        onChange={(e) => setCommentDiscuss(e.target.value)} 
-                                    />
-                                    <button className="btn-01">Comment</button>
+                        <div className="problem-section">
+                            <div className="menu-section">
+                                <div 
+                                    className={`menu des ${menuActive === 1 ? "active" : ""}`}
+                                    onClick={() => setMenuActive(1)}
+                                >
+                                    <TbFileDescription className="icon" />
+                                    <span>Description</span>
                                 </div>
-                                <div className="sort">
-                                    <span>Sort by :</span>
-                                    <select>
-                                        <option>Best</option>
-                                        <option>Newest</option>
-                                        <option>Oldest</option>
-                                    </select>
+                                <div 
+                                    className={`menu dis ${menuActive === 2 ? "active" : ""}`}
+                                    onClick={() => setMenuActive(2)}
+                                >
+                                    <TbMessage2 className="icon" />
+                                    <span>Discuss</span>
                                 </div>
-                                {
-                                    discuss.map((comment, key) => (
-                                        <div className="comment" key={key}>
-                                            <div className="comment-owner">
-                                                <img height="50px" src="/assets/images/icons/profile.png" />
-                                                <div className="owner-detail">
-                                                    <span>{comment?.owner?.name}</span>
-                                                    <div className="date">
-                                                        <span>Create at:</span>
-                                                        <span className="ms-2">{comment?.datetime}</span>
+                                <div 
+                                    className={`menu sub ${menuActive === 3 ? "active" : ""}`}
+                                    onClick={() => setMenuActive(3)}
+                                >
+                                    <TbFileUpload className="icon" />
+                                    <span>Submission</span>
+                                </div>
+                            </div>
+                            <div className={`detail-section ${menuActive === 1 ? "description" : menuActive === 2 ? "discuss" : "submission"}`}>
+                                <div className={`description ${menuActive === 1 ? "active" : ""}`}>
+                                    <p>
+                                        {inFoQuestion.QuestionDescription}
+                                    </p>
+                                </div>
+                                <div className={`discuss ${menuActive === 2 ? "active" : ""}`}>
+                                    <div className="comment-box">
+                                        <textarea 
+                                            className="autosize" 
+                                            placeholder="Type comment here ..." 
+                                            onChange={(e) => setCommentDiscuss(e.target.value)} 
+                                        />
+                                        <button className="btn-01">Comment</button>
+                                    </div>
+                                    <div className="sort">
+                                        <span>Sort by :</span>
+                                        <select>
+                                            <option>Best</option>
+                                            <option>Newest</option>
+                                            <option>Oldest</option>
+                                        </select>
+                                    </div>
+                                    {
+                                        discuss.map((comment, key) => (
+                                            <div className="comment" key={key}>
+                                                <div className="comment-owner">
+                                                    <img height="50px" src="/assets/images/icons/profile.png" />
+                                                    <div className="owner-detail">
+                                                        <span>{comment?.owner?.name}</span>
+                                                        <div className="date">
+                                                            <span>Create at:</span>
+                                                            <span className="ms-2">{comment?.datetime}</span>
+                                                        </div>
                                                     </div>
                                                 </div>
-                                            </div>
-                                            <p className="comment-detail">
-                                                {comment?.detail}
-                                            </p>
-                                            <div className="comment-action">
-                                                <div className="vote">
-                                                    <IoCaretUp className="icon" />
-                                                    <span>{comment?.vote}</span>
-                                                    <IoCaretDown className="icon" />
+                                                <p className="comment-detail">
+                                                    {comment?.detail}
+                                                </p>
+                                                <div className="comment-action">
+                                                    <div className="vote">
+                                                        <IoCaretUp className="icon" />
+                                                        <span>{comment?.vote}</span>
+                                                        <IoCaretDown className="icon" />
+                                                    </div>
+                                                    {
+                                                        comment?.reply.length > 0
+                                                        ?   <div className="show-reply" onClick={() => toggleReply(comment?.id)}>
+                                                                <TbMessageCircle className="icon" />
+                                                                <span>Show {comment?.reply?.length} Reply</span>
+                                                            </div>
+                                                        :   null
+                                                    }
+                                                    <div className="reply">
+                                                        <BsReplyAll className="icon" />
+                                                        <span>Reply</span>
+                                                    </div>
+                                                    <div className="report">
+                                                        <HiOutlineExclamation className="icon" />
+                                                        <span>report</span>
+                                                    </div>                                        
                                                 </div>
+                                                <div className={`comment-reply ${showReply.indexOf(comment?.id) > -1 ? "active" : ""}`}>
                                                 {
-                                                    comment?.reply.length > 0
-                                                    ?   <div className="show-reply" onClick={() => toggleReply(comment?.id)}>
-                                                            <TbMessageCircle className="icon" />
-                                                            <span>Show {comment?.reply?.length} Reply</span>
-                                                        </div>
-                                                    :   null
-                                                }
-                                                <div className="reply">
-                                                    <BsReplyAll className="icon" />
-                                                    <span>Reply</span>
-                                                </div>
-                                                <div className="report">
-                                                    <HiOutlineExclamation className="icon" />
-                                                    <span>report</span>
-                                                </div>                                        
-                                            </div>
-                                            <div className={`comment-reply ${showReply.indexOf(comment?.id) > -1 ? "active" : ""}`}>
-                                            {
-                                                comment?.reply.map((replyComment, key1) => (
-                                                        <div className="comment" key={key1}>
-                                                            <div className="comment-owner">
-                                                                <img height="50px" src="/assets/images/icons/profile.png" />
-                                                                <div className="owner-detail">
-                                                                    <span>{replyComment?.owner.name}</span>
-                                                                    <div className="date">
-                                                                        <span>Create at:</span>
-                                                                        <span className="ms-2">{replyComment?.datetime}</span>
+                                                    comment?.reply.map((replyComment, key1) => (
+                                                            <div className="comment" key={key1}>
+                                                                <div className="comment-owner">
+                                                                    <img height="50px" src="/assets/images/icons/profile.png" />
+                                                                    <div className="owner-detail">
+                                                                        <span>{replyComment?.owner.name}</span>
+                                                                        <div className="date">
+                                                                            <span>Create at:</span>
+                                                                            <span className="ms-2">{replyComment?.datetime}</span>
+                                                                        </div>
                                                                     </div>
                                                                 </div>
-                                                            </div>
-                                                            <p className="comment-detail">
-                                                                {replyComment?.detail}
-                                                            </p>
-                                                            <div className="comment-action">
-                                                                <div className="vote">
-                                                                    <IoCaretUp className="icon" />
-                                                                    <span>{replyComment?.vote}</span>
-                                                                    <IoCaretDown className="icon" />
+                                                                <p className="comment-detail">
+                                                                    {replyComment?.detail}
+                                                                </p>
+                                                                <div className="comment-action">
+                                                                    <div className="vote">
+                                                                        <IoCaretUp className="icon" />
+                                                                        <span>{replyComment?.vote}</span>
+                                                                        <IoCaretDown className="icon" />
+                                                                    </div>
+                                                                    <div className="report">
+                                                                        <HiOutlineExclamation className="icon" />
+                                                                        <span>report</span>
+                                                                    </div>                                        
                                                                 </div>
-                                                                <div className="report">
-                                                                    <HiOutlineExclamation className="icon" />
-                                                                    <span>report</span>
-                                                                </div>                                        
+                                                            </div>
+                                                    ))
+                                                }            
+                                                </div>
+                                            </div>
+                                        ))
+                                    }
+                                </div>
+                                <div className={`submission ${menuActive === 3 ? "active" : ""}`}>
+                                    {
+                                        isDone 
+                                        ?   <>
+                                                <span className="fw-700 f-md">Comment from professor</span>
+                                                <div className="sp-vertical"></div>
+                                                <div className="comment-box-edit">
+                                                    {
+                                                        inFoSubmit.CommentFromProf === null
+                                                        ?   <p>No comment</p>
+                                                        :   <p>{inFoSubmit.CommentFromProf}</p>
+                                                    }                                                
+                                                </div>
+                                                <div className="divider my-4"></div>
+                                                <span className="fw-700 f-md">Your submission</span>
+                                                <div className="sp-vertical"></div>
+                                                <div className="comment-box-edit">
+                                                    {
+                                                        inFoSubmit.Answer === null
+                                                        ?   <p>No Text Answer</p>
+                                                        :   <p>{inFoSubmit.Answer}</p>
+                                                    }                                                
+                                                </div>
+                                                <div className="attachment">
+                                                    <span className="f-md fw-700">Attachment ({fileList.length})</span>
+                                                    <div className="sp-vertical"></div>
+                                                    {fileListSubmit?.map((file, key) => ( 
+                                                        <div className="attach-file" key={key}>
+                                                            <div className="d-flex jc-center ai-center">
+                                                                <div className="file-icon">{fileType(file.name)}</div>
+                                                                <div className="file-info">
+                                                                    <a 
+                                                                        className="file-name"
+                                                                        href={file.Url}
+                                                                        download={file.name}
+                                                                    >
+                                                                        {file.name}
+                                                                    </a>
+                                                                    <span className="file-size">{fileSize(Number(file.size))}</span>
+                                                                </div>
+                                                            </div>
+                                                            <div className="file-action">
+                                                                <button className="btn-download" onClick={() => download(file.Url, file.name)}>
+                                                                    Download
+                                                                </button>
                                                             </div>
                                                         </div>
-                                                ))
-                                            }            
-                                            </div>
-                                        </div>
-                                    ))
-                                }
-                            </div>
-                            <div className={`submission ${menuActive === 3 ? "active" : ""}`}>
-                                {
-                                    isDone 
-                                    ?   <>
-                                            <span className="fw-700 f-md">Comment from professor</span>
-                                            <div className="sp-vertical"></div>
-                                            <div className="comment-box-edit">
-                                                {
-                                                    inFoSubmit.CommentFromProf === null
-                                                    ?   <p>No comment</p>
-                                                    :   <p>{inFoSubmit.CommentFromProf}</p>
-                                                }                                                
-                                            </div>
-                                            <div className="divider my-4"></div>
-                                            <span className="fw-700 f-md">Your submission</span>
-                                            <div className="sp-vertical"></div>
-                                            <div className="comment-box-edit">
-                                                {
-                                                    inFoSubmit.Answer === null
-                                                    ?   <p>No Text Answer</p>
-                                                    :   <p>{inFoSubmit.Answer}</p>
-                                                }                                                
-                                            </div>
-                                            <div className="attachment">
-                                                <span className="f-md fw-700">Attachment ({fileList.length})</span>
-                                                <div className="sp-vertical"></div>
-                                                {fileListSubmit?.map((file, key) => ( 
+                                                    ))}                
+                                                    {
+                                                        fileListSubmit &&
+                                                        <>
+                                                        <div className="divider my-4"></div>
+                                                        <div className="d-flex jc-center ai-center">
+                                                            <button 
+                                                                className="btn-01 d-flex jc-center ai-center" 
+                                                                onClick={() => downloadAll(fileList, (inFoQuestion.FirstName + "_" + inFoQuestion.QuestionName))}
+                                                            >
+                                                                <TbFileZip size={24} className="me-1" />
+                                                                Download All
+                                                            </button>
+                                                        </div>
+                                                        </>
+                                                    }
+                                                </div>    
+                                            </>
+                                        :   <>
+                                                <div className="comment-box">
+                                                    <textarea 
+                                                        className="autosize" 
+                                                        placeholder="Type comment here ..." 
+                                                        onChange={(e) => setCommentSubmission(e.target.value)} 
+                                                    />
+                                                    <div className="file-input">
+                                                        <input
+                                                            type="file"
+                                                            name="file-input"
+                                                            id="file-input"
+                                                            className="file-input__input"
+                                                            onChange={handleFileChange}
+                                                            multiple
+                                                        />
+                                                        <label className="file-input__label" htmlFor="file-input">
+                                                            <TbPaperclip size={24} />
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                                <div className="attachment">
+                                                    {/* <input type="file" onChange={handleFileInput}/> */}
+                                                    {/* <button onClick={() => uploadFile(selectedFile)}> Upload to S3</button> */}
+                                                    {/* <input id="profile-img" name="profile-img" type="file" accept="image/*" onChange={onSelectFile}/> */}
+                                                    <span className="f-md fw-700">Attachment ({files?.length || 0})</span>
+                                                    <div className="sp-vertical"></div>
+                                                    {files.map((file, key) => (
                                                     <div className="attach-file" key={key}>
                                                         <div className="d-flex jc-center ai-center">
                                                             <div className="file-icon">{fileType(file.name)}</div>
                                                             <div className="file-info">
-                                                                <a 
-                                                                    className="file-name"
-                                                                    href={file.Url}
-                                                                    download={file.name}
-                                                                >
-                                                                    {file.name}
-                                                                </a>
-                                                                <span className="file-size">{fileSize(Number(file.size))}</span>
+                                                                <span className="file-name">{file.name}</span>
+                                                                <span className="file-size">{fileSize(file.size)}</span>
                                                             </div>
                                                         </div>
                                                         <div className="file-action">
-                                                            <button className="btn-download" onClick={() => download(file.Url, file.name)}>
-                                                                Download
+                                                            <button className="btn-7" onClick={() => deleteFile(file)}>
+                                                                <TbTrash size={18} className="me-1" />
+                                                                Delete
                                                             </button>
                                                         </div>
                                                     </div>
-                                                ))}                
-                                                {
-                                                    fileListSubmit &&
-                                                    <>
-                                                    <div className="divider my-4"></div>
-                                                    <div className="d-flex jc-center ai-center">
-                                                        <button 
-                                                            className="btn-01 d-flex jc-center ai-center" 
-                                                            onClick={() => downloadAll(fileList, (inFoQuestion.FirstName + "_" + inFoQuestion.QuestionName))}
-                                                        >
-                                                            <TbFileZip size={24} className="me-1" />
-                                                            Download All
-                                                        </button>
-                                                    </div>
-                                                    </>
-                                                }
-                                            </div>    
-                                        </>
-                                    :   <>
-                                            <div className="comment-box">
-                                                <textarea 
-                                                    className="autosize" 
-                                                    placeholder="Type comment here ..." 
-                                                    onChange={(e) => setCommentSubmission(e.target.value)} 
-                                                />
-                                                <div className="file-input">
-                                                    <input
-                                                        type="file"
-                                                        name="file-input"
-                                                        id="file-input"
-                                                        className="file-input__input"
-                                                        onChange={handleFileChange}
-                                                        multiple
-                                                    />
-                                                    <label className="file-input__label" htmlFor="file-input">
-                                                        <TbPaperclip size={24} />
-                                                    </label>
+                                                    ))}
                                                 </div>
-                                            </div>
-                                            <div className="attachment">
-                                                {/* <input type="file" onChange={handleFileInput}/> */}
-                                                {/* <button onClick={() => uploadFile(selectedFile)}> Upload to S3</button> */}
-                                                {/* <input id="profile-img" name="profile-img" type="file" accept="image/*" onChange={onSelectFile}/> */}
-                                                <span className="f-md fw-700">Attachment ({files?.length || 0})</span>
-                                                <div className="sp-vertical"></div>
-                                                {files.map((file, key) => (
-                                                <div className="attach-file" key={key}>
-                                                    <div className="d-flex jc-center ai-center">
-                                                        <div className="file-icon">{fileType(file.name)}</div>
-                                                        <div className="file-info">
-                                                            <span className="file-name">{file.name}</span>
-                                                            <span className="file-size">{fileSize(file.size)}</span>
-                                                        </div>
-                                                    </div>
-                                                    <div className="file-action">
-                                                        <button className="btn-7" onClick={() => deleteFile(file)}>
-                                                            <TbTrash size={18} className="me-1" />
-                                                            Delete
-                                                        </button>
-                                                    </div>
+                                                <div className="divider my-4"></div>
+                                                <div className="d-flex jc-center ai-center">
+                                                    <button onClick={() => uploadFile(fileList)} className="btn-01">Submit</button>
                                                 </div>
-                                                ))}
-                                            </div>
-                                            <div className="divider my-4"></div>
-                                            <div className="d-flex jc-center ai-center">
-                                                <button onClick={() => uploadFile(fileList)} className="btn-01">Submit</button>
-                                            </div>
-                                        </>
-                                }                                    
+                                            </>
+                                    }                                    
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
+                    </>
+                }
             </div>
 
             {/* Give up Modal */}
