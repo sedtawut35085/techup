@@ -129,15 +129,19 @@ textarea::-webkit-scrollbar-thumb:hover {
 
 @media screen and (max-width: 576px) {
     .cover-container {
-        width: 90vw;
+        width: 85vw;
         border-radius: 1rem;
-        margin: 3rem auto;
+        margin: 5rem auto;
+        padding-top: 55px;
         background-color: rgba(255, 255, 255, 1);
-        padding-right: calc(var(--bs-gutter-x) * 1);
-        padding-left: calc(var(--bs-gutter-x) * 1);
+        padding-right: calc(var(--bs-gutter-x) * 1.5);
+        padding-left: calc(var(--bs-gutter-x) * 1.5);
     }
     .background-container {
        display: none;
+    }
+    .text-hidden {
+        display: none;
     }
 }
 
@@ -418,3 +422,19 @@ textarea::-webkit-scrollbar-thumb:hover {
     height: 1px;
     background-color: #A5A3A2;
 }
+
+/* All media screen */
+/* @media screen and (max-width: 1520px) {
+}
+
+@media screen and (max-width: 1200px) {
+}
+
+@media screen and (max-width: 992px) {
+}
+
+@media screen and (max-width: 768px) {
+}
+
+@media screen and (max-width: 576px) {
+} */

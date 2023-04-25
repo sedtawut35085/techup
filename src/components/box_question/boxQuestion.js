@@ -27,11 +27,11 @@ const QuestionBox = ({data}) => {
                     <span className="f-lg fw-600 thai">{data.QuestionName}</span>
                     <span className="f-xs fw-400">Due date:&nbsp;
                         {   
-                            Moment(data.DueDate).isSame(new Date())
-                            ? <span className="color-5 fw-600">Today</span>
-                            : Moment(data.DueDate).isBefore(new Date())
-                            ? <span className="color-gray2 fw-600">Out time</span>
-                            : Moment(data.DueDate).isAfter(new Date())
+                            Moment(data.DueDate).isSame(new Date(), "day")
+                            ? <span className="color-3 fw-600">Today</span>
+                            : Moment(data.DueDate).isBefore(new Date(), "day")
+                            ? <span className="color-5 fw-600">Out time</span>
+                            : Moment(data.DueDate).isAfter(new Date(), "day")
                             ? <span className="color-1 fw-600">{Moment(data.DueDate).format('DD-MM-YYYY')}</span>
                             : <span>-</span>
                         }

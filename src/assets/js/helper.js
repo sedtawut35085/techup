@@ -135,3 +135,11 @@ export function downloadAll(files, filename) {
       }
     });
 }
+
+export function toggleScrollable(hidden) {
+    if(hidden) {
+        document.body.style.overflow = "hidden"
+    } else {
+        document.body.style.overflow = ""
+    }
+}

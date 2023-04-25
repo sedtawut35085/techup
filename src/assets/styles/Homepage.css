@@ -1,14 +1,13 @@
-.topic-section {
-    margin: 0 -0.8rem;
-    padding: 1.6rem 0;
-    display: flex;
-    flex-wrap: wrap;
+.box-zone {
+    margin: 1.6rem 0;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.6rem;
 }
 .topic-box {
+    width: 100%;
     z-index: 0;
     transition: all .2s;
-    padding: 0 .8rem;
-    margin-bottom: 1.6rem;
 }
 .topic-box:hover {
     transform: scale(1.08);
@@ -86,10 +85,9 @@
     rotate: -25deg;
 }
 .question-box {
+    width: 100%;
     z-index: 0;
     transition: all .2s;
-    padding: 0 .8rem;
-    margin-bottom: 1.6rem;
 }
 .question-box:hover {
     transform: scale(1.08);
@@ -130,6 +128,12 @@
     padding: 0 .6rem;
     flex-direction: column;
     justify-content: center;
+    max-width: 250px;
+}
+.question-box .title span {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 .question-box .bottom {
     z-index: 1;
@@ -181,4 +185,30 @@
     top: 100px;
     left: 220px;
     rotate: -25deg;
+}
+
+@media screen and (max-width: 1520px) {
+    .box-zone {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media screen and (max-width: 1200px) {
+}
+
+@media screen and (max-width: 992px) {
+    .box-zone {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .box-zone {
+        grid-template-columns: 1fr;
+    }
+    .question-box .title {
+    }
+}
+
+@media screen and (max-width: 576px) {
 }
