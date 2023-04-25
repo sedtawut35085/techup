@@ -36,6 +36,7 @@ import QuestionProf from "./pages/QuestionProf"
 import SubmissionProf from "./pages/QuestionProf/submission.js"
 import TopicProf from "./pages/TopicProf/index.js"
 import SubmitProf from "./pages/Submit"
+import DiscussDetail from "./pages/Discuss/detail.js"
 
 import Discuss from "./pages/Discuss/index.js"
 import Ranking from "./pages/Ranking/index.js"
@@ -64,7 +65,8 @@ function App() {
             <Route path="/home" element={<AuthProvider><Homepage /></AuthProvider>}/>
             <Route path="/topic/:topic" element={<Topic />}/>
             <Route path="/topic/:topic/question/:question" element={<Question />}/>
-            <Route path="/discuss" element={<Discuss/>}/>
+            <Route path="/discuss" element={<Discuss />}/>
+            <Route path="/discuss/:id" element={<DiscussDetail />}/>
             <Route path="/ranking" element={<Ranking />}/>
             <Route path="/store" element={<Store />}/>
             <Route path="/weekly" element={<Weekly />}/>
