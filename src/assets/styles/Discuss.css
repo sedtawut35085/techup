@@ -1,0 +1,115 @@
+.discuss-top{
+    height: 36px;
+    width: auto;
+    background-color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: 400;
+    cursor: pointer;
+    border-radius: 18px;
+    color: #26262C;
+    margin-right: 10px;
+    box-shadow: 0 0 4px rgba(0, 0, 0, 0.25);
+    padding:10px;
+}
+
+.discuss-top-active {
+    height: 36px;
+    width: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    border-radius: 18px;
+    margin-right: 10px;
+    box-shadow: 0 0 4px rgba(0, 0, 0, 0.25);
+    padding:10px;
+    color: #fff;
+    background-color: #FFA242;
+    font-weight: 700;
+}
+
+.discuss-top:hover {
+    color: #fff;
+    background-color: #FFA242;
+    font-weight: 700;
+}
+
+.discuss-search-title {
+    height: 36px;
+    border-radius: 12px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 0 4px rgba(0, 0, 0, 0.25);
+    color : #726F6E;
+    padding:5px;
+    margin-right: 5px;
+}
+
+.discuss-create-button {
+    height: 36px;
+    color:#fff;
+    box-shadow: 0 0 4px rgba(0, 0, 0, 0.25);
+    border-radius: 18px;
+    background-color: #FFA242;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 5px;
+    font-weight: 700;
+}
+
+.discuss-topic {
+    height: 120px;
+    border-radius: 15px;
+    margin-top: 15px;
+    margin-bottom: 15px;
+    padding-top: 25px;
+    padding-bottom: 25px;
+}
+
+/* .discuss-author-image-frame {
+    object-fit: cover;
+    height: 80px;
+    border-radius: 12px;
+} */
+
+.discuss-author-image {
+    height: 64px;
+    width:64px;
+    object-fit: cover;
+    border-radius: 64px;
+}
+
+.discuss-topic-name {
+    color:#000000;
+    font-size: 18px;
+}
+
+.discuss-topic-date {
+    color : #00000080;
+}
+
+.discuss-tag-frame {
+}
+
+.discuss-tag {
+    height: 20px;
+    background-color: #FFA242;
+    border-radius: 12px;
+    width: max-content;
+    color: #fff;
+    font-weight: 200;
+    margin-right: 5px;
+}
+
+.discuss-like {
+    color: #A5A3A2;
+    margin-right: 30px;
+}
+
+.discuss-view {
+    color: #A5A3A2;
+}

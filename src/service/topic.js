@@ -1,4 +1,4 @@
-import Auth from '../configuration/configuration-aws'
+
 import axios from 'axios';
 import { getCurrentUserId } from '.';
 

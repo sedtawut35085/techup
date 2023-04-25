@@ -4,7 +4,6 @@ import { getCurrentUserId } from '.';
 const baseUrl = 'https://5ccp4x5xq5.execute-api.ap-southeast-1.amazonaws.com/dev'
 
 let response
-let accessToken
 let userEmail
 
 export async function getChallenge (questionID) {

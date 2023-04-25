@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { getAccessToken, getCurrentUserId,convertToBase64,uploadPhoto } from './index'
 const baseUrl = 'https://5ccp4x5xq5.execute-api.ap-southeast-1.amazonaws.com/dev'
-let response, accessToken, userEmail, professorEmail, convertedFile
+let response, accessToken, professorEmail, convertedFile
 
 
 export async function getProfessor() {

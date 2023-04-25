@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { getCurrentUserId } from '.';
 const baseUrl = 'https://5ccp4x5xq5.execute-api.ap-southeast-1.amazonaws.com/dev';
-let response,userEmail
+let response
 
 export async function getAllSubmission(QuestionID,pageStart,pageSize){
     await axios({
