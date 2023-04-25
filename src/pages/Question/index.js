@@ -13,7 +13,7 @@ import { HiOutlineExclamation } from 'react-icons/hi'
 import { IoCloseCircle, IoCaretUp, IoCaretDown } from 'react-icons/io5'
 
 import { getQuestion } from '../../service/question';
-import { getDiscussQuestion } from '../../service/discussQuestion';
+import { getDiscussQuestion , addComment } from '../../service/discussQuestion';
 import { saveSubmission } from '../../service/submission'
 import { getStudent } from '../../service/student';
 
@@ -24,6 +24,7 @@ import { getEachSubmissionFromUserIDandQuestionID } from '../../service/submissi
 import { convertToBase64, uploadPhoto } from '../../service';
 import AWS from 'aws-sdk'
 import { getChallenge,addChallengeUser,deleteChallengedUser } from '../../service/challenge';
+
 
 
 const S3_BUCKET ='techup-file-upload-storage';
@@ -46,7 +47,7 @@ function Question() {
     const [inFoSubmit, setInFoSubmit] = useState("")
     const [inFoUser, setInFoUser] = useState("")
     const [inFoQuestion, setInFoQuestion] = useState("")
-    // const [discuss,setDiscuss] = useState([])
+
     let topicID = window.location.href.split("/")[4];
     let QuestionId = window.location.href.split("/")[6];   
 
@@ -129,7 +130,14 @@ function Question() {
         let res = await getDiscussQuestion(QuestionId);
         setDiscuss(res)
         setIsLoading(isLoading-1)
-    }    
+    }
+    
+    async function addNewComment() {
+        await addComment(QuestionId,commentDiscuss)
+        let res = await getDiscussQuestion(QuestionId);
+        setDiscuss(res)
+    }
+    
     async function loadEachSubmissionFromUserIDandQuestionID() {
         let res = await getEachSubmissionFromUserIDandQuestionID(QuestionId);
         setInFoSubmit(res[0])
@@ -175,8 +183,8 @@ function Question() {
         loadEachSubmissionFromUserIDandQuestionID()
         getQuestionFromQuestionID();
         getChallengedStatus();
-        // getDiscuss();
         getInfoUser()
+        getDiscuss()
     }, []);   
 
     function addChallenge(){
@@ -508,20 +516,21 @@ function Question() {
                                 </div>
                             </div>
                         </div>
-                        <div className={`detail-section ${menuActive === 1 ? "description" : menuActive === 2 ? "discuss" : "submission"}`}>
-                            <div className={`description ${menuActive === 1 ? "active" : ""}`}>
-                                <p>
-                                    {inFoQuestion.QuestionDescription}
-                                </p>
-                            </div>
-                            <div className={`discuss ${menuActive === 2 ? "active" : ""}`}>
-                                <div className="comment-box">
-                                    <textarea 
-                                        className="autosize" 
-                                        placeholder="Type comment here ..." 
-                                        onChange={(e) => setCommentDiscuss(e.target.value)} 
-                                    />
-                                    <button className="btn-01">Comment</button>
+                        <div className="problem-section">
+                            <div className="menu-section">
+                                <div 
+                                    className={`menu des ${menuActive === 1 ? "active" : ""}`}
+                                    onClick={() => setMenuActive(1)}
+                                >
+                                    <TbFileDescription className="icon" />
+                                    <span>Description</span>
+                                </div>
+                                <div 
+                                    className={`menu dis ${menuActive === 2 ? "active" : ""}`}
+                                    onClick={() => setMenuActive(2)}
+                                >
+                                    <TbMessage2 className="icon" />
+                                    <span>Discuss</span>
                                 </div>
                                 <div 
                                     className={`menu sub ${menuActive === 3 ? "active" : ""}`}
@@ -542,9 +551,10 @@ function Question() {
                                         <textarea 
                                             className="autosize" 
                                             placeholder="Type comment here ..." 
-                                            onChange={(e) => setCommentDiscuss(e.target.value)} 
+                                            onChange={(e) => setCommentDiscuss(e.target.value)}
+                                            value = {commentDiscuss} 
                                         />
-                                        <button className="btn-01">Comment</button>
+                                        <button className="btn-01" onClick={() => {addNewComment();setCommentDiscuss("");}}>Comment</button>
                                     </div>
                                     <div className="sort">
                                         <span>Sort by :</span>
@@ -558,29 +568,29 @@ function Question() {
                                         discuss.map((comment, key) => (
                                             <div className="comment" key={key}>
                                                 <div className="comment-owner">
-                                                    <img height="50px" src="/assets/images/icons/profile.png" />
+                                                    <img className="owner-image" src={comment?.UserImage} />
                                                     <div className="owner-detail">
-                                                        <span>{comment?.owner?.name}</span>
+                                                        <span>{comment?.AuthorName} {comment.AuthorSurName}</span>
                                                         <div className="date">
                                                             <span>Create at:</span>
-                                                            <span className="ms-2">{comment?.datetime}</span>
+                                                            <span className="ms-2">{Moment(comment?.Date).format('DD-MM-YYYY , hh:mm')}</span>
                                                         </div>
                                                     </div>
                                                 </div>
                                                 <p className="comment-detail">
-                                                    {comment?.detail}
+                                                    {comment?.Comment}
                                                 </p>
                                                 <div className="comment-action">
                                                     <div className="vote">
                                                         <IoCaretUp className="icon" />
-                                                        <span>{comment?.vote}</span>
+                                                        <span>{comment?.AmountLike}</span>
                                                         <IoCaretDown className="icon" />
                                                     </div>
                                                     {
-                                                        comment?.reply.length > 0
+                                                        comment?.AmountLike > 0
                                                         ?   <div className="show-reply" onClick={() => toggleReply(comment?.id)}>
                                                                 <TbMessageCircle className="icon" />
-                                                                <span>Show {comment?.reply?.length} Reply</span>
+                                                                <span>Show  Reply</span>
                                                             </div>
                                                         :   null
                                                     }
@@ -593,7 +603,7 @@ function Question() {
                                                         <span>report</span>
                                                     </div>                                        
                                                 </div>
-                                                <div className={`comment-reply ${showReply.indexOf(comment?.id) > -1 ? "active" : ""}`}>
+                                                {/* <div className={`comment-reply ${showReply.indexOf(comment?.id) > -1 ? "active" : ""}`}>
                                                 {
                                                     comment?.reply.map((replyComment, key1) => (
                                                             <div className="comment" key={key1}>
@@ -624,7 +634,7 @@ function Question() {
                                                             </div>
                                                     ))
                                                 }            
-                                                </div>
+                                                </div> */}
                                             </div>
                                         ))
                                     }

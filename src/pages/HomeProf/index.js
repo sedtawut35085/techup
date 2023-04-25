@@ -48,7 +48,7 @@ function Professor() {
             <div className="cover-container">
             <div className="homepageprof-main d-flex fd-col">                           
                 <span className="mt-3 f-xl fw-700"><TbListDetails className="color-1 me-2" />My list</span>
-                <div className="topic-section">
+                <div className="box-zone">
                     {allTopic.map((topic, key) => (
                         <TopicBoxProf
                             key={key}

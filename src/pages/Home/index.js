@@ -56,7 +56,7 @@ function Homepage() {
                                 <img className="me-2" alt="logo" width="38px" src="/assets/images/logo/logo.png" />
                                 All Topic in <span className="color-1">TECHUP</span>
                             </p>
-                            <div className="topic-section">
+                            <div className="box-zone">
                                 {allTopic.map((topic, key) => (
                                     <TopicBox
                                         key={key}

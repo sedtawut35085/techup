@@ -10,6 +10,8 @@ import "./assets/styles/Topic.css"
 import "./assets/styles/Professor.css"
 import "./assets/styles/Ranking.css"
 import "./assets/styles/Question.css"
+import "./assets/styles/Weekly.css"
+import "./assets/styles/Discuss.css"
 import 'react-toastify/dist/ReactToastify.css';
 import 'aos/dist/aos.css';
 
