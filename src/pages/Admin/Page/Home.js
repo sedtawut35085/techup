@@ -1,63 +1,81 @@
+import { FaUserAlt, FaChalkboardTeacher } from 'react-icons/fa'
+import { MdTopic } from 'react-icons/md'
+
 const HomeDashboard = ({currentPage}) =>{
     return (
         <div className='container-fluid'>
                 <div className='row g-3 my-2'>
                     <span className='pt-2 f-lg fw-600'>{currentPage}</span>
                     <div className='col-md-6'>
-                        <div className='p-3 bg-white shadow-sm d-flex justify-content-around align-items'>
-                            <div>
-                                <h3 className='fs-2'>
-                                    230
-                                </h3>
-                                <p className='fs-2'>
-                                    Product
-                                </p>
+                        <div class="card text-dark bg-light mb-3">
+                            <h5 class="card-header text-muted"><FaUserAlt className='m-2'></FaUserAlt>User & Professor</h5>
+                            <div class="card-body">
+                                <h5 class="card-title f-md text-muted">Amount of Student</h5>
+                                <p class="card-text text-muted">200</p>
                             </div>
-                        </div> 
+                        </div>
                     </div>
                     <div className='col-md-6'>
-                        <div className='p-3 bg-white shadow-sm d-flex justify-content-around align-items'>
-                            <div>
-                                <h3 className='fs-2'>
-                                    230
-                                </h3>
-                                <p className='fs-2'>
-                                    Product
-                                </p>
+                        <div class="card text-dark bg-light mb-3">
+                            <h5 class="card-header text-muted"><MdTopic className='m-2'></MdTopic>Topic & Question</h5>
+                            <div class="card-body">
+                                <h5 class="card-title f-md text-muted">Amount of Topic</h5>
+                                <p class="card-text text-muted">10</p>
                             </div>
                         </div> 
                     </div>
+                    <span className='pt-2 f-lg fw-600'>Recent Submission</span>
                     <div className='table-responsive px-4'>
-                        <table className="table caption-top px-6">
-                            <caption>Recent Order</caption>
+                        <table className="table">
                             <thead>
+                                    <tr>
+                                        <th className="title">Title </th>
+                                        <th className="action">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
                                 <tr>
-                                <th scope="col">#</th>
-                                <th scope="col">First</th>
-                                <th scope="col">Last</th>
-                                <th scope="col">Handle</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                <th scope="row">1</th>
-                                <td>Mark</td>
-                                <td>Otto</td>
-                                <td>@mdo</td>
-                                </tr>
-                                <tr>
-                                <th scope="row">2</th>
-                                <td>Jacob</td>
-                                <td>Thornton</td>
-                                <td>@fat</td>
+                                    <td className="title thai col-8">Sedtawut Chalothornnarumit<br/><span className='f-xs color-gray2'>Submission Date 01/01/2022 - Kernel คืออะไร - Operating System</span></td>
+                                    <td className="point-table">
+                                        <div className="col-4 col-md-8 col-sm-auto pt-2">
+                                            <div className="btn-view-detail">View Detail</div>
+                                        </div>
+                                    </td>
                                 </tr>
                                 <tr>
-                                <th scope="row">3</th>
-                                <td colSpan="2">Larry the Bird</td>
-                                <td>@twitter</td>
+                                    <td className="title thai col-8">Sedtawut Chalothornnarumit<br/><span className='f-xs color-gray2'>Submission Date 01/01/2022 - Kernel คืออะไร - Operating System</span></td>
+                                    <td className="point-table">
+                                        <div className="col-4 col-md-8 col-sm-auto pt-2">
+                                            <div className="btn-view-detail">View Detail</div>
+                                        </div>
+                                    </td>
                                 </tr>
-                            </tbody>
-                        </table>
+                                <tr>
+                                    <td className="title thai col-8">Sedtawut Chalothornnarumit<br/><span className='f-xs color-gray2'>Submission Date 01/01/2022 - Kernel คืออะไร - Operating System</span></td>
+                                    <td className="point-table">
+                                        <div className="col-4 col-md-8 col-sm-auto pt-2">
+                                            <div className="btn-view-detail">View Detail</div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td className="title thai col-8">Sedtawut Chalothornnarumit<br/><span className='f-xs color-gray2'>Submission Date 01/01/2022 - Kernel คืออะไร - Operating System</span></td>
+                                    <td className="point-table">
+                                        <div className="col-4 col-md-8 col-sm-auto pt-2">
+                                            <div className="btn-view-detail">View Detail</div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td className="title thai col-8">Sedtawut Chalothornnarumit<br/><span className='f-xs color-gray2'>Submission Date 01/01/2022 - Kernel คืออะไร - Operating System</span></td>
+                                    <td className="point-table">
+                                        <div className="col-4 col-md-8 col-sm-auto pt-2">
+                                            <div className="btn-view-detail">View Detail</div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
                     </div>
                 </div>
             </div>

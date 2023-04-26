@@ -4,33 +4,37 @@ const User = ({currentPage}) =>{
                 <div className='row g-3 my-2'>
                     <span className='pt-2 f-lg fw-600'>{currentPage}</span>        
                     <div className='table-responsive px-4'>
-                        <table className="table caption-top px-6">
-                            <caption>Recent Order</caption>
+                        <table className="table table-striped table-hover caption-top px-6">
                             <thead>
                                 <tr>
-                                <th scope="col">#</th>
-                                <th scope="col">First</th>
-                                <th scope="col">Last</th>
-                                <th scope="col">Handle</th>
+                                <th scope="col">No.</th>
+                                <th scope="col">Student ID</th>
+                                <th scope="col">Name</th>
+                                <th scope="col">Surname</th>
+                                <th scope="col">Email</th>
+                                <th scope="col">Action</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr>
-                                <th scope="row">1</th>
-                                <td>Mark</td>
-                                <td>Otto</td>
-                                <td>@mdo</td>
+                                    <th scope="row" className="p-3">1</th>
+                                    <td className="p-3">62090500450</td>
+                                    <td className="p-3">Wittanasiri</td>
+                                    <td className="p-3">Upparakkitanan</td>
+                                    <td className="p-3">Wittanasiri.wc@kmutt.ac.th</td>
+                                    <td className="p-3">
+                                        <div className="btn-view-detail">View Detail</div>
+                                    </td>
                                 </tr>
                                 <tr>
-                                <th scope="row">2</th>
-                                <td>Jacob</td>
-                                <td>Thornton</td>
-                                <td>@fat</td>
-                                </tr>
-                                <tr>
-                                <th scope="row">3</th>
-                                <td colSpan="2">Larry the Bird</td>
-                                <td>@twitter</td>
+                                    <th className="p-3" scope="row">2</th>
+                                    <td className="p-3">62090500451</td>
+                                    <td className="p-3">Sedtawut</td>
+                                    <td className="p-3">Chalothornnarumit</td>
+                                    <td className="p-3">Sedtawut.cha@kmutt.ac.th</td>
+                                    <td className="p-3">
+                                        <div className="btn-view-detail">View Detail</div>
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>

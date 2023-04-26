@@ -3,6 +3,7 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
 import Sidebar from '../Sidebar';
 import '../../../assets/styles/Sidebar.css'
+import '../../../assets/styles/Admin.css'
 import BodyContent from '../Page';
 // import 'bootstrap-icons/font/bootstrap-icons.css';
 
