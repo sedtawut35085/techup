@@ -132,3 +132,48 @@ export async function addComment(discussID,comment) {
       })
     return response
   }
+
+  export async function addDiscuss(title,description,tags) {
+    userEmail = await getCurrentUserId();
+    const date = new Date()
+    const currentDate = Moment(date.toLocaleString()).format("YYYY-MM-DD hh:mm:ss")
+    if(userEmail.includes("@mail.kmutt.ac.th")){
+      user = await getStudentFromStudentEmail(userEmail)
+      TechUpID = user[0].TechUpID
+      AuthorName = user[0].FirstName
+      AuthorSurName = user[0].SurName
+      TypeUser = "Student"
+      
+    } else {
+      user = await getProfessor(userEmail)
+      TechUpID = null
+      AuthorName = user[0].Name
+      AuthorSurName = user[0].SurName
+      TypeUser = "Professor"
+    }
+    await axios({
+      method: "post",
+      url : `${baseUrl}/discuss`,
+      headers: { 
+        'Content-Type': 'text/plain'
+      },
+      data: {
+            "Type"            : "Discuss",
+            "Title"           : title,
+            "Description"     : description,
+            "Tags"            : JSON.stringify(tags),
+            "UserEmail"       : userEmail,
+            "UserImage"       : user[0].ImageURL,
+            "TechUpID"        : TechUpID,
+            "AuthorName"      : AuthorName,
+            "AuthorSurName"   : AuthorSurName,
+            "TypeUser"        : TypeUser,
+            "Date"            : date
+      }
+      }).then((res) => {
+        response = res
+      }).catch((err)=>{
+        response = err
+      })
+    return response
+  }

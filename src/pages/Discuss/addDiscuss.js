@@ -6,6 +6,8 @@ import BackgroundIcon from '../../components/background/bgIcons.js';
 import { FaChevronLeft } from 'react-icons/fa';
 import { TbMessageCircle, TbSend } from 'react-icons/tb'
 import { IoClose } from 'react-icons/io5'
+import { addDiscuss} from '../../service/discuss'
+import { useNavigate } from 'react-router-dom'
 
 function AddDiscuss() {
 
@@ -16,23 +18,22 @@ function AddDiscuss() {
     const [tag, setTag] = useState('')
     const [tags, setTags] = useState([]);
 
+    const navigate = useNavigate()
+
     function addTag(event) {
         console.log('addtag')
         let newTag = event.target.value.trim()
 
         if ( event.keyCode === 13 || event.keyCode == 32 ) {
 
-            if (newTag[0] !== '#') {
-                newTag = '#' + newTag
 
-                if ((newTag.length !== 1) && (tags.indexOf(newTag) === -1)){
-                    let array = [...tags]
-                    array.push(newTag)
-                    setTags(array) 
-                } else {
-                    setTag('')
-                }
-            }       
+            if ((newTag.length !== 0) && (tags.indexOf(newTag) === -1)){
+                let array = [...tags]
+                array.push(newTag)
+                setTags(array) 
+            } else {
+                setTag('')
+            }
             setTag('')
         } else if ( (event.keyCode === 8) && (newTag.length === 0) ) {
             removeTag(tags.length - 1)
@@ -47,10 +48,14 @@ function AddDiscuss() {
     }
 
 
-    function handleSubmit(event) {
+    async function handleSubmit(event) {
+        event.preventDefault()
+        await addNewDiscuss(title,description,tags)
+        await navigate('/discuss')
+    }
 
-        event.preventDefault();
-
+    async function addNewDiscuss(title , desc , tags){
+        await addDiscuss(title , desc ,tags)
     }
 
     return (
@@ -90,7 +95,7 @@ function AddDiscuss() {
                         <div className="input-tags"> 
                             {
                                 tags?.map((tag, key) => (
-                                    <span className="tag" key={key}>{tag}<IoClose className="close" onClick={() => removeTag(key)}/></span>
+                                    <span className="tag" key={key}>#{tag}<IoClose className="close" onClick={() => removeTag(key)}/></span>
                                 ))
                             }
                             <input 
