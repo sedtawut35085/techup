@@ -12,11 +12,12 @@ let userEmail
 let user
 let TechUpID ,  AuthorName , AuthorSurName , TypeUser
 
-export async function getDiscussQuestion(questionID) {
+export async function getComment(questionID) {
     await axios({
         method: 'get',
         url: `${baseUrl}/discuss-question`,  
         params: {
+          "getType" : "getComment",
           "QuestionID" : questionID
         },
         }).then((res) => {
@@ -25,6 +26,23 @@ export async function getDiscussQuestion(questionID) {
           response = err
         })
     return response.data
+}
+
+export async function getReply(questionID , parentID) {
+  await axios({
+      method: 'get',
+      url: `${baseUrl}/discuss-question`,  
+      params: {
+        "getType" : "getReply",
+        "QuestionID" : questionID,
+        "ParentID" : parentID
+      },
+      }).then((res) => {
+        response = res
+      }).catch((err)=>{
+        response = err
+      })
+  return response.data
 }
 
 export async function addComment(questionID,comment) {

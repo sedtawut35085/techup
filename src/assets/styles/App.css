@@ -29,6 +29,7 @@ a {
 }
 
 textarea {
+    resize: none;
     font-family: 'IBM Plex Sans Thai', sans-serif;
 }
 
@@ -355,6 +356,7 @@ textarea::-webkit-scrollbar-thumb:hover {
 }
 
 ::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+    font-family: 'Poppins', sans-serif;
     color: #A5A3A2;
     opacity: 1; /* Firefox */
     -webkit-touch-callout: none; /* iOS Safari */

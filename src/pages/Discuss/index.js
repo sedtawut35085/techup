@@ -1,12 +1,15 @@
 import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
+import Moment from 'moment';
+
 import { BsFillTriangleFill } from 'react-icons/bs';
 import { IoCaretUp } from 'react-icons/io5'
 import { ImFire } from 'react-icons/im';
-import {IoEyeSharp} from 'react-icons/io5';
-import {FiSearch} from 'react-icons/fi';
-import {FaEdit} from 'react-icons/fa';
+import { IoEyeSharp } from 'react-icons/io5';
+import { FiSearch } from 'react-icons/fi';
+import { FaEdit } from 'react-icons/fa';
+
 import { getEachDiscuss , getDiscussInTrend ,getDiscussNewest ,getDiscussMostVote } from '../../service/discuss.js';
-import Moment from 'moment';
 
 import BackgroundIcon from '../../components/background/bgIcons.js';
 
@@ -17,6 +20,7 @@ function Discuss() {
     async function loadInTrendDiscuss() {
         const res = await getDiscussInTrend();
         setDiscusses(res);
+        console.log('All discuss :', res)
         setIsLoading(false)
     }
 
@@ -58,7 +62,7 @@ function Discuss() {
         // },
     ])
     const AllDiscuss = discusses.map((discuss) => 
-        <div className="discuss-topic sh-sm">
+        <Link className="discuss-topic sh-sm" to={`/discuss/${discuss.DiscussID}`}>
             <div className="row d-flex ai-center">
                 <div className="col-2 d-flex jc-center ai-center">
                     <img className="discuss-author-image" src={discuss.UserImage}></img>
@@ -86,7 +90,7 @@ function Discuss() {
             {/* <div className="discuss-author-image-frame">
                 <img className="discuss-author-image" src={discuss.image}></img>
             </div> */}
-        </div>
+        </Link>
         // <div className="col-4 text-center justify-content-center">
         //     <div className="reward-frame sh-lg">
         //         <img className="reward-image" width="100%" src={reward.image}></img>
@@ -128,9 +132,9 @@ function Discuss() {
                                 <div className='discuss-search-title'>
                                     <span><FiSearch/> Search discuss title...</span>
                                 </div>
-                                <div className='discuss-create-button'>
+                                <Link to="add" className='discuss-create-button'>
                                     <span>New <FaEdit/> </span>
-                                </div>
+                                </Link>
                             </div>
                         </div>
                         {AllDiscuss}

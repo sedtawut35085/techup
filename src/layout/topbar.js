@@ -103,7 +103,7 @@ const TopBar = ({currentEmailUser,isProfessor}) => {
                         <Link className={`nav top hover ${pathname === "store" ? "active" : ""}`} to="/store">
                                 <div>Store</div>
                             </Link>
-                            <Link className={`nav top ${pathname === "weekly" ? "active" : ""}`} to="/weekly">
+                            <Link className={`nav top weekly ${pathname === "weekly" ? "active" : ""}`} to="/weekly">
                                 <div>
                                     <HiOutlineCalendar size={24} />
                                     <span className="badge">.</span>
