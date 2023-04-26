@@ -6,6 +6,7 @@ import Auth from '../configuration/configuration-aws'
 export const AuthContext = React.createContext();
 
 export const AuthProviderAdmin = ({ children }) => {
+    
     const [currentEmailUser, setCurrentEmailUser] = useState(null);
     const navigate = useNavigate()
 
