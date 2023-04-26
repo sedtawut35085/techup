@@ -9,65 +9,102 @@ import { FaChevronLeft } from 'react-icons/fa';
 import { IoCaretUp, IoCaretDown } from 'react-icons/io5'
 import { HiOutlineEye, HiOutlineExclamation } from 'react-icons/hi'
 import { TbMessage2, TbMessageCircle } from 'react-icons/tb'
+import { getComment, getEachDiscuss } from '../../service/discuss.js';
+import Comment from "../../components/comment/comment"
+import Moment from "moment"
+import { addComment } from '../../service/discuss.js';
 
 function DiscussDetail() {
+
+    let discussID = window.location.href.split("/")[4];
 
     const [isLoading, setIsLoading] = useState(true)
 
     const [sortBy, setSortBy] = useState(1)
-    const [comment, setComment] = useState("")
+    const [comment , setComment] = useState("")
+    const [discuss , setDiscuss] = useState("")
+
+    async function getDiscussDetail(discussId) {
+        let res = await getEachDiscuss(discussId)
+        setDiscuss(res[0])
+    }
+
+    async function getAllComment(discussId) {
+        let res = await getComment(discussId)
+        setAllComment(res)
+    }
+
+    async function addNewComment() {
+        await addComment(discussID,comment)
+        let res = await getComment(discussID);
+        setAllComment(res)
+        setComment("")
+    }
 
     const [allComment, setAllComment] = useState([
-        {
-            id: "1",
-            detail: "Nibh et faucibus enim odio purus feugiat tempor massa libero. Luctus montes, vitae eget consequat morbi lacus, nibh commodo. Sed cras cursus sed neque purus elit vitae et non. Proin massa ut velit duis ullamcorper. Arcu aliquet elementum non volutpat ipsum massa egestas mauris nunc.",
-            vote: 50,
-            owner: {
-                name: "Wattanasiri Uparakkitanon",
-            },
-            datetime: "11/5/2022, 00:00",
-            reply: [
-                {
-                    id: "2",
-                    detail: "Nibh et faucibus enim odio purus feugiat tempor massa libero. Luctus montes, vitae eget consequat morbi lacus, nibh commodo. Sed cras cursus sed neque purus elit vitae et non. Proin massa ut velit duis ullamcorper. Arcu aliquet elementum non volutpat ipsum massa egestas mauris nunc.",
-                    vote: 20,
-                    owner: {
-                        name: "Wattanasiri Uparakkitanon",
-                    },
-                    datetime: "11/5/2022, 00:00",
-                },
-                {
-                    id: "3",
-                    detail: "Nibh et faucibus enim odio purus feugiat tempor massa libero. Luctus montes, vitae eget consequat morbi lacus, nibh commodo. Sed cras cursus sed neque purus elit vitae et non. Proin massa ut velit duis ullamcorper. Arcu aliquet elementum non volutpat ipsum massa egestas mauris nunc.",
-                    vote: 10,
-                    owner: {
-                        name: "Wattanasiri Uparakkitanon",
-                    },
-                    datetime: "11/5/2022, 00:00",
-                }
-            ]
-        },
-        {
-            id: "4",
-            detail: "Nibh et faucibus enim odio purus feugiat tempor massa libero. Luctus montes, vitae eget consequat morbi lacus, nibh commodo. Sed cras cursus sed neque purus elit vitae et non. Proin massa ut velit duis ullamcorper. Arcu aliquet elementum non volutpat ipsum massa egestas mauris nunc.",
-            vote: 40,
-            owner: {
-                name: "Wattanasiri Uparakkitanon",
-            },
-            datetime: "11/5/2022, 00:00",
-            reply: [
-                {
-                    id: "5",
-                    detail: "Nibh et faucibus enim odio purus feugiat tempor massa libero. Luctus montes, vitae eget consequat morbi lacus, nibh commodo. Sed cras cursus sed neque purus elit vitae et non. Proin massa ut velit duis ullamcorper. Arcu aliquet elementum non volutpat ipsum massa egestas mauris nunc.",
-                    vote: 20,
-                    owner: {
-                        name: "Wattanasiri Uparakkitanon",
-                    },
-                    datetime: "11/5/2022, 00:00",
-                }
-            ]
-        }
+        // {
+        //     id: "1",
+        //     detail: "Nibh et faucibus enim odio purus feugiat tempor massa libero. Luctus montes, vitae eget consequat morbi lacus, nibh commodo. Sed cras cursus sed neque purus elit vitae et non. Proin massa ut velit duis ullamcorper. Arcu aliquet elementum non volutpat ipsum massa egestas mauris nunc.",
+        //     vote: 50,
+        //     owner: {
+        //         name: "Wattanasiri Uparakkitanon",
+        //     },
+        //     datetime: "11/5/2022, 00:00",
+        //     reply: [
+        //         {
+        //             id: "2",
+        //             detail: "Nibh et faucibus enim odio purus feugiat tempor massa libero. Luctus montes, vitae eget consequat morbi lacus, nibh commodo. Sed cras cursus sed neque purus elit vitae et non. Proin massa ut velit duis ullamcorper. Arcu aliquet elementum non volutpat ipsum massa egestas mauris nunc.",
+        //             vote: 20,
+        //             owner: {
+        //                 name: "Wattanasiri Uparakkitanon",
+        //             },
+        //             datetime: "11/5/2022, 00:00",
+        //         },
+        //         {
+        //             id: "3",
+        //             detail: "Nibh et faucibus enim odio purus feugiat tempor massa libero. Luctus montes, vitae eget consequat morbi lacus, nibh commodo. Sed cras cursus sed neque purus elit vitae et non. Proin massa ut velit duis ullamcorper. Arcu aliquet elementum non volutpat ipsum massa egestas mauris nunc.",
+        //             vote: 10,
+        //             owner: {
+        //                 name: "Wattanasiri Uparakkitanon",
+        //             },
+        //             datetime: "11/5/2022, 00:00",
+        //         }
+        //     ]
+        // },
+        // {
+        //     id: "4",
+        //     detail: "Nibh et faucibus enim odio purus feugiat tempor massa libero. Luctus montes, vitae eget consequat morbi lacus, nibh commodo. Sed cras cursus sed neque purus elit vitae et non. Proin massa ut velit duis ullamcorper. Arcu aliquet elementum non volutpat ipsum massa egestas mauris nunc.",
+        //     vote: 40,
+        //     owner: {
+        //         name: "Wattanasiri Uparakkitanon",
+        //     },
+        //     datetime: "11/5/2022, 00:00",
+        //     reply: [
+        //         {
+        //             id: "5",
+        //             detail: "Nibh et faucibus enim odio purus feugiat tempor massa libero. Luctus montes, vitae eget consequat morbi lacus, nibh commodo. Sed cras cursus sed neque purus elit vitae et non. Proin massa ut velit duis ullamcorper. Arcu aliquet elementum non volutpat ipsum massa egestas mauris nunc.",
+        //             vote: 20,
+        //             owner: {
+        //                 name: "Wattanasiri Uparakkitanon",
+        //             },
+        //             datetime: "11/5/2022, 00:00",
+        //         }
+        //     ]
+        // }
     ])
+
+    const rootComments = allComment.filter( (allComment) => allComment.ParentID === null)
+
+    function getReply(commentId) {
+        return allComment.filter(allComment => allComment.ParentID === commentId).sort(
+            (a,b) => new Date(a.Date).getTime() - new Date(b.Date).getTime())
+    }
+
+    useEffect( () => {
+        getDiscussDetail(discussID)
+        getAllComment(discussID)
+    } , []);
+
     const [showReply, setShowReply] = useState([]);
 
     function toggleReply(id) {
@@ -127,15 +164,21 @@ function DiscussDetail() {
                             <div className="detail-section">
                                 <div className="header-detail">
                                     <div className="profile-info">
-                                        <img className="profile-img" src="https://scontent.fbkk22-2.fna.fbcdn.net/v/t1.6435-9/73168447_2514376778651048_2509528985663176704_n.jpg?_nc_cat=105&ccb=1-7&_nc_sid=09cbfe&_nc_eui2=AeG5qhR_w88_xeMdhxyxgYcgrXSV2hV34hatdJXaFXfiFk8Owv34Ecy3LZ3v5e6WdZCRJ-3Xzcm0qv3dVGxqCrZM&_nc_ohc=kuQGgUcF1NAAX96xE_Z&_nc_ht=scontent.fbkk22-2.fna&oh=00_AfDhehoyLbulh3AJ_WmRWEu080Ilyyjmv6Uc5SA19NxpBA&oe=644E84B4" />
+                                        <img className="profile-img" src={discuss?.UserImage} />
                                         <div className="infomation">
-                                            <p className="f-md m-0">Share Full Stack Developer internship experience</p>
+                                            <p className="f-md m-0">{discuss?.Title}</p>
                                             <div className="tags">
-                                                <span>#FullStack</span>
+                                                {JSON.parse(discuss?.Tags).map((eachTag) => 
+                                                    // <div className="discuss-tag">
+                                                    //     <span>#{eachTag}</span>
+                                                    // </div>
+                                                    <span>#{eachTag}</span>
+                                                )}
+                                                {/* <span>#FullStack</span>
                                                 <span>#Internship</span>
-                                                <span>#Experience</span>
+                                                <span>#Experience</span> */}
                                             </div>
-                                            <span className="f-xs m-0 color-gray2">Sedtawut created at: Dec 10, 2022 - 2:30 </span>
+                                            <span className="f-xs m-0 color-gray2">{discuss?.AuthorName} {discuss?.AuthorSurName} created at: {Moment(discuss.Date).format('DD-MM-YYYY hh:mm')} </span>
                                         </div>
                                     </div>
                                     <div className="action">
@@ -144,13 +187,13 @@ function DiscussDetail() {
                                     </div>
                                 </div>
                                 <p className="my-3">
-                                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nibh et faucibus enim odio purus feugiat tempor massa libero. Luctus montes, vitae eget consequat morbi lacus, nibh commodo. Sed cras cursus sed neque purus elit vitae et non. Proin massa ut velit duis ullamcorper. Arcu aliquet elementum non volutpat ipsum massa egestas mauris nunc.
+                                    {discuss?.Description}
                                 </p>
                             </div>
                         </div>
                         <div className="comment-section">
                             <div className="d-flex jc-btw my-4">
-                                <span className="f-md d-flex ai-center"><TbMessage2 className="me-1 color-1" size={36} />Comments (2)</span>
+                                <span className="f-md d-flex ai-center"><TbMessage2 className="me-1 color-1" size={36} />Comments ({rootComments.length})</span>
                                 <div className="sorting">
                                     <span className={`sort-select ${sortBy === 1 ? 'active' : ''}`} onClick={() => setSortBy(1)}>Most Votes</span>
                                     <span className={`sort-select ${sortBy === 2 ? 'active' : ''}`} onClick={() => setSortBy(2)}>Newest</span>
@@ -161,46 +204,18 @@ function DiscussDetail() {
                                 <textarea 
                                     className="autosize" 
                                     placeholder="Type comment here ..." 
-                                    onChange={(e) => setComment(e.target.value)} 
+                                    onChange={(e) => setComment(e.target.value)}
+                                    value = {comment} 
                                 />
-                                <button className="btn-01">Comment</button>
+                                <button className="btn-01" onClick={() => {addNewComment()}}>Comment</button>
                             </div>
                             <div className="comment-wrap">
                                 {
-                                    allComment.map((item, key) => (
-                                        <div className="comment-reply" key={key}>
-                                            <div className="d-flex">
-                                                <img height="50px" src="/assets/images/icons/profile.png" />
-                                                <div className="ms-2 d-flex fd-col">
-                                                    <span className="f-md">{item.owner.name}</span>
-                                                    <span className="f-xs color-gray2">created at: {item.datetime}</span>
-                                                </div>
-                                            </div>
-                                            <p className="f-md my-3">{item.detail}</p>
-                                            <div className="action">
-                                                <div className="d-flex ai-center">
-                                                    <IoCaretUp className="color-1" />
-                                                    <span className="mx-2">{item.vote}</span>
-                                                    <IoCaretDown className="color-1" />
-                                                </div>
-                                                {
-                                                    item?.reply.length > 0
-                                                    ?   <div className="d-flex ai-center" onClick={() => toggleReply(item?.id)}>
-                                                            <TbMessageCircle size={24} className="color-1 me-1" />
-                                                            <span>Show {item?.reply?.length} Reply</span>
-                                                        </div>
-                                                    :   null
-                                                }
-                                                <div className="d-flex ai-center">
-                                                    <BsReplyAll size={24} className="color-1 me-1" />
-                                                    <span>Reply</span>
-                                                </div>
-                                                <div className="d-flex ai-center">
-                                                    <HiOutlineExclamation size={24} className="color-1 me-1" />
-                                                    <span>report</span>
-                                                </div>  
-                                            </div>
-                                        </div>
+                                    rootComments.map((comment, key) => (
+                                        <Comment  
+                                            key={comment.DiscussQuestionID}
+                                            comment={comment}
+                                            replies={getReply(comment.DiscussID)}></Comment>
                                     ))
                                 }                                
                             </div>
