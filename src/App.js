@@ -10,6 +10,7 @@ import "./assets/styles/Topic.css"
 import "./assets/styles/Professor.css"
 import "./assets/styles/Ranking.css"
 import "./assets/styles/Question.css"
+import "./assets/styles/Weekly.css"
 import "./assets/styles/Discuss.css"
 import 'react-toastify/dist/ReactToastify.css';
 import 'aos/dist/aos.css';
@@ -19,9 +20,11 @@ import { BrowserRouter, Route, Routes} from "react-router-dom";
 
 import SignInForm from "./pages/Sign/signIn.js"
 import SignUpForm from "./pages/Sign/signUp.js"
+import SignInAdminForm from "./pages/Admin/Sign/SignIn"
 import SelectRole from "./pages/Sign/selectRole.js"
 import VerifyCodeEmail from "./pages/Sign/verifyCodeEmail"
 import { AuthProvider } from "./auth";
+import { AuthProviderAdmin } from "./authadmin"
 import PendingProf from "./pages/Sign/pendingProf.js"
 
 import AppLayout from "./layout/index.js"
@@ -35,6 +38,8 @@ import QuestionProf from "./pages/QuestionProf"
 import SubmissionProf from "./pages/QuestionProf/submission.js"
 import TopicProf from "./pages/TopicProf/index.js"
 import SubmitProf from "./pages/Submit"
+import DiscussDetail from "./pages/Discuss/detail.js"
+import AdminHomepage from "./pages/Admin/Home"
 
 import Discuss from "./pages/Discuss/index.js"
 import Ranking from "./pages/Ranking/index.js"
@@ -52,6 +57,8 @@ function App() {
           <Route exact path="/" element={<SignInForm />} />
           <Route exact path="/sign-up" element={<SignUpForm />} />
           <Route exact path="/pending-prof" element={<PendingProf />} />
+          <Route exact path="/Admin" element={<SignInAdminForm />} />
+          <Route exact path="/Admin/home" element={<AuthProviderAdmin><AdminHomepage /></AuthProviderAdmin>} /> 
           <Route element={<AppLayout />}>
             <Route path="/addtopic" element={<AuthProvider><AddTopic /></AuthProvider>}/>
             <Route path="/professor" element={<AuthProvider><Professor /></AuthProvider>}/>
@@ -63,7 +70,8 @@ function App() {
             <Route path="/home" element={<AuthProvider><Homepage /></AuthProvider>}/>
             <Route path="/topic/:topic" element={<Topic />}/>
             <Route path="/topic/:topic/question/:question" element={<Question />}/>
-            <Route path="/discuss" element={<Discuss/>}/>
+            <Route path="/discuss" element={<Discuss />}/>
+            <Route path="/discuss/:id" element={<DiscussDetail />}/>
             <Route path="/ranking" element={<Ranking />}/>
             <Route path="/store" element={<Store />}/>
             <Route path="/weekly" element={<Weekly />}/>

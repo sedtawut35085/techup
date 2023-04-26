@@ -150,7 +150,15 @@ const TopBar = ({currentEmailUser,isProfessor}) => {
                             <div className={`dropdown ${dropdownActive ? "active" : ""}`}>
                                 <div className="info">
                                     <span className="full-name f-sm">{currentEmailUser.substring(0, 20) + "..."}</span>
-                                    <div className="point">{inFoUser.Point} P</div>
+                                    <div className="point">
+                                        {
+                                            isProfessor === false?
+                                                <div className="nav">
+                                                    <div className="point">{inFoUser.Point} P</div>
+                                                </div>
+                                            :  null
+                                        } 
+                                    </div>
                                 </div>
                                 <div className="px-2">
                                     <div className="divider my-3"></div>

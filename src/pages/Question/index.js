@@ -24,7 +24,7 @@ import { getEachSubmissionFromUserIDandQuestionID } from '../../service/submissi
 import { convertToBase64, uploadPhoto } from '../../service';
 import AWS from 'aws-sdk'
 import { getChallenge,addChallengeUser,deleteChallengedUser } from '../../service/challenge';
-import Comment from "../../components/comment/comment"
+import CommentDiscussQuestion from "../../components/comment/commentDiscussQuestion"
 
 
 
@@ -525,10 +525,10 @@ function Question() {
                                     </div>
                                     {
                                         rootComments.map((comment, key) => (
-                                            <Comment
+                                            <CommentDiscussQuestion
                                                 key={comment.DiscussQuestionID}
                                                 comment={comment}
-                                                replies={getReply(comment.DiscussQuestionID)}></Comment>
+                                                replies={getReply(comment.DiscussQuestionID)}></CommentDiscussQuestion>
                                             
                                             // <div className="comment" key={key} replies={getReply(comment?.DiscussQuestionID)}>
                                             //     <div className="comment-owner">
