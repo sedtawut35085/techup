@@ -9,6 +9,7 @@ export const AuthProvider = ({ children }) => {
     const [currentEmailUser, setCurrentEmailUser] = useState(null);
     const navigate = useNavigate()
 
+    
     useEffect( () => {
         async function checkAuthen() {
             await Auth.currentAuthenticatedUser()
