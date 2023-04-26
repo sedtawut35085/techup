@@ -154,7 +154,7 @@ function AddTopic() {
                             />
                         </div>
                         <label className="f-lg pt-4" htmlFor="preview-id">Preview<span className="color-5"></span></label>   
-                        <div className='topic-section'>
+                        <div className='box-zone'>
                             <div className="topic-box col-3">
                                 <div 
                                     className="body" 

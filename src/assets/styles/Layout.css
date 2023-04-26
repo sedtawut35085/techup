@@ -3,8 +3,11 @@
     position: fixed;
     background-color: #fff;
     box-shadow: 0 5px 12px rgba(0, 0, 0, 0.25);
-    width: 100vw;
+    min-width: 100vw;
+    width: 100%;
     height: 55px;
+    top: 0;
+    translate: 0 -55px;
     padding: 0 150px;
     display: flex;
     align-items: center;
@@ -16,6 +19,11 @@
     -moz-user-select: none; /* Old versions of Firefox */
     -ms-user-select: none; /* Internet Explorer/Edge */
     user-select: none;
+    transition: all .4s;
+}
+.topbar.visible {
+    top: 0;
+    translate: 0;
 }
 .topbar .nav {
     padding: 0 .3rem;
@@ -37,6 +45,7 @@
     height: 100%;
     display: flex;
     align-items: center;
+    justify-content: center;
 }
 .topbar nav a.hover::after {
     content: "";
@@ -119,6 +128,10 @@
     flex-direction: column;
     align-items: center;
 }
+.topbar .profile-section .profile-pic .dropdown .info .point {
+    margin-top: .6rem;
+    display: none;
+}
 .topbar .profile-section .profile-pic .dropdown .info span {
     white-space: nowrap;
     padding: 0 1.5rem;
@@ -174,3 +187,134 @@
     align-items: center;
 }
 /* Notification badge */
+
+/* Toggle sidebar */
+.topbar .toggle-sidebar {
+    display: none;
+    align-items: center;
+    justify-content: center;
+}
+.topbar .toggle-sidebar .toggle-sidebar-content{
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    transition: background-color .2s;
+}
+.topbar .toggle-sidebar::after {
+    display: none;
+}
+.topbar .toggle-sidebar.active .toggle-sidebar-content {
+    color: #fff;
+    background-color: #FFA242;
+}
+/* Toggle sidebar */
+
+/* Topbar Responsive */
+.topbar-res {
+    z-index: 998;
+    position: fixed;
+    top: 0;
+    width: 100vw;    
+    height: 0;
+    background-color: #fff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    visibility: hidden;
+    opacity: 0;
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.25);
+    transition: all .4s;
+}
+.topbar-res.active {
+    top: 55px;
+    height: 240px;
+    opacity: 1;
+    visibility: visible;
+}
+.topbar-res a {
+    opacity: 0;
+    height: 60px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all .2s;
+}
+.topbar-res.active a {
+    opacity: 1;
+}
+.topbar-res a:hover {
+    background-color: #FFA242;
+    color: #fff;
+}
+.backdrop {
+    z-index: 997;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    opacity: 0;
+    visibility: hidden;
+    background-color: rgba(0, 0, 0, 0.3);
+    transition: all .4s;
+}
+.backdrop.active {
+    opacity: 1;
+    visibility: visible;
+}
+/* Topbar Responsive */
+
+@media screen and (max-width: 1520px) {
+    .topbar {
+        padding: 0 120px;
+    }
+}
+
+@media screen and (max-width: 1200px) {
+    .topbar {
+        padding: 0 60px;
+    }
+}
+
+@media screen and (max-width: 992px) {
+    .topbar {
+        padding: 0 20px;
+    }    
+    .topbar-res {
+        display: none;
+    }
+    .backdrop {
+        display: none;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .topbar .nav.top {
+        display: none;
+    }
+    .topbar .nav.toggle-sidebar {
+        display: flex;
+    }
+    .topbar-res {
+        display: flex;
+    }
+    .backdrop {
+        display: block;
+    }
+}
+
+@media screen and (max-width: 576px) {
+    .topbar .profile-section .point {
+        display: none;
+    }
+    .topbar .profile-section .profile-pic .dropdown .info .point {
+        display: block;
+    }
+}
+
+@media screen and (max-width: 350px) {
+    .topbar {
+        padding: 0 8px;
+    } 
+}

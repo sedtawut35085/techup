@@ -96,3 +96,21 @@
     background-color: #FFA242;
     color: #fff;
 }
+
+@media screen and (max-width: 1520px) {
+}
+
+@media screen and (max-width: 1200px) {
+}
+
+@media screen and (max-width: 992px) {
+}
+
+@media screen and (max-width: 768px) {
+    .pagination1 .display-per-page span {
+        display: none;
+    }
+}
+
+@media screen and (max-width: 576px) {
+}

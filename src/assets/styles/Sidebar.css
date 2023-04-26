@@ -1,0 +1,37 @@
+
+
+.list-group{
+    transition: transform .2s;
+    color: #f48313;
+}
+
+.list-group div:hover {
+    background-color: #f48313!important;
+    color: white!important;
+    transform: scale(1.0)!important;
+}
+
+.list-group-active {
+    background-color: #f48313!important;
+    color: white!important;
+    transform: scale(1.0)!important;
+}
+
+.nav-link {
+    color: rgb(35, 35, 35);
+    cursor: pointer;
+}
+
+.logout:hover {
+    background-color: #f48313!important;
+    color: white!important;
+}
+
+.icon-flipped {
+    transform: scaleX(-1);
+    -moz-transform: scaleX(-1);
+    -webkit-transform: scaleX(-1);
+    -ms-transform: scaleX(-1);
+}
+
+
