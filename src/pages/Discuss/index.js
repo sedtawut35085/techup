@@ -132,9 +132,9 @@ function Discuss() {
                                 <div className='discuss-search-title'>
                                     <span><FiSearch/> Search discuss title...</span>
                                 </div>
-                                <div className='discuss-create-button'>
+                                <Link to="add" className='discuss-create-button'>
                                     <span>New <FaEdit/> </span>
-                                </div>
+                                </Link>
                             </div>
                         </div>
                         {AllDiscuss}
