@@ -65,6 +65,9 @@
 .topbar nav a.hover.active::after {
     transform: scaleX(1);
 }
+.topbar nav a.weekly.active {
+    color: #FFA242;
+}
 /* Nav side */
 
 /* Profile side */

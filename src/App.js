@@ -39,6 +39,7 @@ import SubmissionProf from "./pages/QuestionProf/submission.js"
 import TopicProf from "./pages/TopicProf/index.js"
 import SubmitProf from "./pages/Submit"
 import DiscussDetail from "./pages/Discuss/detail.js"
+import AddDiscuss from "./pages/Discuss/addDiscuss.js"
 import AdminHomepage from "./pages/Admin/Home"
 
 import Discuss from "./pages/Discuss/index.js"
@@ -71,6 +72,7 @@ function App() {
             <Route path="/topic/:topic" element={<Topic />}/>
             <Route path="/topic/:topic/question/:question" element={<Question />}/>
             <Route path="/discuss" element={<Discuss />}/>
+            <Route path="/discuss/add" element={<AddDiscuss />}/>
             <Route path="/discuss/:id" element={<DiscussDetail />}/>
             <Route path="/ranking" element={<Ranking />}/>
             <Route path="/store" element={<Store />}/>

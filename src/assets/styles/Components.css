@@ -217,8 +217,8 @@ div.loader2 {
 .input-textareabox {
     background-color: #fff;
     width: 100%;
-    height: 100px;
-    padding: 0 20px;
+    height: 260px;
+    padding: 1rem 20px;
     font-size: 1rem;
     color: #26262C;
     outline: none;
@@ -255,6 +255,43 @@ div.loader2 {
     text-overflow: ellipsis;  
     transition: all .2s;
     border: 1px solid #fff;
+}
+
+.input-tags {
+    background-color: #fff;
+    width: 100%;
+    height: 60px;
+    padding: 1rem 20px;
+    font-size: 1rem;
+    color: #26262C;
+    outline: none;
+    border-radius: 12px;
+    border: 0;
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.25);  
+    transition: all .2s;
+    border: 1px solid #fff;
+    display: flex;
+    align-items: center;
+}
+.input-tags .tag {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #FFA242;
+    color: #fff;
+    height: 36px;
+    padding: 0 12px;
+    margin-right: 8px;
+    border-radius: 18px;
+}
+.input-tags .tag .close {
+    cursor: pointer;
+    margin-left: 6px;
+}
+.input-tags input {
+    outline: none;
+    border: none;
+    width: 100%;
 }
 /* Information input box */
 
@@ -627,7 +664,7 @@ div.loader2 {
     border-radius: 12px;
     margin-right: 30px;
     background-color: #fff;
-    color: #26262C;
+    color: #A5A3A2;
     box-shadow: 0 0 4px rgba(0, 0, 0, 0.25);
     font-size: 1.125rem;
     font-weight: 500;
@@ -636,7 +673,7 @@ div.loader2 {
     transition: all 0.2s;
 }
 .btn-02:hover {
-    background-color: #aca9a9;
+    color: #26262C;
 }
 /* Button 1 */
 
