@@ -26,6 +26,7 @@ function DiscussDetail() {
 
     async function getDiscussDetail(discussId) {
         let res = await getEachDiscuss(discussId)
+        console.log("discuss detail :", res[0])
         setDiscuss(res[0])
         setIsLoading(isLoading.splice(isLoading.indexOf(1), 1))
     }
@@ -43,57 +44,7 @@ function DiscussDetail() {
         setComment("")
     }
 
-    const [allComment, setAllComment] = useState([
-        // {
-        //     id: "1",
-        //     detail: "Nibh et faucibus enim odio purus feugiat tempor massa libero. Luctus montes, vitae eget consequat morbi lacus, nibh commodo. Sed cras cursus sed neque purus elit vitae et non. Proin massa ut velit duis ullamcorper. Arcu aliquet elementum non volutpat ipsum massa egestas mauris nunc.",
-        //     vote: 50,
-        //     owner: {
-        //         name: "Wattanasiri Uparakkitanon",
-        //     },
-        //     datetime: "11/5/2022, 00:00",
-        //     reply: [
-        //         {
-        //             id: "2",
-        //             detail: "Nibh et faucibus enim odio purus feugiat tempor massa libero. Luctus montes, vitae eget consequat morbi lacus, nibh commodo. Sed cras cursus sed neque purus elit vitae et non. Proin massa ut velit duis ullamcorper. Arcu aliquet elementum non volutpat ipsum massa egestas mauris nunc.",
-        //             vote: 20,
-        //             owner: {
-        //                 name: "Wattanasiri Uparakkitanon",
-        //             },
-        //             datetime: "11/5/2022, 00:00",
-        //         },
-        //         {
-        //             id: "3",
-        //             detail: "Nibh et faucibus enim odio purus feugiat tempor massa libero. Luctus montes, vitae eget consequat morbi lacus, nibh commodo. Sed cras cursus sed neque purus elit vitae et non. Proin massa ut velit duis ullamcorper. Arcu aliquet elementum non volutpat ipsum massa egestas mauris nunc.",
-        //             vote: 10,
-        //             owner: {
-        //                 name: "Wattanasiri Uparakkitanon",
-        //             },
-        //             datetime: "11/5/2022, 00:00",
-        //         }
-        //     ]
-        // },
-        // {
-        //     id: "4",
-        //     detail: "Nibh et faucibus enim odio purus feugiat tempor massa libero. Luctus montes, vitae eget consequat morbi lacus, nibh commodo. Sed cras cursus sed neque purus elit vitae et non. Proin massa ut velit duis ullamcorper. Arcu aliquet elementum non volutpat ipsum massa egestas mauris nunc.",
-        //     vote: 40,
-        //     owner: {
-        //         name: "Wattanasiri Uparakkitanon",
-        //     },
-        //     datetime: "11/5/2022, 00:00",
-        //     reply: [
-        //         {
-        //             id: "5",
-        //             detail: "Nibh et faucibus enim odio purus feugiat tempor massa libero. Luctus montes, vitae eget consequat morbi lacus, nibh commodo. Sed cras cursus sed neque purus elit vitae et non. Proin massa ut velit duis ullamcorper. Arcu aliquet elementum non volutpat ipsum massa egestas mauris nunc.",
-        //             vote: 20,
-        //             owner: {
-        //                 name: "Wattanasiri Uparakkitanon",
-        //             },
-        //             datetime: "11/5/2022, 00:00",
-        //         }
-        //     ]
-        // }
-    ])
+    const [allComment, setAllComment] = useState([])
 
     const rootComments = allComment.filter( (allComment) => allComment.ParentID === null)
 
@@ -155,9 +106,9 @@ function DiscussDetail() {
                         </Link>
                         <div className="main-discuss-card">
                             <div className="vote-section">
-                                <IoCaretUp className="color-1" size={24} />
-                                <span>78</span>
-                                <IoCaretDown className="color-1" size={24} />
+                                <IoCaretUp className="color-1 vote" size={24} />
+                                <span>{discuss.AmountLike}</span>
+                                <IoCaretDown className="color-1 vote" size={24} />
                             </div>
                             <div className="detail-section">
                                 <div className="header-detail">
@@ -176,11 +127,11 @@ function DiscussDetail() {
                                                 <span>#Internship</span>
                                                 <span>#Experience</span> */}
                                             </div>
-                                            <span className="f-xs m-0 color-gray2">{discuss?.AuthorName} {discuss?.AuthorSurName} created at: {Moment(discuss.Date).format('DD-MM-YYYY hh:mm')} </span>
+                                            <span className="f-xs m-0 color-gray2">{discuss?.AuthorName} {discuss?.AuthorSurName} created at: {Moment(discuss.Date).format('MMMM DD, YYYY - H:MM')}</span>
                                         </div>
                                     </div>
                                     <div className="action">
-                                        <span><HiOutlineEye size={24} />768</span>
+                                        <span><HiOutlineEye size={24} />{discuss?.View}</span>
                                         <span className="report"><HiOutlineExclamation size={24} /></span>
                                     </div>
                                 </div>
