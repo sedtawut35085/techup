@@ -10,7 +10,9 @@ import { getChallengeList } from '../../service/challenge.js';
 
 function Homepage() {   
 
-    const [isLoading, setIsLoading] = useState([1, 2, 3])
+    const [isLoading, setIsLoading] = useState(true)
+    const [isLoading1, setIsLoading1] = useState(true)
+    const [isLoading2, setIsLoading2] = useState(true)
     const [challengeList ,setChallengeList] = useState([])
     const [allTopic, setAllTopic] = useState([])
     const [myList, setMyList] = useState([])
@@ -18,17 +20,20 @@ function Homepage() {
     async function loadChallengeList() {
         const res = await getChallengeList();
         setChallengeList(res); 
-        setIsLoading(isLoading.splice(isLoading.indexOf(1), 1))
+        setIsLoading(false)
+        // setIsLoading(isLoading.splice(isLoading.indexOf(1), 1))
     }
     async function loadAllTopic() {
         const res = await getAllTopic();
         setAllTopic(res);
-        setIsLoading(isLoading.splice(isLoading.indexOf(2), 1))
+        setIsLoading1(false)
+        // setIsLoading(isLoading.splice(isLoading.indexOf(2), 1))
     }
     async function loadMyList() {
         const res = await getList();
         setMyList(res);
-        setIsLoading(isLoading.splice(isLoading.indexOf(3), 1))
+        setIsLoading2(false)
+        // setIsLoading(isLoading.splice(isLoading.indexOf(3), 1))
     }
 
     useEffect(() => {
@@ -41,14 +46,14 @@ function Homepage() {
         <div className="homepage">
             <div className="cover-container">
                 {
-                    (isLoading.length > 0) &&
+                    (isLoading === true) && (isLoading1 === true) && (isLoading2 === true) &&
                     <div className="loader2">
                         <div className="lds-roller"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div>
                         </div>
                     </div>
                 }
                 {
-                    isLoading.length > 0
+                    isLoading === true && isLoading1 === true && isLoading2 === true
                     ?   null
                     :   (challengeList?.length === 0 && myList.length === 0)
                     ?   <div data-aos="fade-up" data-aos-duration="1000" className="none-topic">

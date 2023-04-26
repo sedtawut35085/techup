@@ -20,8 +20,8 @@ import BackgroundIcon from '../../components/background/bgIcons.js';
 function DiscussDetail() {
 
     let discussID = window.location.href.split("/")[4];
-
-    const [isLoading, setIsLoading] = useState([1, 2])
+    const [isLoading, setIsLoading] = useState(true)
+    const [isLoading1, setIsLoading1] = useState(true)
     const [reportModal, setReportModal] = useState(false)
     const [reportDoneModal, setReportDoneModal] = useState(false)
 
@@ -33,13 +33,15 @@ function DiscussDetail() {
         let res = await getEachDiscuss(discussId)
         console.log("discuss detail :", res[0])
         setDiscuss(res[0])
-        setIsLoading(isLoading.splice(isLoading.indexOf(1), 1))
+        setIsLoading(false)
+        // setIsLoading(isLoading.splice(isLoading.indexOf(1), 1))
     }
 
     async function getAllComment(discussId) {
         let res = await getComment(discussId)
         setAllComment(res)
-        setIsLoading(isLoading.splice(isLoading.indexOf(2), 1))
+        setIsLoading1(false)
+        // setIsLoading(isLoading.splice(isLoading.indexOf(2), 1))
     }
 
     async function addNewComment() {
@@ -97,14 +99,14 @@ function DiscussDetail() {
         <div className="discuss-detail-page">
             <div className="cover-container">
                 {
-                    isLoading.length !== 0 &&
+                    isLoading === true && isLoading1 === true &&
                     <div className="loader2">
                         <div className="lds-roller"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div>
                         </div>
                     </div>
                 }  
                 {
-                    isLoading.length === 0 &&
+                    isLoading === false && isLoading1 === false &&
                     <>
                         <Link data-aos="fade-right" data-aos-duration="1000" className="btn-back" to={-1}>
                             <FaChevronLeft />
