@@ -1,24 +1,29 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import $ from 'jquery'
+import Moment from "moment"
 
-import BackgroundIcon from '../../components/background/bgIcons.js';
+import { toggleScrollable } from '../../assets/js/helper'
+import { addComment } from '../../service/discuss.js';
 
 import { BsReplyAll } from 'react-icons/bs'
 import { FaChevronLeft } from 'react-icons/fa';
-import { IoCaretUp, IoCaretDown } from 'react-icons/io5'
-import { HiOutlineEye, HiOutlineExclamation } from 'react-icons/hi'
+import { IoCaretUp, IoCaretDown, IoCloseCircle } from 'react-icons/io5'
+import { HiOutlineEye, HiOutlineExclamation, HiCheckCircle } from 'react-icons/hi'
 import { TbMessage2, TbMessageCircle } from 'react-icons/tb'
 import { getComment, getEachDiscuss } from '../../service/discuss.js';
+
 import Comment from "../../components/comment/comment"
-import Moment from "moment"
-import { addComment } from '../../service/discuss.js';
+import BackgroundIcon from '../../components/background/bgIcons.js';
+
 
 function DiscussDetail() {
 
     let discussID = window.location.href.split("/")[4];
 
     const [isLoading, setIsLoading] = useState([1, 2])
+    const [reportModal, setReportModal] = useState(false)
+    const [reportDoneModal, setReportDoneModal] = useState(false)
 
     const [sortBy, setSortBy] = useState(1)
     const [comment , setComment] = useState("")
@@ -26,6 +31,7 @@ function DiscussDetail() {
 
     async function getDiscussDetail(discussId) {
         let res = await getEachDiscuss(discussId)
+        console.log("discuss detail :", res[0])
         setDiscuss(res[0])
         setIsLoading(isLoading.splice(isLoading.indexOf(1), 1))
     }
@@ -43,57 +49,7 @@ function DiscussDetail() {
         setComment("")
     }
 
-    const [allComment, setAllComment] = useState([
-        // {
-        //     id: "1",
-        //     detail: "Nibh et faucibus enim odio purus feugiat tempor massa libero. Luctus montes, vitae eget consequat morbi lacus, nibh commodo. Sed cras cursus sed neque purus elit vitae et non. Proin massa ut velit duis ullamcorper. Arcu aliquet elementum non volutpat ipsum massa egestas mauris nunc.",
-        //     vote: 50,
-        //     owner: {
-        //         name: "Wattanasiri Uparakkitanon",
-        //     },
-        //     datetime: "11/5/2022, 00:00",
-        //     reply: [
-        //         {
-        //             id: "2",
-        //             detail: "Nibh et faucibus enim odio purus feugiat tempor massa libero. Luctus montes, vitae eget consequat morbi lacus, nibh commodo. Sed cras cursus sed neque purus elit vitae et non. Proin massa ut velit duis ullamcorper. Arcu aliquet elementum non volutpat ipsum massa egestas mauris nunc.",
-        //             vote: 20,
-        //             owner: {
-        //                 name: "Wattanasiri Uparakkitanon",
-        //             },
-        //             datetime: "11/5/2022, 00:00",
-        //         },
-        //         {
-        //             id: "3",
-        //             detail: "Nibh et faucibus enim odio purus feugiat tempor massa libero. Luctus montes, vitae eget consequat morbi lacus, nibh commodo. Sed cras cursus sed neque purus elit vitae et non. Proin massa ut velit duis ullamcorper. Arcu aliquet elementum non volutpat ipsum massa egestas mauris nunc.",
-        //             vote: 10,
-        //             owner: {
-        //                 name: "Wattanasiri Uparakkitanon",
-        //             },
-        //             datetime: "11/5/2022, 00:00",
-        //         }
-        //     ]
-        // },
-        // {
-        //     id: "4",
-        //     detail: "Nibh et faucibus enim odio purus feugiat tempor massa libero. Luctus montes, vitae eget consequat morbi lacus, nibh commodo. Sed cras cursus sed neque purus elit vitae et non. Proin massa ut velit duis ullamcorper. Arcu aliquet elementum non volutpat ipsum massa egestas mauris nunc.",
-        //     vote: 40,
-        //     owner: {
-        //         name: "Wattanasiri Uparakkitanon",
-        //     },
-        //     datetime: "11/5/2022, 00:00",
-        //     reply: [
-        //         {
-        //             id: "5",
-        //             detail: "Nibh et faucibus enim odio purus feugiat tempor massa libero. Luctus montes, vitae eget consequat morbi lacus, nibh commodo. Sed cras cursus sed neque purus elit vitae et non. Proin massa ut velit duis ullamcorper. Arcu aliquet elementum non volutpat ipsum massa egestas mauris nunc.",
-        //             vote: 20,
-        //             owner: {
-        //                 name: "Wattanasiri Uparakkitanon",
-        //             },
-        //             datetime: "11/5/2022, 00:00",
-        //         }
-        //     ]
-        // }
-    ])
+    const [allComment, setAllComment] = useState([])
 
     const rootComments = allComment.filter( (allComment) => allComment.ParentID === null)
 
@@ -155,9 +111,9 @@ function DiscussDetail() {
                         </Link>
                         <div className="main-discuss-card">
                             <div className="vote-section">
-                                <IoCaretUp className="color-1" size={24} />
-                                <span>78</span>
-                                <IoCaretDown className="color-1" size={24} />
+                                <IoCaretUp className="color-1 vote" size={24} />
+                                <span>{discuss.AmountLike}</span>
+                                <IoCaretDown className="color-1 vote" size={24} />
                             </div>
                             <div className="detail-section">
                                 <div className="header-detail">
@@ -176,12 +132,12 @@ function DiscussDetail() {
                                                 <span>#Internship</span>
                                                 <span>#Experience</span> */}
                                             </div>
-                                            <span className="f-xs m-0 color-gray2">{discuss?.AuthorName} {discuss?.AuthorSurName} created at: {Moment(discuss.Date).format('DD-MM-YYYY hh:mm')} </span>
+                                            <span className="f-xs m-0 color-gray2">{discuss?.AuthorName} {discuss?.AuthorSurName} created at: {Moment(discuss.Date).format('MMMM DD, YYYY - H:mm')}</span>
                                         </div>
                                     </div>
                                     <div className="action">
-                                        <span><HiOutlineEye size={24} />768</span>
-                                        <span className="report"><HiOutlineExclamation size={24} /></span>
+                                        <span><HiOutlineEye size={24} />{discuss?.View}</span>
+                                        <span className="report" onClick={() => {setReportModal(true); toggleScrollable(true)}}><HiOutlineExclamation size={24} /></span>
                                     </div>
                                 </div>
                                 <p className="my-3">
@@ -221,6 +177,78 @@ function DiscussDetail() {
                     </>                    
                 }                 
             </div>
+            
+            {/* Report Modal */}
+            <div className="tu-modal" style={reportModal ? {opacity: "1", visibility: "visible"} : {}}>
+                <div className="tu-modal-card">
+                    <IoCloseCircle className="close-button" onClick={() => {setReportModal(false); toggleScrollable(false);}} />
+                    <div className="tu-modal-head">
+                        <HiOutlineExclamation className="icon" />
+                        <span>
+                            What happening ?
+                        </span>
+                    </div>
+                    <div className="tu-modal-body">
+                        <label className="report-checkbox">Spam
+                            <input type="checkbox" />
+                            <span className="checkmark"></span>
+                        </label>
+                        <label className="report-checkbox">Sexual content
+                            <input type="checkbox" />
+                            <span className="checkmark"></span>
+                        </label>
+                        <label className="report-checkbox">Violent content
+                            <input type="checkbox" />
+                            <span className="checkmark"></span>
+                        </label>
+                        <label className="report-checkbox">Promotes terrorism
+                            <input type="checkbox" />
+                            <span className="checkmark"></span>
+                        </label>
+                        <label className="report-checkbox">Illegal content
+                            <input type="checkbox" />
+                            <span className="checkmark"></span>
+                        </label>
+                        <label className="report-checkbox">Hate speech
+                            <input type="checkbox" />
+                            <span className="checkmark"></span>
+                        </label>
+                        <label className="report-checkbox">Suicide or self-injury
+                            <input type="checkbox" />
+                            <span className="checkmark"></span>
+                        </label>
+                        <label className="report-checkbox">Something else...
+                            <input type="checkbox" />
+                            <span className="checkmark"></span>
+                        </label>
+                    </div>
+                    <div className="tu-modal-footer">
+                        <div className="cancel-button" onClick={() => {setReportModal(false); toggleScrollable(false);}}>No, nothing happening.</div>
+                        <div className="accept-button" onClick={() => {setReportModal(false); setReportDoneModal(true);}}>Yes, report this.</div>
+                    </div>
+                </div>
+            </div>
+
+            {/* Report done Modal */}
+            <div className="tu-modal" style={reportDoneModal ? {opacity: "1", visibility: "visible"} : {}}>
+                <div className="tu-modal-card">
+                    <IoCloseCircle className="close-button" onClick={() => {setReportDoneModal(false); toggleScrollable(false);}} />
+                    <div className="tu-modal-head jc-center">
+                        <HiCheckCircle className="icon" />
+                        <span>
+                        Your report has been sent!
+                        </span>
+                    </div>
+                    <div className="tu-modal-body">
+                        <p className="text-center mb-5 pb-4">Thank you for help us to make our community better.</p>
+                    </div>
+                    <div className="tu-modal-footer jc-center">
+                        <div className="accept-button" onClick={() => {setReportDoneModal(false); toggleScrollable(false);}}>Done</div>
+                    </div>
+                </div>
+            </div>
+
+            {/* Background */}
             <div className="background-container"></div>
             <BackgroundIcon />
         </div>
