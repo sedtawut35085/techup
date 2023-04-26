@@ -28,8 +28,8 @@ const Comment = ({key , comment , replies}) => {
         <div className="d-flex">
             <img height="50px" src="/assets/images/icons/profile.png" />
             <div className="ms-2 d-flex fd-col">
-                <span className="f-md">{comment?.AuthorName}</span>
-                <span className="f-xs color-gray2">created at: {comment?.Date}</span>
+                <span className="f-md">{comment?.AuthorName} {comment?.AuthorSurName}</span>
+                <span className="f-xs color-gray2">created at: {Moment(comment?.Date).format('DD-MM-YYYY , hh:mm')}</span>
             </div>
         </div>
         <p className="f-md my-3">{comment?.Comment}</p>
