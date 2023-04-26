@@ -18,7 +18,7 @@ function DiscussDetail() {
 
     let discussID = window.location.href.split("/")[4];
 
-    const [isLoading, setIsLoading] = useState(true)
+    const [isLoading, setIsLoading] = useState([1, 2])
 
     const [sortBy, setSortBy] = useState(1)
     const [comment , setComment] = useState("")
@@ -27,11 +27,13 @@ function DiscussDetail() {
     async function getDiscussDetail(discussId) {
         let res = await getEachDiscuss(discussId)
         setDiscuss(res[0])
+        setIsLoading(isLoading.splice(isLoading.indexOf(1), 1))
     }
 
     async function getAllComment(discussId) {
         let res = await getComment(discussId)
         setAllComment(res)
+        setIsLoading(isLoading.splice(isLoading.indexOf(2), 1))
     }
 
     async function addNewComment() {
@@ -117,10 +119,6 @@ function DiscussDetail() {
         setShowReply(array)
     }
 
-    setTimeout(() => {
-        setIsLoading(false)
-    }, 100)
-
     function autosize(){
         var text = $('.autosize');
     
@@ -143,14 +141,14 @@ function DiscussDetail() {
         <div className="discuss-detail-page">
             <div className="cover-container">
                 {
-                    isLoading &&
+                    isLoading.length !== 0 &&
                     <div className="loader2">
                         <div className="lds-roller"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div>
                         </div>
                     </div>
                 }  
                 {
-                    !isLoading &&
+                    isLoading.length === 0 &&
                     <>
                         <Link data-aos="fade-right" data-aos-duration="1000" className="btn-back" to={-1}>
                             <FaChevronLeft />
