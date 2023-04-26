@@ -39,7 +39,7 @@ const Sidebar = ({handleChangePage,currentPage}) => {
                 </li>
                 <li className='pt-4'>
                     <a href="#submenu1" data-bs-toggle="collapse" className="px-2 align-middle" onClick={toggleChangeDiscussandReport}>
-                        {toggleDiscussandReport === false ?
+                        {toggleDiscussandReport === true ?
                             <>
                                 <RiDiscussFill className="fs-6"></RiDiscussFill> <span className="ms-1 d-none d-sm-inline">Disscuss & Report <IoMdArrowDropdown className="fs-6"></IoMdArrowDropdown></span>
                             </>
@@ -49,7 +49,7 @@ const Sidebar = ({handleChangePage,currentPage}) => {
                             </>
                         }
                     </a>
-                    <ul className="collapse show nav flex-column ms-1" id="submenu1" data-bs-parent="#menu">
+                    <ul className="collapse nav flex-column ms-1" id="submenu1" data-bs-parent="#menu">
                         <li className="nav-item w-100 px-4 list-group pt-3">
                             <div className={`nav-link align-middle px-2  ${currentPage === "Discuss" ? "list-group-active" : ""}`} onClick={(e) => handleChangePage(e, 'Discuss')}><GiDiscussion className="fs-6 mx-2"></GiDiscussion><span className="ms-1 d-none d-sm-inline">Discuss</span></div>
                         </li>
