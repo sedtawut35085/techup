@@ -1,0 +1,214 @@
+.box-zone {
+    margin: 1.6rem 0;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.6rem;
+}
+.topic-box {
+    width: 100%;
+    z-index: 0;
+    transition: all .2s;
+}
+.topic-box:hover {
+    transform: scale(1.08);
+}
+.topic-box .body {
+    overflow: hidden;
+    position: relative;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    color: #fff;
+    padding: .8rem;
+    height: 180px;
+    border-radius: 12px;
+    box-shadow: 0 0 12px rgba(0, 0, 0, 0.25);
+}
+.topic-box .title {
+    z-index: 1;
+    height: 80%;
+    display: flex;
+    padding: 0 .6rem;
+    flex-direction: column;
+    justify-content: center;
+}
+.topic-box .professor-owner {
+    z-index: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #fff;
+    color: #26262C;
+    height: 30px;
+    padding: 0 .2rem;
+    border-radius: 8px;
+}
+.topic-box .bg-icon {
+    position: absolute;
+    z-index: 0;
+    opacity: 0.3;
+}
+.topic-box .bg-icon li {
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 20px;
+    width: 20px;
+    list-style: none;
+}
+.topic-box .bg-icon img {
+    position: fixed;
+    -webkit-filter: invert(100%);
+    filter: invert(100%);
+    transition: all .2s ease-out;
+}
+.topic-box .bg-icon li:nth-child(1) {
+    top: 20px;
+    left: 20px;
+    rotate: 22deg;
+}
+.topic-box .bg-icon li:nth-child(2) {
+    top: 18px;
+    left: 230px;
+    rotate: 15deg;
+}
+.topic-box .bg-icon li:nth-child(3) {
+    top: 105px;
+    left: 40px;
+    rotate: -12deg;
+}
+.topic-box .bg-icon li:nth-child(4) {
+    top: 100px;
+    left: 220px;
+    rotate: -25deg;
+}
+.question-box {
+    width: 100%;
+    z-index: 0;
+    transition: all .2s;
+}
+.question-box:hover {
+    transform: scale(1.08);
+}
+.question-box .body {
+    overflow: hidden;
+    position: relative;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    color: #fff;
+    padding: .8rem;
+    height: 180px;
+    border-radius: 12px;
+    box-shadow: 0 0 12px rgba(0, 0, 0, 0.25);
+}
+.question-box .point {
+    z-index: 1;
+    position: absolute;
+    top: .8rem;
+    right: .8rem;
+    background-color: #FFA242;
+    border: solid 3px #FED470;
+    border-radius: 12px;
+    font-size: 0.875rem;
+    font-weight: 700;
+    height: 24px;
+    padding: 0 .4rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.question-box .title {
+    z-index: 1;
+    height: 80%;
+    display: flex;
+    padding: 0 .6rem;
+    flex-direction: column;
+    justify-content: center;
+    max-width: 250px;
+}
+.question-box .title span {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.question-box .bottom {
+    z-index: 1;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #fff;
+    color: #26262C;
+    height: 30px;
+    padding: 0 .6rem;
+    border-radius: 8px;
+}
+.question-box .bg-icon {
+    position: absolute;
+    z-index: 0;
+    opacity: 0.3;
+}
+.question-box .bg-icon li {
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 20px;
+    width: 20px;
+    list-style: none;
+}
+.question-box .bg-icon img {
+    position: fixed;
+    -webkit-filter: invert(100%);
+    filter: invert(100%);
+    transition: all .2s ease-out;
+}
+.question-box .bg-icon li:nth-child(1) {
+    top: 20px;
+    left: 20px;
+    rotate: 22deg;
+}
+.question-box .bg-icon li:nth-child(2) {
+    top: 18px;
+    left: 230px;
+    rotate: 15deg;
+}
+.question-box .bg-icon li:nth-child(3) {
+    top: 105px;
+    left: 40px;
+    rotate: -12deg;
+}
+.question-box .bg-icon li:nth-child(4) {
+    top: 100px;
+    left: 220px;
+    rotate: -25deg;
+}
+
+@media screen and (max-width: 1520px) {
+    .box-zone {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media screen and (max-width: 1200px) {
+}
+
+@media screen and (max-width: 992px) {
+    .box-zone {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .box-zone {
+        grid-template-columns: 1fr;
+    }
+    .question-box .title {
+    }
+}
+
+@media screen and (max-width: 576px) {
+}

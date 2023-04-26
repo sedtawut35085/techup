@@ -1,0 +1,56 @@
+.btn-viewdetail {
+    height: 30px;
+    width: 50%;
+    padding: 60px 14px 0px -80px;
+    border-radius: 12px;
+    background-color: #FFA242;
+    color: #fff;
+    box-shadow: 0 0 4px rgba(0, 0, 0, 0.25);
+    font-size: 0.625rem;
+    font-weight: 500;
+    outline: none;
+    border: none;
+    transition: all 0.2s;
+}
+
+.btn-viewdetail:hover {
+    background-color: #FF9326;
+}
+
+.btnsubmit-viewdetail {
+    height: 30px;
+    width: 100%;
+    padding: 60px 14px 0px -80px;
+    border-radius: 12px;
+    background-color: #FFA242;
+    color: #fff;
+    box-shadow: 0 0 4px rgba(0, 0, 0, 0.25);
+    font-size: 0.625rem;
+    font-weight: 500;
+    outline: none;
+    border: none;
+    transition: all 0.2s;
+}
+
+.btnsubmit-viewdetail:hover {
+    background-color: #FF9326;
+}
+
+.btn-addquestion {
+    height: 40px;
+    padding: .5rem .7rem .2rem .7rem;
+    border-radius: 15px;
+    background-color: #FFA242;
+    color: #fff;
+    box-shadow: 0 0 4px rgba(0, 0, 0, 0.25);
+    font-size: 1.075rem;
+    font-weight: 600;
+    outline: none;
+    border: none;
+    transition: all 0.2s;
+}
+
+.btn-addquestion:hover {
+    background-color: #FF9326;
+}
+

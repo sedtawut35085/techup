@@ -1,0 +1,64 @@
+.ranking-title {
+    width: 100%; 
+    text-align: start;
+}
+.ranking-frame{
+    position: relative;
+    padding : 20px;
+    width: 100%;
+    border-radius: 12px;
+    margin-bottom: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.ranking-image-frame {
+    width: 172px;
+    position: relative;
+    margin-bottom: 30px;
+}
+
+.ranking-image {
+    object-fit: cover;
+    height: 172px;
+    width: 172px;
+    border-radius: 100px;
+}
+
+.rank-no{
+    position:absolute;
+    height:45px;
+    width:45px;
+    border-radius: 45px;
+    bottom:0;
+    right:0;
+}
+
+.rank-no#first{
+    background-color: #FFBF7D;
+    border:2px solid #FFA242;
+}
+
+.rank-no#second{
+    background-color: #D9D9D9;
+    border:2px solid #9D9B9B;
+}
+
+.rank-no#third{
+    background-color: #DB8C50;
+    border:2px solid #A05822;
+}
+
+.ranking-point {
+    height: 34px;
+    width: 134px;
+    border-radius: 10px;
+}
+
+.ranking-search {
+    padding-left: 20px;
+    height: 40px;
+    width: 200px;
+    border-radius: 20px;
+}

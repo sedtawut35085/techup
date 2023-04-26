@@ -1,0 +1,725 @@
+.question-page .body .top-section {
+    display: grid;
+    grid-template-columns: 3fr 1fr;
+}
+
+.question-page .body .top-section .left-side p {
+    display: flex;
+    align-items: center;
+}
+
+.question-page .body .top-section .left-side p.question-name {
+    font-family: 'IBM Plex Sans Thai', sans-serif;
+    font-weight: 700;
+    font-size: 2.25rem;
+}
+
+.question-page .body .top-section .left-side p .icon {
+    width: 32px;
+}
+
+.question-page .body .top-section .left-side .subject-name {
+    font-size: 1rem;
+}
+
+.question-page .body .top-section .left-side .due-date {
+    font-size: 1rem;
+}
+
+.question-page .body .top-section .right-side {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    user-select: none;
+}
+
+.question-page .body .top-section .right-side .action {
+    margin-top: .6rem;
+    margin-bottom: 2rem;
+    display: flex;
+}
+
+.question-page .body .top-section .right-side .action button {
+    margin-left: .6rem;
+}
+
+.question-page .body .top-section .right-side .action .is-done {
+    margin-left: .6rem;
+    background-color: #58A550;
+    height: 36px;
+    border-radius: 18px;
+    color: #fff;
+    padding: 0 .8rem;
+    font-weight: 700;
+    font-size: 1.125rem;
+    box-shadow: 0 0 4px rgba(0, 0, 0, 0.25);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.question-page .body .top-section .right-side .point {
+    white-space: nowrap;
+    height: 36px;
+    padding: 0 .6rem;
+    font-weight: 700;
+    color: #fff;
+    border-radius: 18px;
+    background-color: #FED470;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.question-page .body .problem-section {
+    margin-top: 2rem
+}
+
+.question-page .body .problem-section .menu-section {
+    display: flex;
+    align-items: center;
+}
+
+.question-page .body .problem-section .menu-section .menu {
+    cursor: pointer;
+    height: 50px;
+    width: 50px;
+    border-radius: 25px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 1rem;
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.25);
+    color: #3E3C3E;
+    transition: all .2s;
+}
+
+.question-page .body .problem-section .menu-section .menu:hover {
+    background-color: #FFA242;
+    color: #fff;
+}
+
+.question-page .body .problem-section .menu-section .menu .icon {
+    font-size: 1.8rem;
+}
+
+.question-page .body .problem-section .menu-section .menu span {
+    width: 0;
+    padding: 0;
+    margin: 0;
+    overflow: hidden;
+    font-size: 1.125rem;
+    font-weight: 700;
+}
+
+.question-page .body .problem-section .menu-section .menu.active {
+    color: #FFA242;
+}
+
+.question-page .body .problem-section .menu-section .menu.active.des {
+    width: 170px;
+}
+
+.question-page .body .problem-section .menu-section .menu.active.dis {
+    width: 135px;
+}
+
+.question-page .body .problem-section .menu-section .menu.active.sub {
+    width: 170px;
+}
+
+.question-page .body .problem-section .menu-section .menu.active.ans {
+    width: 135px;
+}
+
+.question-page .body .problem-section .menu-section .menu.active.scr {
+    width: 110px;
+}
+
+.question-page .body .problem-section .menu-section .menu.active:hover {
+    background-color: #fff;
+    color: #FFA242;
+}
+
+.question-page .body .problem-section .menu-section .menu.active .icon {
+    margin-right: .25rem;
+}
+
+.question-page .body .problem-section .menu-section .menu.active span {
+    width: unset;
+}
+
+.question-page .body .problem-section .detail-section {
+    width: 100%;
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.25);
+    border-radius: 25px;
+    margin-top: 1.2rem;
+    padding: 1.5rem;
+    overflow-y: scroll;
+    transition: all .2s;
+    max-height: 600px;
+}
+
+.question-page .body .problem-section .detail-section::-webkit-scrollbar {
+    display: none;
+}
+
+.question-page .body .problem-section .detail-section.description,
+.question-page .body .problem-section .detail-section.discuss,
+.question-page .body .problem-section .detail-section.answer,
+.question-page .body .problem-section .detail-section.score {
+    max-height: 540px;
+}
+
+.question-page .body .problem-section .detail-section.submission {
+    max-height: none;
+}
+
+.question-page .body .problem-section .detail-section .description {
+    font-family: 'IBM Plex Sans Thai', sans-serif;
+    padding: .5rem;
+}
+
+.question-page .body .problem-section .detail-section .description,
+.question-page .body .problem-section .detail-section .discuss,
+.question-page .body .problem-section .detail-section .submission,
+.question-page .body .problem-section .detail-section .answer,
+.question-page .body .problem-section .detail-section .score {
+    height: 0;
+    position: absolute;
+    transform: scale(0);
+    opacity: 0;
+    visibility: hidden;
+}
+
+.question-page .body .problem-section .detail-section .description.active,
+.question-page .body .problem-section .detail-section .discuss.active,
+.question-page .body .problem-section .detail-section .submission.active,
+.question-page .body .problem-section .detail-section .answer.active,
+.question-page .body .problem-section .detail-section .score.active {
+    position: unset;
+    transform: scale(1);
+    opacity: 1;
+    visibility: visible;
+    transition: all .2s;
+    height: auto;
+}
+
+.question-page .body .problem-section .detail-section .discuss .comment-box {
+    overflow: hidden;
+    position: relative;
+    width: 100%;
+    box-shadow: 0 0 4px rgba(0, 0, 0, 0.25);
+    border-radius: 10px;
+    height: auto;
+    display: flex;
+    align-items: center;
+    padding-right: 140px;
+    transition: all .2s;
+}
+
+.question-page .body .problem-section .detail-section .discuss .comment-box textarea {
+    align-self: flex-start;
+    width: 100%;
+    border-radius: 10px;
+    max-height: 160px;
+    resize: none;
+    padding: 1rem;
+    border: none;
+    outline: none;
+    background-color: transparent;
+    transition: all .2s;
+}
+
+.question-page .body .problem-section .detail-section .discuss .comment-box button {
+    position: absolute;
+    right: 0;
+    padding: 0 1rem;
+    height: 160px;
+    border-radius: 0 10px 10px 0;
+    transition: all .2s;
+}
+
+.question-page .body .problem-section .detail-section .discuss .sort {
+    font-size: 1.125rem;
+    margin: 1rem 0;
+}
+
+.question-page .body .problem-section .detail-section .discuss .sort span {
+    color: #A5A3A2;
+}
+
+.question-page .body .problem-section .detail-section .discuss .sort select {
+    cursor: pointer;
+    border: none;
+    outline: none;
+    background-color: transparent;
+    padding: 0 .5rem;
+}
+
+.question-page .body .problem-section .detail-section .discuss .comment {
+    padding-top: 1rem;
+}
+
+.question-page .body .problem-section .detail-section .discuss .comment .comment-owner{
+    display: flex;
+    align-items: center;
+}
+
+.question-page .body .problem-section .detail-section .discuss .comment .comment-owner .owner-image {
+    width: 50px;
+    height: 50px;
+    border-radius: 50px;
+    object-fit: cover;
+}
+
+.question-page .body .problem-section .detail-section .discuss .comment .comment-owner .owner-detail {
+    margin-left: .6rem;
+}
+
+.question-page .body .problem-section .detail-section .discuss .comment .comment-owner .owner-detail .date {
+    color: #A5A3A2;
+    font-size: .75rem;
+}
+
+.question-page .body .problem-section .detail-section .discuss .comment .comment-detail {
+    padding: .8rem 0;
+}
+
+.question-page .body .problem-section .detail-section .discuss .comment .comment-action {
+    display: flex;
+    align-items: center;
+    user-select: none;
+}
+
+.question-page .body .problem-section .detail-section .discuss .comment .comment-action .vote {
+    display: flex;
+    align-items: center;
+    margin-right: 1rem;
+}
+
+.question-page .body .problem-section .detail-section .discuss .comment .comment-action .show-reply,
+.question-page .body .problem-section .detail-section .discuss .comment .comment-action .reply,
+.question-page .body .problem-section .detail-section .discuss .comment .comment-action .report {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    margin-right: 1rem;
+}
+
+.question-page .body .problem-section .detail-section .discuss .comment .comment-action .icon{
+    cursor: pointer;
+    font-size: 1.5rem;
+    color: #FFA242;
+}
+
+.question-page .body .problem-section .detail-section .discuss .comment .comment-action span {
+    padding: 0 .3rem;
+    font-size: .875rem;
+}
+
+.question-page .body .problem-section .detail-section .discuss .comment .comment-reply {
+    height: 0;
+    overflow: hidden;
+    opacity: 0;
+    visibility: hidden;
+    border-left: 2px solid #A5A3A2;
+    margin-left: 2.3rem;
+    padding-left: 3rem;
+    transition: all .2s;
+}
+
+.question-page .body .problem-section .detail-section .discuss .comment .comment-reply.active {
+    height: auto;
+    overflow: visible;
+    opacity: 1;
+    visibility: visible;
+    margin: .5rem 0 .5rem 2.3rem;
+    padding: .5rem 0 .5rem 3rem;
+}
+
+.question-page .body .problem-section .detail-section .discuss .comment .comment-reply .comment {
+    margin-bottom: 1rem;
+}
+.question-page .body .problem-section .detail-section .discuss .comment .comment-reply .comment:last-child {
+    margin-bottom: 0;
+}
+
+.question-page .body .problem-section .detail-section .submission .comment-box {
+    overflow: hidden;
+    position: relative;
+    width: 100%;
+    box-shadow: 0 0 4px rgba(0, 0, 0, 0.25);
+    border-radius: 10px;
+    height: auto;
+    display: flex;
+    align-items: center;
+    padding-right: 60px;
+    transition: all .2s;
+}
+
+.question-page .body .problem-section .detail-section .submission .comment-box-edit {
+    width: 100%;
+    box-shadow: 0 0 4px rgba(0, 0, 0, 0.25);
+    border-radius: 10px;
+    height: auto;
+    max-height: 160px;
+    display: flex;
+    align-items: center;
+    padding: 10px 0;
+}
+
+.question-page .body .problem-section .detail-section .submission .comment-box-edit p {
+    padding: .2rem 1.5rem;
+    max-height: 140px;
+    font-family: 'IBM Plex Sans Thai', sans-serif;
+    margin: 0;
+    overflow-y: scroll;
+}
+
+.question-page .body .problem-section .detail-section .submission .comment-box-edit p::-webkit-scrollbar {
+    width: 6px;
+    background: transparent;
+}
+
+.question-page .body .problem-section .detail-section .submission .comment-box-edit p::-webkit-scrollbar-thumb {
+    background: #ffb56a;
+    border-radius: 5px;
+}
+
+.question-page .body .problem-section .detail-section .submission .comment-box-edit p::-webkit-scrollbar-thumb:hover {
+    background: #FFA242;
+}
+
+.question-page .body .problem-section .detail-section .submission .comment-box textarea {
+    align-self: flex-start;
+    width: 100%;
+    border-radius: 10px;
+    max-height: 160px;
+    resize: none;
+    padding: 1rem;
+    border: none;
+    outline: none;
+    background-color: transparent;
+    transition: all .2s;
+}
+
+.question-page .body .problem-section .detail-section .submission .comment-box .file-input {
+    position: absolute;
+    right: 0;
+    height: 160px;
+    background-color: #FFA242;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    transition: all .2s;
+}
+
+.question-page .body .problem-section .detail-section .submission .comment-box .file-input:hover {
+    background-color: #FF9326;
+}
+
+.question-page .body .problem-section .detail-section .submission .comment-box .file-input__input {
+    width: 0.1px;
+    height: 0.1px;
+    opacity: 0;
+    overflow: hidden;
+    position: absolute;
+    z-index: -1;
+}
+  
+.question-page .body .problem-section .detail-section .submission .comment-box .file-input .file-input__label {
+    padding: 0 1rem;
+    cursor: pointer;
+    color: #fff;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.question-page .body .problem-section .detail-section .attachment {
+    margin-top: 1.6rem;
+}
+
+.question-page .body .problem-section .detail-section .attachment .attach-file {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 0;
+}
+
+.question-page .body .problem-section .detail-section .attachment .attach-file .file-icon{
+    width: 48px;
+    height: 48px;
+    font-size: 1.6rem;
+    color: #fff;
+    background-color: #FFA242;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-right: .6rem;
+    box-shadow: 0 0 4px rgba(0, 0, 0, 0.25);
+}
+
+.question-page .body .problem-section .detail-section .attachment .attach-file .file-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.question-page .body .problem-section .detail-section .attachment .attach-file .file-info .file-name {
+    font-family: 'IBM Plex Sans Thai', sans-serif;
+    font-size: 1.125rem;
+    color: #FFA242;
+    font-weight: 600;
+    transition: all .2s;
+}
+
+.question-page .body .problem-section .detail-section .attachment .attach-file .file-info a.file-name:hover {
+    color: #FF9326;
+}
+
+.question-page .body .problem-section .detail-section .attachment .attach-file .file-info .file-size {
+    font-size: 0.875rem;
+}
+
+.question-page .body .problem-section .detail-section .submission .submission-table {
+    overflow-x: scroll;
+    width: 100%;
+}
+
+.question-page .body .problem-section .detail-section .submission .submission-table::-webkit-scrollbar {
+    height: 8px;
+}
+
+.question-page .body .problem-section .detail-section .submission .submission-table::-webkit-scrollbar-thumb {
+    background: #ffb56a;
+    border-radius: 5px;
+}
+
+.question-page .body .problem-section .detail-section .submission .submission-table::-webkit-scrollbar-thumb:hover {
+    background: #FFA242;
+}
+
+.question-page .body .problem-section .detail-section .submission .submission-table .table thead tr th {
+    font-weight: 400;
+    color: #A5A3A2;
+}
+
+.question-page .body .problem-section .detail-section .submission .submission-table .table tbody tr td {
+    vertical-align: middle;
+    height: 60px;
+    border: none;
+}
+
+.question-page .body .problem-section .detail-section .submission .submission-table .table .name {
+    width: auto;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.question-page .body .problem-section .detail-section .submission .submission-table .table .status {
+    width: 120px;
+    max-width: 120px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.question-page .body .problem-section .detail-section .submission .submission-table .table .date {
+    width: 200px;
+    max-width: 200px;
+    white-space: nowrap;
+    text-align: center;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.question-page .body .problem-section .detail-section .submission .submission-table .table .action {
+    width: 140px;
+    max-width: 140px;
+    white-space: nowrap;
+    text-align: center;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.question-page .body .problem-section .detail-section .answer .comment-box {
+    font-family: 'IBM Plex Sans Thai', sans-serif;
+    overflow: hidden;
+    position: relative;
+    width: 100%;
+    box-shadow: 0 0 4px rgba(0, 0, 0, 0.25);
+    border-radius: 10px;
+    height: auto;
+    display: flex;
+    align-items: center;
+    transition: all .2s;
+    padding: 1.2rem;
+}
+
+.question-page .body .problem-section .detail-section .score .comment-box {
+    font-family: 'IBM Plex Sans Thai', sans-serif;
+    overflow: hidden;
+    position: relative;
+    width: 100%;
+    box-shadow: 0 0 4px rgba(0, 0, 0, 0.25);
+    border-radius: 10px;
+    height: auto;
+    display: flex;
+    align-items: center;
+    transition: all .2s;
+}
+
+.question-page .body .problem-section .detail-section .score .comment-box textarea {
+    align-self: flex-start;
+    width: 100%;
+    border-radius: 10px;
+    max-height: 160px;
+    resize: none;
+    padding: 1rem;
+    border: none;
+    outline: none;
+    background-color: transparent;
+    transition: all .2s;
+}
+
+.question-page .body .problem-section .detail-section .score .score-bar {
+    margin: 2rem 4rem;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-bottom: 80px;
+}
+
+.question-page .body .problem-section .detail-section .score .score-bar .score-point {
+    margin: 10px 0;
+    position: relative;
+    height: 50px;
+    cursor: pointer;
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.25);
+    background-color: #fff;
+    transition: all.2s;
+}
+
+.question-page .body .problem-section .detail-section .score .score-bar .score-point:hover {
+    background-color: #FFA242;
+    color: #fff;
+}
+
+.question-page .body .problem-section .detail-section .score .score-bar .score-point.active {
+    margin: 4px 0;
+    height: 56px;
+    z-index: 999;
+    background-color: #FFA242;
+    color: #fff;
+}
+
+.question-page .body .problem-section .detail-section .score .score-bar .score-point:first-child {
+    border-radius: 10px 0 0 10px;
+}
+
+.question-page .body .problem-section .detail-section .score .score-bar .score-point:last-child {
+    border-radius: 0 10px 10px 0;
+}
+
+.question-page .body .problem-section .detail-section .score .score-bar .score-point:nth-child(1):after {
+    content: "No level";
+}
+.question-page .body .problem-section .detail-section .score .score-bar .score-point:nth-child(2):after {
+    content: "Novice";
+}
+.question-page .body .problem-section .detail-section .score .score-bar .score-point:nth-child(3):after {
+    content: "Advanced Beginner";
+}
+.question-page .body .problem-section .detail-section .score .score-bar .score-point:nth-child(4):after {
+    content: "Competent";
+}
+.question-page .body .problem-section .detail-section .score .score-bar .score-point:nth-child(5):after {
+    content: "Proficient";
+}
+.question-page .body .problem-section .detail-section .score .score-bar .score-point:nth-child(6):after {
+    content: "Expert";
+}
+
+.question-page .body .problem-section .detail-section .score .score-bar .score-point::before {
+    z-index: 999;
+    content: "";
+    background: #fff;
+    border-top: 1px solid #e1e1e1;
+    border-right: 1px solid #e1e1e1;
+    position: absolute;
+    bottom: -38px;
+    width: 12px;
+    height: 12px;
+    rotate: -45deg;
+    transition: all .2s;
+}
+.question-page .body .problem-section .detail-section .score .score-bar .score-point::after {
+    height: 32px;
+    font-size: 0.875rem;
+    display: flex;
+    padding: 0 1rem;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    bottom: -64px;
+    color: #26262C;
+    background-color: #fff;
+    white-space: nowrap;
+    border-radius: 8px;
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.25);
+    transition: all .2s;
+}
+
+.question-page .body .problem-section .detail-section .score .score-bar .score-point.active::before {
+    bottom: -28px;
+}
+.question-page .body .problem-section .detail-section .score .score-bar .score-point.active::after {
+    bottom: -54px;
+}
+
+@media screen and (max-width: 1520px) {
+}
+
+@media screen and (max-width: 1200px) {
+    .question-page .body .top-section {
+        grid-template-columns: 1fr;
+    }
+    .question-page .body .top-section .right-side {
+        margin: 1rem 0;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+    }
+    .question-page .body .top-section .right-side .action {
+        margin: 0;
+    }
+    .question-page .body .top-section .right-side .action button {
+        margin: 0 .6rem .6rem 0;
+    }
+}
+
+@media screen and (max-width: 992px) {
+}
+
+@media screen and (max-width: 768px) {
+}
+
+@media screen and (max-width: 576px) {
+    .question-page .body .top-section .right-side {
+        align-items: flex-start;
+    }
+    .question-page .body .top-section .right-side .action {
+        flex-wrap: wrap;
+    }
+}

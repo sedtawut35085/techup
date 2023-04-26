@@ -1,0 +1,250 @@
+.sign {
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center ;
+    padding: 0 6%;
+}
+.sign-info {
+    width: 60%;
+}
+.sign-in-form, .sign-up-form {
+    background-color: #fff;
+    height: 100%;
+    width: 640px;
+    padding: 0 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.sign-in, .forgot-password, .has-sent {
+    overflow: hidden;
+    transition: all .5s .1s;
+}
+.sign-form-title {
+    padding-bottom: 16%;
+}
+.sign-form-input {
+    padding: 0 12px;
+    display: block;
+    border-radius: 10px;
+    box-sizing: border-box;
+    width: 100%;
+    height: 45px;
+    border: 1px solid #A5A3A2;
+    transition: all 0.2s;
+    outline: none;
+}
+.sign-form-input:focus {
+    border: 1px solid #FFA242 !important;
+}
+.sign-form-checkbox {
+    cursor: pointer;
+    width: 20px;
+    height: 20px;
+    border: 1px solid #A5A3A2;
+    border-radius: 4px;
+    box-sizing: border-box;
+    appearance: none;
+    -webkit-appearance: none;
+    outline: none;
+    transition: all 0.2s;
+}
+.sign-form-checkbox:hover {
+    border: 1px solid #FFA242;
+}
+.sign-form-checkbox:checked {
+    background-color: #FFA242;
+    border: 1px solid #FFA242;
+}
+.sign-form-bottom label {
+    cursor: pointer;
+    transition: all 0.2s;
+}
+.sign-form-bottom label:hover {
+    color: #FFA242;
+}
+.sign-form-bottom a:hover {
+    color: #FFA242;
+}
+.sign-form-button {
+    width: 100%;
+    height: 54px;
+    font-size: 1.5rem;
+    color: #fff;
+    background-color: #FFA242;
+    border: none;
+    border-radius: 10px;
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.25);
+    transition: all .2s;
+}
+.sign-form-button:hover {
+    background-color: #FF9326;
+}
+
+.select-role-title {
+    width: 100%; 
+    text-align: center;
+    position: relative;
+}
+
+.select-role-title::before {
+    content: "";
+    display: block;
+    width: 28%;
+    height: 2px;
+    background: #FFA242;
+    left: 0;
+    top: 50%;
+    position: absolute;
+}
+
+.select-role-title::after {
+    content: "";
+    display: block;
+    width: 28%;
+    height: 2px;
+    background: #FFA242;
+    right: 0;
+    top: 50%;
+    position: absolute;
+}
+
+.select-section {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+.select-role-box {
+    width: 30%;
+    height: calc(16vw + 80px);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 0 12px rgba(0, 0, 0, 0.25);
+    border-radius: 24px;
+    transition: all .2s;
+    cursor: pointer;
+}
+
+.select-role-box .icon {
+    color: #FFA242;
+    line-height: 1rem;
+    padding: 0;
+    font-size: 8rem;
+}
+
+.select-role-box .text {
+    padding: 1rem 0 0 0;
+    font-size: 1.5rem;
+}
+
+.select-role-box:hover {
+    background-color: #FFA242;
+    color: #fff;
+}
+
+.select-role-box#student:hover #student-icon,
+.select-role-box#professor:hover #professor-icon {
+    color: #fff !important;
+}
+
+.select-role-box svg {
+    transition: all .2s;
+}
+
+@media screen and (max-width: 1520px) {
+    .select-role-title::before, .select-role-title::after {
+        width: 22%;
+    }
+}
+
+@media screen and (max-width: 1200px) {
+    .select-role-title::before, .select-role-title::after {
+        width: 18%;
+    }
+}
+
+@media screen and (max-width: 992px) {
+    .select-role-title::before, .select-role-title::after {
+        display: none;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .select-role-box {
+        width: 80%;
+        height: calc(15vw + 140px);
+    }
+    .select-section {
+        flex-direction: column;
+    }    
+}
+
+.select-page {
+    padding: 60px 0;
+}
+
+@media screen and (max-width: 576px) {
+    .select-page .title {
+        padding-top: .2rem;
+        font-size: 1.8rem;
+        padding-left: 2rem;
+    }
+}
+
+.select-page .input-section {
+    display: flex;
+}
+
+.select-page .profile-image .icon {
+    color: #D7D7D6;
+    font-size: 300px;
+}
+
+.select-page .profile-image img {
+    width: 300px;
+    height: 300px;
+    border-radius: 50%;
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.25);
+    object-fit: cover;
+}
+
+.select-page .profile-image input {
+    display: none;
+}
+
+.select-page .profile-image label {
+    cursor: pointer;
+    height: 40px;
+    font-size: 1.125rem;
+    color: #FFA242;
+    background-color: #fff;
+    margin-top: -18px;
+    padding: 0 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.25);
+    border-radius: 20px;
+    transition: all .2s;
+}
+
+.select-page .profile-image label:hover {
+    background-color: #FFA242;
+    box-shadow: 0 0 12px rgba(0, 0, 0, 0.25);
+    color: #fff;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Works for Firefox */
+input[type="number"] {
+  -moz-appearance: textfield;
+}
