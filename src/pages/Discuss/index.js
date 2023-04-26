@@ -1,105 +1,37 @@
 import React, { useEffect, useState } from 'react';
-import { BsFillTriangleFill } from 'react-icons/bs';
-import { IoCaretUp } from 'react-icons/io5'
-import { ImFire } from 'react-icons/im';
-import {IoEyeSharp} from 'react-icons/io5';
-import {FiSearch} from 'react-icons/fi';
-import {FaEdit} from 'react-icons/fa';
-import { getEachDiscuss , getDiscussInTrend ,getDiscussNewest ,getDiscussMostVote } from '../../service/discuss.js';
+import { Link } from 'react-router-dom';
 import Moment from 'moment';
+
+import { IoCaretUp } from 'react-icons/io5'
+import { HiFire, HiOutlinePencilAlt, HiOutlineEye } from 'react-icons/hi';
+import { FiSearch } from 'react-icons/fi';
+
+import { getEachDiscuss , getDiscussInTrend ,getDiscussNewest ,getDiscussMostVote } from '../../service/discuss.js';
 
 import BackgroundIcon from '../../components/background/bgIcons.js';
 
 function Discuss() {
-    const [filter , setFilter] = useState("inTrend")
+
     const [isLoading, setIsLoading] = useState(true)
+    const [discusses , setDiscusses] = useState([])
+
+    const [sortBy , setSortBy] = useState("trend")
+    const [searchDiscuss, setSearchDiscuss] = useState("")
+    const [searchTags, setSearchTags] = useState("")
 
     async function loadInTrendDiscuss() {
         const res = await getDiscussInTrend();
         setDiscusses(res);
+        console.log('All discuss :', res)
         setIsLoading(false)
-    }
-
-    function filterNewest() {
-        setFilter("newest");
-    }
-
-    function filterMostVote() {
-        setFilter("mostVote");
-    }
-
-    function filterInTrend() {
-        setFilter("inTrend");
     }
 
     useEffect(() => {
         loadInTrendDiscuss();
     }, []);
 
-
-    const [discusses , setDiscusses] = useState([
-        // {
-        //     discussTopic : "1",
-        //     tag : ["interview"],
-        //     image : "https://scontent.fbkk22-2.fna.fbcdn.net/v/t1.6435-9/73168447_2514376778651048_2509528985663176704_n.jpg?_nc_cat=105&ccb=1-7&_nc_sid=09cbfe&_nc_eui2=AeG5qhR_w88_xeMdhxyxgYcgrXSV2hV34hatdJXaFXfiFk8Owv34Ecy3LZ3v5e6WdZCRJ-3Xzcm0qv3dVGxqCrZM&_nc_ohc=kuQGgUcF1NAAX96xE_Z&_nc_ht=scontent.fbkk22-2.fna&oh=00_AfDhehoyLbulh3AJ_WmRWEu080Ilyyjmv6Uc5SA19NxpBA&oe=644E84B4",
-        //     author : "sedtawut",
-        //     date : "12-12-2020",
-        //     like : "125",
-        //     view : "1300"
-        // },
-        // {
-        //     discussTopic : "2",
-        //     tag : ["coding","techup"],
-        //     image : "https://scontent.fbkk22-2.fna.fbcdn.net/v/t1.6435-9/73168447_2514376778651048_2509528985663176704_n.jpg?_nc_cat=105&ccb=1-7&_nc_sid=09cbfe&_nc_eui2=AeG5qhR_w88_xeMdhxyxgYcgrXSV2hV34hatdJXaFXfiFk8Owv34Ecy3LZ3v5e6WdZCRJ-3Xzcm0qv3dVGxqCrZM&_nc_ohc=kuQGgUcF1NAAX96xE_Z&_nc_ht=scontent.fbkk22-2.fna&oh=00_AfDhehoyLbulh3AJ_WmRWEu080Ilyyjmv6Uc5SA19NxpBA&oe=644E84B4",
-        //     author : "sedtawut",
-        //     date : "20-12-2020",
-        //     like : "80",
-        //     view : "890"
-        // },
-    ])
-    const AllDiscuss = discusses.map((discuss) => 
-        <div className="discuss-topic sh-sm">
-            <div className="row d-flex ai-center">
-                <div className="col-2 d-flex jc-center ai-center">
-                    <img className="discuss-author-image" src={discuss.UserImage}></img>
-                </div>
-                <div className="col-7 ai-center">
-                    <span className="discuss-topic-name">{discuss.Title}</span>
-                    <div className='row discuss-tag-frame'>
-                        {JSON.parse(discuss.Tags).map((eachTag) => 
-                            <div className="discuss-tag">
-                                <span>#{eachTag}</span>
-                            </div>
-                        )}
-                    </div>
-                    <span className="discuss-topic-date">{discuss.author} created at {Moment(discuss.Date).format('DD-MM-YYYY')}</span>
-                </div>
-                <div className="col-3 d-flex jc-center ai-center">
-                    <div className='row'>
-                        <div>
-                            <span className="discuss-like"><IoCaretUp/> {discuss.AmountLike}</span>
-                            <span className="discuss-view"><IoEyeSharp/> {discuss.View}</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            {/* <div className="discuss-author-image-frame">
-                <img className="discuss-author-image" src={discuss.image}></img>
-            </div> */}
-        </div>
-        // <div className="col-4 text-center justify-content-center">
-        //     <div className="reward-frame sh-lg">
-        //         <img className="reward-image" width="100%" src={reward.image}></img>
-        //         <div className="row-reward ai-center d-flex justify-content-between align-items-center">
-        //             <span>{reward.name}</span>
-        //             <div className="point">{reward.point} P</div>
-        //         </div>
-        //     </div>
-        // </div>
-    )
-
     return (
-        <div className="discuss">
+        <div className="all-discuss-page">
             <div className="cover-container">
                 {
                     isLoading &&
@@ -110,32 +42,93 @@ function Discuss() {
                 }  
                 {
                     !isLoading &&
-                    <div className="row">
-                    <div className="col-9">
-                        <div className="row d-flex jc-btw ai-center">
-                            <div className="col d-flex jc-start ai-center">
-                                <div className={filter === "inTrend" ? "discuss-top-active" : "discuss-top"} onClick={() => filterInTrend()}>
-                                    <span><ImFire/> In trend</span>
+                    <div className="body">
+                        <div className="all-discuss">
+                            <div className="d-flex jc-btw ai-center">
+                                <div className="col-6">
+                                    <div className=" sorting">
+                                        <span className={`sort-select ${sortBy === 'trend' ? 'active' : ''}`} onClick={() => setSortBy('trend')}><HiFire size={24} /> In trend</span>
+                                        <span className={`sort-select ${sortBy === 'newest' ? 'active' : ''}`} onClick={() => setSortBy('newest')}>Newest</span>
+                                        <span className={`sort-select ${sortBy === 'vote' ? 'active' : ''}`} onClick={() => setSortBy('vote')}>Most Votes</span>
+                                    </div>
                                 </div>
-                                <div className={filter === "newest" ? "discuss-top-active" : "discuss-top"} onClick={() => filterNewest()}>
-                                    <span>Newest</span>
-                                </div>
-                                <div className={filter === "mostVote" ? "discuss-top-active" : "discuss-top"} onClick={() => filterMostVote()}>
-                                    <span>Most Votes</span>
+                                <div className="col-6 d-flex jc-end ai-center">
+                                    <div className="me-3">
+                                        <div className="search-box">
+                                            <FiSearch size={24} className="me-1" />
+                                            <input 
+                                                value={searchDiscuss}
+                                                placeholder="Search discuss title..."
+                                                onChange={(e) => setSearchDiscuss(e.target.value)}
+                                            />
+                                        </div>
+                                    </div>
+                                    <Link to="add" className='btn-2-edit'>
+                                        <span>New</span>
+                                        <HiOutlinePencilAlt size={20} className="ms-1"/>
+                                    </Link>
                                 </div>
                             </div>
-                            <div className="col d-flex jc-end ai-center">
-                                <div className='discuss-search-title'>
-                                    <span><FiSearch/> Search discuss title...</span>
-                                </div>
-                                <div className='discuss-create-button'>
-                                    <span>New <FaEdit/> </span>
-                                </div>
+                            <div className="discuss-card-wrap">
+                                {
+                                    discusses.map((discuss, key) => (
+                                        <Link className="discuss-card" key={key} to={`/discuss/${discuss.DiscussID}`}>
+                                            <div className="left-side">
+                                                <img className="author-image" src={discuss.UserImage}></img>
+                                                <div className="discuss-info">
+                                                    <p className="f-md m-0">{discuss.Title}</p>
+                                                    <div className="tags">
+                                                    {
+                                                        JSON.parse(discuss.Tags).map((tag, key) => 
+                                                            <span key={key}>#{tag}</span>
+                                                        )
+                                                    }
+                                                    </div>
+                                                    <p className="f-xs color-gray2 m-0">{discuss.AuthorName} created at: {Moment(discuss.Date).format('MMMM DD, YYYY - H:mm')}</p>
+                                                </div>
+                                            </div>
+                                            <div className="right-side">
+                                                <span className="d-flex ai-center color-gray2"><IoCaretUp className="me-1" size={24} />{discuss.AmountLike}</span>
+                                                <span className="d-flex ai-center color-gray2"><HiOutlineEye className="me-1" size={24} />{discuss.View}</span>
+                                            </div>
+                                        </Link>
+                                    ))
+                                }
                             </div>
                         </div>
-                        {AllDiscuss}
-                    </div>
-                    <div className="col-3 bg-color-1"></div>
+                        <div className="tags-search">
+                            <span className="f-md">Tags</span>
+                            <div className="search-box my-3">
+                                <FiSearch size={24} className="me-1" />
+                                <input 
+                                    value={searchTags}
+                                    placeholder="#intern, #fullstack"
+                                    onChange={(e) => setSearchTags(e.target.value)}
+                                />
+                            </div>
+                            <div className="all-tags">
+                                <div className="tag" onClick={() => setSearchTags("#interview")}>
+                                    <span>#interview</span>
+                                    <span>20</span>
+                                </div>
+                                <div className="tag" onClick={() => setSearchTags("#Coding")}>
+                                    <span>#Coding</span>
+                                    <span>18</span>
+                                </div>
+                                <div className="tag" onClick={() => setSearchTags("#TECHUP")}>
+                                    <span>#TECHUP</span>
+                                    <span>17</span>
+                                </div>
+                                <div className="tag" onClick={() => setSearchTags("#FullStack")}>
+                                    <span>#FullStack</span>
+                                    <span>17</span>
+                                </div>
+                                <div className="tag" onClick={() => setSearchTags("#Internship")}>
+                                    <span>#Internship</span>
+                                    <span>16</span>
+                                </div>                                
+                            </div>
+                        </div>
                     </div>
                 }                 
             </div>

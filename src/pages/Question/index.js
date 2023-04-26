@@ -13,7 +13,7 @@ import { HiOutlineExclamation } from 'react-icons/hi'
 import { IoCloseCircle, IoCaretUp, IoCaretDown } from 'react-icons/io5'
 
 import { getQuestion } from '../../service/question';
-import { getDiscussQuestion , addComment } from '../../service/discussQuestion';
+import { getComment , addComment } from '../../service/discussQuestion';
 import { saveSubmission } from '../../service/submission'
 import { getStudent } from '../../service/student';
 
@@ -24,6 +24,7 @@ import { getEachSubmissionFromUserIDandQuestionID } from '../../service/submissi
 import { convertToBase64, uploadPhoto } from '../../service';
 import AWS from 'aws-sdk'
 import { getChallenge,addChallengeUser,deleteChallengedUser } from '../../service/challenge';
+import CommentDiscussQuestion from "../../components/comment/commentDiscussQuestion"
 
 
 
@@ -52,7 +53,7 @@ function Question() {
     let QuestionId = window.location.href.split("/")[6];   
 
     const [loading, setLoading] = useState(false);
-    const [isLoading, setIsLoading] = useState([1, 2, 3, 4]);
+    const [isLoading, setIsLoading] = useState([1, 2, 3, 4, 5]);
 
     const [isHintShow, setIsHintShow] = useState(false)
 
@@ -74,67 +75,26 @@ function Question() {
     const [challenge, setChallenge] = useState(false);
     const [menuActive, setMenuActive] = useState(1);
     const [showReply, setShowReply] = useState([]);
-    const [discuss, setDiscuss] = useState([
-        {
-            id: "1",
-            detail: "Nibh et faucibus enim odio purus feugiat tempor massa libero. Luctus montes, vitae eget consequat morbi lacus, nibh commodo. Sed cras cursus sed neque purus elit vitae et non. Proin massa ut velit duis ullamcorper. Arcu aliquet elementum non volutpat ipsum massa egestas mauris nunc.",
-            vote: 50,
-            owner: {
-                name: "Wattanasiri Uparakkitanon",
-            },
-            datetime: "11/5/2022, 00:00",
-            reply: [
-                {
-                    id: "2",
-                    detail: "Nibh et faucibus enim odio purus feugiat tempor massa libero. Luctus montes, vitae eget consequat morbi lacus, nibh commodo. Sed cras cursus sed neque purus elit vitae et non. Proin massa ut velit duis ullamcorper. Arcu aliquet elementum non volutpat ipsum massa egestas mauris nunc.",
-                    vote: 20,
-                    owner: {
-                        name: "Wattanasiri Uparakkitanon",
-                    },
-                    datetime: "11/5/2022, 00:00",
-                },
-                {
-                    id: "3",
-                    detail: "Nibh et faucibus enim odio purus feugiat tempor massa libero. Luctus montes, vitae eget consequat morbi lacus, nibh commodo. Sed cras cursus sed neque purus elit vitae et non. Proin massa ut velit duis ullamcorper. Arcu aliquet elementum non volutpat ipsum massa egestas mauris nunc.",
-                    vote: 10,
-                    owner: {
-                        name: "Wattanasiri Uparakkitanon",
-                    },
-                    datetime: "11/5/2022, 00:00",
-                }
-            ]
-        },
-        {
-            id: "4",
-            detail: "Nibh et faucibus enim odio purus feugiat tempor massa libero. Luctus montes, vitae eget consequat morbi lacus, nibh commodo. Sed cras cursus sed neque purus elit vitae et non. Proin massa ut velit duis ullamcorper. Arcu aliquet elementum non volutpat ipsum massa egestas mauris nunc.",
-            vote: 40,
-            owner: {
-                name: "Wattanasiri Uparakkitanon",
-            },
-            datetime: "11/5/2022, 00:00",
-            reply: [
-                {
-                    id: "5",
-                    detail: "Nibh et faucibus enim odio purus feugiat tempor massa libero. Luctus montes, vitae eget consequat morbi lacus, nibh commodo. Sed cras cursus sed neque purus elit vitae et non. Proin massa ut velit duis ullamcorper. Arcu aliquet elementum non volutpat ipsum massa egestas mauris nunc.",
-                    vote: 20,
-                    owner: {
-                        name: "Wattanasiri Uparakkitanon",
-                    },
-                    datetime: "11/5/2022, 00:00",
-                }
-            ]
-        }
-    ]);
+
+    const [discuss, setDiscuss] = useState([]);
+
+    const rootComments = discuss.filter( (discuss) => discuss.ParentID === null)
+
+    function getReply(discussQuestionId) {
+        return discuss.filter(discuss => discuss.ParentID === discussQuestionId).sort(
+            (a,b) => new Date(a.Date).getTime() - new Date(b.Date).getTime())
+    }
 
     async function getDiscuss() {
-        let res = await getDiscussQuestion(QuestionId);
+        let res = await getComment(QuestionId);
         setDiscuss(res)
         setIsLoading(isLoading-1)
+        setIsLoading(isLoading.splice(isLoading.indexOf(5), 1))
     }
-    
+
     async function addNewComment() {
         await addComment(QuestionId,commentDiscuss)
-        let res = await getDiscussQuestion(QuestionId);
+        let res = await getComment(QuestionId);
         setDiscuss(res)
     }
     
@@ -565,77 +525,83 @@ function Question() {
                                         </select>
                                     </div>
                                     {
-                                        discuss.map((comment, key) => (
-                                            <div className="comment" key={key}>
-                                                <div className="comment-owner">
-                                                    <img className="owner-image" src={comment?.UserImage} />
-                                                    <div className="owner-detail">
-                                                        <span>{comment?.AuthorName} {comment.AuthorSurName}</span>
-                                                        <div className="date">
-                                                            <span>Create at:</span>
-                                                            <span className="ms-2">{Moment(comment?.Date).format('DD-MM-YYYY , hh:mm')}</span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <p className="comment-detail">
-                                                    {comment?.Comment}
-                                                </p>
-                                                <div className="comment-action">
-                                                    <div className="vote">
-                                                        <IoCaretUp className="icon" />
-                                                        <span>{comment?.AmountLike}</span>
-                                                        <IoCaretDown className="icon" />
-                                                    </div>
-                                                    {
-                                                        comment?.AmountLike > 0
-                                                        ?   <div className="show-reply" onClick={() => toggleReply(comment?.id)}>
-                                                                <TbMessageCircle className="icon" />
-                                                                <span>Show  Reply</span>
-                                                            </div>
-                                                        :   null
-                                                    }
-                                                    <div className="reply">
-                                                        <BsReplyAll className="icon" />
-                                                        <span>Reply</span>
-                                                    </div>
-                                                    <div className="report">
-                                                        <HiOutlineExclamation className="icon" />
-                                                        <span>report</span>
-                                                    </div>                                        
-                                                </div>
-                                                {/* <div className={`comment-reply ${showReply.indexOf(comment?.id) > -1 ? "active" : ""}`}>
-                                                {
-                                                    comment?.reply.map((replyComment, key1) => (
-                                                            <div className="comment" key={key1}>
-                                                                <div className="comment-owner">
-                                                                    <img height="50px" src="/assets/images/icons/profile.png" />
-                                                                    <div className="owner-detail">
-                                                                        <span>{replyComment?.owner.name}</span>
-                                                                        <div className="date">
-                                                                            <span>Create at:</span>
-                                                                            <span className="ms-2">{replyComment?.datetime}</span>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                                <p className="comment-detail">
-                                                                    {replyComment?.detail}
-                                                                </p>
-                                                                <div className="comment-action">
-                                                                    <div className="vote">
-                                                                        <IoCaretUp className="icon" />
-                                                                        <span>{replyComment?.vote}</span>
-                                                                        <IoCaretDown className="icon" />
-                                                                    </div>
-                                                                    <div className="report">
-                                                                        <HiOutlineExclamation className="icon" />
-                                                                        <span>report</span>
-                                                                    </div>                                        
-                                                                </div>
-                                                            </div>
-                                                    ))
-                                                }            
-                                                </div> */}
-                                            </div>
+                                        rootComments.map((comment, key) => (
+                                            <CommentDiscussQuestion
+                                                key={comment.DiscussQuestionID}
+                                                comment={comment}
+                                                replies={getReply(comment.DiscussQuestionID)}></CommentDiscussQuestion>
+                                            
+                                            // <div className="comment" key={key} replies={getReply(comment?.DiscussQuestionID)}>
+                                            //     <div className="comment-owner">
+                                            //         <img className="owner-image" src={comment?.UserImage} />
+                                            //         <div className="owner-detail">
+                                            //             <span>{comment?.AuthorName} {comment.AuthorSurName}</span>
+                                            //             <div className="date">
+                                            //                 <span>Create at:</span>
+                                            //                 <span className="ms-2">{Moment(comment?.Date).format('DD-MM-YYYY , hh:mm')}</span>
+                                            //             </div>
+                                            //         </div>
+                                            //     </div>
+                                            //     <p className="comment-detail">
+                                            //         {comment?.Comment}
+                                            //     </p>
+                                            //     <div className="comment-action">
+                                            //         <div className="vote">
+                                            //             <IoCaretUp className="icon" />
+                                            //             <span>{comment?.AmountLike}</span>
+                                            //             <IoCaretDown className="icon" />
+                                            //         </div>
+                                            //         {
+                                            //             // comment.AmountLike > -1
+                                            //             replies.length > 0
+                                            //             ?   <div className="show-reply" onClick={() => toggleReply(comment?.DiscussQuestionID)}>
+                                            //                     <TbMessageCircle className="icon" />
+                                            //                     <span>Show {comment.AmountLike} Reply</span>
+                                            //                 </div>
+                                            //             :   null
+                                            //         }
+                                            //         <div className="reply">
+                                            //             <BsReplyAll className="icon" />
+                                            //             <span>Reply</span>
+                                            //         </div>
+                                            //         <div className="report">
+                                            //             <HiOutlineExclamation className="icon" />
+                                            //             <span>report</span>
+                                            //         </div>                                        
+                                            //     </div>
+                                            //     <div className={`comment-reply ${showReply.indexOf(comment?.DiscussQuestionID) > -1 ? "active" : ""}`}>
+                                            //     {
+                                            //         replies.map((replyComment, key1) => (
+                                            //                 <div className="comment" key={key1}>
+                                            //                     <div className="comment-owner">
+                                            //                         <img height="50px" src={replyComment?.UserImage} />
+                                            //                         <div className="owner-detail">
+                                            //                             <span>{replyComment?.AuthorName}</span>
+                                            //                             <div className="date">
+                                            //                                 <span>Create at:</span>
+                                            //                                 <span className="ms-2">{replyComment?.Date}</span>
+                                            //                             </div>
+                                            //                         </div>
+                                            //                     </div>
+                                            //                     <p className="comment-detail">
+                                            //                         {replyComment?.Comment}
+                                            //                     </p>
+                                            //                     <div className="comment-action">
+                                            //                         <div className="vote">
+                                            //                             <IoCaretUp className="icon" />
+                                            //                             <span>{replyComment?.AmountLike}</span>
+                                            //                             <IoCaretDown className="icon" />
+                                            //                         </div>
+                                            //                         <div className="report">
+                                            //                             <HiOutlineExclamation className="icon" />
+                                            //                             <span>report</span>
+                                            //                         </div>                                        
+                                            //                     </div>
+                                            //                 </div>
+                                            //         ))
+                                            //     }            
+                                            //     </div>
+                                            // </div>
                                         ))
                                     }
                                 </div>
