@@ -53,7 +53,7 @@ function Question() {
     let QuestionId = window.location.href.split("/")[6];   
 
     const [loading, setLoading] = useState(false);
-    const [isLoading, setIsLoading] = useState([1, 2, 3, 4]);
+    const [isLoading, setIsLoading] = useState([1, 2, 3, 4, 5]);
 
     const [isHintShow, setIsHintShow] = useState(false)
 
@@ -89,6 +89,7 @@ function Question() {
         let res = await getComment(QuestionId);
         setDiscuss(res)
         setIsLoading(isLoading-1)
+        setIsLoading(isLoading.splice(isLoading.indexOf(5), 1))
     }
 
     async function addNewComment() {
