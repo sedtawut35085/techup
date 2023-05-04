@@ -11,6 +11,9 @@ import { getChallengeList } from '../../service/challenge.js';
 function Homepage() {   
 
     const [isLoading, setIsLoading] = useState([1, 2, 3])
+    // const [isLoading1, setIsLoading1] = useState(true)
+    // const [isLoading2, setIsLoading2] = useState(true)
+    // const [isLoading3, setIsLoading3] = useState(true)
     const [challengeList ,setChallengeList] = useState([])
     const [allTopic, setAllTopic] = useState([])
     const [myList, setMyList] = useState([])
@@ -18,16 +21,19 @@ function Homepage() {
     async function loadChallengeList() {
         const res = await getChallengeList();
         setChallengeList(res); 
+        // setIsLoading1(false)
         setIsLoading(isLoading.splice(isLoading.indexOf(1), 1))
     }
     async function loadAllTopic() {
         const res = await getAllTopic();
         setAllTopic(res);
+        // setIsLoading2(false)
         setIsLoading(isLoading.splice(isLoading.indexOf(2), 1))
     }
     async function loadMyList() {
         const res = await getList();
         setMyList(res);
+        // setIsLoading3(false)
         setIsLoading(isLoading.splice(isLoading.indexOf(3), 1))
     }
 
@@ -41,7 +47,8 @@ function Homepage() {
         <div className="homepage">
             <div className="cover-container">
                 {
-                    (isLoading.length > 0) &&
+                    (isLoading.length > 0) && 
+                    // (isLoading1) && (isLoading2) && (isLoading3) &&
                     <div className="loader2">
                         <div className="lds-roller"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div>
                         </div>
@@ -49,6 +56,7 @@ function Homepage() {
                 }
                 {
                     isLoading.length > 0
+                    // (isLoading1) && (isLoading2) && (isLoading3)
                     ?   null
                     :   (challengeList?.length === 0 && myList.length === 0)
                     ?   <div data-aos="fade-up" data-aos-duration="1000" className="none-topic">
