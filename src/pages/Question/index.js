@@ -105,13 +105,14 @@ function Question() {
     }
     
     async function loadEachSubmissionFromUserIDandQuestionID() {
+        
         let res = await getEachSubmissionFromUserIDandQuestionID(QuestionId);
-        setInFoSubmit(res[0])
-        setFileListSubmit(JSON.parse(res[0].FileAttachment))
         if(res[0] === undefined){
             setIsDone(false)
         }else{
             setIsDone(true)
+            setInFoSubmit(res[0])
+            setFileListSubmit(JSON.parse(res[0].FileAttachment))
             if(res[0].Score === null){
                 setIsDoneEstimate(false)
             }else{
@@ -122,6 +123,8 @@ function Question() {
         // setIsLoading(isLoading-1)
         // setIsLoading(isLoading.splice(isLoading.indexOf(1), 1))
     }
+
+    console.log(isLoading1)
 
     async function getQuestionFromQuestionID() {
         let res = await getQuestion(QuestionId);
@@ -377,7 +380,7 @@ function Question() {
                     </div>
                 }   
                 {
-                    (isLoading === false) && (isLoading2 === false) && (isLoading3 === false) && (isLoading4 === false) &&
+                    (isLoading === false) && (isLoading1 === false) && (isLoading2 === false) && (isLoading3 === false) && (isLoading4 === false) &&
                     <>
                     <Link data-aos="fade-right" data-aos-duration="1000" className="btn-back" to={-1}>
                         <FaChevronLeft />
