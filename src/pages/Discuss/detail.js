@@ -4,14 +4,13 @@ import $ from 'jquery'
 import Moment from "moment"
 
 import { toggleScrollable, defaultProfileImg } from '../../assets/js/helper'
-import { addComment } from '../../service/discuss.js';
+import { addComment, getComment, getEachDiscuss } from '../../service/discuss.js';
 
 import { BsReplyAll } from 'react-icons/bs'
 import { FaChevronLeft } from 'react-icons/fa';
 import { IoCaretUp, IoCaretDown, IoCloseCircle } from 'react-icons/io5'
 import { HiOutlineEye, HiOutlineExclamation, HiCheckCircle } from 'react-icons/hi'
 import { TbMessage2, TbMessageCircle } from 'react-icons/tb'
-import { getComment, getEachDiscuss } from '../../service/discuss.js';
 
 import Comment from "../../components/comment/comment"
 import BackgroundIcon from '../../components/background/bgIcons.js';
@@ -111,7 +110,7 @@ function DiscussDetail() {
                         <Link data-aos="fade-right" data-aos-duration="1000" className="btn-back" to={-1}>
                             <FaChevronLeft />
                         </Link>
-                        <div className="main-discuss-card">
+                        <div data-aos="fade-up" data-aos-duration="1000" className="main-discuss-card">
                             <div className="vote-section">
                                 <IoCaretUp className="color-1 vote" size={24} />
                                 <span>{discuss.AmountLike}</span>
@@ -148,7 +147,7 @@ function DiscussDetail() {
                             </div>
                         </div>
                         <div className="comment-section">
-                            <div className="d-flex jc-btw my-4">
+                            <div data-aos="fade-up" data-aos-duration="1000" data-aos-delay="200" className="d-flex jc-btw my-4">
                                 <span className="f-md d-flex ai-center"><TbMessage2 className="me-1 color-1" size={36} />Comments ({rootComments.length})</span>
                                 <div className="sorting">
                                     <span className={`sort-select ${sortBy === 1 ? 'active' : ''}`} onClick={() => setSortBy(1)}>Most Votes</span>
@@ -156,7 +155,7 @@ function DiscussDetail() {
                                     <span className={`sort-select ${sortBy === 3 ? 'active' : ''}`} onClick={() => setSortBy(3)}>Oldest</span>
                                 </div>
                             </div>
-                            <div className="comment-box">
+                            <div data-aos="fade-up" data-aos-duration="1000" data-aos-delay="300" className="comment-box">
                                 <textarea 
                                     className="autosize" 
                                     placeholder="Type comment here ..." 
@@ -165,7 +164,7 @@ function DiscussDetail() {
                                 />
                                 <button className="btn-01" onClick={() => {addNewComment()}}>Comment</button>
                             </div>
-                            <div className="comment-wrap">
+                            <div data-aos="fade-up" data-aos-duration="1000" data-aos-delay="400" className="comment-wrap">
                                 {
                                     rootComments.map((comment, key) => (
                                         <Comment  
