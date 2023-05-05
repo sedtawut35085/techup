@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import $ from 'jquery'
 import Moment from "moment"
 
-import { toggleScrollable } from '../../assets/js/helper'
+import { toggleScrollable, defaultProfileImg } from '../../assets/js/helper'
 import { addComment } from '../../service/discuss.js';
 
 import { BsReplyAll } from 'react-icons/bs'
@@ -120,7 +120,7 @@ function DiscussDetail() {
                             <div className="detail-section">
                                 <div className="header-detail">
                                     <div className="profile-info">
-                                        <img className="profile-img" src={discuss?.UserImage} />
+                                        <img alt="Avatar" onError={defaultProfileImg} className="profile-img" src={discuss?.UserImage} />
                                         <div className="infomation">
                                             <p className="f-md m-0 thai fw-500">{discuss?.Title}</p>
                                             <div className="tags">

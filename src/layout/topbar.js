@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import $ from 'jquery'
 
-import { toggleScrollable } from '../assets/js/helper'
+import { toggleScrollable, defaultProfileImg } from '../assets/js/helper'
 import Auth from '../configuration/configuration-aws'
 import { getStudent } from '../service/student'
 
@@ -56,10 +56,6 @@ const TopBar = ({currentEmailUser,isProfessor}) => {
     function linkTo() {
         setTopbarRes(false); 
         toggleScrollable(false);
-    }
-
-    function defaultProfileImg(event) {
-        event.target.src = '/assets/images/icons/user-default.png'
     }
 
     useEffect( () => {
@@ -153,7 +149,7 @@ const TopBar = ({currentEmailUser,isProfessor}) => {
                     <div className="nav">
                         <div className="profile-pic">
                             <div className="img" onClick={() => setDropdownActive(!dropdownActive)}>                                
-                                <img onError={(event) => defaultProfileImg(event)} src={inFoUser.ImageURL}  alt="Avatar" />
+                                <img onError={defaultProfileImg} src={inFoUser.ImageURL}  alt="Avatar" />
                             </div>
                             <div className={`dropdown ${dropdownActive ? "active" : ""}`}>
                                 <div className="info">

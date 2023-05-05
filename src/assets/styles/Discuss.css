@@ -307,6 +307,12 @@
     box-shadow: 0 0 4px rgba(0, 0, 0, 0.25);
 }
 
+.discuss-detail-page .comment-section .comment-wrap .comment-reply .user-info img {
+    height: 50px;
+    width: 50px;
+    border-radius: 50%;
+}
+
 .discuss-detail-page .comment-section .comment-wrap .comment-reply .action {
     display: flex;
     align-items: center;

@@ -1,6 +1,8 @@
 import React,{ useState } from 'react';
 import { Link } from 'react-router-dom';
 
+import { defaultProfileImg } from '../../assets/js/helper'
+
 import { HiOutlineEye } from 'react-icons/hi'
 import { FiSearch, FiChevronLeft, FiChevronRight, FiChevronsLeft, FiChevronsRight } from 'react-icons/fi';
 import { FaSort } from 'react-icons/fa';
@@ -41,7 +43,7 @@ function Ranking() {
                             <div key={key} data-aos="fade-up" data-aos-duration="1000" data-aos-delay={key * 200} className="top-card">
                                 <div className="user-info">                                    
                                     <Link className="user-profile">
-                                        <img alt={user.TechUpID} src={user.ImageURL}></img>
+                                        <img alt="Avatar" onError={defaultProfileImg} src={user.ImageURL}></img>
                                         <span className="number" id={"no-" + (key + 1)}>
                                             {
                                                 key === 0

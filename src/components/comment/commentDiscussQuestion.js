@@ -1,10 +1,12 @@
 import React, { ChangeEvent, useState , useEffect } from 'react';
 import Moment from 'moment'
+
+import { defaultProfileImg } from '../../assets/js/helper'
+
 import { IoCaretUp, IoCaretDown } from 'react-icons/io5'
 import { TbMessageCircle } from 'react-icons/tb'
 import { BsReplyAll} from 'react-icons/bs'
 import { HiOutlineExclamation } from 'react-icons/hi'
-
 
 const CommentDiscussQuestion = ({comment , replies}) => {
     const [showReply, setShowReply] = useState([]);
@@ -26,7 +28,7 @@ const CommentDiscussQuestion = ({comment , replies}) => {
     return (
         <div className="comment">
             <div className="comment-owner">
-                <img className="owner-image" src={comment?.UserImage} />
+                <img alt="Avatar" className="owner-image" onError={defaultProfileImg} src={comment?.UserImage} />
                 <div className="owner-detail">
                     <span>{comment?.AuthorName} {comment.AuthorSurName}</span>
                     <div className="date">

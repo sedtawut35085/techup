@@ -143,3 +143,7 @@ export function toggleScrollable(hidden) {
         document.body.style.overflow = ""
     }
 }
+
+export function defaultProfileImg(event) {
+    event.target.src = '/assets/images/icons/user-default.png'
+}
