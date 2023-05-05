@@ -58,7 +58,7 @@ function Ranking() {
                                     <span className="point">{user.Point} P</span>
                                 </div>
                                 <Link className="see-profile">
-                                    <span><HiOutlineEye size={20} /> See profile</span>
+                                    <span><HiOutlineEye size={20} /> View profile</span>
                                 </Link>
                             </div>
                         ))
