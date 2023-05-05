@@ -46,14 +46,14 @@ function Homepage() {
         <div className="homepage">
             <div className="cover-container">
                 {
-                    (isLoading === true) && (isLoading1 === true) && (isLoading2 === true) &&
+                    (isLoading || isLoading1 || isLoading2) &&
                     <div className="loader2">
                         <div className="lds-roller"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div>
                         </div>
                     </div>
                 }
                 {
-                    isLoading === true && isLoading1 === true && isLoading2 === true
+                    isLoading || isLoading1 || isLoading2 
                     ?   null
                     :   (challengeList?.length === 0 && myList.length === 0)
                     ?   <div data-aos="fade-up" data-aos-duration="1000" className="none-topic">

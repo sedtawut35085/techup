@@ -91,16 +91,17 @@
 .topbar .profile-section .profile-pic .img {
     cursor: pointer;
 }
-.topbar .profile-section .profile-pic .img svg {
-    width: 40px;
-    height: 40px;
-    border-radius: 20px;
+.topbar .profile-section .profile-pic .img img {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    box-shadow: 0 0 4px rgba(0, 0, 0, 0.25);
 }
 .topbar .profile-section .profile-pic .dropdown {
-    min-width: 220px;
+    width: 200px;
     background-color: #fff;
     position: absolute;
-    right: -24px;
+    right: -36px;
     top: 30px;
     box-shadow: 0 0 12px rgba(0, 0, 0, 0.25);
     border-radius: 12px;
@@ -115,7 +116,7 @@
     border-right: 1px solid #e1e1e1;
     position: absolute;
     top: -7px;
-    right: 38px;
+    right: 48px;
     width: 12px;
     height: 12px;
     rotate: -45deg;
@@ -136,8 +137,10 @@
     display: none;
 }
 .topbar .profile-section .profile-pic .dropdown .info span {
+    max-width: 160px;
     white-space: nowrap;
-    padding: 0 1.5rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 .topbar .profile-section .profile-pic .dropdown .menu {
     padding-bottom: 1.2rem;
@@ -289,6 +292,12 @@
     }
     .backdrop {
         display: none;
+    }
+    .topbar .profile-section .profile-pic .dropdown {
+        right: -6px;
+    }
+    .topbar .profile-section .profile-pic .dropdown::before {
+        right: 18px;
     }
 }
 

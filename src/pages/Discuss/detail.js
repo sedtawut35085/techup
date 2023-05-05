@@ -122,7 +122,7 @@ function DiscussDetail() {
                                     <div className="profile-info">
                                         <img className="profile-img" src={discuss?.UserImage} />
                                         <div className="infomation">
-                                            <p className="f-md m-0">{discuss?.Title}</p>
+                                            <p className="f-md m-0 thai fw-500">{discuss?.Title}</p>
                                             <div className="tags">
                                                 {JSON.parse(discuss?.Tags).map((eachTag) => 
                                                     // <div className="discuss-tag">
@@ -142,7 +142,7 @@ function DiscussDetail() {
                                         <span className="report" onClick={() => {setReportModal(true); toggleScrollable(true)}}><HiOutlineExclamation size={24} /></span>
                                     </div>
                                 </div>
-                                <p className="my-3">
+                                <p className="my-3 thai">
                                     {discuss?.Description}
                                 </p>
                             </div>

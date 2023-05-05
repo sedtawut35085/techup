@@ -32,7 +32,7 @@ const Comment = ({key , comment , replies}) => {
                 <span className="f-xs color-gray2">created at: {Moment(comment?.Date).format('DD-MM-YYYY , hh:mm')}</span>
             </div>
         </div>
-        <p className="f-md my-3">{comment?.Comment}</p>
+        <p className="f-md my-3 thai">{comment?.Comment}</p>
         <div className="action">
             <div className="d-flex ai-center">
                 <IoCaretUp className="color-1" />

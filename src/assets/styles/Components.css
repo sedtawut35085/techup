@@ -343,27 +343,6 @@ div.loader2 {
     user-select: none;
 }
 
-.tu-selectpicker3-box-half {
-    cursor: pointer;
-    background-color: #fff;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    width: 50%;
-    height: 60px;
-    padding: 0 20px;
-    font-size: 1rem;
-    border-radius: 12px;
-    box-shadow: 0 0 8px rgba(0, 0, 0, 0.25);
-    position: relative;
-    -webkit-touch-callout: none; /* iOS Safari */
-    -webkit-user-select: none; /* Safari */
-    -khtml-user-select: none; /* Konqueror HTML */
-    -moz-user-select: none; /* Old versions of Firefox */
-    -ms-user-select: none; /* Internet Explorer/Edge */
-    user-select: none;
-}
-
 .tu-selectpicker-box .icon svg {
     transition: all .3s;
 }
@@ -426,7 +405,7 @@ div.loader2 {
 }
 /* Techup selectpicker */
 
-/* Techup selectpicker */
+/* Techup selectpicker 2 */
 .tu-selectpicker2-box {
     cursor: pointer;
     background-color: #fff;
@@ -514,6 +493,96 @@ div.loader2 {
 }
 /* Techup selectpicker2 */
 
+/* Techup selectpicker 3 */
+.tu-selectpicker3-box {
+    cursor: pointer;
+    background-color: #fff;
+    color: #FFA242;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    height: 40px;
+    padding: 0 20px;
+    font-size: 1rem;
+    border-radius: 20px;
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.25);
+    position: relative;
+    -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+    -khtml-user-select: none; /* Konqueror HTML */
+    -moz-user-select: none; /* Old versions of Firefox */
+    -ms-user-select: none; /* Internet Explorer/Edge */
+    user-select: none;
+}
+.tu-selectpicker3-box span {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.tu-selectpicker3-box .icon svg {
+    transition: all .3s;
+}
+.tu-selectpicker3-box .icon .delete{
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    padding: 4px;
+    margin-right: .5rem;
+    transition: all .1s;
+}
+.tu-selectpicker3-box .icon .delete:hover {
+    background-color: #FF333D;
+    color: #fff;
+}
+.tu-selectpicker3-options {
+    z-index: 999;
+    background-color: #fff;
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 20px 0;
+    margin-top: -20px;
+    opacity: 0;
+    visibility: hidden;
+    overflow: hidden;
+    font-size: 1rem;
+    border-radius: 20px;
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.25);
+    transition: all .2s;
+}
+.tu-selectpicker3-options.showed {
+    visibility: visible;
+    opacity: 1;
+    margin-top: 0;
+}
+.tu-selectpicker3-options .option {
+    cursor: pointer;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    color: #26262C;
+    width: 100%;
+    padding: 8px 20px;
+    transition: all .2s;
+    -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+    -khtml-user-select: none; /* Konqueror HTML */
+    -moz-user-select: none; /* Old versions of Firefox */
+    -ms-user-select: none; /* Internet Explorer/Edge */
+    user-select: none;
+}
+.tu-selectpicker3-options .option.selected {
+    background-color: #FFA242;
+    color: #fff;
+}
+.tu-selectpicker3-options .option:hover {
+    background-color: #FFA242;
+    color: #fff;
+}
+/* Techup selectpicker 3 */
+
 /* Search box */
 .search-box {
     background-color: #fff;
@@ -528,6 +597,7 @@ div.loader2 {
     box-shadow: 0 0 4px rgba(0, 0, 0, 0.25);
 }
 .search-box input {
+    font-family: 'IBM Plex Sans Thai', sans-serif;
     overflow: hidden;
     text-overflow: ellipsis;
     width: 100%;
@@ -535,6 +605,30 @@ div.loader2 {
     outline: none;
     display: flex;
     align-items: center;
+}
+
+.search-box-1 {
+    background-color: #fff;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    min-width: 150px;
+    height: 40px;
+    padding: 0 20px;
+    font-size: 1rem;
+    border-radius: 20px;
+    box-shadow: 0 0 4px rgba(0, 0, 0, 0.25);
+}
+.search-box-1 input {
+    font-family: 'IBM Plex Sans Thai', sans-serif;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 100%;
+    border: none;
+    line-height: 20px;
+    outline: none;
+    display: flex;
+    align-items: flex-end;
 }
 /* Search box */
 
@@ -624,7 +718,7 @@ div.loader2 {
     display: flex;
     align-items: center;
     justify-content: center;
-    height: 32px;
+    height: 36px;
     padding: 0 1rem;
     border-radius: 10px;
     background-color: #FFA242;

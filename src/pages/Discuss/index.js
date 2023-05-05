@@ -76,7 +76,7 @@ function Discuss() {
                                             <div className="left-side">
                                                 <img className="author-image" src={discuss.UserImage}></img>
                                                 <div className="discuss-info">
-                                                    <p className="f-md m-0">{discuss.Title}</p>
+                                                    <p className="f-md m-0 thai fw-500">{discuss.Title}</p>
                                                     <div className="tags">
                                                     {
                                                         JSON.parse(discuss.Tags).map((tag, key) => 
