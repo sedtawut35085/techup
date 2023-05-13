@@ -318,7 +318,7 @@ function Weekly() {
                     <div data-aos="fade-left" data-aos-duration="1000" className="body">
                         <div className="top-section">
                             <div className="left-side">
-                                <p className="question-name">{inFoQuestion.WeeklyQuestionName}</p>
+                                <p className="question-name">{inFoQuestion.QuestionName}</p>
                                 <p className="subject-name">
                                     <div className="icon">
                                         <HiOutlineCalendar size={24} />
@@ -387,13 +387,13 @@ function Weekly() {
                                     <TbFileDescription className="icon" />
                                     <span>Description</span>
                                 </div>
-                                {/* <div 
+                                <div 
                                     className={`menu dis ${menuActive === 2 ? "active" : ""}`}
                                     onClick={() => setMenuActive(2)}
                                 >
                                     <TbMessage2 className="icon" />
                                     <span>Discuss</span>
-                                </div> */}
+                                </div>
                                 <div 
                                     className={`menu sub ${menuActive === 3 ? "active" : ""}`}
                                     onClick={() => setMenuActive(3)}
