@@ -14,7 +14,7 @@ function Ranking() {
         {
             name: "bwtnsri_",
             point : "8888",
-            image : "https://scontent.fbkk22-2.fna.fbcdn.net/v/t39.30808-6/271383089_4340697786031986_5484066919531874000_n.jpg?_nc_cat=106&ccb=1-7&_nc_sid=09cbfe&_nc_eui2=AeE0tPin8iZeQT8NgkI2aueUL5Ps_wEuYtwvk-z_AS5i3NFwDTwykDdqT5NZnVP1dMlinLx2DnjgND84NaseHsYP&_nc_ohc=T3zMxwWvkjQAX8AkGOK&_nc_ht=scontent.fbkk22-2.fna&oh=00_AfDvCIPUZ2BMdEmRWrlMwUiEyDElhgXeWJIICm783yCuZg&oe=642C8D48"
+            image : "https://scontent.fbkk29-7.fna.fbcdn.net/v/t39.30808-6/271383089_4340697786031986_5484066919531874000_n.jpg?_nc_cat=106&ccb=1-7&_nc_sid=09cbfe&_nc_eui2=AeE0tPin8iZeQT8NgkI2aueUL5Ps_wEuYtwvk-z_AS5i3NFwDTwykDdqT5NZnVP1dMlinLx2DnjgND84NaseHsYP&_nc_ohc=3v8Iu3IUZk8AX8YKNT6&_nc_ht=scontent.fbkk29-7.fna&oh=00_AfDd-ue40UrTROy8riRAnCrleZWnWxjjdTbSicfhs8ijfg&oe=644E2B88"
         },
         {
             name: "a_phongrawit",

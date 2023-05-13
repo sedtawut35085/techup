@@ -417,7 +417,7 @@ function SignInForm() {
                             <input
                             required
                             type="password"
-                            id="password"
+                            id="newpassword"
                             className="sign-form-input"
                             value={newPassword}
                             onChange={(e) => checkNewPassword(e)}

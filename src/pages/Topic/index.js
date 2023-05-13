@@ -22,7 +22,11 @@ function Topic() {
 
     const topicID = window.location.href.split("/")[4]
 
-    const [isLoading, setIsLoading] = useState([1, 2, 3, 4])
+    // const [isLoading, setIsLoading] = useState([1, 2, 3, 4])
+    const [isLoading, setIsLoading] = useState(true)
+    const [isLoading1, setIsLoading1] = useState(true)
+    const [isLoading2, setIsLoading2] = useState(true)
+    const [isLoading3, setIsLoading3] = useState(true)
     const [modal, setModal] = useState(false)
     const [data,setData] = useState([]);
 
@@ -34,7 +38,7 @@ function Topic() {
         const res = await getEachTopic(topicID);
         setData(res[0]);
         setContact(JSON.parse(res[0].Contact))
-        setIsLoading(isLoading.splice(isLoading.indexOf(1), 1))
+        setIsLoading(false)
     }
     async function getJoinedList() {
         const res = await getJoin();
@@ -45,12 +49,14 @@ function Topic() {
         } else {
             setJoin(true)
         }
-        setIsLoading(isLoading.splice(isLoading.indexOf(2), 1))
+        setIsLoading1(false)
+        // setIsLoading(isLoading.splice(isLoading.indexOf(2), 1))
     }
     async function loadQuestionForEachTopic(pageStart,value) {
         const res = await getQuestionForEachTopic(topicID,pageStart,value);
         setAllQuestion(res); 
-        setIsLoading(isLoading.splice(isLoading.indexOf(3), 1))
+        setIsLoading2(false)
+        // setIsLoading(isLoading.splice(isLoading.indexOf(3), 1))
     }
     async function loadCountOfQuestionForEachTopic(pageSize) {
         const res = await getCountOfQuestionForEachTopic(topicID);
@@ -60,7 +66,8 @@ function Topic() {
             PageNumberList.push(i)
         }
         setNumberPage(PageNumberList)
-        setIsLoading(isLoading.splice(isLoading.indexOf(4), 1))
+        setIsLoading3(false)
+        // setIsLoading(isLoading.splice(isLoading.indexOf(4), 1))
     }    
     const listQuestions = allQuestion.map((question, i) =>   
     <tr className={`${question.SubmissionID === null ? "" : "color-3"}`} key={i}>
@@ -172,14 +179,14 @@ function Topic() {
         <div className="topic-page">
             <div className="cover-container">
                 {
-                    isLoading.length > 0 &&
+                    (isLoading === true) && (isLoading1 === true) && (isLoading2 === true) && (isLoading3 === true) &&
                     <div className="loader2">
                         <div className="lds-roller"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div>
                         </div>
                     </div>
                 }      
                 {
-                    isLoading.length === 0 &&
+                    (isLoading === false) && (isLoading1 === false) && (isLoading2 === false) && (isLoading3 === false) &&
                     <>
                         <Link data-aos="fade-down" data-aos-duration="1000" className="btn-back" to="/home">
                             <FaChevronLeft />

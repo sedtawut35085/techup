@@ -52,8 +52,13 @@ function Question() {
     let topicID = window.location.href.split("/")[4];
     let QuestionId = window.location.href.split("/")[6];   
 
+    // const [isLoading, setIsLoading] = useState([1, 2, 3, 4, 5]);
     const [loading, setLoading] = useState(false);
-    const [isLoading, setIsLoading] = useState([1, 2, 3, 4, 5]);
+    const [isLoading, setIsLoading] = useState(true)
+    const [isLoading1, setIsLoading1] = useState(true)
+    const [isLoading2, setIsLoading2] = useState(true)
+    const [isLoading3, setIsLoading3] = useState(true)
+    const [isLoading4, setIsLoading4] = useState(true)
 
     const [isHintShow, setIsHintShow] = useState(false)
 
@@ -88,8 +93,9 @@ function Question() {
     async function getDiscuss() {
         let res = await getComment(QuestionId);
         setDiscuss(res)
-        setIsLoading(isLoading-1)
-        setIsLoading(isLoading.splice(isLoading.indexOf(5), 1))
+        setIsLoading(false)
+        // setIsLoading(isLoading-1)
+        // setIsLoading(isLoading.splice(isLoading.indexOf(5), 1))
     }
 
     async function addNewComment() {
@@ -99,33 +105,40 @@ function Question() {
     }
     
     async function loadEachSubmissionFromUserIDandQuestionID() {
+        
         let res = await getEachSubmissionFromUserIDandQuestionID(QuestionId);
-        setInFoSubmit(res[0])
-        setFileListSubmit(JSON.parse(res[0].FileAttachment))
         if(res[0] === undefined){
             setIsDone(false)
         }else{
             setIsDone(true)
+            setInFoSubmit(res[0])
+            setFileListSubmit(JSON.parse(res[0].FileAttachment))
             if(res[0].Score === null){
                 setIsDoneEstimate(false)
             }else{
                 setIsDoneEstimate(true)
             }
         }
-        setIsLoading(isLoading-1)
-        setIsLoading(isLoading.splice(isLoading.indexOf(1), 1))
+        setIsLoading1(false)
+        // setIsLoading(isLoading-1)
+        // setIsLoading(isLoading.splice(isLoading.indexOf(1), 1))
     }
+
+    console.log(isLoading1)
+
     async function getQuestionFromQuestionID() {
         let res = await getQuestion(QuestionId);
         setInFoQuestion(res[0])
-        setIsLoading(isLoading-1)
-        setIsLoading(isLoading.splice(isLoading.indexOf(2), 1))
+        setIsLoading2(false)
+        // setIsLoading(isLoading-1)
+        // setIsLoading(isLoading.splice(isLoading.indexOf(2), 1))
     }
     async function getInfoUser() {
         let resUser = await getStudent();
         setInFoUser(resUser[0])
-        setIsLoading(isLoading-1)
-        setIsLoading(isLoading.splice(isLoading.indexOf(3), 1))
+        setIsLoading3(false)
+        // setIsLoading(isLoading-1)
+        // setIsLoading(isLoading.splice(isLoading.indexOf(3), 1))
     }
     async function getChallengedStatus() {
         const res = await getChallenge(QuestionId);
@@ -135,8 +148,9 @@ function Question() {
         } else {
             setChallenge(false);
         }
-        setIsLoading(isLoading-1)
-        setIsLoading(isLoading.splice(isLoading.indexOf(4), 1))
+        setIsLoading4(false)
+        // setIsLoading(isLoading-1)
+        // setIsLoading(isLoading.splice(isLoading.indexOf(4), 1))
     }    
 
     useEffect( () => {
@@ -359,14 +373,14 @@ function Question() {
             }
             <div className="cover-container">
                 {
-                    isLoading.length > 0 &&
+                    (isLoading === true) && (isLoading1 === true) && (isLoading2 === true) && (isLoading3 === true) && (isLoading4 === true) &&
                     <div className="loader2">
                         <div className="lds-roller"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div>
                         </div>
                     </div>
                 }   
                 {
-                    isLoading.length === 0 &&
+                    (isLoading === false) && (isLoading1 === false) && (isLoading2 === false) && (isLoading3 === false) && (isLoading4 === false) &&
                     <>
                     <Link data-aos="fade-right" data-aos-duration="1000" className="btn-back" to={-1}>
                         <FaChevronLeft />
