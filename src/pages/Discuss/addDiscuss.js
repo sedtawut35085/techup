@@ -64,9 +64,9 @@ function AddDiscuss() {
                 <Link data-aos="fade-right" data-aos-duration="1000" className="btn-back" to="/discuss">
                     <FaChevronLeft />
                 </Link>
-                <h1 className="f-xl fw-700 d-flex ai-center">Ask a Public Question<TbMessageCircle className="color-1 ms-2" size={48} /></h1>
+                <h1 data-aos="fade-right" data-aos-duration="1000" className="f-xl fw-700 d-flex ai-center">Ask a Public Question<TbMessageCircle className="color-1 ms-2" size={48} /></h1>
                 <form className="add-discuss-form mt-4" onSubmit={handleSubmit}>
-                    <div className="col-12 pt-4">
+                    <div data-aos="fade-up" data-aos-duration="1000" data-aos-delay="200" className="col-12 pt-4">
                         <label className="f-lg pb-2" htmlFor="title">Title<span className="color-5">*</span></label>
                         <input
                             type="text" 
@@ -79,7 +79,7 @@ function AddDiscuss() {
                         />
                         {errors.includes("title") && (<label className="f-xs color-5 pt-2" htmlFor="techup-id">Please enter title of discuss</label>)}
                     </div>
-                    <div className="col-12 pt-4">
+                    <div data-aos="fade-up" data-aos-duration="1000" data-aos-delay="300" className="col-12 pt-4">
                         <label className="f-lg pb-2" htmlFor="description">Description<span className="color-5">*</span></label>
                             <textarea
                                 name="description" 
@@ -90,7 +90,7 @@ function AddDiscuss() {
                             />
                         {errors.includes("title") && (<label className="f-xs color-5 pt-2" htmlFor="techup-id">Please enter your Techup ID</label>)}
                     </div>
-                    <div className="col-12 pt-4">
+                    <div data-aos="fade-up" data-aos-duration="1000" data-aos-delay="400" className="col-12 pt-4">
                         <label className="f-lg pb-2" htmlFor="tags">Tags</label>
                         <div className="input-tags"> 
                             {
@@ -107,12 +107,14 @@ function AddDiscuss() {
                             />
                         </div>
                     </div>
-                    <div className="divider my-5"></div>
-                    <div className="col-12 d-flex jc-center">
-                        <Link className='btn-02' to='/discuss'>
-                            <span>Cancel</span>
-                        </Link>
-                        <button type="submit" className="btn-01">Post<TbSend className="ms-2" size={22} /></button>
+                    <div data-aos="fade-up" data-aos-duration="1000" data-aos-delay="500">
+                        <div className="divider my-5"></div>
+                        <div className="col-12 d-flex jc-center">
+                            <Link className='btn-02' to='/discuss'>
+                                <span>Cancel</span>
+                            </Link>
+                            <button type="submit" className="btn-01">Post<TbSend className="ms-2" size={22} /></button>
+                        </div>
                     </div>
                 </form>
             </div>

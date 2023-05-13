@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import Moment from 'moment'
 import AWS from 'aws-sdk'
+import { getWeeklyQuestion } from '../../service/weeklyQuestion';
 
 import { fileSize, fileType, download, downloadAll } from '../../assets/js/helper'
 import { saveSubmission } from '../../service/submission'
@@ -30,8 +31,11 @@ const myBucket = new AWS.S3({
 
 function Weekly() {
     
-    let topicID = window.location.href.split("/")[4];
-    let QuestionId = window.location.href.split("/")[6];   
+    // let topicID = window.location.href.split("/")[4];
+    // let QuestionId = window.location.href.split("/")[6];   
+    const [topicID , setTopicID] = useState("");
+    // const [questionID , setQuestionID] = useState("");
+
     const navigate = useNavigate()
 
     const [loading, setLoading] = useState(false);
@@ -287,6 +291,17 @@ function Weekly() {
         setIsLoading(false)
     }, 200)
 
+    async function loadWeeklyQuestion(){
+        let res = await getWeeklyQuestion();
+        setInFoQuestion(res[0]);
+        setTopicID(res[0].TopicID)
+        setIsLoading(false);
+    }
+
+    useEffect(() => {
+        loadWeeklyQuestion();
+    }, [])
+
     return (
         <div className="weekly-page">
             <div className="cover-container">
@@ -303,33 +318,33 @@ function Weekly() {
                     <div data-aos="fade-left" data-aos-duration="1000" className="body">
                         <div className="top-section">
                             <div className="left-side">
-                                <p className="question-name">Distance มีกี่วิธี</p>
+                                <p className="question-name">{inFoQuestion.WeeklyQuestionName}</p>
                                 <p className="subject-name">
                                     <div className="icon">
                                         <HiOutlineCalendar size={24} />
                                     </div>
                                     Weekly question -&nbsp;
                                     <span 
-                                        className="color-3"
-                                        // className={`${
-                                        //     inFoQuestion.Difficulty === "Easy"
-                                        //     ? "color-3"
-                                        //     : inFoQuestion.Difficulty === "Normal"
-                                        //     ? "color-1"
-                                        //     : inFoQuestion.Difficulty === "Hard"
-                                        //     ? "color-5"
-                                        //     : ""
-                                        // }`}
+                                        // className="color-3"
+                                        className={`${
+                                            inFoQuestion.Difficulty === "Easy"
+                                            ? "color-3"
+                                            : inFoQuestion.Difficulty === "Normal"
+                                            ? "color-1"
+                                            : inFoQuestion.Difficulty === "Hard"
+                                            ? "color-5"
+                                            : ""
+                                        }`}
                                     >
-                                        Easy
+                                        {inFoQuestion.Difficulty}
                                     </span>
                                 </p>
                                 <p className="due-date">
                                     <div className="icon">
                                         <TbCalendarTime size={24} />
                                     </div>
-                                    {/* Due date - {Moment(inFoQuestion.DueDate).format('DD/MM/YYYY')} */}
-                                    Due date - 01/03/2023
+                                    Due date - {Moment(inFoQuestion.DueDate).format('DD/MM/YYYY')}
+                                    {/* Due date - 01/03/2023 */}
                                 </p>
                             </div>
                             <div className="right-side">
@@ -359,7 +374,7 @@ function Weekly() {
                                         </>
                                         :   <span>{inFoQuestion.Point} P</span>
                                     }                                 */}
-                                    <span>100 P</span>
+                                    <span>{inFoQuestion.Point} P</span>
                                 </div>
                             </div>
                         </div>
@@ -372,13 +387,13 @@ function Weekly() {
                                     <TbFileDescription className="icon" />
                                     <span>Description</span>
                                 </div>
-                                <div 
+                                {/* <div 
                                     className={`menu dis ${menuActive === 2 ? "active" : ""}`}
                                     onClick={() => setMenuActive(2)}
                                 >
                                     <TbMessage2 className="icon" />
                                     <span>Discuss</span>
-                                </div>
+                                </div> */}
                                 <div 
                                     className={`menu sub ${menuActive === 3 ? "active" : ""}`}
                                     onClick={() => setMenuActive(3)}

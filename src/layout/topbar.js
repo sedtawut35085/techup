@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import $ from 'jquery'
 
-import { toggleScrollable } from '../assets/js/helper'
+import { toggleScrollable, defaultProfileImg } from '../assets/js/helper'
 import Auth from '../configuration/configuration-aws'
 import { getStudent } from '../service/student'
 
@@ -68,6 +68,10 @@ const TopBar = ({currentEmailUser,isProfessor}) => {
                 toggleScrollable(false)
             }
         })
+
+        setInterval(() => {
+            loadinfoUser()
+        }, 2000);
       }, []);
       
     return (
@@ -144,21 +148,21 @@ const TopBar = ({currentEmailUser,isProfessor}) => {
                     } 
                     <div className="nav">
                         <div className="profile-pic">
-                            <div className="img" onClick={() => setDropdownActive(!dropdownActive)}>
-                                <IoPersonCircleOutline />
+                            <div className="img" onClick={() => setDropdownActive(!dropdownActive)}>                                
+                                <img onError={defaultProfileImg} src={inFoUser.ImageURL}  alt="Avatar" />
                             </div>
                             <div className={`dropdown ${dropdownActive ? "active" : ""}`}>
                                 <div className="info">
-                                    <span className="full-name f-sm">{currentEmailUser.substring(0, 20) + "..."}</span>
-                                    <div className="point">
-                                        {
-                                            isProfessor === false?
-                                                <div className="nav">
-                                                    <div className="point">{inFoUser.Point} P</div>
-                                                </div>
-                                            :  null
-                                        } 
-                                    </div>
+                                    <span className="f-smd">{inFoUser.TechUpID}</span>
+                                    <span className="f-sm color-gray2">{inFoUser.FirstName} {inFoUser.SurName}</span>
+                                    {
+                                        !isProfessor
+                                        ?
+                                            <div className="nav">
+                                                <div className="point">{inFoUser.Point} P</div>
+                                            </div>
+                                        :  null
+                                    } 
                                 </div>
                                 <div className="px-2">
                                     <div className="divider my-3"></div>

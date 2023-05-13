@@ -2,11 +2,12 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import Moment from 'moment';
 
+import { defaultProfileImg } from '../../assets/js/helper'
+import { getEachDiscuss , getDiscussInTrend ,getDiscussNewest ,getDiscussMostVote } from '../../service/discuss.js';
+
 import { IoCaretUp } from 'react-icons/io5'
 import { HiFire, HiOutlinePencilAlt, HiOutlineEye } from 'react-icons/hi';
-import { FiSearch } from 'react-icons/fi';
-
-import { getEachDiscuss , getDiscussInTrend ,getDiscussNewest ,getDiscussMostVote } from '../../service/discuss.js';
+import { FiSearch, FiChevronLeft, FiChevronRight, FiChevronsLeft, FiChevronsRight } from 'react-icons/fi';
 
 import BackgroundIcon from '../../components/background/bgIcons.js';
 
@@ -44,9 +45,9 @@ function Discuss() {
                     !isLoading &&
                     <div className="body">
                         <div className="all-discuss">
-                            <div className="d-flex jc-btw ai-center">
+                            <div data-aos="fade-up" data-aos-duration="1000" className="d-flex jc-btw ai-center">
                                 <div className="col-6">
-                                    <div className=" sorting">
+                                    <div className="sorting">
                                         <span className={`sort-select ${sortBy === 'trend' ? 'active' : ''}`} onClick={() => setSortBy('trend')}><HiFire size={24} /> In trend</span>
                                         <span className={`sort-select ${sortBy === 'newest' ? 'active' : ''}`} onClick={() => setSortBy('newest')}>Newest</span>
                                         <span className={`sort-select ${sortBy === 'vote' ? 'active' : ''}`} onClick={() => setSortBy('vote')}>Most Votes</span>
@@ -69,34 +70,57 @@ function Discuss() {
                                     </Link>
                                 </div>
                             </div>
-                            <div className="discuss-card-wrap">
-                                {
-                                    discusses.map((discuss, key) => (
-                                        <Link className="discuss-card" key={key} to={`/discuss/${discuss.DiscussID}`}>
-                                            <div className="left-side">
-                                                <img className="author-image" src={discuss.UserImage}></img>
-                                                <div className="discuss-info">
-                                                    <p className="f-md m-0">{discuss.Title}</p>
-                                                    <div className="tags">
-                                                    {
-                                                        JSON.parse(discuss.Tags).map((tag, key) => 
-                                                            <span key={key}>#{tag}</span>
-                                                        )
-                                                    }
+                            <div data-aos="fade-up" data-aos-duration="1000" data-aos-delay="200">
+                                <div className="discuss-card-wrap">
+                                    {
+                                        discusses.map((discuss, key) => (
+                                            <Link className="discuss-card" key={key} to={`/discuss/${discuss.DiscussID}`}>
+                                                <div className="left-side">
+                                                    <img alt="Avatar" onError={defaultProfileImg} className="author-image" src={discuss.UserImage}></img>
+                                                    <div className="discuss-info">
+                                                        <p className="f-md m-0 thai fw-500">{discuss.Title}</p>
+                                                        <div className="tags">
+                                                        {
+                                                            JSON.parse(discuss.Tags).map((tag, key) => 
+                                                                <span key={key}>#{tag}</span>
+                                                            )
+                                                        }
+                                                        </div>
+                                                        <p className="f-xs color-gray2 m-0">{discuss.AuthorName} created at: {Moment(discuss.Date).format('MMMM DD, YYYY - H:mm')}</p>
                                                     </div>
-                                                    <p className="f-xs color-gray2 m-0">{discuss.AuthorName} created at: {Moment(discuss.Date).format('MMMM DD, YYYY - H:mm')}</p>
                                                 </div>
-                                            </div>
-                                            <div className="right-side">
-                                                <span className="d-flex ai-center color-gray2"><IoCaretUp className="me-1" size={24} />{discuss.AmountLike}</span>
-                                                <span className="d-flex ai-center color-gray2"><HiOutlineEye className="me-1" size={24} />{discuss.View}</span>
-                                            </div>
-                                        </Link>
-                                    ))
-                                }
+                                                <div className="right-side">
+                                                    <span className="d-flex ai-center color-gray2"><IoCaretUp className="me-1" size={24} />{discuss.AmountLike}</span>
+                                                    <span className="d-flex ai-center color-gray2"><HiOutlineEye className="me-1" size={24} />{discuss.View}</span>
+                                                </div>
+                                            </Link>
+                                        ))
+                                    }
+                                </div>
+                                <div className="pagination1">         
+                                    <div className="display-per-page">
+                                        <span>Display per page</span>
+                                        <select defaultValue="5" className="page">
+                                            <option value="5">5</option>
+                                            <option value="10">10</option>
+                                            <option value="25">25</option>
+                                        </select>
+                                    </div>           
+                                    <div className="pagination-number">
+                                        <button className="arrow disable"><FiChevronsLeft /></button>
+                                        <button className="arrow disable"><FiChevronLeft /></button>
+                                        <button className="number active">1</button>
+                                        <button className="number">2</button>
+                                        <button className="number">3</button>
+                                        <button className="number">4</button>
+                                        <button className="number">5</button>
+                                        <button className="arrow"><FiChevronRight /></button>
+                                        <button className="arrow"><FiChevronsRight /></button>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                        <div className="tags-search">
+                        <div data-aos="fade-up" data-aos-duration="1000" data-aos-delay="400" className="tags-search">
                             <span className="f-md">Tags</span>
                             <div className="search-box my-3">
                                 <FiSearch size={24} className="me-1" />

@@ -70,7 +70,17 @@ function Topic() {
         // setIsLoading(isLoading.splice(isLoading.indexOf(4), 1))
     }    
     const listQuestions = allQuestion.map((question, i) =>   
-    <tr className={`${question.SubmissionID === null ? "" : "color-3"}`} key={i}>
+    <tr 
+        className={`
+        ${
+            question.SubmissionID !== null 
+            ? "color-3" 
+            : Moment(question.DueDate).isBefore(new Date()) 
+            ? "color-gray2"
+            : ""
+        }`} 
+        key={i}
+    >
         <td className="status">
             {
                 Moment(question.DueDate).isBefore(new Date())

@@ -283,6 +283,8 @@
 }
 
 .question-page .body .problem-section .detail-section .discuss .comment .comment-detail {
+    font-family: 'IBM Plex Sans Thai', sans-serif;
+    margin: 0;
     padding: .8rem 0;
 }
 
