@@ -45,34 +45,14 @@ function AdminHomepage() {
     return ( 
         <div className="container-fluid">
             <div className="row flex-nowrap">
-                <div className="col-auto col-md-3 col-xl-2 px-sm-2 px-0 bg-white shadow bg-body rounded">
+                <div className="col-2 col-md-3 col-xl-2 px-sm-2 px-0 bg-white shadow bg-body rounded">
                     <Sidebar handleChangePage={handleChangePage} currentPage={currentPage}/>
                 </div>
-                <div className="col py-3">
+                <div className="col-10 col-md-9 col-xl-10 py-3">
                     <BodyContent logout={logout} currentEmailUser={currentEmailUser} currentPage={currentPage}/>
                 </div>
             </div>
-        </div>
-        // <div classNameName='container-fluid bg-white min-vh-100'>
-        //     <div classNameName='row'>
-        //         { toggle && <div classNameName='col-4 col-md-2 bg-white vh-100 position-fixed'>
-        //              <Sidebar />
-        //         </div>}
-        //         { toggle &&  <div classNameName='col-4 col-md-2'></div>}
-        //         <div classNameName='col'>
-        //             <BodyContent Toggle={Toggle} />
-        //         </div>
-        //     </div>
-        //      {/* <div onClick={logout}>
-        //         SignOut
-
-        //     </div> */}
-            
-        // </div>
-        
-       
-        
-   
+        </div> 
     )
 }
 

@@ -5,10 +5,12 @@ import Sidebar from '../Sidebar';
 import '../../../assets/styles/Sidebar.css'
 import Navbar from '../Nav';
 import HomeDashboard from './Home';
-import User from './User';
+import HomeUser from './User/index';
 import Professor from './Professor';
 import Discuss from './Discuss';
 import Report from './Report';
+import Weekly from './Weekly';
+import Store from './Store';
 // import 'bootstrap-icons/font/bootstrap-icons.css';
 
 function BodyContent({logout,currentEmailUser,currentPage}) {  
@@ -28,7 +30,25 @@ function BodyContent({logout,currentEmailUser,currentPage}) {
             {
                 currentPage === "User" ?
                 <>
-                    <User currentPage={currentPage}/>
+                    <HomeUser currentPage={currentPage}/>
+                </>
+                :
+                <>
+                </>
+            }
+            {
+                currentPage === "Weekly" ?
+                <>
+                    <Weekly currentPage={currentPage}/>
+                </>
+                :
+                <>
+                </>
+            }
+            {
+                currentPage === "Store" ?
+                <>
+                    <Store currentPage={currentPage}/>
                 </>
                 :
                 <>

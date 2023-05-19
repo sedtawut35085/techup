@@ -24,3 +24,41 @@ export async function getAccountAdmin (email) {
         })
     return response.data
 }
+
+export async function getAdminCountUser () {
+  await axios({
+      method: 'get',
+      url: `${baseUrl}/admin`,  
+      params: {
+        "getType" : "getCountStudent"
+      },
+      headers: { 
+        // 'Authorization': accessToken, 
+        'Content-Type': 'text/plain'
+      },
+      }).then((res) => {
+        response = res
+      }).catch((err)=>{
+        response = err
+      })
+  return response.data
+}
+
+export async function getAdminStudent () {
+  await axios({
+      method: 'get',
+      url: `${baseUrl}/admin`,  
+      params: {
+        "getType" : "getStudent"
+      },
+      headers: { 
+        // 'Authorization': accessToken, 
+        'Content-Type': 'text/plain'
+      },
+      }).then((res) => {
+        response = res
+      }).catch((err)=>{
+        response = err
+      })
+  return response.data
+}
