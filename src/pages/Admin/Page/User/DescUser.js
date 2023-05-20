@@ -150,7 +150,7 @@ const ContentUser = ({currentpage,CurrentUser,setContentPage}) =>{
                                         Photo
                                     </div>
                                     <div className='fw-400 f-md color-black'>
-                                        <img className='img-fluid rounded-circle' style={{ width: '280px' }} src="https://techup-file-upload-storage.s3.ap-southeast-1.amazonaws.com/data/2023-03-11T02%3A43%3A08.735Z.jpeg"></img>
+                                        <img className='img-fluid rounded-circle' style={{ width: '280px', height: '280px' }} src={userData.ImageURL}></img>
                                     </div>
                                 </div>
                                 <div className='pt-4'>

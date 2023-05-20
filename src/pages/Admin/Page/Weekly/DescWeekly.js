@@ -3,11 +3,10 @@ import { FiArrowUpRight } from 'react-icons/fi';
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-import React, { ChangeEvent, useState , useEffect } from 'react';
-import { GiFlyingFlag } from 'react-icons/gi'
-import { IoCloseCircle, IoCaretUp, IoCaretDown } from 'react-icons/io5'
+import React, { useState , useEffect } from 'react';
+import { GiFlyingFlag, GiConfirmed } from 'react-icons/gi'
+import { IoCloseCircle} from 'react-icons/io5'
 import { getAdminWeeklyfromquestionid, getCountWeeklyQuestionFilterOngoing, updateAdminWeeklyStatus } from '../../../../service/admin';
-import Moment from 'moment';
 
 const ContentUser = ({currentpage,CurrentWeeklyID,setContentPage}) =>{
 
@@ -15,7 +14,6 @@ const ContentUser = ({currentpage,CurrentWeeklyID,setContentPage}) =>{
     const [isLoading1, setIsLoading1] = useState(true)
     const [guModal, setGuModal] = useState(false)
     const [isError, setIsError] = useState(false)
-    const [isErrorOngoing, setIsErrorOngoing] = useState(false)
     const [data, setData] = useState([]);
     const [countWeeklyOngoing, setCountWeeklyOngoing] = useState();
 
@@ -25,10 +23,7 @@ const ContentUser = ({currentpage,CurrentWeeklyID,setContentPage}) =>{
             "updateKey": "Status",
             "updateValue": "ongoing"
         }
-        let res
-        if(countWeeklyOngoing !== 1){
-            res = await updateAdminWeeklyStatus(CurrentWeeklyID, bodydata)
-        }
+        let res = await updateAdminWeeklyStatus(CurrentWeeklyID, bodydata)
         if(res  === "success to update Weekly"){
             setGuModal(false)
             setContentPage(false)
@@ -132,7 +127,7 @@ const ContentUser = ({currentpage,CurrentWeeklyID,setContentPage}) =>{
                                         countWeeklyOngoing !== 0
                                         ?   <> </>
                                         :    <div className='pt-0 text-end'>
-                                                <button type="submit" className="btnsubmit-accept" onClick={() => setGuModal(true)} style={{ width: '120px' }}><FiArrowUpRight className="f-md"/>Accept</button>
+                                                <button type="submit" className="btnsubmit-accept" onClick={() => setGuModal(true)} style={{ width: '120px' }}><GiConfirmed className="f-md"/>Accept</button>
                                             </div>  
                                 }
                                 {
