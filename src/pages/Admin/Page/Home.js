@@ -7,20 +7,20 @@ const HomeDashboard = ({currentPage}) =>{
                 <div className='row g-3 my-2'>
                     <span className='pt-2 f-lg fw-600'>{currentPage}</span>
                     <div className='col-md-6'>
-                        <div class="card text-dark bg-light mb-3">
-                            <h5 class="card-header text-muted"><FaUserAlt className='m-2'></FaUserAlt>User & Professor</h5>
-                            <div class="card-body">
-                                <h5 class="card-title f-md text-muted">Amount of Student</h5>
-                                <p class="card-text text-muted">200</p>
+                        <div className="card text-dark bg-light mb-3">
+                            <h5 className="card-header text-muted"><FaUserAlt className='m-2'></FaUserAlt>User & Professor</h5>
+                            <div className="card-body">
+                                <h5 className="card-title f-md text-muted">Amount of Student</h5>
+                                <p className="card-text text-muted">200</p>
                             </div>
                         </div>
                     </div>
                     <div className='col-md-6'>
-                        <div class="card text-dark bg-light mb-3">
-                            <h5 class="card-header text-muted"><MdTopic className='m-2'></MdTopic>Topic & Question</h5>
-                            <div class="card-body">
-                                <h5 class="card-title f-md text-muted">Amount of Topic</h5>
-                                <p class="card-text text-muted">10</p>
+                        <div className="card text-dark bg-light mb-3">
+                            <h5 className="card-header text-muted"><MdTopic className='m-2'></MdTopic>Topic & Question</h5>
+                            <div className="card-body">
+                                <h5 className="card-title f-md text-muted">Amount of Topic</h5>
+                                <p className="card-text text-muted">10</p>
                             </div>
                         </div> 
                     </div>

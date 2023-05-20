@@ -168,7 +168,7 @@ const TopBar = ({currentEmailUser,isProfessor}) => {
                                     <div className="divider my-3"></div>
                                 </div>
                                 <div className="menu">
-                                    <Link className="d-flex jc-btw">
+                                    <Link className="d-flex jc-btw" to={"/profile/" + inFoUser.UserEmail}>
                                         <div>
                                             <IoPersonOutline size={32} className="me-3" />Profile
                                         </div> 

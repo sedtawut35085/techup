@@ -47,7 +47,7 @@ function Ranking() {
                     </div>
                 }  
                 {   !isLoading &&
-                    <div class="body">
+                    <div className="body">
                         <div className="ranking-header">
                             <p data-aos="fade-up" data-aos-duration="1000" className="f-xl fw-800">Leaderboard<span className="color-1 f-xl fw-800 ms-2">TECHUP</span></p>
                             <SelectPicker3 
