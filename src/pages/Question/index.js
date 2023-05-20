@@ -139,7 +139,13 @@ function Question() {
             setIsHintShow(true)
         }
         setCountVote(questionInfo.AmountShow - questionInfo.AmountNotShow)
-        setVoteNeed(Math.round(questionInfo.AmountChallenge/2))
+        let need = Math.round(questionInfo.AmountChallenge/2)
+        if(need < 5)
+        {
+            setVoteNeed(5)
+        } else {
+            setVoteNeed(Math.round(questionInfo.AmountChallenge/2))
+        }
         setVoteNow(questionInfo.AmountShow)
         setIsLoading2(false)
         // setIsLoading(isLoading-1)
@@ -409,17 +415,9 @@ function Question() {
             setVoteModal(false)
             setHintModal(true)
         }
-
-        // let res = await getQuestionFromQuestionID()
-        // let questionInfo = res[0]
-
-        // let percentShow = questionInfo.AmountShow / questionInfo.AmountChallenge
-        // setCountVote(questionInfo.AmountShow - questionInfo.AmountNotShow)
-        // if(questionInfo.AmountChallenge >= 10 && questionInfo.AmountShow > questionInfo.AmountNotShow &&  percentShow >= 0.5){
-        //     setIsHintShow(true)
-        //     setVoteModal(false)
-        //     setHintModal(true)
-        // }
+        // console.log("vote need : " + voteNeed)
+        // console.log("vote now : " + voteNow)
+        // console.log("i = " , i)
     }
 
     function autosize(){
@@ -873,16 +871,18 @@ function Question() {
                             <TbLock className="color-1" size={140} />
                             {
                                 (inFoQuestion.AmountChallenge < 10) &&
-                                <span className="count-vote">{10 - inFoQuestion.AmountChallenge} require to open vote</span>
+                                <span className="count-vote">need {10 - inFoQuestion.AmountChallenge} more challenger to use this feature</span>
                             }
                             {   (inFoQuestion.AmountChallenge >= 10) &&
+                                <>
                                 <span className="count-vote">{voteNeed - voteNow} vote left to show hint</span>
+                                <div className="vote-section">
+                                    <span className={`vote jc-end ${voteShow === "Y" ? "active" : ""}`} onClick={() => showHint("Y")}>Show<IoCaretUp className="ms-1" size={14} /></span>
+                                    <span className="number">{countVote}</span>
+                                    <span className={`vote jc-start ${voteShow === "N" ? "active" : ""}`} onClick={() => showHint("N")}><IoCaretDown className="me-1" size={14} />Not show</span>
+                                </div>
+                                </>
                             }
-                            <div className="vote-section">
-                                <span className={`vote jc-end ${voteShow === "Y" ? "active" : ""}`} onClick={() => showHint("Y")}>Show<IoCaretUp className="ms-1" size={14} /></span>
-                                <span className="number">{countVote}</span>
-                                <span className={`vote jc-start ${voteShow === "N" ? "active" : ""}`} onClick={() => showHint("N")}><IoCaretDown className="me-1" size={14} />Not show</span>
-                            </div>
                             <span className="info"><TbInfoCircle className="me-1" size={21} />If hint showed point will decrease by 10%</span>
                         </div>
                     </div>
