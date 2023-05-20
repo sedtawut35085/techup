@@ -122,6 +122,63 @@ export async function getAdminCountWeekly () {
   return response.data
 }
 
+export async function getCountWeeklyQuestionFilterOngoing () {
+  await axios({
+      method: 'get',
+      url: `${baseUrl}/admin`,  
+      params: {
+        "getType" : "getCountWeeklyQuestionFilterOngoing"
+      },
+      headers: { 
+        // 'Authorization': accessToken, 
+        'Content-Type': 'text/plain'
+      },
+      }).then((res) => {
+        response = res
+      }).catch((err)=>{
+        response = err
+      })
+  return response.data
+}
+
+export async function getCountAllTopic () {
+  await axios({
+      method: 'get',
+      url: `${baseUrl}/admin`,  
+      params: {
+        "getType" : "getCountAllTopic"
+      },
+      headers: { 
+        // 'Authorization': accessToken, 
+        'Content-Type': 'text/plain'
+      },
+      }).then((res) => {
+        response = res
+      }).catch((err)=>{
+        response = err
+      })
+  return response.data
+}
+
+export async function getCountAllProfessor () {
+  await axios({
+      method: 'get',
+      url: `${baseUrl}/admin`,  
+      params: {
+        "getType" : "getCountAllProfessor"
+      },
+      headers: { 
+        // 'Authorization': accessToken, 
+        'Content-Type': 'text/plain'
+      },
+      }).then((res) => {
+        response = res
+      }).catch((err)=>{
+        response = err
+      })
+  return response.data
+}
+
 export async function getAdminWeekly (pageStart,pageSize) {
   await axios({
       method: 'get',
@@ -155,6 +212,26 @@ export async function getAdminWeeklyfromquestionid (questionid) {
         // 'Authorization': accessToken, 
         'Content-Type': 'text/plain'
       },
+      }).then((res) => {
+        response = res
+      }).catch((err)=>{
+        response = err
+      })
+  return response.data
+}
+
+export async function updateAdminWeeklyStatus (questionid, bodydata) {
+  await axios({
+      method: 'patch',
+      url: `${baseUrl}/admin`,  
+      params: {
+        "QuestionId": questionid
+      },
+      headers: { 
+        // 'Authorization': accessToken, 
+        'Content-Type': 'text/plain'
+      },
+      data: bodydata
       }).then((res) => {
         response = res
       }).catch((err)=>{

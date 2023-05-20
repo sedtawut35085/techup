@@ -6,30 +6,66 @@ import Col from "react-bootstrap/Col";
 import React, { ChangeEvent, useState , useEffect } from 'react';
 import { GiFlyingFlag } from 'react-icons/gi'
 import { IoCloseCircle, IoCaretUp, IoCaretDown } from 'react-icons/io5'
-import { getAdminWeeklyfromquestionid } from '../../../../service/admin';
+import { getAdminWeeklyfromquestionid, getCountWeeklyQuestionFilterOngoing, updateAdminWeeklyStatus } from '../../../../service/admin';
 import Moment from 'moment';
 
 const ContentUser = ({currentpage,CurrentWeeklyID,setContentPage}) =>{
-    const [guModal, setGuModal] = useState(false);
-    const [data, setData] = useState([]);
 
-    const handleDeleteClick = async () => {
-        setGuModal(false)
-        setContentPage(false)
+    const [isLoading, setIsLoading] = useState(true)
+    const [isLoading1, setIsLoading1] = useState(true)
+    const [guModal, setGuModal] = useState(false)
+    const [isError, setIsError] = useState(false)
+    const [isErrorOngoing, setIsErrorOngoing] = useState(false)
+    const [data, setData] = useState([]);
+    const [countWeeklyOngoing, setCountWeeklyOngoing] = useState();
+
+    const handleAcceptClick = async () => {
+        const bodydata = {
+            "updateType": "Text",
+            "updateKey": "Status",
+            "updateValue": "ongoing"
+        }
+        let res
+        if(countWeeklyOngoing !== 1){
+            res = await updateAdminWeeklyStatus(CurrentWeeklyID, bodydata)
+        }
+        if(res  === "success to update Weekly"){
+            setGuModal(false)
+            setContentPage(false)
+        }else{
+            setGuModal(false)
+            setIsError(true)
+        } 
     }
 
     useEffect(() => {
         loadInfoOfWeekly(CurrentWeeklyID);
+        loadCountWeeklyQuestionFilterOngoing();
     }, []);
+
+    const loadCountWeeklyQuestionFilterOngoing = async () => {
+        const checkCount = await getCountWeeklyQuestionFilterOngoing()
+        setCountWeeklyOngoing(checkCount[0]["count(*)"])
+        setIsLoading1(false)
+    }
 
     async function loadInfoOfWeekly(CurrentWeeklyID) {
         const res = await getAdminWeeklyfromquestionid(CurrentWeeklyID);
         setData(res[0])
+        setIsLoading(false)
         // setIsLoading(isLoading.splice(isLoading.indexOf(3), 1))
     }
 
     return ( 
         <div className='container-fluid'>
+             {
+            (isLoading === true) && (isLoading1 === true) &&
+            <div className="loader2">
+                <div className="lds-roller"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div>
+                </div>
+            </div>
+            }
+            { (isLoading === false) && (isLoading1 === false) &&
             <div className='row g-3 my-2'>
                 <span className='pt-2 f-lg fw-600'><button type="submit" className="btnsubmit-viewdetail" onClick={() => {setContentPage(false)}} style={{ width: '60px' }}><TiArrowBackOutline className="f-lg"/></button><span className='p-2'> {currentpage}</span></span>  
                 <div className="d-flex bd-highlight example-parent border border-warning bg-body rounded p-3" style={{ height: '600px' }}>  
@@ -82,18 +118,37 @@ const ContentUser = ({currentpage,CurrentWeeklyID,setContentPage}) =>{
                                         Status
                                     </div>
                                     <div className='fw-400 f-md color-black'>
-                                        {data.Status}
+                                        {
+                                            data.Status == "ongoing"
+                                            ?   <td className="thai status"><span className='color-3'>ongoing</span></td>
+                                            :   <td className="status thai color-1">{data.Status}</td>
+                                        }
                                     </div>
                                 </div>
-                                <div className='pt-4 text-end'>
-                                    <button type="submit" className="btnsubmit-accept" onClick={() => setGuModal(true)} style={{ width: '120px' }}><FiArrowUpRight className="f-md"/>Accept</button>
-                                </div>
+                                {
+                                    data.Status === "ongoing"
+                                    ?   <> </>
+                                    :  
+                                        countWeeklyOngoing !== 0
+                                        ?   <> </>
+                                        :    <div className='pt-0 text-end'>
+                                                <button type="submit" className="btnsubmit-accept" onClick={() => setGuModal(true)} style={{ width: '120px' }}><FiArrowUpRight className="f-md"/>Accept</button>
+                                            </div>  
+                                }
+                                {
+                                    isError === false
+                                    ?   <> </>
+                                    :    <div className='pt-2 text-center'>
+                                            <span className="color-5">Error with accept weekly question, please try again later.</span>
+                                        </div>
+                                }
                             </div>
                             </Col>
                         </Row>
                     </Container>  
                 </div>
             </div>
+            }
             <div className="tu-modal" style={guModal ? {opacity: "1", visibility: "visible"} : {}}>
                 <div className="tu-modal-card">
                     <IoCloseCircle className="close-button" onClick={() => setGuModal(false)} />
@@ -108,7 +163,7 @@ const ContentUser = ({currentpage,CurrentWeeklyID,setContentPage}) =>{
                     </div>
                     <div className="tu-modal-footer pt-2">
                         <div className="cancel-button" onClick={() => setGuModal(false)}>No, keep it.</div>
-                        <div className="accept-button" onClick={handleDeleteClick}>Yes, I want to delete.</div>
+                        <div className="accept-button" onClick={handleAcceptClick}>Yes, I want to accept.</div>
                     </div>
                 </div>
             </div>

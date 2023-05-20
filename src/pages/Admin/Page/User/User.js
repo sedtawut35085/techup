@@ -4,19 +4,20 @@ import { FiSearch, FiChevronLeft, FiChevronRight, FiChevronsLeft, FiChevronsRigh
 import { getAdminCountUser, getAdminStudent } from '../../../../service/admin';
 
 const User = ({currentpage,setContentPage,setCurrentUser}) =>{
-    const [isLoading2, setIsLoading2] = useState(true)
+    const [isLoading, setIsLoading] = useState(true)
+    const [isLoading1, setIsLoading1] = useState(true)
 
     const handleOnClick = async (e, userID) => {
         setContentPage(true)
         setCurrentUser(userID)
     } 
-
+ 
     const [allQuestion, setAllQuestion] = useState([])
     const [currentPage,setCurrentPage] = useState(1);
     const [numberPage, setNumberPage] = useState([])
     const [pageSize,setPageSize] = useState(10);
     let pageStart = 0;
-    let pageNumber
+    let pageNumber 
 
     useEffect(() => {
         loadCountOfStudent(pageSize);
@@ -26,7 +27,7 @@ const User = ({currentpage,setContentPage,setCurrentUser}) =>{
     async function loadStudent(pageStart,pageSize) {
         const res = await getAdminStudent(pageStart,pageSize);
         setAllQuestion(res); 
-        setIsLoading2(false)
+        setIsLoading1(false)
         // setIsLoading(isLoading.splice(isLoading.indexOf(3), 1))
     }
 
@@ -38,6 +39,7 @@ const User = ({currentpage,setContentPage,setCurrentUser}) =>{
             PageNumberList.push(i)
         }
         setNumberPage(PageNumberList)
+        setIsLoading(false)
         // setIsLoading(isLoading.splice(isLoading.indexOf(4), 1))
     }  
 
@@ -93,6 +95,14 @@ const User = ({currentpage,setContentPage,setCurrentUser}) =>{
 
     return ( 
         <div className='container-fluid'>
+            {
+                    (isLoading === true) && (isLoading1 === true) &&
+                    <div className="loader2">
+                        <div className="lds-roller"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div>
+                        </div>
+                    </div>
+            }
+            { (isLoading === false) && (isLoading1 === false) &&
             <div className='row g-3 my-2'> 
                 <span className='pt-2 f-lg fw-600'>{currentpage}</span>  
                     <div className="table-responsive">
@@ -152,6 +162,7 @@ const User = ({currentpage,setContentPage,setCurrentUser}) =>{
                         </div>                                                     
                 </div>
             </div>
+            }
         </div>
     )
 }

@@ -10,6 +10,8 @@ import { getStudent, deleteStudent } from '../../../../service/admin';
 import Moment from 'moment';
 
 const ContentUser = ({currentpage,CurrentUser,setContentPage}) =>{
+
+    const [isLoading, setIsLoading] = useState(true)
     const [guModal, setGuModal] = useState(false);
     const [userData, setUserData] = useState([]);
     const [contact, setContact] = useState([])
@@ -28,11 +30,20 @@ const ContentUser = ({currentpage,CurrentUser,setContentPage}) =>{
         const res = await getStudent(CurrentUser);
         setUserData(res[0])
         setContact(JSON.parse(res[0].Website))
+        setIsLoading(false)
         // setIsLoading(isLoading.splice(isLoading.indexOf(3), 1))
     }
 
     return ( 
         <div className='container-fluid'>
+             {
+                (isLoading === true) && 
+                <div className="loader2">
+                    <div className="lds-roller"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div>
+                    </div>
+                </div>
+            }
+            { (isLoading === false) && 
             <div className='row g-3 my-2'>
                 <span className='pt-2 f-lg fw-600'><button type="submit" className="btnsubmit-viewdetail" onClick={() => {setContentPage(false)}} style={{ width: '60px' }}><TiArrowBackOutline className="f-lg"/></button><span className='p-2'> {currentpage}</span></span>  
                 <div className="d-flex bd-highlight example-parent border border-warning bg-body rounded p-3" style={{ height: '550px' }}>  
@@ -151,6 +162,7 @@ const ContentUser = ({currentpage,CurrentUser,setContentPage}) =>{
                     </Container>  
                 </div>
             </div>
+            }
             <div className="tu-modal" style={guModal ? {opacity: "1", visibility: "visible"} : {}}>
                 <div className="tu-modal-card">
                     <IoCloseCircle className="close-button" onClick={() => setGuModal(false)} />

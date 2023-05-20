@@ -1,14 +1,13 @@
 import React, { useState, useEffect } from 'react';
 
-import { Link, useLocation } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { FaChevronLeft, FaSort, FaFrownOpen } from 'react-icons/fa';
 import { FiSearch, FiChevronLeft, FiChevronRight, FiChevronsLeft, FiChevronsRight } from 'react-icons/fi'
 import { HiOutlineChartBar } from 'react-icons/hi'
-import { TbDoorExit, TbClock, TbClockOff } from 'react-icons/tb'
+import { TbClock, TbClockOff } from 'react-icons/tb'
 import { BiMessageSquareDetail } from 'react-icons/bi'
 import { RiVipCrown2Fill, RiInstagramFill, RiFacebookCircleFill, RiGithubFill, RiGlobalFill, RiLineFill } from 'react-icons/ri'
 import { AiTwotoneMail } from 'react-icons/ai'
-import { IoCloseCircle } from 'react-icons/io5'
 import { getQuestionForEachTopic, getCountOfQuestionForEachTopic } from '../../service/question.js';
 import { getEachTopic } from '../../service/topic'
 import SelectPicker2 from '../../components/picker_select/selectPicker2.js'
@@ -89,13 +88,6 @@ function TopicProf() {
             
         </td>
         <td className="title thai"><Link to={`/professor/${TopicID}/question/${question.QuestionID}`} state={data} >{question.QuestionName}</Link></td>
-        {/* <td className="title thai"><Link to ={{
-            pathname: `/professor/${data.ShortName}/question/${question.QuestionID}`, 
-            state: { 
-                question
-            }
-        }}>{question.QuestionName}</Link>
-        </td> */}
         <td className="date">{question.DueDate}</td>
         <td className="acceptance">10.00 %</td>
         <td className="difficulty color-1">{question.Difficulty}</td>

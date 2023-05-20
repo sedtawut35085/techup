@@ -1,10 +1,10 @@
 import { useEffect,useState } from 'react';
-import { FaChevronLeft} from 'react-icons/fa';
-import { FiSearch, FiChevronLeft, FiChevronRight, FiChevronsLeft, FiChevronsRight } from 'react-icons/fi'
+import { FiChevronLeft, FiChevronRight, FiChevronsLeft, FiChevronsRight } from 'react-icons/fi'
 import { getAdminCountWeekly, getAdminWeekly } from '../../../../service/admin';
 
 const User = ({currentpage,setContentPage,setCurrentWeeklyID}) =>{
-    const [isLoading2, setIsLoading2] = useState(true)
+    const [isLoading1, setIsLoading1] = useState(true)
+    const [isLoading, setIsLoading] = useState(true)
 
     const handleOnClick = async (e, userID) => {
         setContentPage(true)
@@ -26,7 +26,7 @@ const User = ({currentpage,setContentPage,setCurrentWeeklyID}) =>{
     async function loadData(pageStart,pageSize) {
         const res = await getAdminWeekly(pageStart,pageSize);
         setAllData(res); 
-        setIsLoading2(false)
+        setIsLoading1(false)
         // setIsLoading(isLoading.splice(isLoading.indexOf(3), 1))
     }
 
@@ -38,6 +38,7 @@ const User = ({currentpage,setContentPage,setCurrentWeeklyID}) =>{
             PageNumberList.push(i)
         }
         setNumberPage(PageNumberList)
+        setIsLoading(false)
         // setIsLoading(isLoading.splice(isLoading.indexOf(4), 1))
     }  
 
@@ -84,11 +85,10 @@ const User = ({currentpage,setContentPage,setCurrentWeeklyID}) =>{
         <td className="difficulty thai">{data.Difficulty}</td>
         <td className="point thai">{data.Point}</td>
         {
-            data.Status == "ongoing"
-            ?   <td className="thai status"><span className='color-3'>ongoing</span></td>
-            :   <td className="status thai color-1">{data.Status}</td>
-        }
-        
+            data.Status === "ongoing"
+            ?   <td className="thai status"><span className='color-3'>{data.Status}</span></td>
+            :   <td className="thai status"><span className='color-1'>{data.Status}</span></td>
+        } 
         <td className="point-table">
             <div className="col-12">
                 <button type="submit" onClick={(e) => handleOnClick(e, data.QuestionID)} className="btnsubmit-viewdetail">View Detail</button>
@@ -99,6 +99,14 @@ const User = ({currentpage,setContentPage,setCurrentWeeklyID}) =>{
 
     return ( 
         <div className='container-fluid'>
+            {
+            (isLoading === true) && (isLoading1 === true) &&
+            <div className="loader2">
+                <div className="lds-roller"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div>
+                </div>
+            </div>
+            }
+            { (isLoading === false) && (isLoading1 === false) &&
             <div className='row g-3 my-2'> 
                 <span className='pt-2 f-lg fw-600'>{currentpage}</span>  
                     <div className="table-responsive">
@@ -159,6 +167,7 @@ const User = ({currentpage,setContentPage,setCurrentWeeklyID}) =>{
                         </div>                                                     
                 </div>
             </div>
+        }
         </div>
     )
 }
