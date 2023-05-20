@@ -12,6 +12,7 @@ import { getAllSubmissionFromProfessorID } from '../../service/submission.js';
 function Professor() {
     const [isLoading, setIsLoading] = useState(true)
     const [isLoading1, setIsLoading1] = useState(true)
+    const [isLoading2, setIsLoading2] = useState(true)
     const [allTopic, setAllTopic] = useState([])
     const [recentSubmission, setRecentSubmission] = useState([])
     const navigate = useNavigate()
@@ -26,6 +27,7 @@ function Professor() {
         .catch(() => {
             navigate('/');
         })
+        setIsLoading2(false)
     }
 
     useEffect( () => {
@@ -49,13 +51,13 @@ function Professor() {
     return (
         <div className="homepageprof">
             {
-            (isLoading === true) && (isLoading1 === true) &&
+            (isLoading === true) && (isLoading1 === true) && (isLoading2 === true) && 
             <div className="loader2">
                 <div className="lds-roller"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div>
                 </div>
             </div>
             }
-            { (isLoading === false) && (isLoading1 === false) &&
+            { (isLoading === false) && (isLoading1 === false) && (isLoading2 === false) && 
             <div className="cover-container">
             <div className="homepageprof-main d-flex fd-col">                           
                 <span className="mt-3 f-xl fw-700"><TbListDetails className="color-1 me-2" />My list</span>
