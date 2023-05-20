@@ -1,0 +1,37 @@
+.btnsubmit-delete {
+    height: 30px;
+    width: 100%;
+    padding: 60px 14px 0px -80px;
+    border-radius: 12px;
+    background-color: #FF333D;
+    color: #fff;
+    box-shadow: 0 0 4px rgba(0, 0, 0, 0.25);
+    font-size: 0.625rem;
+    font-weight: 500;
+    outline: none;
+    border: none;
+    transition: all 0.2s;
+}
+
+.btnsubmit-delete:hover {
+    background-color: #FF333D;
+}
+
+.btnsubmit-accept {
+    height: 30px;
+    width: 100%;
+    padding: 60px 14px 0px -80px;
+    border-radius: 12px;
+    background-color: #58A550;
+    color: #fff;
+    box-shadow: 0 0 4px rgba(0, 0, 0, 0.25);
+    font-size: 0.625rem;
+    font-weight: 500;
+    outline: none;
+    border: none;
+    transition: all 0.2s;
+}
+
+.btnsubmit-accept:hover {
+    background-color: #6bb263;
+}

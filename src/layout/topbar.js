@@ -10,6 +10,7 @@ import { getWeeklyQuestion } from '../service/weeklyQuestion';
 import { HiOutlineCalendar, HiOutlineBell, HiMenu } from 'react-icons/hi'
 import { FiChevronRight } from 'react-icons/fi'
 import { IoPersonCircleOutline, IoPersonOutline, IoGiftOutline, IoSettingsOutline, IoExitOutline } from 'react-icons/io5'
+import { getProfessor } from '../service/professor';
 
 const TopBar = ({currentEmailUser,isProfessor}) => {
 
@@ -47,7 +48,12 @@ const TopBar = ({currentEmailUser,isProfessor}) => {
     }
 
     async function loadinfoUser() {
-        let resUser = await getStudent();
+        let resUser
+        if(currentEmailUser.includes('@mail.kmutt.ac.th')){
+            resUser = await getStudent();
+        }else{
+            resUser = await getProfessor();
+        }
         setInFoUser(resUser[0]);
     }
 
@@ -80,14 +86,14 @@ const TopBar = ({currentEmailUser,isProfessor}) => {
 
         setInterval(() => {
             loadinfoUser()
-        }, 2000);
+        }, 20000);
       }, []);
       
     return (
         <>
             <div className={`topbar ${isTopbarVisible ? "visible" : ""}`}>
                 <nav>
-                    {isProfessor === false?
+                    {currentEmailUser.includes('@mail.kmutt.ac.th') === true?
                         <>
                         <Link className={`nav hover ${pathname === "home" ? "active" : ""}`} to="/home" onClick={() => linkTo()}>
                                 <div>
@@ -111,7 +117,7 @@ const TopBar = ({currentEmailUser,isProfessor}) => {
                     <Link className={`nav top hover ${pathname === "ranking" ? "active" : ""}`} to="/ranking">
                         <div>Ranking</div>
                     </Link>
-                    {isProfessor === false?
+                    {currentEmailUser.includes('@mail.kmutt.ac.th') === true?
                         <>
                         <Link className={`nav top hover ${pathname === "store" ? "active" : ""}`} to="/store">
                                 <div>Store</div>
@@ -145,7 +151,7 @@ const TopBar = ({currentEmailUser,isProfessor}) => {
                             </div>
                         </div>
                     </div>
-                    {isProfessor === false?
+                    {currentEmailUser.includes('@mail.kmutt.ac.th') === true?
                         <>
                             <div className="nav">
                                 <div className="point">{inFoUser.Point} P</div>
@@ -162,10 +168,20 @@ const TopBar = ({currentEmailUser,isProfessor}) => {
                             </div>
                             <div className={`dropdown ${dropdownActive ? "active" : ""}`}>
                                 <div className="info">
-                                    <span className="f-smd">{inFoUser.TechUpID}</span>
-                                    <span className="f-sm color-gray2">{inFoUser.FirstName} {inFoUser.SurName}</span>
                                     {
-                                        !isProfessor
+                                        currentEmailUser.includes('@mail.kmutt.ac.th') === true
+                                        ?
+                                            <>
+                                            <span className="f-smd">{inFoUser.TechUpID}</span>
+                                            <span className="f-sm color-gray2">{inFoUser.FirstName} {inFoUser.SurName}</span>
+                                            </>
+                                        :  <>
+                                            <span className="f-sm color-black">{inFoUser.Surname} {inFoUser.Surname}</span>
+                                            </>
+                                    } 
+                                    
+                                    {
+                                        !currentEmailUser.includes('@mail.kmutt.ac.th') === true
                                         ?
                                             <div className="nav">
                                                 <div className="point">{inFoUser.Point} P</div>

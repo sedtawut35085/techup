@@ -18,6 +18,9 @@ import BackgroundIcon from '../../components/background/bgIcons.js';
 import { all } from 'axios';
 
 function QuestionProf() {
+    const [isLoading, setIsLoading] = useState(true)
+    const [isLoading1, setIsLoading1] = useState(true)
+    const [isLoading2, setIsLoading2] = useState(true)
     const [inFoQuestion, setInFoQuestion] = useState("")
     const [numberPage, setNumberPage] = useState([])
     const [pageSize,setPageSize] = useState(5);
@@ -38,11 +41,13 @@ function QuestionProf() {
     async function getQuestionFromQuestionID() {
         let res = await getQuestion(QuestionId);
         setInFoQuestion(res[0])
+        setIsLoading(false)
     }
 
     async function loadSubmission(pageStart,value) {
         const res = await getAllSubmission(QuestionId,pageStart,value);
         setAllSubmission(res)
+        setIsLoading2(false)
     }
 
     async function loadCount(pageSize) {
@@ -53,6 +58,7 @@ function QuestionProf() {
             Pagenumberlist.push(i)
         }
         setNumberPage(Pagenumberlist)
+        setIsLoading1(false)
     }
 
     async function changepage(event) {
@@ -200,6 +206,14 @@ function QuestionProf() {
 
     return(
         <div className="question-page">
+            {
+            (isLoading === true) && (isLoading1 === true) && (isLoading2 === true) &&
+            <div className="loader2">
+                <div className="lds-roller"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div>
+                </div>
+            </div>
+            }
+            { (isLoading === false) && (isLoading1 === false) && (isLoading2 === false) &&
             <div className="cover-container">
                 <Link className="btn-back" to={`/professor/${TopicID}`}>
                     <FaChevronLeft />
@@ -530,7 +544,7 @@ function QuestionProf() {
                     }                    
                 </div>
             </div>            
-
+            }
             {/* Hint show Modal */}
             <div className="tu-modal" style={hintModal ? {opacity: "1", visibility: "visible"} : {}}>
                 <div className="tu-modal-card">
@@ -569,7 +583,7 @@ function QuestionProf() {
                     </div>
                 </div>
             </div>
-
+            
             {/* Background */}
             <div className="background-container"></div>
             <BackgroundIcon 

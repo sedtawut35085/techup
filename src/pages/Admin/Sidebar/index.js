@@ -1,9 +1,9 @@
 
 import { useNavigate } from 'react-router-dom'
 import { FaUserAlt, FaChalkboardTeacher } from 'react-icons/fa'
-import { BsFillGrid1X2Fill } from 'react-icons/bs'
-import { RiDiscussFill } from 'react-icons/ri'
-import { IoMdArrowDropdown,IoMdArrowDropup } from 'react-icons/io'
+import { BsFillGrid1X2Fill, BsFillCalendarWeekFill } from 'react-icons/bs'
+import { RiDiscussFill,RiStore3Fill } from 'react-icons/ri'
+import { IoMdArrowDropdown,IoMdArrowDropup,IoStorefront } from 'react-icons/io'
 import { GiDiscussion } from 'react-icons/gi'
 import { GoReport } from 'react-icons/go'
 import { useState } from 'react'
@@ -30,6 +30,16 @@ const Sidebar = ({handleChangePage,currentPage}) => {
                 <li className="nav-item pt-4 list-group">
                     <div className={`nav-link align-middle px-2  ${currentPage === "User" ? "list-group-active" : ""}`} onClick={(e) => handleChangePage(e, 'User')}>
                         <FaUserAlt className="fs-6"></FaUserAlt> <span className="ms-1 d-none d-sm-inline">User</span>
+                    </div>
+                </li>
+                <li className="nav-item pt-4 list-group">
+                    <div className={`nav-link align-middle px-2  ${currentPage === "Weekly" ? "list-group-active" : ""}`} onClick={(e) => handleChangePage(e, 'Weekly')}>
+                        <BsFillCalendarWeekFill className="fs-6"></BsFillCalendarWeekFill> <span className="ms-1 d-none d-sm-inline">Weekly</span>
+                    </div>
+                </li>
+                <li className="nav-item pt-4 list-group">
+                    <div className={`nav-link align-middle px-2  ${currentPage === "Store" ? "list-group-active" : ""}`} onClick={(e) => handleChangePage(e, 'Store')}>
+                        <RiStore3Fill className="fs-6"></RiStore3Fill> <span className="ms-1 d-none d-sm-inline">Store</span>
                     </div>
                 </li>
                 <li className="nav-item pt-4 list-group">

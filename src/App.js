@@ -14,6 +14,7 @@ import "./assets/styles/Weekly.css"
 import "./assets/styles/Discuss.css"
 import 'react-toastify/dist/ReactToastify.css';
 import 'aos/dist/aos.css';
+import './assets/styles/Admin.css'
 
 import AOS from 'aos';
 import { BrowserRouter, Route, Routes} from "react-router-dom";
@@ -32,6 +33,7 @@ import Homepage from "./pages/Home/index.js"
 import Professor from "./pages/HomeProf/index"
 import AddTopic from "./pages/HomeProf/addtopic"
 import AddQuestion from "./pages/HomeProf/addquestion"
+import AddWeeklyQuestion from "./pages/WeeklyProf/addweekly"
 import Topic from "./pages/Topic/index.js"
 import Question from "./pages/Question/index.js"
 import QuestionProf from "./pages/QuestionProf"
@@ -41,6 +43,7 @@ import SubmitProf from "./pages/Submit"
 import DiscussDetail from "./pages/Discuss/detail.js"
 import AddDiscuss from "./pages/Discuss/addDiscuss.js"
 import AdminHomepage from "./pages/Admin/Home"
+import AdminUserpage from "./pages/Admin/Page/User/DescUser"
 
 import Discuss from "./pages/Discuss/index.js"
 import Ranking from "./pages/Ranking/index.js"
@@ -60,6 +63,8 @@ function App() {
           <Route exact path="/pending-prof" element={<PendingProf />} />
           <Route exact path="/Admin" element={<SignInAdminForm />} />
           <Route exact path="/Admin/home" element={<AuthProviderAdmin><AdminHomepage /></AuthProviderAdmin>} /> 
+          
+          <Route exact path="/Admin/home/User/:user" element={<AuthProviderAdmin><AdminUserpage /></AuthProviderAdmin>} />
           <Route element={<AppLayout />}>
             <Route path="/addtopic" element={<AuthProvider><AddTopic /></AuthProvider>}/>
             <Route path="/professor" element={<AuthProvider><Professor /></AuthProvider>}/>
@@ -68,6 +73,7 @@ function App() {
             <Route path="/professor/:topic/question/:question" element={<QuestionProf />}/>
             <Route path="/professor/:topic/addquestion" element={<AuthProvider><AddQuestion /></AuthProvider>}/>
             <Route path="/professor/:topic/question/:question/submission/:submission" element={<SubmissionProf />}/>
+            <Route path="/professor/weekly/addweekly" element={<AuthProvider><AddWeeklyQuestion /></AuthProvider>} /> 
             <Route path="/home" element={<AuthProvider><Homepage /></AuthProvider>}/>
             <Route path="/topic/:topic" element={<Topic />}/>
             <Route path="/topic/:topic/question/:question" element={<Question />}/>

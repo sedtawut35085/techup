@@ -14,7 +14,7 @@ function SignInAdminForm() {
 
   const [email, setEmail] = useState('');
   const [emailForgot, setEmailForgot] = useState('')
-  const [password, setPassword] = useState('');
+  const [adminpassword, setAdminpassword] = useState('');
   const [code, setCode] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [cfNewPassword, setCfNewPassword] = useState('')
@@ -51,7 +51,7 @@ function SignInAdminForm() {
     setEmail('')
     setEmailForgot('')
     setCode('')
-    setPassword('')
+    setAdminpassword('')
     setKeep(false)
     setIsReSend(false)
     setIsForgetPasswordMessage(false)
@@ -98,7 +98,7 @@ function SignInAdminForm() {
     setErrors([])
     if(email === '') {
         setErrors(errors => [...errors, 'email'])
-    } else if(password === '') {
+    } else if(adminpassword === '') {
         setErrors(errors => [...errors, 'password'])
     }else{
         await Signin(event)
@@ -172,7 +172,7 @@ function SignInAdminForm() {
     let res = await getAccountAdmin(email)
     console.log(res[0])
     if(res[0] !== undefined){ 
-      await Auth.signIn(email, password)
+      await Auth.signIn(email, adminpassword)
       .then(async () =>  {
           navigate('/Admin/home')
           console.log('success')
@@ -249,13 +249,13 @@ function SignInAdminForm() {
                   }                  
               </div>
               <div className="form-group pb-4">
-                  <label className="f-md color-black pb-2" htmlFor="password">Password</label>
+                  <label className="f-md color-black pb-2" htmlFor="Adminpassword">Password</label>
                   <input
                   type="password"
-                  id="password"
+                  id="Adminpassword"
                   className="sign-form-input"
-                  value={password}
-                  onChange={event => setPassword(event.target.value)}
+                  value={adminpassword}
+                  onChange={event => setAdminpassword(event.target.value)}
                   onClick={() => {removeError('password')}}
                   style={
                     errors.includes('password')
