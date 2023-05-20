@@ -25,6 +25,9 @@ import { convertToBase64, uploadPhoto } from '../../service';
 import AWS from 'aws-sdk'
 import { getChallenge,addChallengeUser,deleteChallengedUser } from '../../service/challenge';
 import CommentDiscussQuestion from "../../components/comment/commentDiscussQuestion"
+import { addAmountChalleger ,subAmountChalleger } from '../../service/challenge';
+import { getUserHintStatus } from '../../service/hint';
+import { addVote , changeVote , addAmountShow , subAmountShow , addAmountNotShow ,subAmountNotShow } from '../../service/hint';
 
 
 
@@ -59,6 +62,7 @@ function Question() {
     const [isLoading2, setIsLoading2] = useState(true)
     const [isLoading3, setIsLoading3] = useState(true)
     const [isLoading4, setIsLoading4] = useState(true)
+    const [isLoading5, setIsLoading5] = useState(true)
 
     const [isHintShow, setIsHintShow] = useState(false)
 
@@ -66,7 +70,9 @@ function Question() {
     const [isDoneEstimate, setIsDoneEstimate] = useState(false);
 
     const [voteShow, setVoteShow] = useState("")
-    const [countVote, setCountVote] = useState(19)
+    const [countVote, setCountVote] = useState(0)
+    const [voteNeed , setVoteNeed] = useState(0)
+    const [voteNow , setVoteNow] = useState(0)
 
     const [guModal, setGuModal] = useState(false);
     const [hintModal, setHintModal] = useState(false);
@@ -124,11 +130,17 @@ function Question() {
         // setIsLoading(isLoading.splice(isLoading.indexOf(1), 1))
     }
 
-    console.log(isLoading1)
-
     async function getQuestionFromQuestionID() {
         let res = await getQuestion(QuestionId);
         setInFoQuestion(res[0])
+        let questionInfo = res[0]
+        let percentShow = questionInfo.AmountShow / questionInfo.AmountChallenge
+        if(questionInfo.AmountChallenge >= 10 && questionInfo.AmountShow > questionInfo.AmountNotShow &&  percentShow >= 0.5){
+            setIsHintShow(true)
+        }
+        setCountVote(questionInfo.AmountShow - questionInfo.AmountNotShow)
+        setVoteNeed(Math.round(questionInfo.AmountChallenge/2))
+        setVoteNow(questionInfo.AmountShow)
         setIsLoading2(false)
         // setIsLoading(isLoading-1)
         // setIsLoading(isLoading.splice(isLoading.indexOf(2), 1))
@@ -151,7 +163,21 @@ function Question() {
         setIsLoading4(false)
         // setIsLoading(isLoading-1)
         // setIsLoading(isLoading.splice(isLoading.indexOf(4), 1))
-    }    
+    }
+    
+    async function loadHintUserStatus() {
+        let res = await getUserHintStatus(QuestionId);
+        if(res.length > 0) {
+            if(res[0].Vote === 1){
+                setVoteShow("Y")
+            } else {
+                setVoteShow("N")
+            }
+        } else {
+            setVoteShow("")
+        }
+        setIsLoading5(false);
+    }
 
     useEffect( () => {
         loadEachSubmissionFromUserIDandQuestionID()
@@ -159,15 +185,18 @@ function Question() {
         getChallengedStatus();
         getInfoUser()
         getDiscuss()
+        loadHintUserStatus();
     }, []);   
 
     function addChallenge(){
         addChallengeUser(QuestionId)
+        addAmountChalleger(QuestionId)
         setChallenge(true)
     }
 
     function deleteChallenge(){
         deleteChallengedUser(QuestionId)
+        subAmountChalleger(QuestionId)
         setChallenge(false)
     }
     function toggleReply(id) {
@@ -328,20 +357,69 @@ function Question() {
     }
     const files = fileList ? [...fileList] : [];
 
+    function addShow(){
+        addVote(QuestionId,1)
+        addAmountShow(QuestionId)
+    }
+
+    function addNotShow(){
+        addVote(QuestionId,0)
+        addAmountNotShow(QuestionId)
+    }
+
+    function changeShowToNotShow(){
+        changeVote(QuestionId,0)
+        addAmountNotShow(QuestionId)
+        subAmountShow(QuestionId)
+    }
+
+    function changeNotShowToShow(){
+        changeVote(QuestionId,1)
+        addAmountShow(QuestionId)
+        subAmountNotShow(QuestionId)
+    }
+
     function showHint(vote) {
-        if(vote === "Y" && voteShow !== "Y") {
+        let i = voteNow
+        if(vote === "Y" && voteShow === ""){
             setVoteShow(vote)
-            setCountVote(20)            
+            addShow()
+            setCountVote(countVote + 1)
+            i = i+1
+            setVoteNow(voteNow + 1)
+        } else if(vote === "N" && voteShow === ""){
+            setVoteShow(vote)
+            addNotShow()
+            setCountVote(countVote - 1)
+        } else if(vote === "Y" && voteShow === "N"){
+            setVoteShow(vote)
+            changeNotShowToShow()
+            setCountVote(countVote + 2)
+            i = i+1
+            setVoteNow(voteNow + 1)
+
+        } else if(vote === "N" && voteShow === "Y"){
+            setVoteShow(vote)
+            changeShowToNotShow()
+            setCountVote(countVote - 2)
+            setVoteNow(voteNow - 1)
+        }
+        if(i>= voteNeed) {
             setIsHintShow(true)
             setVoteModal(false)
             setHintModal(true)
-        } else if(vote === "N" && voteShow !== "N") {
-            setVoteShow(vote)
-            setCountVote(18)
-        } else {
-            setVoteShow("")
-            setCountVote(19)
         }
+
+        // let res = await getQuestionFromQuestionID()
+        // let questionInfo = res[0]
+
+        // let percentShow = questionInfo.AmountShow / questionInfo.AmountChallenge
+        // setCountVote(questionInfo.AmountShow - questionInfo.AmountNotShow)
+        // if(questionInfo.AmountChallenge >= 10 && questionInfo.AmountShow > questionInfo.AmountNotShow &&  percentShow >= 0.5){
+        //     setIsHintShow(true)
+        //     setVoteModal(false)
+        //     setHintModal(true)
+        // }
     }
 
     function autosize(){
@@ -373,14 +451,14 @@ function Question() {
             }
             <div className="cover-container">
                 {
-                    (isLoading === true) && (isLoading1 === true) && (isLoading2 === true) && (isLoading3 === true) && (isLoading4 === true) &&
+                    (isLoading === true) && (isLoading1 === true) && (isLoading2 === true) && (isLoading3 === true) && (isLoading4 === true) && (isLoading5 === true) &&
                     <div className="loader2">
                         <div className="lds-roller"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div>
                         </div>
                     </div>
                 }   
                 {
-                    (isLoading === false) && (isLoading1 === false) && (isLoading2 === false) && (isLoading3 === false) && (isLoading4 === false) &&
+                    (isLoading === false) && (isLoading1 === false) && (isLoading2 === false) && (isLoading3 === false) && (isLoading4 === false) && (isLoading5 === false) &&
                     <>
                     <Link data-aos="fade-right" data-aos-duration="1000" className="btn-back" to={-1}>
                         <FaChevronLeft />
@@ -780,27 +858,36 @@ function Question() {
             </div>
 
             {/* Hint vote Modal */}
-            <div className="tu-modal" style={voteModal ? {opacity: "1", visibility: "visible"} : {}}>
-                <div className="tu-modal-card hint">
-                    <IoCloseCircle className="close-button" onClick={() => setVoteModal(false)} />
-                    <div className="tu-modal-head jc-center">
-                        <TbBulb className="icon" />
-                        <span>
-                            Vote to show hint!
-                        </span>
-                    </div>
-                    <div className="tu-modal-body mb-0">
-                        <TbLock className="color-1" size={140} />
-                        <span className="count-vote">1 vote left to show hint</span>
-                        <div className="vote-section">
-                            <span className={`vote jc-end ${voteShow === "Y" ? "active" : ""}`} onClick={() => showHint("Y")}>Show<IoCaretUp className="ms-1" size={14} /></span>
-                            <span className="number">{countVote}</span>
-                            <span className={`vote jc-start ${voteShow === "N" ? "active" : ""}`} onClick={() => showHint("N")}><IoCaretDown className="me-1" size={14} />Not show</span>
+            {
+                1 &&
+                <div className="tu-modal" style={voteModal ? {opacity: "1", visibility: "visible"} : {}}>
+                    <div className="tu-modal-card hint">
+                        <IoCloseCircle className="close-button" onClick={() => setVoteModal(false)} />
+                        <div className="tu-modal-head jc-center">
+                            <TbBulb className="icon" />
+                            <span>
+                                Vote to show hint!
+                            </span>
                         </div>
-                        <span className="info"><TbInfoCircle className="me-1" size={21} />If hint showed point will decrease by 10%</span>
+                        <div className="tu-modal-body mb-0">
+                            <TbLock className="color-1" size={140} />
+                            {
+                                (inFoQuestion.AmountChallenge < 10) &&
+                                <span className="count-vote">{10 - inFoQuestion.AmountChallenge} require to open vote</span>
+                            }
+                            {   (inFoQuestion.AmountChallenge >= 10) &&
+                                <span className="count-vote">{voteNeed - voteNow} vote left to show hint</span>
+                            }
+                            <div className="vote-section">
+                                <span className={`vote jc-end ${voteShow === "Y" ? "active" : ""}`} onClick={() => showHint("Y")}>Show<IoCaretUp className="ms-1" size={14} /></span>
+                                <span className="number">{countVote}</span>
+                                <span className={`vote jc-start ${voteShow === "N" ? "active" : ""}`} onClick={() => showHint("N")}><IoCaretDown className="me-1" size={14} />Not show</span>
+                            </div>
+                            <span className="info"><TbInfoCircle className="me-1" size={21} />If hint showed point will decrease by 10%</span>
+                        </div>
                     </div>
                 </div>
-            </div>            
+            }            
 
             {/* Background */}
             <div className="background-container"></div>

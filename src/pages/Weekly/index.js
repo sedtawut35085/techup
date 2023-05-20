@@ -1,12 +1,16 @@
-import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useEffect, useLayoutEffect, useState } from 'react';
+import { useNavigate , useLocation } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import Moment from 'moment'
 import AWS from 'aws-sdk'
 import { getWeeklyQuestion } from '../../service/weeklyQuestion';
+import { getEachSubmissionFromUserIDandQuestionID } from '../../service/submission';
+import { getStudent } from '../../service/student';
+
 
 import { fileSize, fileType, download, downloadAll } from '../../assets/js/helper'
 import { saveSubmission } from '../../service/submission'
+import { getWeeklySubmission } from '../../service/submission';
 
 import BackgroundIcon from '../../components/background/bgIcons.js';
 
@@ -31,15 +35,19 @@ const myBucket = new AWS.S3({
 
 function Weekly() {
     
-    // let topicID = window.location.href.split("/")[4];
-    // let QuestionId = window.location.href.split("/")[6];   
+    // const location = useLocation();
     const [topicID , setTopicID] = useState("");
-    // const [questionID , setQuestionID] = useState("");
+    const [QuestionID , setQuestionID] = useState("");
 
     const navigate = useNavigate()
 
+    const [inFoSubmit, setInFoSubmit] = useState("")
+
     const [loading, setLoading] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
+    const [isLoading1, setIsLoading1] = useState(true);
+    const [isLoading3, setIsLoading3] = useState(true);
+    
 
     const [inFoQuestion, setInFoQuestion] = useState("")
     const [inFoUser, setInFoUser] = useState("")
@@ -49,6 +57,7 @@ function Weekly() {
     const [hintModal, setHintModal] = useState(false);
     const [voteModal, setVoteModal] = useState(false);
     const [isDone, setIsDone] = useState(false);
+    const [isDoneEstimate, setIsDoneEstimate] = useState(false);
 
     const [commentDiscuss, setCommentDiscuss] = useState("");
     const [discuss, setDiscuss] = useState([
@@ -291,29 +300,79 @@ function Weekly() {
         setIsLoading(false)
     }, 200)
 
+    async function getInfoUser() {
+        let resUser = await getStudent();
+        setInFoUser(resUser[0])
+        setIsLoading3(false)
+        // setIsLoading(isLoading-1)
+        // setIsLoading(isLoading.splice(isLoading.indexOf(3), 1))
+    }
+
     async function loadWeeklyQuestion(){
-        let res = await getWeeklyQuestion();
+        let res = await getWeeklyQuestion()
         setInFoQuestion(res[0]);
-        setTopicID(res[0].TopicID)
+        setTopicID(res[0].TopicID);
+        setQuestionID(res[0].QuestionID);
         setIsLoading(false);
+        // loadEachSubmissionFromUserIDandQuestionID();
+    }
+
+    // async function loadEachSubmissionFromUserIDandQuestionID() {
+    //     console.log("start load submission");
+    //     let res = await getEachSubmissionFromUserIDandQuestionID(QuestionID);
+    //     if(res[0] === undefined){
+    //         setIsDone(false)
+    //     }else{
+    //         setIsDone(true)
+    //         setInFoSubmit(res[0])
+    //         setFileListSubmit(JSON.parse(res[0].FileAttachment))
+    //         if(res[0].Score === null){
+    //             setIsDoneEstimate(false)
+    //         }else{
+    //             setIsDoneEstimate(true)
+    //         }
+    //     }
+    //     setIsLoading1(false)
+    //     console.log("end load submission");
+    // }
+
+    async function loadWeeklySubmission(){
+        let res = await getWeeklySubmission();
+        if(res[0] === undefined){
+            setIsDone(false)
+        }else{
+            setIsDone(true)
+            setInFoSubmit(res[0])
+            setFileListSubmit(JSON.parse(res[0].FileAttachment))
+            if(res[0].Score === null){
+                setIsDoneEstimate(false)
+            }else{
+                setIsDoneEstimate(true)
+            }
+        }
+        setIsLoading1(false)
     }
 
     useEffect(() => {
         loadWeeklyQuestion();
+        loadWeeklySubmission();
+        getInfoUser();
     }, [])
 
     return (
         <div className="weekly-page">
             <div className="cover-container">
                 {
-                    isLoading &&
+                    isLoading && isLoading1 && 
+                    // isLoading3 &&
                     <div className="loader2">
                         <div className="lds-roller"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div>
                         </div>
                     </div>
                 }   
                 {
-                    !isLoading &&
+                    !isLoading && !isLoading1 && 
+                    // !isLoading3 &&
                     <>                    
                     <div data-aos="fade-left" data-aos-duration="1000" className="body">
                         <div className="top-section">
@@ -363,7 +422,7 @@ function Weekly() {
                                     </button>
                                 </div>
                                 <div className="point">
-                                    {/* {
+                                    {
                                         isDone
                                         ?  
                                         <>
@@ -373,8 +432,8 @@ function Weekly() {
                                             }
                                         </>
                                         :   <span>{inFoQuestion.Point} P</span>
-                                    }                                 */}
-                                    <span>{inFoQuestion.Point} P</span>
+                                    }                                
+                                    {/* <span>{inFoQuestion.Point} P</span> */}
                                 </div>
                             </div>
                         </div>
@@ -507,22 +566,22 @@ function Weekly() {
                                                 <span className="fw-700 f-md">Comment from professor</span>
                                                 <div className="sp-vertical"></div>
                                                 <div className="comment-box-edit">
-                                                    {/* {
+                                                    {
                                                         inFoSubmit.CommentFromProf === null
                                                         ?   <p>No comment</p>
                                                         :   <p>{inFoSubmit.CommentFromProf}</p>
-                                                    }                                                 */}
+                                                    }                                                
                                                     <p className="color-gray2">No comment</p>
                                                 </div>
                                                 <div className="divider my-4"></div>
                                                 <span className="fw-700 f-md">Your submission</span>
                                                 <div className="sp-vertical"></div>
                                                 <div className="comment-box-edit">
-                                                    {/* {
+                                                    {
                                                         inFoSubmit.Answer === null
                                                         ?   <p>No Text Answer</p>
                                                         :   <p>{inFoSubmit.Answer}</p>
-                                                    }                                                 */}
+                                                    }                                                
                                                     <p className="color-gray2">No Text Answer</p>
                                                 </div>
                                                 <div className="attachment">

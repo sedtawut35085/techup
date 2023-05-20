@@ -119,3 +119,20 @@ export async function saveSubmission(bodydata){
       })
   return response.data
 }
+
+export async function getWeeklySubmission(){
+  let UserEmail = await getCurrentUserId()
+  await axios({
+      method: 'get',
+      url: `${baseUrl}/submission`,
+      params: {
+          "getType": "getWeeklySubmission",
+          "UserEmail": UserEmail
+      },
+      }).then((res) => {
+        response = res
+      }).catch((err)=>{
+        response = err
+      })
+  return response.data
+}
