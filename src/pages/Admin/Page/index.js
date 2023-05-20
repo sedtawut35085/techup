@@ -9,7 +9,7 @@ import HomeUser from './User/index';
 import Professor from './Professor';
 import Discuss from './Discuss';
 import Report from './Report';
-import Weekly from './Weekly';
+import Weekly from './Weekly/index';
 import Store from './Store';
 // import 'bootstrap-icons/font/bootstrap-icons.css';
 
