@@ -6,35 +6,17 @@ import AWS from 'aws-sdk'
 import { getWeeklyQuestion } from '../../service/weeklyQuestion';
 
 import { fileSize, fileType, download, downloadAll } from '../../assets/js/helper'
-import { saveSubmission } from '../../service/submission'
 
 import BackgroundIcon from '../../components/background/bgIcons.js';
 
 import { HiOutlineCalendar, HiOutlineExclamation } from 'react-icons/hi';
 import { TbCalendarTime, TbBulb, TbSwords, TbLock, TbFileZip, TbInfoCircle, TbFileDescription, TbMessage2, TbFileUpload, TbMessageCircle, TbPaperclip, TbTrash, } from 'react-icons/tb'
-import { IoCloseCircle, IoCaretUp, IoCaretDown } from 'react-icons/io5'
-import { BsReplyAll, BsCheckLg } from 'react-icons/bs'
+import { IoCaretUp, IoCaretDown } from 'react-icons/io5'
+import { BsReplyAll } from 'react-icons/bs'
 
-const S3_BUCKET ='techup-file-upload-storage';
-const REGION ='ap-southeast-1';
-const s3Subfolder = 'data-submit';
-
-AWS.config.update({
-    accessKeyId: 'AKIA6PZPD4TPJJAKDW6Q',
-    secretAccessKey: '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'
-})
-
-const myBucket = new AWS.S3({
-    params: { Bucket: S3_BUCKET},
-    region: REGION,
-})
-
-function Weekly() {
-    
-    // let topicID = window.location.href.split("/")[4];
-    // let QuestionId = window.location.href.split("/")[6];   
+function WeeklyProf() {
+      
     const [topicID , setTopicID] = useState("");
-    // const [questionID , setQuestionID] = useState("");
 
     const navigate = useNavigate()
 
@@ -131,160 +113,13 @@ function Weekly() {
         setFileList(array)
     };
 
-    const uploadFile = async (file) => {
-        setLoading(true)
-        const convertFiles = []
-
-        if(file.length === 0 && commentSubmission === "") {
-            toast.error('Please enter answer!', {
-                position: "bottom-left",
-                autoClose: 2000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                theme: "light",
-            });
-            setLoading(false)
-        } else if (file.length === 0) {            
-            var body = {
-                "StudentEmail": inFoUser.UserEmail,
-                "FirstName": inFoUser.FirstName,
-                "SurName": inFoUser.SurName,
-                "DateSubmit": Moment(new Date()).format('YYYY-MM-DD'),
-                "DueDate": Moment(inFoQuestion.DueDate).format('YYYY-MM-DD'),
-                "Status":"UnChecked",
-                "QuestionID": inFoQuestion.QuestionID,
-                "QuestionName":inFoQuestion.QuestionName,
-                "TopicID": inFoQuestion.TopicID,
-                "TopicName": inFoQuestion.TopicName,
-                "Answer": commentSubmission
-            }
-            let ressavesubmit = saveSubmission(body)
-                .then((res)=>{    
-                    setLoading(false)
-                    toast.success('Success submission!', {
-                        position: "bottom-left",
-                        autoClose: 2000,
-                        hideProgressBar: false,
-                        closeOnClick: true,
-                        pauseOnHover: true,
-                        draggable: true,
-                        theme: "light",
-                    });                
-                    navigate(`/topic/${topicID}`)  
-                })
-                .catch((err) => {
-                    toast.error('Server error, please try again', {
-                        position: "bottom-left",
-                        autoClose: 2000,
-                        hideProgressBar: false,
-                        closeOnClick: true,
-                        pauseOnHover: true,
-                        draggable: true,
-                        theme: "light",
-                    });
-                    setLoading(false)
-                })
-        } else if(file.length !== 0){
-            file.forEach(async (files, i) => {
-                let currentDate = new Date()
-                currentDate = Moment(currentDate).format('YYYY-MM-DD:HH-mm-ss')
-                const fileName = currentDate + "_" + files.name
-                const params = {
-                    ACL: 'public-read',
-                    Body: files,
-                    Bucket: S3_BUCKET,
-                    Key: `${s3Subfolder}/${fileName}`
-                };
-                let name = files.name
-                let size = files.size
-                const convertFile = await myBucket.upload(params).promise().then((res) => {
-                    convertFiles.push(
-                    {
-                        "name" : name,
-                        "size" : size,
-                        "Url" : res.Location
-                    })
-                    i = i+1
-                    if(i === file.length){
-                        setTimeout(() => {
-                            var body = {
-                                "StudentEmail": inFoUser.UserEmail,
-                                "FirstName": inFoUser.FirstName,
-                                "SurName": inFoUser.SurName,
-                                "DateSubmit": Moment(new Date()).format('YYYY-MM-DD'),
-                                "DueDate": Moment(inFoQuestion.DueDate).format('YYYY-MM-DD'),
-                                "Status":"UnChecked",
-                                "FileAttachment": convertFiles,
-                                "QuestionID": inFoQuestion.QuestionID,
-                                "QuestionName":inFoQuestion.QuestionName,
-                                "TopicID": inFoQuestion.TopicID,
-                                "TopicName": inFoQuestion.TopicName,
-                                "Answer": commentSubmission
-                            }
-                            let ressavesubmit = saveSubmission(body)
-                                .then((res)=>{
-                                    setLoading(false)
-                                    toast.success('Success submission!', {
-                                        position: "bottom-left",
-                                        autoClose: 2000,
-                                        hideProgressBar: false,
-                                        closeOnClick: true,
-                                        pauseOnHover: true,
-                                        draggable: true,
-                                        theme: "light",
-                                    });     
-                                    navigate(`/topic/${topicID}`)
-                                })
-                                .catch((err) => {
-                                    toast.error('Server error, please try again', {
-                                        position: "bottom-left",
-                                        autoClose: 2000,
-                                        hideProgressBar: false,
-                                        closeOnClick: true,
-                                        pauseOnHover: true,
-                                        draggable: true,
-                                        theme: "light",
-                                    });
-                                    setLoading(false)
-                                })
-                          }, 3000);
-                    }
-                });
-            });
-        } else {
-            toast.error('Server error, please try again', {
-                position: "bottom-left",
-                autoClose: 2000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                theme: "light",
-            });
-        }
-        
-    }
     const files = fileList ? [...fileList] : [];
 
     const [voteShow, setVoteShow] = useState("")
     const [countVote, setCountVote] = useState(19)
 
     function showHint(vote) {
-        if(vote === "Y" && voteShow !== "Y") {
-            setVoteShow(vote)
-            setCountVote(20)            
-            setIsHintShow(true)
-            setVoteModal(false)
-            setHintModal(true)
-        } else if(vote === "N" && voteShow !== "N") {
-            setVoteShow(vote)
-            setCountVote(18)
-        } else {
-            setVoteShow("")
-            setCountVote(19)
-        }
+        setIsHintShow(true)
     }
 
     setTimeout(() => {
@@ -631,4 +466,4 @@ function Weekly() {
     );
 }
 
-export default Weekly;
+export default WeeklyProf;

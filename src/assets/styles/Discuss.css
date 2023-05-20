@@ -24,8 +24,16 @@
     transition: all .2s;
 }
 
+.all-discuss-page .all-discuss .sorting .sort-select svg {
+    color: #FFA242;
+}
+
 .all-discuss-page .all-discuss .sorting .sort-select:hover {
     background-color: #FFA242;
+    color: #fff;
+}
+
+.all-discuss-page .all-discuss .sorting .sort-select:hover svg {
     color: #fff;
 }
 
@@ -33,6 +41,10 @@
     background-color: #FFA242;
     color: #fff;
     font-weight: 600;
+}
+
+.all-discuss-page .all-discuss .sorting .sort-select.active svg {
+    color: #fff;
 }
 
 .all-discuss-page .all-discuss .discuss-card-wrap {
@@ -50,6 +62,12 @@
     padding: 2rem;
     border-radius: 15px;
     box-shadow: 0 0 4px rgba(0, 0, 0, 0.25);
+    transition: all .2s;
+}
+
+.all-discuss-page .all-discuss .discuss-card-wrap .discuss-card:hover {
+    scale: 1.02;
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.25);
 }
 
 .all-discuss-page .all-discuss .discuss-card-wrap .discuss-card .left-side {
@@ -305,6 +323,12 @@
     padding: 1.2rem;
     border-radius: 10px;
     box-shadow: 0 0 4px rgba(0, 0, 0, 0.25);
+}
+
+.discuss-detail-page .comment-section .comment-wrap .comment-reply .user-info img {
+    height: 50px;
+    width: 50px;
+    border-radius: 50%;
 }
 
 .discuss-detail-page .comment-section .comment-wrap .comment-reply .action {

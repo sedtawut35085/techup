@@ -2,13 +2,14 @@ import React, { useEffect, useState, useRef } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import $ from 'jquery'
 
-import { toggleScrollable } from '../assets/js/helper'
+import { toggleScrollable, defaultProfileImg } from '../assets/js/helper'
 import Auth from '../configuration/configuration-aws'
 import { getStudent } from '../service/student'
 
 import { HiOutlineCalendar, HiOutlineBell, HiMenu } from 'react-icons/hi'
 import { FiChevronRight } from 'react-icons/fi'
 import { IoPersonCircleOutline, IoPersonOutline, IoGiftOutline, IoSettingsOutline, IoExitOutline } from 'react-icons/io5'
+import { getProfessor } from '../service/professor';
 
 const TopBar = ({currentEmailUser,isProfessor}) => {
 
@@ -39,7 +40,12 @@ const TopBar = ({currentEmailUser,isProfessor}) => {
     }
 
     async function loadinfoUser() {
-        let resUser = await getStudent();
+        let resUser
+        if(currentEmailUser.includes('@mail.kmutt.ac.th')){
+            resUser = await getStudent();
+        }else{
+            resUser = await getProfessor();
+        }
         setInFoUser(resUser[0]);
     }
 
@@ -68,13 +74,17 @@ const TopBar = ({currentEmailUser,isProfessor}) => {
                 toggleScrollable(false)
             }
         })
+
+        setInterval(() => {
+            loadinfoUser()
+        }, 20000);
       }, []);
       
     return (
         <>
             <div className={`topbar ${isTopbarVisible ? "visible" : ""}`}>
                 <nav>
-                    {isProfessor === false?
+                    {currentEmailUser.includes('@mail.kmutt.ac.th') === true?
                         <>
                         <Link className={`nav hover ${pathname === "home" ? "active" : ""}`} to="/home" onClick={() => linkTo()}>
                                 <div>
@@ -98,7 +108,7 @@ const TopBar = ({currentEmailUser,isProfessor}) => {
                     <Link className={`nav top hover ${pathname === "ranking" ? "active" : ""}`} to="/ranking">
                         <div>Ranking</div>
                     </Link>
-                    {isProfessor === false?
+                    {currentEmailUser.includes('@mail.kmutt.ac.th') === true?
                         <>
                         <Link className={`nav top hover ${pathname === "store" ? "active" : ""}`} to="/store">
                                 <div>Store</div>
@@ -132,7 +142,7 @@ const TopBar = ({currentEmailUser,isProfessor}) => {
                             </div>
                         </div>
                     </div>
-                    {isProfessor === false?
+                    {currentEmailUser.includes('@mail.kmutt.ac.th') === true?
                         <>
                             <div className="nav">
                                 <div className="point">{inFoUser.Point} P</div>
@@ -144,21 +154,31 @@ const TopBar = ({currentEmailUser,isProfessor}) => {
                     } 
                     <div className="nav">
                         <div className="profile-pic">
-                            <div className="img" onClick={() => setDropdownActive(!dropdownActive)}>
-                                <IoPersonCircleOutline />
+                            <div className="img" onClick={() => setDropdownActive(!dropdownActive)}>                                
+                                <img onError={defaultProfileImg} src={inFoUser.ImageURL}  alt="Avatar" />
                             </div>
                             <div className={`dropdown ${dropdownActive ? "active" : ""}`}>
                                 <div className="info">
-                                    <span className="full-name f-sm">{currentEmailUser.substring(0, 20) + "..."}</span>
-                                    <div className="point">
-                                        {
-                                            isProfessor === false?
-                                                <div className="nav">
-                                                    <div className="point">{inFoUser.Point} P</div>
-                                                </div>
-                                            :  null
-                                        } 
-                                    </div>
+                                    {
+                                        currentEmailUser.includes('@mail.kmutt.ac.th') === true
+                                        ?
+                                            <>
+                                            <span className="f-smd">{inFoUser.TechUpID}</span>
+                                            <span className="f-sm color-gray2">{inFoUser.FirstName} {inFoUser.SurName}</span>
+                                            </>
+                                        :  <>
+                                            <span className="f-sm color-black">{inFoUser.Surname} {inFoUser.Surname}</span>
+                                            </>
+                                    } 
+                                    
+                                    {
+                                        !currentEmailUser.includes('@mail.kmutt.ac.th') === true
+                                        ?
+                                            <div className="nav">
+                                                <div className="point">{inFoUser.Point} P</div>
+                                            </div>
+                                        :  null
+                                    } 
                                 </div>
                                 <div className="px-2">
                                     <div className="divider my-3"></div>

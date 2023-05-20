@@ -16,7 +16,9 @@ import BackgroundIcon from '../../components/background/bgIcons.js';
 function TopicProf() {
     // const location = useLocation();
     // const data = location.state;
-
+    const [isLoading, setIsLoading] = useState(true)
+    const [isLoading1, setIsLoading1] = useState(true)
+    const [isLoading2, setIsLoading2] = useState(true)
     const [data,setData] = useState([])
     const [currentpage,setCurrentpage] = useState(1);
     const [pageSize,setPageSize] = useState(5);
@@ -38,11 +40,13 @@ function TopicProf() {
         let res = await getEachTopic(TopicID)
         setData(res[0])
         setContact(JSON.parse(res[0].Contact))
+        setIsLoading(false)
     }
 
     async function loadQuestionForEachTopic(pageStart,value) {
         const res = await getQuestionForEachTopic(TopicID,pageStart,value);
         setAllQuestion(res); 
+        setIsLoading2(false)
     }
 
     async function loadCountofQuestionForEachTopic(pageSize) {
@@ -53,6 +57,7 @@ function TopicProf() {
             Pagenumberlist.push(i)
         }
         setNumberPage(Pagenumberlist)
+        setIsLoading1(false)
     }
 
     const [allQuestion, setAllQuestion] = useState([])
@@ -136,7 +141,6 @@ function TopicProf() {
     }
 
     async function changefilter() {
-        console.log('ddd')
         // setCurrentpage(1)
         // pageStart = pageSize*(1 - 1)
         // await loadCountofQuestionForEachTopic(Number(pageSize))
@@ -145,6 +149,14 @@ function TopicProf() {
     
     return (
         <div className="topic-page">
+            {
+            (isLoading === true) && (isLoading1 === true) && (isLoading2 === true) &&
+            <div className="loader2">
+                <div className="lds-roller"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div>
+                </div>
+            </div>
+            }
+            { (isLoading === false) && (isLoading1 === false) && (isLoading2 === false) &&
             <div className="cover-container">
                 <Link className="btn-back" to="/professor">
                     <FaChevronLeft />
@@ -386,7 +398,7 @@ function TopicProf() {
                     </div>
                 </div>
             </div>
-
+            }
             {/* Background */}
             <div className="background-container"></div>
             <BackgroundIcon 

@@ -208,6 +208,10 @@
     .topic-page .question-section .question-table::-webkit-scrollbar {
         height: 8px;
     }
+
+    .topic-page .question-section .question-table::-webkit-scrollbar-track{
+        background: transparent;
+    }
     
     .topic-page .question-section .question-table::-webkit-scrollbar-thumb {
         background: #ffb56a;
