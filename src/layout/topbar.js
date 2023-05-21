@@ -48,7 +48,7 @@ const TopBar = ({currentEmailUser,isProfessor}) => {
         navigate('/');
     }
 
-    async function loadinfoUser() {
+    async function loadInfoUser() {
        
         let resUser
         await Auth.currentAuthenticatedUser()
@@ -80,7 +80,7 @@ const TopBar = ({currentEmailUser,isProfessor}) => {
     }
 
     useEffect( () => {
-        loadinfoUser()
+        loadInfoUser()
         // loadWeeklyQuestion()
 
         window.addEventListener("scroll", handleScroll, { passive: true })
@@ -92,8 +92,8 @@ const TopBar = ({currentEmailUser,isProfessor}) => {
         })
 
         setInterval(() => {
-            loadinfoUser()
-        }, 20000);
+            loadInfoUser();
+        }, 4000);
       }, []);
       
     return (
@@ -200,13 +200,13 @@ const TopBar = ({currentEmailUser,isProfessor}) => {
                                     <div className="divider my-3"></div>
                                 </div>
                                 <div className="menu">
-                                    <Link className="d-flex jc-btw">
+                                    <Link className="d-flex jc-btw" to={"/profile/" + inFoUser.UserEmail}>
                                         <div>
                                             <IoPersonOutline size={32} className="me-3" />Profile
                                         </div> 
                                         <FiChevronRight size={28} />
                                     </Link>
-                                    <Link className="d-flex jc-btw">
+                                    <Link className="d-flex jc-btw" to={"/profile/" + inFoUser.UserEmail + "/point-history"}>
                                         <div>
                                             <IoGiftOutline size={32} className="me-3" />Point
                                         </div>

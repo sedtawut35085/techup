@@ -6,6 +6,8 @@ import AWS from 'aws-sdk'
 import { getWeeklyQuestion } from '../../service/weeklyQuestion';
 import { updateAdminWeeklyStatus } from '../../service/admin'
 import { getStudent } from '../../service/student';
+import CommentDiscussQuestion from "../../components/comment/commentDiscussQuestion"
+import { getComment,getWeeklyComment , addComment } from '../../service/discussQuestion';
 
 import { fileSize, fileType, download, downloadAll } from '../../assets/js/helper'
 import { saveSubmission } from '../../service/submission'
@@ -45,6 +47,8 @@ function Weekly() {
     const [isLoading, setIsLoading] = useState(true);
     const [isLoading1, setIsLoading1] = useState(true);
     const [isLoading3, setIsLoading3] = useState(true);
+    const [isLoading4, setIsLoading4] = useState(true);
+    
     
 
     const [inFoQuestion, setInFoQuestion] = useState("")
@@ -59,58 +63,27 @@ function Weekly() {
     const [isDoneEstimate, setIsDoneEstimate] = useState(false);
 
     const [commentDiscuss, setCommentDiscuss] = useState("");
-    const [discuss, setDiscuss] = useState([
-        {
-            id: "1",
-            detail: "Nibh et faucibus enim odio purus feugiat tempor massa libero. Luctus montes, vitae eget consequat morbi lacus, nibh commodo. Sed cras cursus sed neque purus elit vitae et non. Proin massa ut velit duis ullamcorper. Arcu aliquet elementum non volutpat ipsum massa egestas mauris nunc.",
-            vote: 50,
-            owner: {
-                name: "Wattanasiri Uparakkitanon",
-            },
-            datetime: "11/5/2022, 00:00",
-            reply: [
-                {
-                    id: "2",
-                    detail: "Nibh et faucibus enim odio purus feugiat tempor massa libero. Luctus montes, vitae eget consequat morbi lacus, nibh commodo. Sed cras cursus sed neque purus elit vitae et non. Proin massa ut velit duis ullamcorper. Arcu aliquet elementum non volutpat ipsum massa egestas mauris nunc.",
-                    vote: 20,
-                    owner: {
-                        name: "Wattanasiri Uparakkitanon",
-                    },
-                    datetime: "11/5/2022, 00:00",
-                },
-                {
-                    id: "3",
-                    detail: "Nibh et faucibus enim odio purus feugiat tempor massa libero. Luctus montes, vitae eget consequat morbi lacus, nibh commodo. Sed cras cursus sed neque purus elit vitae et non. Proin massa ut velit duis ullamcorper. Arcu aliquet elementum non volutpat ipsum massa egestas mauris nunc.",
-                    vote: 10,
-                    owner: {
-                        name: "Wattanasiri Uparakkitanon",
-                    },
-                    datetime: "11/5/2022, 00:00",
-                }
-            ]
-        },
-        {
-            id: "4",
-            detail: "Nibh et faucibus enim odio purus feugiat tempor massa libero. Luctus montes, vitae eget consequat morbi lacus, nibh commodo. Sed cras cursus sed neque purus elit vitae et non. Proin massa ut velit duis ullamcorper. Arcu aliquet elementum non volutpat ipsum massa egestas mauris nunc.",
-            vote: 40,
-            owner: {
-                name: "Wattanasiri Uparakkitanon",
-            },
-            datetime: "11/5/2022, 00:00",
-            reply: [
-                {
-                    id: "5",
-                    detail: "Nibh et faucibus enim odio purus feugiat tempor massa libero. Luctus montes, vitae eget consequat morbi lacus, nibh commodo. Sed cras cursus sed neque purus elit vitae et non. Proin massa ut velit duis ullamcorper. Arcu aliquet elementum non volutpat ipsum massa egestas mauris nunc.",
-                    vote: 20,
-                    owner: {
-                        name: "Wattanasiri Uparakkitanon",
-                    },
-                    datetime: "11/5/2022, 00:00",
-                }
-            ]
-        }
-    ]);    
+    const [discuss, setDiscuss] = useState([]);
+    const rootComments = discuss.filter( (discuss) => discuss.ParentID === null)    
     const [showReply, setShowReply] = useState([]);
+
+    function getReply(discussQuestionId) {
+        return discuss.filter(discuss => discuss.ParentID === discussQuestionId).sort(
+            (a,b) => new Date(a.Date).getTime() - new Date(b.Date).getTime())
+    }
+
+    async function getDiscuss() {
+        let res = await getWeeklyComment();
+        setDiscuss(res)
+        setIsLoading(false)
+    }
+
+    async function addNewComment() {
+        await addComment(inFoQuestion.QuestionID,commentDiscuss)
+        let res = await getComment(inFoQuestion.QuestionID);
+        setDiscuss(res)
+    }
+
     
     function toggleReply(id) {
         let array = [...showReply];
@@ -323,6 +296,7 @@ function Weekly() {
         loadWeeklyQuestion();
         loadWeeklySubmission();
         getInfoUser();
+        getDiscuss();
     }, [])
 
     return (
@@ -431,9 +405,10 @@ function Weekly() {
                                         <textarea 
                                             className="autosize" 
                                             placeholder="Type comment here ..." 
-                                            onChange={(e) => setCommentDiscuss(e.target.value)} 
+                                            onChange={(e) => setCommentDiscuss(e.target.value)}
+                                            value = {commentDiscuss} 
                                         />
-                                        <button className="btn-01">Comment</button>
+                                        <button className="btn-01" onClick={() => {addNewComment();setCommentDiscuss("");}}>Comment</button>
                                     </div>
                                     <div className="sort">
                                         <span>Sort by :</span>
@@ -444,6 +419,14 @@ function Weekly() {
                                         </select>
                                     </div>
                                     {
+                                        rootComments.map((comment, key) => (
+                                            <CommentDiscussQuestion
+                                                key={comment.DiscussQuestionID}
+                                                comment={comment}
+                                                replies={getReply(comment.DiscussQuestionID)}></CommentDiscussQuestion>
+                                        ))
+                                    }
+                                    {/* {
                                         discuss.map((comment, key) => (
                                             <div className="comment" key={key}>
                                                 <div className="comment-owner">
@@ -516,7 +499,7 @@ function Weekly() {
                                                 </div>
                                             </div>
                                         ))
-                                    }
+                                    } */}
                                 </div>
                                 <div className={`submission ${menuActive === 3 ? "active" : ""}`}>
                                     {

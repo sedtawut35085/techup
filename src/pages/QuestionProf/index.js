@@ -13,6 +13,8 @@ import { HiOutlineExclamation } from 'react-icons/hi'
 import { FiChevronLeft, FiChevronRight, FiChevronsLeft, FiChevronsRight } from 'react-icons/fi'
 import { IoCloseCircle, IoCaretUp, IoCaretDown } from 'react-icons/io5'
 import { getCount, getAllSubmission } from '../../service/submission';
+import { getComment , addComment } from '../../service/discussQuestion';
+import CommentDiscussQuestion from "../../components/comment/commentDiscussQuestion"
 
 import BackgroundIcon from '../../components/background/bgIcons.js';
 import { all } from 'axios';
@@ -36,6 +38,7 @@ function QuestionProf() {
         getQuestionFromQuestionID();
         loadCount(pageSize); 
         loadSubmission(pageStart,pageSize);
+        getDiscuss()
       }, []);
 
     async function getQuestionFromQuestionID() {
@@ -120,56 +123,75 @@ function QuestionProf() {
     const [menuActive, setMenuActive] = useState(1);
     const [showReply, setShowReply] = useState([]);
     const [discuss, setDiscuss] = useState([
-        {
-            id: "1",
-            detail: "Nibh et faucibus enim odio purus feugiat tempor massa libero. Luctus montes, vitae eget consequat morbi lacus, nibh commodo. Sed cras cursus sed neque purus elit vitae et non. Proin massa ut velit duis ullamcorper. Arcu aliquet elementum non volutpat ipsum massa egestas mauris nunc.",
-            vote: 50,
-            owner: {
-                name: "Wattanasiri Uparakkitanon",
-            },
-            datetime: "11/5/2022, 00:00",
-            reply: [
-                {
-                    id: "2",
-                    detail: "Nibh et faucibus enim odio purus feugiat tempor massa libero. Luctus montes, vitae eget consequat morbi lacus, nibh commodo. Sed cras cursus sed neque purus elit vitae et non. Proin massa ut velit duis ullamcorper. Arcu aliquet elementum non volutpat ipsum massa egestas mauris nunc.",
-                    vote: 20,
-                    owner: {
-                        name: "Wattanasiri Uparakkitanon",
-                    },
-                    datetime: "11/5/2022, 00:00",
-                },
-                {
-                    id: "3",
-                    detail: "Nibh et faucibus enim odio purus feugiat tempor massa libero. Luctus montes, vitae eget consequat morbi lacus, nibh commodo. Sed cras cursus sed neque purus elit vitae et non. Proin massa ut velit duis ullamcorper. Arcu aliquet elementum non volutpat ipsum massa egestas mauris nunc.",
-                    vote: 10,
-                    owner: {
-                        name: "Wattanasiri Uparakkitanon",
-                    },
-                    datetime: "11/5/2022, 00:00",
-                }
-            ]
-        },
-        {
-            id: "4",
-            detail: "Nibh et faucibus enim odio purus feugiat tempor massa libero. Luctus montes, vitae eget consequat morbi lacus, nibh commodo. Sed cras cursus sed neque purus elit vitae et non. Proin massa ut velit duis ullamcorper. Arcu aliquet elementum non volutpat ipsum massa egestas mauris nunc.",
-            vote: 40,
-            owner: {
-                name: "Wattanasiri Uparakkitanon",
-            },
-            datetime: "11/5/2022, 00:00",
-            reply: [
-                {
-                    id: "5",
-                    detail: "Nibh et faucibus enim odio purus feugiat tempor massa libero. Luctus montes, vitae eget consequat morbi lacus, nibh commodo. Sed cras cursus sed neque purus elit vitae et non. Proin massa ut velit duis ullamcorper. Arcu aliquet elementum non volutpat ipsum massa egestas mauris nunc.",
-                    vote: 20,
-                    owner: {
-                        name: "Wattanasiri Uparakkitanon",
-                    },
-                    datetime: "11/5/2022, 00:00",
-                }
-            ]
-        }
+        // {
+        //     id: "1",
+        //     detail: "Nibh et faucibus enim odio purus feugiat tempor massa libero. Luctus montes, vitae eget consequat morbi lacus, nibh commodo. Sed cras cursus sed neque purus elit vitae et non. Proin massa ut velit duis ullamcorper. Arcu aliquet elementum non volutpat ipsum massa egestas mauris nunc.",
+        //     vote: 50,
+        //     owner: {
+        //         name: "Wattanasiri Uparakkitanon",
+        //     },
+        //     datetime: "11/5/2022, 00:00",
+        //     reply: [
+        //         {
+        //             id: "2",
+        //             detail: "Nibh et faucibus enim odio purus feugiat tempor massa libero. Luctus montes, vitae eget consequat morbi lacus, nibh commodo. Sed cras cursus sed neque purus elit vitae et non. Proin massa ut velit duis ullamcorper. Arcu aliquet elementum non volutpat ipsum massa egestas mauris nunc.",
+        //             vote: 20,
+        //             owner: {
+        //                 name: "Wattanasiri Uparakkitanon",
+        //             },
+        //             datetime: "11/5/2022, 00:00",
+        //         },
+        //         {
+        //             id: "3",
+        //             detail: "Nibh et faucibus enim odio purus feugiat tempor massa libero. Luctus montes, vitae eget consequat morbi lacus, nibh commodo. Sed cras cursus sed neque purus elit vitae et non. Proin massa ut velit duis ullamcorper. Arcu aliquet elementum non volutpat ipsum massa egestas mauris nunc.",
+        //             vote: 10,
+        //             owner: {
+        //                 name: "Wattanasiri Uparakkitanon",
+        //             },
+        //             datetime: "11/5/2022, 00:00",
+        //         }
+        //     ]
+        // },
+        // {
+        //     id: "4",
+        //     detail: "Nibh et faucibus enim odio purus feugiat tempor massa libero. Luctus montes, vitae eget consequat morbi lacus, nibh commodo. Sed cras cursus sed neque purus elit vitae et non. Proin massa ut velit duis ullamcorper. Arcu aliquet elementum non volutpat ipsum massa egestas mauris nunc.",
+        //     vote: 40,
+        //     owner: {
+        //         name: "Wattanasiri Uparakkitanon",
+        //     },
+        //     datetime: "11/5/2022, 00:00",
+        //     reply: [
+        //         {
+        //             id: "5",
+        //             detail: "Nibh et faucibus enim odio purus feugiat tempor massa libero. Luctus montes, vitae eget consequat morbi lacus, nibh commodo. Sed cras cursus sed neque purus elit vitae et non. Proin massa ut velit duis ullamcorper. Arcu aliquet elementum non volutpat ipsum massa egestas mauris nunc.",
+        //             vote: 20,
+        //             owner: {
+        //                 name: "Wattanasiri Uparakkitanon",
+        //             },
+        //             datetime: "11/5/2022, 00:00",
+        //         }
+        //     ]
+        // }
     ])
+
+    const rootComments = discuss.filter( (discuss) => discuss.ParentID === null)
+
+    function getReply(discussQuestionId) {
+        return discuss.filter(discuss => discuss.ParentID === discussQuestionId).sort(
+            (a,b) => new Date(a.Date).getTime() - new Date(b.Date).getTime())
+    }
+
+    async function getDiscuss() {
+        let res = await getComment(QuestionId);
+        setDiscuss(res)
+        setIsLoading(false)
+    }
+
+    async function addNewComment() {
+        await addComment(QuestionId,commentDiscuss)
+        let res = await getComment(QuestionId);
+        setDiscuss(res)
+    }
 
     function toggleReply(id) {
         let array = [...showReply];
@@ -284,9 +306,10 @@ function QuestionProf() {
                                     <textarea 
                                         className="autosize" 
                                         placeholder="Type comment here ..." 
-                                        onChange={(e) => setCommentDiscuss(e.target.value)} 
+                                        onChange={(e) => setCommentDiscuss(e.target.value)}
+                                        value={commentDiscuss} 
                                     />
-                                    <button className="btn-01">Comment</button>
+                                    <button className="btn-01" onClick={() => {addNewComment();setCommentDiscuss("");}}>Comment</button>
                                 </div>
                                 <div className="sort">
                                     <span>Sort by :</span>
@@ -297,77 +320,82 @@ function QuestionProf() {
                                     </select>
                                 </div>
                                 {
-                                    discuss.map((comment, key) => (
-                                        <div className="comment" key={key}>
-                                            <div className="comment-owner">
-                                                <img height="50px" src="/assets/images/icons/profile.png" />
-                                                <div className="owner-detail">
-                                                    <span>{comment?.owner?.name}</span>
-                                                    <div className="date">
-                                                        <span>Create at:</span>
-                                                        <span className="ms-2">{comment?.datetime}</span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <p className="comment-detail">
-                                                {comment?.detail}
-                                            </p>
-                                            <div className="comment-action">
-                                                <div className="vote">
-                                                    <IoCaretUp className="icon" />
-                                                    <span>{comment?.vote}</span>
-                                                    <IoCaretDown className="icon" />
-                                                </div>
-                                                {
-                                                    comment?.reply.length > 0
-                                                    ?   <div className="show-reply" onClick={() => toggleReply(comment?.id)}>
-                                                            <TbMessageCircle className="icon" />
-                                                            <span>Show {comment?.reply?.length} Reply</span>
-                                                        </div>
-                                                    :   null
-                                                }
-                                                <div className="reply">
-                                                    <BsReplyAll className="icon" />
-                                                    <span>Reply</span>
-                                                </div>
-                                                <div className="report">
-                                                    <HiOutlineExclamation className="icon" />
-                                                    <span>report</span>
-                                                </div>                                        
-                                            </div>
-                                            <div className={`comment-reply ${showReply.indexOf(comment?.id) > -1 ? "active" : ""}`}>
-                                            {
-                                                comment?.reply.map((replyComment, key1) => (
-                                                        <div className="comment" key={key1}>
-                                                            <div className="comment-owner">
-                                                                <img height="50px" src="/assets/images/icons/profile.png" />
-                                                                <div className="owner-detail">
-                                                                    <span>{replyComment?.owner.name}</span>
-                                                                    <div className="date">
-                                                                        <span>Create at:</span>
-                                                                        <span className="ms-2">{replyComment?.datetime}</span>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <p className="comment-detail">
-                                                                {replyComment?.detail}
-                                                            </p>
-                                                            <div className="comment-action">
-                                                                <div className="vote">
-                                                                    <IoCaretUp className="icon" />
-                                                                    <span>{replyComment?.vote}</span>
-                                                                    <IoCaretDown className="icon" />
-                                                                </div>
-                                                                <div className="report">
-                                                                    <HiOutlineExclamation className="icon" />
-                                                                    <span>report</span>
-                                                                </div>                                        
-                                                            </div>
-                                                        </div>
-                                                ))
-                                            }            
-                                            </div>
-                                        </div>
+                                    rootComments.map((comment, key) => (
+                                        <CommentDiscussQuestion
+                                            key={comment.DiscussQuestionID}
+                                            comment={comment}
+                                            replies={getReply(comment.DiscussQuestionID)}></CommentDiscussQuestion>
+                                    // discuss.map((comment, key) => (
+                                    //     <div className="comment" key={key}>
+                                    //         <div className="comment-owner">
+                                    //             <img height="50px" src="/assets/images/icons/profile.png" />
+                                    //             <div className="owner-detail">
+                                    //                 <span>{comment?.owner?.name}</span>
+                                    //                 <div className="date">
+                                    //                     <span>Create at:</span>
+                                    //                     <span className="ms-2">{comment?.datetime}</span>
+                                    //                 </div>
+                                    //             </div>
+                                    //         </div>
+                                    //         <p className="comment-detail">
+                                    //             {comment?.detail}
+                                    //         </p>
+                                    //         <div className="comment-action">
+                                    //             <div className="vote">
+                                    //                 <IoCaretUp className="icon" />
+                                    //                 <span>{comment?.vote}</span>
+                                    //                 <IoCaretDown className="icon" />
+                                    //             </div>
+                                    //             {
+                                    //                 comment?.reply.length > 0
+                                    //                 ?   <div className="show-reply" onClick={() => toggleReply(comment?.id)}>
+                                    //                         <TbMessageCircle className="icon" />
+                                    //                         <span>Show {comment?.reply?.length} Reply</span>
+                                    //                     </div>
+                                    //                 :   null
+                                    //             }
+                                    //             <div className="reply">
+                                    //                 <BsReplyAll className="icon" />
+                                    //                 <span>Reply</span>
+                                    //             </div>
+                                    //             <div className="report">
+                                    //                 <HiOutlineExclamation className="icon" />
+                                    //                 <span>report</span>
+                                    //             </div>                                        
+                                    //         </div>
+                                    //         <div className={`comment-reply ${showReply.indexOf(comment?.id) > -1 ? "active" : ""}`}>
+                                    //         {
+                                    //             comment?.reply.map((replyComment, key1) => (
+                                    //                     <div className="comment" key={key1}>
+                                    //                         <div className="comment-owner">
+                                    //                             <img height="50px" src="/assets/images/icons/profile.png" />
+                                    //                             <div className="owner-detail">
+                                    //                                 <span>{replyComment?.owner.name}</span>
+                                    //                                 <div className="date">
+                                    //                                     <span>Create at:</span>
+                                    //                                     <span className="ms-2">{replyComment?.datetime}</span>
+                                    //                                 </div>
+                                    //                             </div>
+                                    //                         </div>
+                                    //                         <p className="comment-detail">
+                                    //                             {replyComment?.detail}
+                                    //                         </p>
+                                    //                         <div className="comment-action">
+                                    //                             <div className="vote">
+                                    //                                 <IoCaretUp className="icon" />
+                                    //                                 <span>{replyComment?.vote}</span>
+                                    //                                 <IoCaretDown className="icon" />
+                                    //                             </div>
+                                    //                             <div className="report">
+                                    //                                 <HiOutlineExclamation className="icon" />
+                                    //                                 <span>report</span>
+                                    //                             </div>                                        
+                                    //                         </div>
+                                    //                     </div>
+                                    //             ))
+                                    //         }            
+                                    //         </div>
+                                    //     </div>
                                     ))
                                 }
                             </div>

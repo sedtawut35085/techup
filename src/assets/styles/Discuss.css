@@ -198,13 +198,13 @@
     border-radius: 50%;
 }
 
-.discuss-detail-page .main-discuss-card .header-detail .profile-info .infomation .tags {
+.discuss-detail-page .main-discuss-card .header-detail .profile-info .information .tags {
     display: flex;
     gap: .2rem;
     margin: .2rem 0;
 }
 
-.discuss-detail-page .main-discuss-card .header-detail .profile-info .infomation .tags span {
+.discuss-detail-page .main-discuss-card .header-detail .profile-info .information .tags span {
     cursor: pointer;
     font-size: .75rem;
     color: #fff;
@@ -218,7 +218,7 @@
     transition: all .2s;
 }
 
-.discuss-detail-page .main-discuss-card .header-detail .profile-info .infomation .tags span:hover {
+.discuss-detail-page .main-discuss-card .header-detail .profile-info .information .tags span:hover {
     background-color: #FF9326;
 }
 

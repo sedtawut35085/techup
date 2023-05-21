@@ -351,16 +351,20 @@ function Topic() {
                                         </select>
                                     </div>
                                     <div className="pagination-number">
-                                        <button onClick={goToFirstPage} className={
-                                            currentPage !== 1 
-                                            ? "arrow"
-                                            : "arrow disable"
-                                            }><FiChevronsLeft /></button>
-                                        <button onClick={goToPreviousPage} className={
-                                            currentPage !== 1 
-                                            ? "arrow"
-                                            : "arrow disable"
-                                            }><FiChevronLeft /></button>
+                                        <button 
+                                            onClick={goToFirstPage} 
+                                            className={currentPage !== 1 ? "arrow" : "arrow disable"}
+                                            disabled={currentPage === 1}
+                                        >
+                                            <FiChevronsLeft />
+                                        </button>
+                                        <button 
+                                            onClick={goToPreviousPage} 
+                                            className={currentPage !== 1 ? "arrow" : "arrow disable"}
+                                            disabled={currentPage === 1}
+                                        >
+                                            <FiChevronLeft />
+                                        </button>
                                         {numberPage.map((key, i) => (
                                             <button key={i} name={key} value={key} className={
                                                 currentPage === key
@@ -368,16 +372,20 @@ function Topic() {
                                                 : "number"
                                             } onClick={changePage}>{key}</button>
                                         ))}
-                                        <button onClick={goToNextPage} className={
-                                            currentPage < numberPage.length
-                                            ? "arrow"
-                                            : "arrow disable"
-                                            }><FiChevronRight /></button>
-                                        <button onClick={goToLastPage} className={
-                                            currentPage < numberPage.length
-                                            ? "arrow"
-                                            : "arrow disable"
-                                            }><FiChevronsRight /></button>
+                                        <button 
+                                            onClick={goToNextPage} 
+                                            className={currentPage < numberPage.length ? "arrow" : "arrow disable"}
+                                            disabled={currentPage >= numberPage.length}
+                                        >
+                                            <FiChevronRight />
+                                        </button>
+                                        <button 
+                                            onClick={goToLastPage}
+                                            className={currentPage < numberPage.length ? "arrow" : "arrow disable"}
+                                            disabled={currentPage >= numberPage.length}
+                                        >
+                                            <FiChevronsRight />
+                                        </button>
                                     </div>
                                 </div>  
                             </div>

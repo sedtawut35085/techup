@@ -86,7 +86,7 @@ function Discuss() {
                                                             )
                                                         }
                                                         </div>
-                                                        <p className="f-xs color-gray2 m-0">{discuss.AuthorName} created at: {Moment(discuss.Date).format('MMMM DD, YYYY - H:mm')}</p>
+                                                        <p className="f-xs color-gray2 m-0">{discuss.AuthorName} created at: {Moment(discuss.Date).format('MMM DD, YYYY - H:mm')}</p>
                                                     </div>
                                                 </div>
                                                 <div className="right-side">

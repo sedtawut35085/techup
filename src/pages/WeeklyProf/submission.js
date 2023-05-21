@@ -15,6 +15,7 @@ import { FiSearch, FiChevronLeft, FiChevronRight, FiChevronsLeft, FiChevronsRigh
 import { IoCloseCircle, IoCaretUp, IoCaretDown } from 'react-icons/io5'
 import { getEachSubmission, updateSubmission } from '../../service/submission';
 import BackgroundIcon from '../../components/background/bgIcons.js';
+import { addPointFromProfessorToLogPoint } from '../../service/logPoint';
 
 function SubmissionWeeklyProf() {
     const [inFoQuestion, setInFoQuestion] = useState("")
@@ -108,6 +109,13 @@ function SubmissionWeeklyProf() {
                 "updateValue": Number(point) + Number(inFoUser.Point)
             }
             let resupdateresult = await updateStudentText(body,inFoUser.UserEmail)
+            var bodyForMostPoint = {
+                "updateType": "Text",
+                "updateKey": "MostPoint",
+                "updateValue": Number(point) + Number(inFoUser.MostPoint)
+            }
+            let resupdateMaxpoint = await updateStudentText(bodyForMostPoint,inFoUser.UserEmail)
+            let resAddToLogPoint = await addPointFromProfessorToLogPoint(point)
             navigate(`/professor/weekly`)
         }
     }

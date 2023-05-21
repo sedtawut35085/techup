@@ -120,7 +120,7 @@ function DiscussDetail() {
                                 <div className="header-detail">
                                     <div className="profile-info">
                                         <img alt="Avatar" onError={defaultProfileImg} className="profile-img" src={discuss?.UserImage} />
-                                        <div className="infomation">
+                                        <div className="information">
                                             <p className="f-md m-0 thai fw-500">{discuss?.Title}</p>
                                             <div className="tags">
                                                 {JSON.parse(discuss?.Tags).map((eachTag) => 
@@ -133,7 +133,7 @@ function DiscussDetail() {
                                                 <span>#Internship</span>
                                                 <span>#Experience</span> */}
                                             </div>
-                                            <span className="f-xs m-0 color-gray2">{discuss?.AuthorName} {discuss?.AuthorSurName} created at: {Moment(discuss.Date).format('MMMM DD, YYYY - H:mm')}</span>
+                                            <span className="f-xs m-0 color-gray2">{discuss?.AuthorName} {discuss?.AuthorSurName} created at: {Moment(discuss.Date).format('MMM DD, YYYY - H:mm')}</span>
                                         </div>
                                     </div>
                                     <div className="action">
