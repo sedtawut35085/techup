@@ -15,6 +15,7 @@ import { getProfessor } from '../service/professor';
 const TopBar = ({currentEmailUser,isProfessor}) => {
 
     const pathname = (useLocation().pathname).split("/")[1];
+    const pathname2 = (useLocation().pathname).split("/")[2];
     const [dropdownActive, setDropdownActive] = useState(false);
     const [inFoUser, setInFoUser] = useState("");
     const navigate = useNavigate();
@@ -109,7 +110,7 @@ const TopBar = ({currentEmailUser,isProfessor}) => {
                         </>
                         :                        
                         <>
-                        <Link className={`nav hover ${pathname === "professor" ? "active" : ""}`} to="/professor">
+                        <Link className={`nav hover ${pathname === "professor" && pathname2 === undefined ? "active" : ""}`} to="/professor">
                                 <div>
                                     <img alt="logo-text(bold).png" src="/assets/images/logo/logo-text(bold).png" height="32"/>
                                 </div>
@@ -125,7 +126,7 @@ const TopBar = ({currentEmailUser,isProfessor}) => {
                     </Link>
                     {currentEmailUser.includes('@mail.kmutt.ac.th') === true?
                         <>
-                        <Link className={`nav top hover ${pathname === "store" ? "active" : ""}`} to="/store">
+                            <Link className={`nav top hover ${pathname === "store" ? "active" : ""}`} to="/store">
                                 <div>Store</div>
                             </Link>
                             <Link className={`nav top weekly ${pathname === "weekly" ? "active" : ""}`} to="/weekly">
@@ -137,7 +138,7 @@ const TopBar = ({currentEmailUser,isProfessor}) => {
                         </>
                         :                        
                         <>
-                        <Link className={`nav top hover ${pathname === "Weekly" ? "active" : ""}`} to="/weekly">
+                            <Link className={`nav top hover ${pathname === "professor" && pathname2 === "weekly" ? "active" : ""}`} to="/professor/weekly">
                                 <div>Weekly</div>
                             </Link>
                         </>

@@ -135,7 +135,7 @@ export async function getCountWeeklyQuestionFilterOngoing () {
       },
       }).then((res) => {
         response = res
-      }).catch((err)=>{
+      }).catch((err)=>{ 
         response = err
       })
   return response.data

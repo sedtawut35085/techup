@@ -43,7 +43,6 @@ function AddWeeklyQuestion() {
     const [topic,setTopic] = useState("")
     const [point,setPoint] = useState("")
     const [dificulty,setDificulty] = useState({label: "", data: ""})
-    const [duedate,setDueDate] = useState("")
     const [hint,setHint] = useState("")
     const [errorsSubmit, setErrorsSubmit] = useState(false)
     const [errors, setErrors] = useState([])
@@ -56,7 +55,12 @@ function AddWeeklyQuestion() {
 
     async function handleSubmit(event) {
         event.preventDefault();
-        const [day, month, year] =  duedate.split('-')
+        var today = new Moment().format('YYYY-MM-DD')
+        var new_date = Moment(today, "YYYY-MM-DD").add('days', 12);
+        var day = new_date.format('DD');
+        var month = new_date.format('MM');
+        var year = new_date.format('YYYY');
+        var duedate = year + '-' + month + '-' + day
         setErrors([]);
         const arrayError = [];
         if(name === ""){
@@ -74,9 +78,6 @@ function AddWeeklyQuestion() {
         if(point === ""){
             arrayError.push('point');
         }
-        if(duedate === ""){
-            arrayError.push('duedate');
-        }
         if(hint === ""){
             arrayError.push('hint');
         }
@@ -88,7 +89,7 @@ function AddWeeklyQuestion() {
                 "Description": description,  
                 "Difficulty": dificulty.data,    
                 "Point": point,
-                "DueDate": `${year}-${month}-${day}`,
+                "DueDate": duedate,
                 "Hint": hint,
                 "Status": "request"
             }
@@ -166,7 +167,7 @@ function AddWeeklyQuestion() {
                             />
                             {errors.includes("point") && (<label className="f-xs color-5 pt-2" htmlFor="point-id">Please enter point</label>)}
                         </div>
-                        <label className="f-lg pb-2" htmlFor="duedate-id">Due Date<span className="color-5">*</span></label>
+                        {/* <label className="f-lg pb-2" htmlFor="duedate-id">Due Date<span className="color-5">*</span></label>
                         <div className="col-6 pb-4 ">
                             <TuDatePicker
                                 name="duedate"
@@ -176,7 +177,7 @@ function AddWeeklyQuestion() {
                                 min={new Date()}
                             />
                             {errors.includes("duedate") && (<label className="f-xs color-5 pt-2" htmlFor="duedate-id">Please enter duedate</label>)}
-                        </div>
+                        </div> */}
                         <div className="col-6 pb-4">
                             <label className="f-lg pb-2" htmlFor="hint-id">Hint<span className="color-5">*</span></label>
                             <input
