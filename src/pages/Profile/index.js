@@ -8,6 +8,7 @@ import { getStudent, getStudentFromStudentEmail } from '../../service/student'
 
 import { TbEdit, TbLogout } from 'react-icons/tb'
 import { RiInstagramFill, RiFacebookCircleFill, RiGithubFill, RiGlobalFill , RiLineFill } from 'react-icons/ri'
+import { HiMail } from 'react-icons/hi'
 
 import BackgroundIcon from '../../components/background/bgIcons.js';
 
@@ -64,7 +65,7 @@ function Profile() {
                             <div data-aos="fade-up" data-aos-duration="1000" className="card-box main">
                                 <img className="profile-img" onError={defaultProfileImg} src={user.ImageURL}  alt="Avatar" />
                                 <span className="techup-id"><img src="/assets/images/icons/logo.png" />{user.TechUpID}</span>
-                                <span className="point">Rank 1 - {user.Point} P</span>
+                                <span className="point">Rank 1 - {user.MostPoint} P</span>
                                 {
                                     currentUser.UserEmail === user.UserEmail
                                     ?   <Link className="edit-profile" to="edit"><TbEdit size={21} />Edit profile</Link>
@@ -94,7 +95,15 @@ function Profile() {
                                     <span className="left">Birthday</span>
                                     <span className="right">{Moment(user.Birthday).format('MMM DD, YYYY')}</span>
                                 </div>
-                                <div className="divider my-3"></div>
+                                {user.Website && <div className="divider my-3"></div>}
+                                {user.Website.Email &&
+                                    <div className="contact">
+                                        <div className="icon">
+                                            <HiMail size={28} />
+                                        </div>
+                                        <span>{user.Website.Email}</span>
+                                    </div>                                
+                                }
                                 {user.Website.Facebook && 
                                     <div className="contact">
                                         <div className="icon">
