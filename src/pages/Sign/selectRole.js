@@ -48,7 +48,6 @@ function SelectRole() {
     async function checkAuthen() {
         await Auth.currentAuthenticatedUser()
         .then(async (response) => {
-            console.log(response)
           if(response.attributes.email.includes('@mail.kmutt.ac.th')){
             setRole("student")
           }else{
@@ -58,8 +57,6 @@ function SelectRole() {
         .catch(() => {
         })
       }
-
-    console.log(role)
 
     function goBack() {
         setRole("")
@@ -132,7 +129,7 @@ function SelectRole() {
                     "ProfessorEmail": currentEmailUser,
                     "ProfessorID": professorID,  
                     "Name": name,    
-                    "Surname": surname,   
+                    "SurName": surname,   
                     "Gender": gender.label,    
                     "Birthday": Moment(birthday).format('YYYY-MM-DD'),
                     "Contact": website,

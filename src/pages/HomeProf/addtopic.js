@@ -77,7 +77,12 @@ function AddTopic() {
                 "Icon": icon.label
             }
             console.log(data)
-            await saveTopic(data).then(navigate('/professor')).catch(setErrorsSubmit(true))
+            let res = await saveTopic(data)
+            if(res === undefined){
+                setErrorsSubmit(true)
+            }else{
+                navigate('/professor')
+            }
            
         }
         setErrors(arrayError);
@@ -201,7 +206,7 @@ function AddTopic() {
                             :                        
                         <>
                             <div className="col-12 pt-5 d-flex jc-center">
-                                <label className="f-xm color-5" htmlFor="error">server error</label>
+                                <label className="f-xm color-5" htmlFor="error">This Topic or ShortName is already have.</label>
                             </div>
                         </>
                     } 

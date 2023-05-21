@@ -133,6 +133,7 @@ function Professor() {
                         </>
                         :
                         <>
+                            <span className='color-gray2'>No submission from students</span>
                         </>
                     }
                 </div>                     
