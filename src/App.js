@@ -45,6 +45,7 @@ import DiscussDetail from "./pages/Discuss/detail.js"
 import AddDiscuss from "./pages/Discuss/addDiscuss.js"
 import AdminHomepage from "./pages/Admin/Home"
 import EditProfile from "./pages/Profile/editProfile.js"
+import PointHistory from "./pages/Profile/pointHistory.js"
 import AdminUserpage from "./pages/Admin/Page/User/DescUser"
 
 import Discuss from "./pages/Discuss/index.js"
@@ -92,6 +93,7 @@ function App() {
             <Route path="/weekly" element={<Weekly />}/>
             <Route path="/profile/:id" element={<Profile />}/>
             <Route path="/profile/:id/edit" element={<EditProfile />}/>
+            <Route path="/profile/:id/point-history" element={<PointHistory />}/>
           </Route>
         </Routes>
       </BrowserRouter>

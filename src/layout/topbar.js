@@ -206,7 +206,7 @@ const TopBar = ({currentEmailUser,isProfessor}) => {
                                         </div> 
                                         <FiChevronRight size={28} />
                                     </Link>
-                                    <Link className="d-flex jc-btw">
+                                    <Link className="d-flex jc-btw" to={"/profile/" + inFoUser.UserEmail + "/point-history"}>
                                         <div>
                                             <IoGiftOutline size={32} className="me-3" />Point
                                         </div>
