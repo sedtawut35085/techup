@@ -41,7 +41,6 @@ function Weekly() {
     const navigate = useNavigate()
 
     const [inFoSubmit, setInFoSubmit] = useState("")
-
     const [loading, setLoading] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
     const [isLoading1, setIsLoading1] = useState(true);
@@ -181,7 +180,7 @@ function Weekly() {
                         draggable: true,
                         theme: "light",
                     });  
-                    setMenuActive(1)              
+                    navigate("/home")             
                 })
                 .catch((err) => {
                     toast.error('Server error, please try again', {
@@ -244,7 +243,7 @@ function Weekly() {
                                         draggable: true,
                                         theme: "light",
                                     });     
-                                    setMenuActive(1)
+                                    navigate("/home")
                                 })
                                 .catch((err) => {
                                     toast.error('Server error, please try again', {
@@ -294,9 +293,11 @@ function Weekly() {
             setQuestionID(res[0].QuestionID);
             setIsHaveWeekly(true)
             setIsLoading(false);
+        }else{
+            setIsHaveWeekly(false)
+            setIsLoading(false);
         }
-        setIsHaveWeekly(false)
-        setIsLoading(false);
+        
         
         // loadEachSubmissionFromUserIDandQuestionID();
     }
@@ -326,6 +327,12 @@ function Weekly() {
 
     return (
         <div className="weekly-page">
+             {
+                loading &&
+                <div className="loader">
+                    <div class="lds-ring"><div></div><div></div><div></div><div></div></div>
+                </div>
+            }
             <div className="cover-container">
                 {
                     isLoading && isLoading1 && isLoading3 &&
@@ -523,7 +530,6 @@ function Weekly() {
                                                         ?   <p>No comment</p>
                                                         :   <p>{inFoSubmit.CommentFromProf}</p>
                                                     }                                                
-                                                    <p className="color-gray2">No comment</p>
                                                 </div>
                                                 <div className="divider my-4"></div>
                                                 <span className="fw-700 f-md">Your submission</span>
@@ -534,7 +540,6 @@ function Weekly() {
                                                         ?   <p>No Text Answer</p>
                                                         :   <p>{inFoSubmit.Answer}</p>
                                                     }                                                
-                                                    <p className="color-gray2">No Text Answer</p>
                                                 </div>
                                                 <div className="attachment">
                                                     <span className="f-md fw-700">Attachment ({fileList.length})</span>

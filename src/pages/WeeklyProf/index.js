@@ -114,11 +114,14 @@ function Weeklyprof() {
             setQuestionID(res[0].QuestionID);
             setIsHaveWeekly(true)
             setIsLoading(false);
+        }else{
+            setIsHaveWeekly(false)
+            setIsLoading(false);
         }
-        setIsHaveWeekly(false)
-        setIsLoading(false);
         // loadEachSubmissionFromUserIDandQuestionID();
     }
+    console.log(inFoQuestion)
+    console.log(isHaveWeekly)
 
     async function loadWeeklySubmission(){
         let res = await getAllSubmissionOnWeekly();
@@ -361,7 +364,7 @@ function Weeklyprof() {
                     <>
                      <div >
                             <div className="text-center f-md thai pt-4 pb-4">
-                                Now there is no question of the week, Please add question of weekly.
+                                Now there is no question of the week, Please add question of weekly or wait for admin accept.
                             </div>
                             <div className="text-center f-md thai pt-4">
                                 <Link className="btn-addquestion p-2" to={`/professor/weekly/addweekly`} >Add Weekly + </Link> 
