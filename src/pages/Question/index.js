@@ -2,23 +2,18 @@ import React, { ChangeEvent, useState , useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import $ from 'jquery'
 import { ToastContainer, toast } from 'react-toastify';
-
 import { fileSize, fileType, download, downloadAll } from '../../assets/js/helper'
 import { FaChevronLeft } from 'react-icons/fa';
 import { TbCalendarTime, TbBulb, TbSwords, TbLock, TbFileZip, TbInfoCircle, TbFileDescription, TbMessage2, TbFileUpload, TbMessageCircle, TbPaperclip, TbTrash, } from 'react-icons/tb'
 import { GiFlyingFlag } from 'react-icons/gi'
 import { BsReplyAll, BsCheckLg } from 'react-icons/bs'
 import { HiOutlineExclamation } from 'react-icons/hi'
-
 import { IoCloseCircle, IoCaretUp, IoCaretDown } from 'react-icons/io5'
-
-import { getQuestion } from '../../service/question';
+import { getQuestion, updateQuestion } from '../../service/question';
 import { getComment , addComment } from '../../service/discussQuestion';
 import { saveSubmission } from '../../service/submission'
 import { getStudent } from '../../service/student';
-
 import BackgroundIcon from '../../components/background/bgIcons.js';
-
 import Moment from 'moment'
 import { getEachSubmissionFromUserIDandQuestionID } from '../../service/submission'
 import { convertToBase64, uploadPhoto } from '../../service';
@@ -100,8 +95,6 @@ function Question() {
         let res = await getComment(QuestionId);
         setDiscuss(res)
         setIsLoading(false)
-        // setIsLoading(isLoading-1)
-        // setIsLoading(isLoading.splice(isLoading.indexOf(5), 1))
     }
 
     async function addNewComment() {
@@ -147,9 +140,28 @@ function Question() {
             setVoteNeed(Math.round(questionInfo.AmountChallenge/2))
         }
         setVoteNow(questionInfo.AmountShow)
+        var date = new Moment(res[0].DueDate).format('YYYY-MM-DD')
+        var today = new Moment().format('YYYY-MM-DD')
+        let dateconvert = new Date(date).getTime();
+        let todayconvert = new Date(today).getTime();
+        let weeklyid = res[0].QuestionID
+        if (dateconvert < todayconvert && questionInfo.isDueDateCheck === "0") {
+            const bodydata1 = {
+                "updateType": "Text",
+                "updateKey": "isDueDateCheck",
+                "updateValue": "1"
+            }
+            const bodydata = {
+                "updateType": "Text",
+                "updateKey": "Point",
+                "updateValue": Math.ceil(questionInfo.Point*0.9)
+            }
+            questionInfo.Point = Math.ceil(questionInfo.Point*0.9)
+            let res = await updateQuestion(weeklyid, bodydata1)
+            let res2 = await updateQuestion(weeklyid, bodydata)
+            // let res = await updateAdminWeeklyStatus(weeklyid, bodydata)
+        }
         setIsLoading2(false)
-        // setIsLoading(isLoading-1)
-        // setIsLoading(isLoading.splice(isLoading.indexOf(2), 1))
     }
     async function getInfoUser() {
         let resUser = await getStudent();

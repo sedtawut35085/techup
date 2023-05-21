@@ -1,8 +1,8 @@
 
 
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { FaUserGraduate, FaChalkboardTeacher, FaChevronLeft, FaUserCircle, FaUpload } from 'react-icons/fa';
-
+import Auth from '../../configuration/configuration-aws'
 import Moment from 'moment';
 import { isNumber } from '../../assets/js/helper'
 import BackgroundIcon from '../../components/background/bgIcons.js';
@@ -17,7 +17,6 @@ import { saveProfessor } from '../../service/professor';
 function SelectRole() {
 
     const [role, setRole] = useState("");
-
     const { currentEmailUser } = useContext(AuthContext);
 
     const [image, setImage] = useState("");
@@ -42,6 +41,26 @@ function SelectRole() {
         {label: "Female", data: "female"}
     ]
 
+    useEffect( () => {
+        checkAuthen()
+    }, []);  
+
+    async function checkAuthen() {
+        await Auth.currentAuthenticatedUser()
+        .then(async (response) => {
+            console.log(response)
+          if(response.attributes.email.includes('@mail.kmutt.ac.th')){
+            setRole("student")
+          }else{
+            setRole("professor")
+          }
+        })
+        .catch(() => {
+        })
+      }
+
+    console.log(role)
+
     function goBack() {
         setRole("")
         setImage("")
@@ -61,6 +80,7 @@ function SelectRole() {
     async function handleSubmit(event) {
         setErrors([]);
         const arrayError = [];
+
         if(role === "student") {
             if(techupID === "") {
                 arrayError.push('techupId');
@@ -102,7 +122,6 @@ function SelectRole() {
         }
         if(arrayError.length === 0) {
             if(role === "professor") {
-                console.log('pass pro')
                 let website = [];
                 for(let i =0;i<contacts.length;i++){
                     let label = contacts[i].type.label
@@ -112,19 +131,19 @@ function SelectRole() {
                 var data = {
                     "ProfessorEmail": currentEmailUser,
                     "ProfessorID": professorID,  
-                    "FirstName": name,    
-                    "SurName": surname,   
+                    "Name": name,    
+                    "Surname": surname,   
                     "Gender": gender.label,    
                     "Birthday": Moment(birthday).format('YYYY-MM-DD'),
                     "Contact": website,
                     "Notification": false,
-                    "Point": 0,
+                    "Point": 0, 
                     "ImageURL": 'image'
                 }
                 event.preventDefault();
                 let response = await saveProfessor(data, imageFile)
                 if(response.status === 200){
-                    navigate('/home')
+                    navigate('/professor')
                 }else{
                     setErrorsSubmit(true)
                 }
@@ -161,7 +180,7 @@ function SelectRole() {
 
         setErrors(arrayError);
         event.preventDefault();
-    }
+    } 
     
     async function onSelectFile(event) {
         setImage(URL.createObjectURL(event.target.files[0]))
@@ -175,9 +194,9 @@ function SelectRole() {
                     {
                     role === "student"
                     ?   <div className="select-page">
-                            <div className="btn-back" onClick={() => goBack()}>
+                            {/* <div className="btn-back" onClick={() => goBack()}>
                                 <FaChevronLeft />
-                            </div>
+                            </div> */}
                             <p className="title f-xl fw-800">Information - Student</p>
                             <form className="input-section pt-4 row" onSubmit={handleSubmit}>
                                 <div className="col-lg-6 col-md-12 d-flex fd-col ai-center jc-center profile-image">
@@ -300,9 +319,9 @@ function SelectRole() {
                         </div>
                     :   role === "professor"
                     ?   <div className="select-page">
-                            <div className="btn-back" onClick={() => goBack()}>
+                            {/* <div className="btn-back" onClick={() => goBack()}>
                                 <FaChevronLeft />
-                            </div>
+                            </div> */}
                             <p className="title f-xl fw-800">Information - Professor</p>
                             <form className="input-section pt-4 row" onSubmit={handleSubmit}>
                             <div className="col-lg-6 col-md-12 d-flex fd-col ai-center jc-center profile-image">
