@@ -45,6 +45,21 @@ export async function getReply(questionID , parentID) {
   return response.data
 }
 
+export async function getWeeklyComment() {
+  await axios({
+      method: 'get',
+      url: `${baseUrl}/discuss-question`,  
+      params: {
+        "getType" : "getWeeklyDiscuss"
+      },
+      }).then((res) => {
+        response = res
+      }).catch((err)=>{
+        response = err
+      })
+  return response.data
+}
+
 export async function addComment(questionID,comment) {
   userEmail = await getCurrentUserId();
   const date = new Date()
