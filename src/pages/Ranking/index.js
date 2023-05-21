@@ -77,7 +77,7 @@ function Ranking() {
                                                 </span>
                                             </Link>
                                             <span className="f-md">{user.TechUpID}</span>
-                                            <span className="point">{user.Point} P</span>
+                                            <span className="point">{user.MostPoint} P</span>
                                         </div>
                                         <Link className="see-profile">
                                             <span><HiOutlineEye size={20} /> View profile</span>
@@ -114,7 +114,7 @@ function Ranking() {
                                                 <tr key={key}>
                                                     <td className="number">{key + 1}</td>
                                                     <td className="id">{user.TechUpID}</td>
-                                                    <td className="points color-1 fw-600">{user.Point} P</td>
+                                                    <td className="points color-1 fw-600">{user.MostPoint} P</td>
                                                     <td className="action"><Link className="btn-view-detail">View Profile</Link></td>
                                                 </tr>
                                             ))
