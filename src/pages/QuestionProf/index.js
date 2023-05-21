@@ -10,7 +10,7 @@ import { FaChevronLeft, FaSort } from 'react-icons/fa';
 import { TbCalendarTime, TbBulb, TbLock, TbInfoCircle, TbFileDescription, TbMessage2, TbFileUpload, TbMessageCircle, } from 'react-icons/tb'
 import { BsReplyAll } from 'react-icons/bs'
 import { HiOutlineExclamation } from 'react-icons/hi'
-import { FiSearch, FiChevronLeft, FiChevronRight, FiChevronsLeft, FiChevronsRight } from 'react-icons/fi'
+import { FiChevronLeft, FiChevronRight, FiChevronsLeft, FiChevronsRight } from 'react-icons/fi'
 import { IoCloseCircle, IoCaretUp, IoCaretDown } from 'react-icons/io5'
 import { getCount, getAllSubmission } from '../../service/submission';
 
@@ -46,7 +46,7 @@ function QuestionProf() {
 
     async function loadSubmission(pageStart,value) {
         const res = await getAllSubmission(QuestionId,pageStart,value);
-        setAllSubmission(res)
+        setAllSubmission(res) 
         setIsLoading2(false)
     }
 
@@ -441,58 +441,6 @@ function QuestionProf() {
                                         </tbody>
                                     </table>                                                      
                                 </div>
-                                {/* <div className="submit-table">
-                                    <table className="table">
-                                        <thead>
-                                            <tr>
-                                                <th className="title">Name </th>
-                                                <th className="topic">Topic - Question </th>
-                                                <th className="status">Status </th>
-                                                <th className="duedate">Due Date </th>
-                                                <th className="datesubmit">Date Submission </th>
-                                                <th className="action">Action</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td className="title thai">Sedtawut chalothornnarumit</td>
-                                                <td className="topic thai">OS - Kernel คืออะไร</td>
-                                                <td className="status thai color-12">Unchecked</td>
-                                                <td className="duedate thai">05-12-2022</td>
-                                                <td className="datesubmit thai">05-12-2022, 00:00</td>
-                                                <td className="point-table">
-                                                    <div className="col-12">
-                                                        <button type="submit" className="btnsubmit-viewdetail">View Detail</button>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td className="title thai">Sedtawut chalothornnarumit</td>
-                                                <td className="topic thai">OS - Kernel คืออะไร</td>
-                                                <td className="status thai color-12">Unchecked</td>
-                                                <td className="duedate thai">05-12-2022</td>
-                                                <td className="datesubmit thai">05-12-2022, 00:00</td>
-                                                <td className="point-table">
-                                                    <div className="col-12">
-                                                        <button type="submit" className="btnsubmit-viewdetail">View Detail</button>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td className="title thai">Sedtawut chalothornnarumit</td>
-                                                <td className="topic thai">OS - Kernel คืออะไร</td>
-                                                <td className="status thai color-3">checked</td>
-                                                <td className="duedate thai">05-12-2022</td>
-                                                <td className="datesubmit thai">05-12-2022, 00:00</td>
-                                                <td className="point-table">
-                                                    <div className="col-12">
-                                                        <button type="submit" className="btnsubmit-viewdetail">View Detail</button>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>                                                     
-                                </div>                                 */}
                             </div>                            
                         </div>                       
                     </div>

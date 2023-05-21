@@ -137,14 +137,16 @@ export async function getWeeklySubmission(){
   return response.data
 }
 
-export async function getAllSubmissionOnWeekly(){
+export async function getAllSubmissionOnWeekly(pageStart,pageSize){
   let UserEmail = await getCurrentUserId()
   await axios({
       method: 'get',
       url: `${baseUrl}/submission`,
       params: {
           "getType": "getAllSubmissionOnWeekly",
-          "UserEmail": UserEmail
+          "UserEmail": UserEmail,
+          "pageStart": pageStart,
+          "pageSize": pageSize
       },
       }).then((res) => {
         response = res
@@ -153,3 +155,19 @@ export async function getAllSubmissionOnWeekly(){
       })
   return response.data
 }
+
+export async function getCountAllSubmissionOnWeekly(){
+  await axios({
+      method: 'get',
+      url: `${baseUrl}/submission`,
+      params: {
+          "getType": "getCountAllSubmissionOnWeekly"
+      },
+      }).then((res) => {
+        response = res
+      }).catch((err)=>{
+        response = err
+      })
+  return response.data
+}
+
