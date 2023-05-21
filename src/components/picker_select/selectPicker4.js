@@ -25,7 +25,7 @@ const SelectPicker4 = ({id, data, defaultValue, setValue, placeholder}) => {
             <div className="tu-selectpicker-box" id={"tu-selectpicker-box-" + id} onClick={() => toggleOption()}>
                 {
                     selected === "" 
-                    ?   <span className="color-gray2">{placeholder}</span>
+                    ?   <span className="color-gray2">-</span>
                     :   <span>{selected}</span>
                 } 
                 <div className="icon">
@@ -34,7 +34,7 @@ const SelectPicker4 = ({id, data, defaultValue, setValue, placeholder}) => {
             </div>
             <div className={"tu-selectpicker-options " + (isShow ? "showed" : "")} style={{width: width + 40}}>
                 {data.map((item, key) => (
-                    <div key={key} className={"option " + (item.TopicID === selected ? "selected" : "")} onClick={() => selectOption(item)}>{item.TopicID}</div>
+                    <div key={key} className={"option " + (item.TopicID === selected ? "selected" : "")} onClick={() => selectOption(item)}>{item.TopicName}</div>
                 ))}
             </div>
         </div>

@@ -1,35 +1,37 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { ToastContainer, toast } from 'react-toastify';
+import { useNavigate, Link } from 'react-router-dom';
 import Moment from 'moment'
-import AWS from 'aws-sdk'
 import { getWeeklyQuestion } from '../../service/weeklyQuestion';
+import { getAllSubmissionOnWeekly } from '../../service/submission';
+import { getStudent } from '../../service/student';
 
-import { fileSize, fileType, download, downloadAll } from '../../assets/js/helper'
+import { FaSort } from 'react-icons/fa';
 
 import BackgroundIcon from '../../components/background/bgIcons.js';
 
 import { HiOutlineCalendar, HiOutlineExclamation } from 'react-icons/hi';
-import { TbCalendarTime, TbBulb, TbSwords, TbLock, TbFileZip, TbInfoCircle, TbFileDescription, TbMessage2, TbFileUpload, TbMessageCircle, TbPaperclip, TbTrash, } from 'react-icons/tb'
+import { TbCalendarTime, TbFileDescription, TbMessage2, TbFileUpload, TbMessageCircle } from 'react-icons/tb'
 import { IoCaretUp, IoCaretDown } from 'react-icons/io5'
 import { BsReplyAll } from 'react-icons/bs'
 
-function WeeklyProf() {
-      
+function Weeklyprof() {
+    
+    // const location = useLocation();
     const [topicID , setTopicID] = useState("");
+    const [QuestionID , setQuestionID] = useState("");
 
     const navigate = useNavigate()
 
-    const [loading, setLoading] = useState(false);
+    const [isHaveWeekly, setIsHaveWeekly] = useState(false)
     const [isLoading, setIsLoading] = useState(true);
+    const [isLoading1, setIsLoading1] = useState(true);
+    const [isLoading2, setIsLoading2] = useState(true);
+    const [allSubmission,setAllSubmission] = useState([]);
 
     const [inFoQuestion, setInFoQuestion] = useState("")
     const [inFoUser, setInFoUser] = useState("")
 
-    const [isHintShow, setIsHintShow] = useState(false)
     const [menuActive, setMenuActive] = useState(1);
-    const [hintModal, setHintModal] = useState(false);
-    const [voteModal, setVoteModal] = useState(false);
     const [isDone, setIsDone] = useState(false);
 
     const [commentDiscuss, setCommentDiscuss] = useState("");
@@ -95,61 +97,65 @@ function WeeklyProf() {
         }
         setShowReply(array)
     }  
-    
-    const [commentSubmission, setCommentSubmission] = useState("");
-    const [fileList, setFileList] = useState([]);
-    const [fileListSubmit, setFileListSubmit] = useState([]);
 
-    function deleteFile(file) {
-        setFileList(fileList.filter(fileList => fileList !== file))
+    async function getInfoUser() {
+        let resUser = await getStudent();
+        setInFoUser(resUser[0])
+        setIsLoading2(false)
+        // setIsLoading(isLoading-1)
+        // setIsLoading(isLoading.splice(isLoading.indexOf(3), 1))
     }
-    const handleFileChange = (e) => {
-        let array = [...fileList]
-        for(let i=0; i<e.target.files.length; i++){
-            if(fileList.indexOf(e.target.files[i]) < 0) {
-                array.push(e.target.files[i]);
-            }
-        }
-        setFileList(array)
-    };
-
-    const files = fileList ? [...fileList] : [];
-
-    const [voteShow, setVoteShow] = useState("")
-    const [countVote, setCountVote] = useState(19)
-
-    function showHint(vote) {
-        setIsHintShow(true)
-    }
-
-    setTimeout(() => {
-        setIsLoading(false)
-    }, 200)
 
     async function loadWeeklyQuestion(){
-        let res = await getWeeklyQuestion();
-        setInFoQuestion(res[0]);
-        setTopicID(res[0].TopicID)
-        setIsLoading(false);
+        let res = await getWeeklyQuestion()
+        if(res[0] !== undefined){
+            setInFoQuestion(res[0]);
+            setTopicID(res[0].TopicID);
+            setQuestionID(res[0].QuestionID);
+            setIsHaveWeekly(true)
+            setIsLoading(false);
+        }else{
+            setIsHaveWeekly(false)
+            setIsLoading(false);
+        }
+        // loadEachSubmissionFromUserIDandQuestionID();
+    }
+    console.log(inFoQuestion)
+    console.log(isHaveWeekly)
+
+    async function loadWeeklySubmission(){
+        let res = await getAllSubmissionOnWeekly();
+        if(res[0] === undefined){
+            setIsDone(false)
+        }else{ 
+            setIsDone(true)
+            setAllSubmission(res)
+        }
+        setIsLoading1(false)
     }
 
     useEffect(() => {
         loadWeeklyQuestion();
+        loadWeeklySubmission();
+        getInfoUser();
     }, [])
 
     return (
         <div className="weekly-page">
             <div className="cover-container">
                 {
-                    isLoading &&
+                    isLoading && isLoading1 && isLoading2 && 
+                    // isLoading3 &&
                     <div className="loader2">
                         <div className="lds-roller"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div>
                         </div>
                     </div>
                 }   
                 {
-                    !isLoading &&
-                    <>                    
+                    !isLoading && !isLoading1 && !isLoading2 && 
+                    // !isLoading3 &&
+                    <>  
+                    {isHaveWeekly === true ?                       
                     <div data-aos="fade-left" data-aos-duration="1000" className="body">
                         <div className="top-section">
                             <div className="left-side">
@@ -183,32 +189,7 @@ function WeeklyProf() {
                                 </p>
                             </div>
                             <div className="right-side">
-                                <div className="action">
-                                    <button 
-                                        className="btn-5"
-                                        onClick={() => {
-                                            if(isHintShow) {
-                                                setHintModal(true);
-                                            } else {
-                                                setVoteModal(true);
-                                            }
-                                        }}
-                                    >
-                                        <TbBulb size={22} className="me-1" />Hint
-                                    </button>
-                                </div>
                                 <div className="point">
-                                    {/* {
-                                        isDone
-                                        ?  
-                                        <>
-                                            { isDoneEstimate
-                                            ? <span>{inFoSubmit.Score*inFoQuestion.Point/100} / {inFoQuestion.Point} P</span>
-                                            :  <span>Waiting for professor to evaluate</span>
-                                            }
-                                        </>
-                                        :   <span>{inFoQuestion.Point} P</span>
-                                    }                                 */}
                                     <span>{inFoQuestion.Point} P</span>
                                 </div>
                             </div>
@@ -236,6 +217,7 @@ function WeeklyProf() {
                                     <TbFileUpload className="icon" />
                                     <span>Submission</span>
                                 </div>
+                                <Link className="btn-addquestion" to={`/professor/weekly/addweekly`} >Add Weekly + </Link> 
                             </div>
                             <div className={`detail-section ${menuActive === 1 ? "description" : menuActive === 2 ? "discuss" : "submission"}`}>
                                 <div className={`description ${menuActive === 1 ? "active" : ""}`}>
@@ -336,127 +318,60 @@ function WeeklyProf() {
                                     }
                                 </div>
                                 <div className={`submission ${menuActive === 3 ? "active" : ""}`}>
-                                    {
-                                        isDone 
-                                        ?   <>
-                                                <span className="fw-700 f-md">Comment from professor</span>
-                                                <div className="sp-vertical"></div>
-                                                <div className="comment-box-edit">
-                                                    {/* {
-                                                        inFoSubmit.CommentFromProf === null
-                                                        ?   <p>No comment</p>
-                                                        :   <p>{inFoSubmit.CommentFromProf}</p>
-                                                    }                                                 */}
-                                                    <p className="color-gray2">No comment</p>
-                                                </div>
-                                                <div className="divider my-4"></div>
-                                                <span className="fw-700 f-md">Your submission</span>
-                                                <div className="sp-vertical"></div>
-                                                <div className="comment-box-edit">
-                                                    {/* {
-                                                        inFoSubmit.Answer === null
-                                                        ?   <p>No Text Answer</p>
-                                                        :   <p>{inFoSubmit.Answer}</p>
-                                                    }                                                 */}
-                                                    <p className="color-gray2">No Text Answer</p>
-                                                </div>
-                                                <div className="attachment">
-                                                    <span className="f-md fw-700">Attachment ({fileList.length})</span>
-                                                    <div className="sp-vertical"></div>
-                                                    {fileListSubmit?.map((file, key) => ( 
-                                                        <div className="attach-file" key={key}>
-                                                            <div className="d-flex jc-center ai-center">
-                                                                <div className="file-icon">{fileType(file.name)}</div>
-                                                                <div className="file-info">
-                                                                    <a 
-                                                                        className="file-name"
-                                                                        href={file.Url}
-                                                                        download={file.name}
-                                                                    >
-                                                                        {file.name}
-                                                                    </a>
-                                                                    <span className="file-size">{fileSize(Number(file.size))}</span>
-                                                                </div>
-                                                            </div>
-                                                            <div className="file-action">
-                                                                <button className="btn-download" onClick={() => download(file.Url, file.name)}>
-                                                                    Download
-                                                                </button>
-                                                            </div>
-                                                        </div>
-                                                    ))}                
-                                                    {
-                                                        fileListSubmit &&
-                                                        <>
-                                                        <div className="divider my-4"></div>
-                                                        <div className="d-flex jc-center ai-center">
-                                                            <button 
-                                                                className="btn-01 d-flex jc-center ai-center" 
-                                                                onClick={() => downloadAll(fileList, (inFoQuestion.FirstName + "_" + inFoQuestion.QuestionName))}
-                                                            >
-                                                                <TbFileZip size={24} className="me-1" />
-                                                                Download All
-                                                            </button>
-                                                        </div>
-                                                        </>
-                                                    }
-                                                </div>    
+                                <div className="submission-table">
+                                    <table className="table">
+                                        <thead>
+                                            <tr>
+                                                <th className="status">Status <FaSort /></th>
+                                                <th className="name">Name <FaSort /></th>
+                                                <th className="date">Date submission <FaSort /></th>
+                                                <th className="action text-center">Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        {allSubmission.map((submit, i) => 
+                                        <tr key={i}> 
+                                            <td className={`status ${submit.Status === "Checked" ? "color-3" : "color-1"} `}>{submit.Status}</td>
+                                            <td className="name">{submit.FirstName + " " + submit.SurName}</td>
+                                            <td className="date">{submit.DateSubmit}</td>
+                                            { submit.Status === "UnChecked"
+                                            ?
+                                            <>
+                                                <td className="action">
+                                                    <Link className="btn-view-detail" to={`question/${submit.QuestionID_Submissions}/submission/${submit.SubmissionID}`}>View Detail</Link>
+                                                </td>
                                             </>
-                                        :   <>
-                                                <div className="comment-box">
-                                                    <textarea 
-                                                        className="autosize" 
-                                                        placeholder="Type comment here ..." 
-                                                        onChange={(e) => setCommentSubmission(e.target.value)} 
-                                                    />
-                                                    <div className="file-input">
-                                                        <input
-                                                            type="file"
-                                                            name="file-input"
-                                                            id="file-input"
-                                                            className="file-input__input"
-                                                            onChange={handleFileChange}
-                                                            multiple
-                                                        />
-                                                        <label className="file-input__label" htmlFor="file-input">
-                                                            <TbPaperclip size={24} />
-                                                        </label>
-                                                    </div>
-                                                </div>
-                                                <div className="attachment">
-                                                    {/* <input type="file" onChange={handleFileInput}/> */}
-                                                    {/* <button onClick={() => uploadFile(selectedFile)}> Upload to S3</button> */}
-                                                    {/* <input id="profile-img" name="profile-img" type="file" accept="image/*" onChange={onSelectFile}/> */}
-                                                    <span className="f-md fw-700">Attachment ({files?.length || 0})</span>
-                                                    <div className="sp-vertical"></div>
-                                                    {files.map((file, key) => (
-                                                    <div className="attach-file" key={key}>
-                                                        <div className="d-flex jc-center ai-center">
-                                                            <div className="file-icon">{fileType(file.name)}</div>
-                                                            <div className="file-info">
-                                                                <span className="file-name">{file.name}</span>
-                                                                <span className="file-size">{fileSize(file.size)}</span>
-                                                            </div>
-                                                        </div>
-                                                        <div className="file-action">
-                                                            <button className="btn-7" onClick={() => deleteFile(file)}>
-                                                                <TbTrash size={18} className="me-1" />
-                                                                Delete
-                                                            </button>
-                                                        </div>
-                                                    </div>
-                                                    ))}
-                                                </div>
-                                                <div className="divider my-4"></div>
-                                                <div className="d-flex jc-center ai-center">
-                                                    <button onClick={() => uploadFile(fileList)} className="btn-01">Submit</button>
-                                                </div>
+                                            :
+                                            <>
+                                                <td className="action">
+                                                    <div className="btn-view-detail">View Detail</div>
+                                                </td>
                                             </>
-                                    }                                    
+
+                                            }
+                                           
+                                        </tr>
+                                        )}
+                                                                        
+                                        </tbody>
+                                    </table>                                                      
+                                </div>                               
                                 </div>
                             </div>
                         </div>
                     </div>
+                    :
+                    <>
+                     <div >
+                            <div className="text-center f-md thai pt-4 pb-4">
+                                Now there is no question of the week, Please add question of weekly or wait for admin accept.
+                            </div>
+                            <div className="text-center f-md thai pt-4">
+                                <Link className="btn-addquestion p-2" to={`/professor/weekly/addweekly`} >Add Weekly + </Link> 
+                            </div>
+                        </div>
+                    </>
+                    }
                     </>
                 }
             </div>
@@ -466,4 +381,4 @@ function WeeklyProf() {
     );
 }
 
-export default WeeklyProf;
+export default Weeklyprof;

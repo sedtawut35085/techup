@@ -1,21 +1,46 @@
 import React, { useEffect, useState } from 'react';
 
 import { TbSwords, TbListDetails } from 'react-icons/tb'
-
+import { updateAdminWeeklyStatus } from '../../service/admin'
 import BackgroundIcon from '../../components/background/bgIcons.js';
 import TopicBox from '../../components/box_topic/boxTopic.js'
 import QuestionBox from '../../components/box_question/boxQuestion.js'
 import { getAllTopic , getList } from '../../service/topic.js';
 import { getChallengeList } from '../../service/challenge.js';
+import { getWeeklyQuestion } from '../../service/weeklyQuestion';
+import Moment from 'moment'
 
 function Homepage() {   
 
     const [isLoading, setIsLoading] = useState(true)
     const [isLoading1, setIsLoading1] = useState(true)
     const [isLoading2, setIsLoading2] = useState(true)
+    const [isLoading3, setIsLoading3] = useState(true)
     const [challengeList ,setChallengeList] = useState([])
     const [allTopic, setAllTopic] = useState([])
     const [myList, setMyList] = useState([])
+
+    async function loadWeeklyQuestion(){
+        let res = await getWeeklyQuestion();
+        if(res[0] !== undefined){
+            var date = new Moment(res[0].DueDate).format('YYYY-MM-DD')
+            var today = new Moment().format('YYYY-MM-DD')
+            let dateconvert = new Date(date).getTime();
+            let todayconvert = new Date(today).getTime();
+            let weeklyid = res[0].QuestionID
+            if (dateconvert < todayconvert) {
+                console.log('update to normal'); 
+                const bodydata = {
+                    "updateType": "Text",
+                    "updateKey": "Status",
+                    "updateValue": "normal"
+                }
+                let res = await updateAdminWeeklyStatus(weeklyid, bodydata)
+            }
+        }
+        setIsLoading3(false);
+        // loadEachSubmissionFromUserIDandQuestionID();
+    }
 
     async function loadChallengeList() {
         const res = await getChallengeList();
@@ -37,6 +62,7 @@ function Homepage() {
     }
 
     useEffect(() => {
+        loadWeeklyQuestion();
         loadChallengeList();
         loadAllTopic();
         loadMyList();        
@@ -46,14 +72,14 @@ function Homepage() {
         <div className="homepage">
             <div className="cover-container">
                 {
-                    (isLoading || isLoading1 || isLoading2) &&
+                    (isLoading || isLoading1 || isLoading2 || isLoading3) &&
                     <div className="loader2">
                         <div className="lds-roller"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div>
                         </div>
                     </div>
                 }
                 {
-                    isLoading || isLoading1 || isLoading2 
+                    isLoading || isLoading1 || isLoading2 || isLoading3
                     ?   null
                     :   (challengeList?.length === 0 && myList.length === 0)
                     ?   <div data-aos="fade-up" data-aos-duration="1000" className="none-topic">
