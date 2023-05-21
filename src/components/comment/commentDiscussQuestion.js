@@ -7,6 +7,7 @@ import { IoCaretUp, IoCaretDown } from 'react-icons/io5'
 import { TbMessageCircle } from 'react-icons/tb'
 import { BsReplyAll} from 'react-icons/bs'
 import { HiOutlineExclamation } from 'react-icons/hi'
+import {Link} from  'react-router-dom'
 
 const CommentDiscussQuestion = ({comment , replies}) => {
     const [showReply, setShowReply] = useState([]);
@@ -28,7 +29,7 @@ const CommentDiscussQuestion = ({comment , replies}) => {
     return (
         <div className="comment">
             <div className="comment-owner">
-                <img alt="Avatar" className="owner-image" onError={defaultProfileImg} src={comment?.UserImage} />
+                <Link to={"/profile/"+comment?.UserEmail}><img alt="Avatar" className="owner-image" onError={defaultProfileImg} src={comment?.UserImage}/></Link>
                 <div className="owner-detail">
                     <span>{comment?.AuthorName} {comment.AuthorSurName}</span>
                     <div className="date">
