@@ -310,7 +310,6 @@ function Weekly() {
             <div className="cover-container">
                 {
                     (isLoading1 || isLoading2 || isLoading3 || isLoading4) &&
-                    // isLoading3 &&
                     <div className="loader2">
                         <div className="lds-roller"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div>
                         </div>
