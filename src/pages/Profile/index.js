@@ -35,7 +35,6 @@ function Profile() {
         setUser(res[0]);
 
         setIsLoading2(false);
-        console.log(res)
     }
 
     async function signOut() {

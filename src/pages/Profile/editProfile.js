@@ -56,6 +56,12 @@ function EditProfile() {
         setBirthday(Moment(res[0].Birthday).format('DD-MM-YYYY'))
         setLocation(res[0].Location)
 
+        let contactObject = JSON.parse(res[0].Website)
+        let defaultContact = [];
+        for(let key in contactObject) {
+            defaultContact.push({ contact: contactObject[key], type: {label: key, data: key}})
+        }
+        setContacts(defaultContact)
         setIsLoading(false);
     }
 
@@ -223,7 +229,7 @@ function EditProfile() {
                             </div>
                             <div className="col-12 pt-4 px-4">
                                 <label className="f-lg pb-2" htmlFor="contact">Contact</label>
-                                <ContactInfo setValue={setContacts} />
+                                <ContactInfo defaultValue={contacts} setValue={setContacts} />
                             </div>
                             <div className="col-12 pt-4 px-4"><div className="divider"></div></div>
                             <div className="col-12 pt-5 d-flex jc-center">
