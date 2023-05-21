@@ -95,8 +95,6 @@ function Question() {
         let res = await getComment(QuestionId);
         setDiscuss(res)
         setIsLoading(false)
-        // setIsLoading(isLoading-1)
-        // setIsLoading(isLoading.splice(isLoading.indexOf(5), 1))
     }
 
     async function addNewComment() {

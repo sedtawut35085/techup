@@ -63,57 +63,7 @@ function Weekly() {
     const [isDoneEstimate, setIsDoneEstimate] = useState(false);
 
     const [commentDiscuss, setCommentDiscuss] = useState("");
-    const [discuss, setDiscuss] = useState([
-        // {
-        //     id: "1",
-        //     detail: "Nibh et faucibus enim odio purus feugiat tempor massa libero. Luctus montes, vitae eget consequat morbi lacus, nibh commodo. Sed cras cursus sed neque purus elit vitae et non. Proin massa ut velit duis ullamcorper. Arcu aliquet elementum non volutpat ipsum massa egestas mauris nunc.",
-        //     vote: 50,
-        //     owner: {
-        //         name: "Wattanasiri Uparakkitanon",
-        //     },
-        //     datetime: "11/5/2022, 00:00",
-        //     reply: [
-        //         {
-        //             id: "2",
-        //             detail: "Nibh et faucibus enim odio purus feugiat tempor massa libero. Luctus montes, vitae eget consequat morbi lacus, nibh commodo. Sed cras cursus sed neque purus elit vitae et non. Proin massa ut velit duis ullamcorper. Arcu aliquet elementum non volutpat ipsum massa egestas mauris nunc.",
-        //             vote: 20,
-        //             owner: {
-        //                 name: "Wattanasiri Uparakkitanon",
-        //             },
-        //             datetime: "11/5/2022, 00:00",
-        //         },
-        //         {
-        //             id: "3",
-        //             detail: "Nibh et faucibus enim odio purus feugiat tempor massa libero. Luctus montes, vitae eget consequat morbi lacus, nibh commodo. Sed cras cursus sed neque purus elit vitae et non. Proin massa ut velit duis ullamcorper. Arcu aliquet elementum non volutpat ipsum massa egestas mauris nunc.",
-        //             vote: 10,
-        //             owner: {
-        //                 name: "Wattanasiri Uparakkitanon",
-        //             },
-        //             datetime: "11/5/2022, 00:00",
-        //         }
-        //     ]
-        // },
-        // {
-        //     id: "4",
-        //     detail: "Nibh et faucibus enim odio purus feugiat tempor massa libero. Luctus montes, vitae eget consequat morbi lacus, nibh commodo. Sed cras cursus sed neque purus elit vitae et non. Proin massa ut velit duis ullamcorper. Arcu aliquet elementum non volutpat ipsum massa egestas mauris nunc.",
-        //     vote: 40,
-        //     owner: {
-        //         name: "Wattanasiri Uparakkitanon",
-        //     },
-        //     datetime: "11/5/2022, 00:00",
-        //     reply: [
-        //         {
-        //             id: "5",
-        //             detail: "Nibh et faucibus enim odio purus feugiat tempor massa libero. Luctus montes, vitae eget consequat morbi lacus, nibh commodo. Sed cras cursus sed neque purus elit vitae et non. Proin massa ut velit duis ullamcorper. Arcu aliquet elementum non volutpat ipsum massa egestas mauris nunc.",
-        //             vote: 20,
-        //             owner: {
-        //                 name: "Wattanasiri Uparakkitanon",
-        //             },
-        //             datetime: "11/5/2022, 00:00",
-        //         }
-        //     ]
-        // }
-    ]);
+    const [discuss, setDiscuss] = useState([]);
     const rootComments = discuss.filter( (discuss) => discuss.ParentID === null)    
     const [showReply, setShowReply] = useState([]);
 
@@ -126,8 +76,6 @@ function Weekly() {
         let res = await getWeeklyComment();
         setDiscuss(res)
         setIsLoading(false)
-        // setIsLoading(isLoading-1)
-        // setIsLoading(isLoading.splice(isLoading.indexOf(5), 1))
     }
 
     async function addNewComment() {
