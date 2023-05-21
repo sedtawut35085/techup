@@ -49,6 +49,8 @@ import Discuss from "./pages/Discuss/index.js"
 import Ranking from "./pages/Ranking/index.js"
 import Store from "./pages/Store/index.js"
 import Weekly from "./pages/Weekly/index.js"
+import Weeklyprof from "./pages/WeeklyProf"
+import SubmissionWeeklyProf from "./pages/WeeklyProf/submission"
 
 function App() {
   AOS.init({once: true});
@@ -73,6 +75,8 @@ function App() {
             <Route path="/professor/:topic/question/:question" element={<QuestionProf />}/>
             <Route path="/professor/:topic/addquestion" element={<AuthProvider><AddQuestion /></AuthProvider>}/>
             <Route path="/professor/:topic/question/:question/submission/:submission" element={<SubmissionProf />}/>
+            <Route path="/professor/weekly/question/:question/submission/:submission" element={<SubmissionWeeklyProf />}/>
+            <Route path="/professor/weekly" element={<AuthProvider><Weeklyprof /></AuthProvider>} /> 
             <Route path="/professor/weekly/addweekly" element={<AuthProvider><AddWeeklyQuestion /></AuthProvider>} /> 
             <Route path="/home" element={<AuthProvider><Homepage /></AuthProvider>}/>
             <Route path="/topic/:topic" element={<Topic />}/>

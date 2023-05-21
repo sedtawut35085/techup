@@ -5,6 +5,7 @@ import $ from 'jquery'
 import { toggleScrollable, defaultProfileImg } from '../assets/js/helper'
 import Auth from '../configuration/configuration-aws'
 import { getStudent } from '../service/student'
+import { getWeeklyQuestion } from '../service/weeklyQuestion';
 
 import { HiOutlineCalendar, HiOutlineBell, HiMenu } from 'react-icons/hi'
 import { FiChevronRight } from 'react-icons/fi'
@@ -20,6 +21,13 @@ const TopBar = ({currentEmailUser,isProfessor}) => {
     const lastScrollTop = useRef(0);
     const [isTopbarVisible, setIsTopbarVisible] = useState(true);
     const [topbarRes, setTopbarRes] = useState(false)
+    // const [weeklyQuestion,setWeeklyQuestion] = useState("")
+
+    // async function loadWeeklyQuestion(){
+    //     let res = await getWeeklyQuestion();
+    //     setWeeklyQuestion(res[0]);
+    //     console.log(weeklyQuestion);
+    // }
 
     const handleScroll = () => {
 
@@ -72,6 +80,7 @@ const TopBar = ({currentEmailUser,isProfessor}) => {
 
     useEffect( () => {
         loadinfoUser()
+        // loadWeeklyQuestion()
 
         window.addEventListener("scroll", handleScroll, { passive: true })
         $(window).resize(function() {
@@ -116,7 +125,7 @@ const TopBar = ({currentEmailUser,isProfessor}) => {
                     </Link>
                     {currentEmailUser.includes('@mail.kmutt.ac.th') === true?
                         <>
-                        <Link className={`nav top hover ${pathname === "store" ? "active" : ""}`} to="/store">
+                            <Link className={`nav top hover ${pathname === "store" ? "active" : ""}`} to="/store">
                                 <div>Store</div>
                             </Link>
                             <Link className={`nav top weekly ${pathname === "weekly" ? "active" : ""}`} to="/weekly">
@@ -128,7 +137,7 @@ const TopBar = ({currentEmailUser,isProfessor}) => {
                         </>
                         :                        
                         <>
-                        <Link className={`nav top hover ${pathname === "Weekly" ? "active" : ""}`} to="/weekly">
+                            <Link className={`nav top hover ${pathname === "professor" && pathname === "weekly" ? "active" : ""}`} to="/professor/weekly">
                                 <div>Weekly</div>
                             </Link>
                         </>
