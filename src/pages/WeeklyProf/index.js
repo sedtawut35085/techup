@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import Moment from 'moment'
 import { getWeeklyQuestion } from '../../service/weeklyQuestion';
-import { getAllSubmissionOnWeekly } from '../../service/submission';
+import { getCount, getAllSubmissionOnWeekly, getCountAllSubmissionOnWeekly } from '../../service/submission';
 import { getStudent } from '../../service/student';
-
 import { FaSort } from 'react-icons/fa';
-
+import { FiChevronLeft, FiChevronRight, FiChevronsLeft, FiChevronsRight } from 'react-icons/fi'
 import BackgroundIcon from '../../components/background/bgIcons.js';
 
 import { HiOutlineCalendar, HiOutlineExclamation } from 'react-icons/hi';
@@ -19,21 +18,20 @@ function Weeklyprof() {
     // const location = useLocation();
     const [topicID , setTopicID] = useState("");
     const [QuestionID , setQuestionID] = useState("");
-
-    const navigate = useNavigate()
-
+    const [pageSize,setPageSize] = useState(5);
     const [isHaveWeekly, setIsHaveWeekly] = useState(false)
     const [isLoading, setIsLoading] = useState(true);
     const [isLoading1, setIsLoading1] = useState(true);
     const [isLoading2, setIsLoading2] = useState(true);
     const [allSubmission,setAllSubmission] = useState([]);
-
+    const [numberPage, setNumberPage] = useState([])
     const [inFoQuestion, setInFoQuestion] = useState("")
     const [inFoUser, setInFoUser] = useState("")
 
     const [menuActive, setMenuActive] = useState(1);
     const [isDone, setIsDone] = useState(false);
-
+    let pageStart = 0;
+    let pageNumber
     const [commentDiscuss, setCommentDiscuss] = useState("");
     const [discuss, setDiscuss] = useState([
         {
@@ -87,6 +85,56 @@ function Weeklyprof() {
         }
     ]);    
     const [showReply, setShowReply] = useState([]);
+    const [currentpage,setCurrentpage] = useState(1);
+    async function loadCount(pageSize) {
+        const res = await getCountAllSubmissionOnWeekly();
+        const Pagenumberlist = []
+        pageNumber = Math.ceil(res[0]["count(*)"] / pageSize);
+        for(let i=1;i<=pageNumber;i++){
+            Pagenumberlist.push(i)
+        }
+        setNumberPage(Pagenumberlist)
+    }
+
+    async function changepage(event) {
+        let temp = event.target.value
+        setCurrentpage(Number(temp))
+        pageStart = pageSize*(event.target.value - 1)
+        await loadWeeklySubmission(pageStart,pageSize)
+    }
+
+    async function gotofirstpage(event) {
+        setCurrentpage(1)
+        pageStart = pageSize*(1 - 1)
+        await loadWeeklySubmission(pageStart,pageSize)
+    }
+
+    async function gotolastpage(event) {
+        setCurrentpage(numberPage.length)
+        pageStart = pageSize*(numberPage.length - 1)
+        await loadWeeklySubmission(pageStart,pageSize)
+    }
+
+    async function gotobackpage(event) {
+        event.preventDefault();
+        setCurrentpage(currentpage-1)
+        pageStart = pageSize*(currentpage - 2)
+        await loadWeeklySubmission(pageStart,pageSize)
+    }
+
+    async function gotonextpage(event) {
+        setCurrentpage(currentpage+1)
+        pageStart = pageSize*(currentpage)
+        await loadWeeklySubmission(pageStart,pageSize)
+    }
+
+    async function changepagesize(pageSize) {
+        setPageSize(Number(pageSize))
+        setCurrentpage(1)
+        pageStart = pageSize*(1 - 1)
+        await loadCount(Number(pageSize))
+        await loadWeeklySubmission(pageStart,Number(pageSize))
+    }
     
     function toggleReply(id) {
         let array = [...showReply];
@@ -102,8 +150,6 @@ function Weeklyprof() {
         let resUser = await getStudent();
         setInFoUser(resUser[0])
         setIsLoading2(false)
-        // setIsLoading(isLoading-1)
-        // setIsLoading(isLoading.splice(isLoading.indexOf(3), 1))
     }
 
     async function loadWeeklyQuestion(){
@@ -120,11 +166,9 @@ function Weeklyprof() {
         }
         // loadEachSubmissionFromUserIDandQuestionID();
     }
-    console.log(inFoQuestion)
-    console.log(isHaveWeekly)
 
-    async function loadWeeklySubmission(){
-        let res = await getAllSubmissionOnWeekly();
+    async function loadWeeklySubmission(pageStart,pageSize){
+        let res = await getAllSubmissionOnWeekly(pageStart,pageSize);
         if(res[0] === undefined){
             setIsDone(false)
         }else{ 
@@ -134,10 +178,13 @@ function Weeklyprof() {
         setIsLoading1(false)
     }
 
+    console.log(allSubmission)
+
     useEffect(() => {
         loadWeeklyQuestion();
-        loadWeeklySubmission();
+        loadWeeklySubmission(pageStart,pageSize);
         getInfoUser();
+        loadCount(pageSize); 
     }, [])
 
     return (
@@ -326,7 +373,7 @@ function Weeklyprof() {
                                                 <th className="name">Name <FaSort /></th>
                                                 <th className="date">Date submission <FaSort /></th>
                                                 <th className="action text-center">Action</th>
-                                            </tr>
+                                            </tr>  
                                         </thead>
                                         <tbody>
                                         {allSubmission.map((submit, i) => 
@@ -359,6 +406,52 @@ function Weeklyprof() {
                                 </div>
                             </div>
                         </div>
+                        {
+                        menuActive === 3
+                        ?   
+                        <div className="pagination1">                                    
+                                           <div className="pagination-number">
+                            <button onClick={gotofirstpage} className={
+                                    currentpage !== 1 
+                                    ? "arrow"
+                                    : "arrow disable"
+                                    }><FiChevronsLeft /></button>
+                                <button onClick={gotobackpage} className={
+                                    currentpage !== 1 
+                                    ? "arrow"
+                                    : "arrow disable"
+                                    }><FiChevronLeft /></button>
+                                {numberPage.map((key, i) => (
+                                    <button key={i} name={key} value={key} className={
+                                        currentpage === key
+                                        ? "number active"
+                                        : "number"
+                                    } onClick={changepage}>{key}</button>
+                                ))}
+                                 <button onClick={gotonextpage} className={
+                                    currentpage < numberPage.length
+                                    ? "arrow"
+                                    : "arrow disable"
+                                    }><FiChevronRight /></button>
+                                <button onClick={gotolastpage} className={
+                                    currentpage < numberPage.length
+                                    ? "arrow"
+                                    : "arrow disable"
+                                    }><FiChevronsRight /></button>
+                            </div>
+                                <div className="display-per-page">
+                                    <span>Display per page</span>
+                                    <select onChange={(event) => {changepagesize(event.target.value)}} className="page">
+                                        <option default>5</option>
+                                        <option>10</option>
+                                        <option>25</option>
+                                    </select>
+                                    {/* <span>Showing 1-5 of 25</span> */}
+                                </div>
+                            </div>
+            
+                        : null
+                    }            
                     </div>
                     :
                     <>

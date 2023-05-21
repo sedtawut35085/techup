@@ -46,12 +46,28 @@ export async function getQuestionForEachTopicWithFilter(topicID,pageStart,pageSi
 
 export async function getQuestion(QuestionID){
   await axios({
-      method: 'get',
+      method: 'get', 
       url: `${baseUrl}/question`,
       params: {
           "QuestionID" : QuestionID,
           "getType": "getEachQuestion"
       },
+      }).then((res) => {
+        response = res
+      }).catch((err)=>{
+        response = err
+      })
+  return response.data
+}
+
+export async function updateQuestion(QuestionId, bodydata){
+  await axios({
+      method: 'patch',
+      url: `${baseUrl}/question`,
+      params: {
+        "QuestionId" : QuestionId
+      },
+      data: bodydata
       }).then((res) => {
         response = res
       }).catch((err)=>{
