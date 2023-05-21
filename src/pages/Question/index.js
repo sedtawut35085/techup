@@ -12,7 +12,7 @@ import { HiOutlineExclamation } from 'react-icons/hi'
 
 import { IoCloseCircle, IoCaretUp, IoCaretDown } from 'react-icons/io5'
 
-import { getQuestion } from '../../service/question';
+import { getQuestion, updateQuestion } from '../../service/question';
 import { getComment , addComment } from '../../service/discussQuestion';
 import { saveSubmission } from '../../service/submission'
 import { getStudent } from '../../service/student';
@@ -147,9 +147,28 @@ function Question() {
             setVoteNeed(Math.round(questionInfo.AmountChallenge/2))
         }
         setVoteNow(questionInfo.AmountShow)
+        var date = new Moment(res[0].DueDate).format('YYYY-MM-DD')
+        var today = new Moment().format('YYYY-MM-DD')
+        let dateconvert = new Date(date).getTime();
+        let todayconvert = new Date(today).getTime();
+        let weeklyid = res[0].QuestionID
+        if (dateconvert < todayconvert && questionInfo.isDueDateCheck === "0") {
+            const bodydata1 = {
+                "updateType": "Text",
+                "updateKey": "isDueDateCheck",
+                "updateValue": "1"
+            }
+            const bodydata = {
+                "updateType": "Text",
+                "updateKey": "Point",
+                "updateValue": Math.ceil(questionInfo.Point*0.9)
+            }
+            questionInfo.Point = Math.ceil(questionInfo.Point*0.9)
+            let res = await updateQuestion(weeklyid, bodydata1)
+            let res2 = await updateQuestion(weeklyid, bodydata)
+            // let res = await updateAdminWeeklyStatus(weeklyid, bodydata)
+        }
         setIsLoading2(false)
-        // setIsLoading(isLoading-1)
-        // setIsLoading(isLoading.splice(isLoading.indexOf(2), 1))
     }
     async function getInfoUser() {
         let resUser = await getStudent();
