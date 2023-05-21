@@ -29,6 +29,7 @@ function EditProfile() {
     const [birthday, setBirthday] = useState("")
     const [contacts, setContacts] = useState([])
     const [location, setLocation] = useState("")
+    const [point, setPoint] = useState(0)
     
     const [errors, setErrors] = useState([])
     const [errorsSubmit, setErrorsSubmit] = useState(false)
@@ -55,6 +56,7 @@ function EditProfile() {
         })
         setBirthday(Moment(res[0].Birthday).format('DD-MM-YYYY'))
         setLocation(res[0].Location)
+        setPoint(res[0].Point)
 
         let contactObject = JSON.parse(res[0].Website)
         let defaultContact = [];
@@ -85,9 +87,6 @@ function EditProfile() {
                 arrayError.push('invalid_stuId');
             }
         }
-        if(image == ""){
-            arrayError.push('image');
-        }
         if(name === ""){
             arrayError.push('name');
         }
@@ -101,7 +100,32 @@ function EditProfile() {
             arrayError.push('birthday');
         }
 
-        setErrors(arrayError);
+        if(arrayError.length === 0) {
+            let website = [];
+            for(let i =0;i<contacts.length;i++){
+                let label = contacts[i].type.label
+                let value = contacts[i].contact
+                website = {...website, [label]: value}
+            }
+            var data = {
+                "TechUpID": techupID,    
+                "StudentID": studentID, 
+                "FirstName": name,    
+                "SurName": surname,   
+                "Gender": gender.label,    
+                "Birthday": Moment(birthday).format('YYYY-MM-DD'),
+                "Location": location,
+                "Website": website,
+                "Notification": false,
+                "Point": point,
+                "ImageURL": 'image'
+            }
+            event.preventDefault();
+            
+        } else {
+            setErrors(arrayError);
+        }
+
         event.preventDefault();
     }
 
