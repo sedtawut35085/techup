@@ -48,7 +48,7 @@ const TopBar = ({currentEmailUser,isProfessor}) => {
         navigate('/');
     }
 
-    async function loadinfoUser() {
+    async function loadInfoUser() {
        
         let resUser
         await Auth.currentAuthenticatedUser()
@@ -80,7 +80,7 @@ const TopBar = ({currentEmailUser,isProfessor}) => {
     }
 
     useEffect( () => {
-        loadinfoUser()
+        loadInfoUser()
         // loadWeeklyQuestion()
 
         window.addEventListener("scroll", handleScroll, { passive: true })
@@ -92,8 +92,8 @@ const TopBar = ({currentEmailUser,isProfessor}) => {
         })
 
         setInterval(() => {
-            loadinfoUser()
-        }, 20000);
+            loadInfoUser();
+        }, 4000);
       }, []);
       
     return (

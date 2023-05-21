@@ -1,15 +1,16 @@
-/* Store page */
-
-.store-title {
+.store-page .title {
     width: 100%; 
     text-align: center;
     position: relative;
+    font-size: 2.25rem;
+    font-weight: 700;
+    margin-bottom: 2rem;
 }
 
-.store-title::before {
+.store-page .title::before {
     content: "";
     display: block;
-    width: 35%;
+    width: 38%;
     height: 2px;
     background: #FFA242;
     left: 0;
@@ -17,10 +18,10 @@
     position: absolute;
 }
 
-.store-title::after {
+.store-page .title::after {
     content: "";
     display: block;
-    width: 35%;
+    width: 38%;
     height: 2px;
     background: #26262C;
     right: 0;
@@ -28,14 +29,44 @@
     position: absolute;
 }
 
-.reward-frame{
-    padding : 20px;
-    width: 100%;
-    border-radius: 24px;
-    margin-bottom: 30px;
+.store-page .item-wrap {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+    margin: 1rem 0;
 }
 
-.store .point {
+.store-page .item-wrap .item-card {
+    cursor: pointer;
+    width: 100%;
+    height: 400px;
+    box-shadow: 0 0 8px rgba(0, 0, 0, .25);
+    border-radius: 24px;
+    padding: 1.5rem;
+    transition: all .2s;
+}
+
+.store-page .item-wrap .item-card:hover {
+    scale: 1.05;
+    box-shadow: 0 0 12px rgba(0, 0, 0, .35);
+}
+
+.store-page .item-wrap .item-card img {
+    width: 100%;
+    height: 300px;
+    border-radius: 12px;
+    box-shadow: 0 0 4px rgba(0, 0, 0, .25);
+    object-fit: cover;
+}
+
+.store-page .item-wrap .item-card .detail {
+    margin-top: 1.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.store-page .item-wrap .item-card .detail .point {
     padding: 0 1rem;
     color: #fff;
     font-size: 1rem;
@@ -45,7 +76,7 @@
     border-radius: 25px;
 }
 
-.store .disabled {
+.store-page .item-wrap .item-card .detail .disabled {
     padding: 0 1rem;
     color: #fff;
     font-size: 1rem;
@@ -55,35 +86,40 @@
     border-radius: 25px;
 }
 
-.reward-image{
-    object-fit: cover;
-    height: 250px;
-    border-radius: 12px;
+@media screen and (max-width: 1520px) {
+    .store-page .title::before,
+    .store-page .title::after {
+        width: 34%;
+    }
+
 }
 
-.row-reward{
-    margin-top:20px;
+@media screen and (max-width: 1200px) {
+    .store-page .item-wrap {
+        grid-template-columns: repeat(2, 1fr);
+    }
 }
 
-.btn-page{
-    height: 30px;
-    width: 30px;
-    border-radius: 50%;
-    display: inline-block;
-    margin-right: 10px;
-    text-align: center;
-    vertical-align: middle;
-    line-height: 30px;
+@media screen and (max-width: 992px) {
+    .store-page .title::before,
+    .store-page .title::after {
+        width: 30%;
+    }
 }
 
-.display-page{
-    height: 30px;
-    width: 40px;
-    border-radius: 40%;
-    display: inline-block;
-    text-align: center;
-    margin: 10px;
-    line-height: 30px;
-    vertical-align: middle;
+@media screen and (max-width: 768px) {
+    .store-page .title::before,
+    .store-page .title::after {
+        width: 20%;
+    }
+    .store-page .item-wrap {
+        grid-template-columns: 1fr;
+    }
 }
-/* Store page */
+
+@media screen and (max-width: 576px) {
+    .store-page .title::before,
+    .store-page .title::after {
+        width: 0;
+    }
+}

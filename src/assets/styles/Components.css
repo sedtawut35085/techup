@@ -1059,4 +1059,46 @@ div.loader2 {
     justify-content: center;
     align-items: center;
 }
+.tu-modal .tu-modal-card.store {
+    width: 500px;
+}
+.tu-modal .tu-modal-card.store .tu-modal-body {
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+   justify-content: center;
+    gap: 20px;
+}
+.tu-modal .tu-modal-card.store .tu-modal-body img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 12px;
+    box-shadow: 0 0 4px rgba(0, 0, 0, 0.25);
+}
+.tu-modal .tu-modal-card.store .tu-modal-body .detail {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+.tu-modal .tu-modal-card.store .tu-modal-body .detail p{
+    display: flex;
+    align-items: center;
+    margin: 0;
+}
+.tu-modal .tu-modal-card.store .tu-modal-body .detail p .point {
+    height: 30px;
+    width: fit-content;
+    padding: 0 .8rem;
+    margin: 0 .5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: 700;
+    color: #fff;
+    background-color: #FFA242;
+    border: 3px solid #FED470;
+    border-radius: 15px;
+}
 /* Modal */
