@@ -1035,6 +1035,7 @@ div.loader2 {
 }
 .tu-modal .tu-modal-card.hint .tu-modal-body .vote-section .vote.active {
     color: #FFA242;
+    cursor: not-allowed;
 }
 .tu-modal .tu-modal-card.hint .tu-modal-body .vote-section .vote:hover {
     color: #FFA242;

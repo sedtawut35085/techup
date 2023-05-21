@@ -1,0 +1,180 @@
+.profile-page .body {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 2rem;
+}
+
+.profile-page .body .left-side,
+.profile-page .body .right-side {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.profile-page .body .card-box {
+    width: 100%;
+    padding: 1.5rem;
+    border-radius: 15px;
+    background-color: #fff;
+    box-shadow: 0 0 4px rgba(0, 0, 0, .25) 
+}
+
+.profile-page .body .card-box .title {
+    color: #FFA242;
+    font-size: 1.25rem;
+    font-weight: 700;
+}
+
+.profile-page .body .card-box .coming-soon {
+    width: 100%;
+    height: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #A5A3A2;
+}
+
+.profile-page .body .left-side .card-box.main {
+    padding: 2rem 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.profile-page .body .left-side .card-box.main .profile-img {
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    object-fit: cover;
+    object-position: center;
+    box-shadow: 0 0 8px rgba(0, 0, 0, .25);
+}
+
+.profile-page .body .left-side .card-box.main .techup-id {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #FFA242;
+}
+
+.profile-page .body .left-side .card-box.main .techup-id img {
+    width: 24px;
+    height: 24px;
+    margin-right: .5rem;
+}
+
+.profile-page .body .left-side .card-box.main .point {
+    height: 32;
+    border-radius: 16px;
+    padding: 0 1rem;
+    font-weight: 700;
+    color: #fff;
+    background-color: #FFA242;
+    border: solid 3px #FED470;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.profile-page .body .left-side .card-box.main .edit-profile {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: .5rem;
+    height: 32px;
+    padding: 0 1rem;
+    border-radius: 12px;
+    background-color: #fff;
+    box-shadow: 0 0 4px rgba(0, 0, 0, .25);
+    transition: all .2s;
+}
+
+.profile-page .body .left-side .card-box.main .edit-profile:hover {
+    background-color: #2CACC9;
+    color: #fff;
+}
+
+.profile-page .body .left-side .card-box.info .information {
+    display: flex;
+    justify-content: space-between;
+    padding: .6rem 0;
+}
+
+.profile-page .body .left-side .card-box.info .information .right {
+    color: #A5A3A2;
+}
+
+.profile-page .body .left-side .card-box.info .contact {
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+    padding: .5rem 0;
+}
+
+.profile-page .body .left-side .card-box.info .contact .icon {
+    color: #FFA242;
+}
+
+.profile-page .body .left-side .sign-out {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: .4rem;
+    height: 42px;
+    width: 100%;
+    border-radius: 15px;
+    background-color: #fff;
+    color: #FF333D;
+    box-shadow: 0 0 4px rgba(0, 0, 0, .25);
+    border: none;
+    outline: none;
+    font-weight: 700;
+    font-size: 1.125rem;
+    transition: all .2s;
+}
+
+.profile-page .body .left-side .sign-out:hover {
+    background-color: #FF333D;
+    color: #fff;
+}
+
+.profile-page .body .right-side {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.edit-profile-page .body .profile-image img {
+    width: 300px;
+    height: 300px;
+    border-radius: 50%;
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.25);
+    object-fit: cover;
+}
+
+.edit-profile-page .body .profile-image input {
+    display: none;
+}
+
+.edit-profile-page .body .profile-image label {
+    cursor: pointer;
+    height: 40px;
+    font-size: 1.125rem;
+    color: #FFA242;
+    background-color: #fff;
+    margin-top: -18px;
+    padding: 0 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.25);
+    border-radius: 20px;
+    transition: all .2s;
+}
+
+.edit-profile-page .body .profile-image label:hover {
+    background-color: #FFA242;
+    box-shadow: 0 0 12px rgba(0, 0, 0, 0.25);
+    color: #fff;
+}

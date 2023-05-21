@@ -6,6 +6,8 @@ import AWS from 'aws-sdk'
 import { getWeeklyQuestion } from '../../service/weeklyQuestion';
 import { getEachSubmissionFromUserIDandQuestionID } from '../../service/submission';
 import { getStudent } from '../../service/student';
+import CommentDiscussQuestion from "../../components/comment/commentDiscussQuestion"
+import { getWeeklyComment , addComment } from '../../service/discussQuestion';
 
 
 import { fileSize, fileType, download, downloadAll } from '../../assets/js/helper'
@@ -47,6 +49,7 @@ function Weekly() {
     const [isLoading, setIsLoading] = useState(true);
     const [isLoading1, setIsLoading1] = useState(true);
     const [isLoading3, setIsLoading3] = useState(true);
+    const [isLoading4, setIsLoading4] = useState(true);
     
     
 
@@ -62,56 +65,57 @@ function Weekly() {
 
     const [commentDiscuss, setCommentDiscuss] = useState("");
     const [discuss, setDiscuss] = useState([
-        {
-            id: "1",
-            detail: "Nibh et faucibus enim odio purus feugiat tempor massa libero. Luctus montes, vitae eget consequat morbi lacus, nibh commodo. Sed cras cursus sed neque purus elit vitae et non. Proin massa ut velit duis ullamcorper. Arcu aliquet elementum non volutpat ipsum massa egestas mauris nunc.",
-            vote: 50,
-            owner: {
-                name: "Wattanasiri Uparakkitanon",
-            },
-            datetime: "11/5/2022, 00:00",
-            reply: [
-                {
-                    id: "2",
-                    detail: "Nibh et faucibus enim odio purus feugiat tempor massa libero. Luctus montes, vitae eget consequat morbi lacus, nibh commodo. Sed cras cursus sed neque purus elit vitae et non. Proin massa ut velit duis ullamcorper. Arcu aliquet elementum non volutpat ipsum massa egestas mauris nunc.",
-                    vote: 20,
-                    owner: {
-                        name: "Wattanasiri Uparakkitanon",
-                    },
-                    datetime: "11/5/2022, 00:00",
-                },
-                {
-                    id: "3",
-                    detail: "Nibh et faucibus enim odio purus feugiat tempor massa libero. Luctus montes, vitae eget consequat morbi lacus, nibh commodo. Sed cras cursus sed neque purus elit vitae et non. Proin massa ut velit duis ullamcorper. Arcu aliquet elementum non volutpat ipsum massa egestas mauris nunc.",
-                    vote: 10,
-                    owner: {
-                        name: "Wattanasiri Uparakkitanon",
-                    },
-                    datetime: "11/5/2022, 00:00",
-                }
-            ]
-        },
-        {
-            id: "4",
-            detail: "Nibh et faucibus enim odio purus feugiat tempor massa libero. Luctus montes, vitae eget consequat morbi lacus, nibh commodo. Sed cras cursus sed neque purus elit vitae et non. Proin massa ut velit duis ullamcorper. Arcu aliquet elementum non volutpat ipsum massa egestas mauris nunc.",
-            vote: 40,
-            owner: {
-                name: "Wattanasiri Uparakkitanon",
-            },
-            datetime: "11/5/2022, 00:00",
-            reply: [
-                {
-                    id: "5",
-                    detail: "Nibh et faucibus enim odio purus feugiat tempor massa libero. Luctus montes, vitae eget consequat morbi lacus, nibh commodo. Sed cras cursus sed neque purus elit vitae et non. Proin massa ut velit duis ullamcorper. Arcu aliquet elementum non volutpat ipsum massa egestas mauris nunc.",
-                    vote: 20,
-                    owner: {
-                        name: "Wattanasiri Uparakkitanon",
-                    },
-                    datetime: "11/5/2022, 00:00",
-                }
-            ]
-        }
-    ]);    
+        // {
+        //     id: "1",
+        //     detail: "Nibh et faucibus enim odio purus feugiat tempor massa libero. Luctus montes, vitae eget consequat morbi lacus, nibh commodo. Sed cras cursus sed neque purus elit vitae et non. Proin massa ut velit duis ullamcorper. Arcu aliquet elementum non volutpat ipsum massa egestas mauris nunc.",
+        //     vote: 50,
+        //     owner: {
+        //         name: "Wattanasiri Uparakkitanon",
+        //     },
+        //     datetime: "11/5/2022, 00:00",
+        //     reply: [
+        //         {
+        //             id: "2",
+        //             detail: "Nibh et faucibus enim odio purus feugiat tempor massa libero. Luctus montes, vitae eget consequat morbi lacus, nibh commodo. Sed cras cursus sed neque purus elit vitae et non. Proin massa ut velit duis ullamcorper. Arcu aliquet elementum non volutpat ipsum massa egestas mauris nunc.",
+        //             vote: 20,
+        //             owner: {
+        //                 name: "Wattanasiri Uparakkitanon",
+        //             },
+        //             datetime: "11/5/2022, 00:00",
+        //         },
+        //         {
+        //             id: "3",
+        //             detail: "Nibh et faucibus enim odio purus feugiat tempor massa libero. Luctus montes, vitae eget consequat morbi lacus, nibh commodo. Sed cras cursus sed neque purus elit vitae et non. Proin massa ut velit duis ullamcorper. Arcu aliquet elementum non volutpat ipsum massa egestas mauris nunc.",
+        //             vote: 10,
+        //             owner: {
+        //                 name: "Wattanasiri Uparakkitanon",
+        //             },
+        //             datetime: "11/5/2022, 00:00",
+        //         }
+        //     ]
+        // },
+        // {
+        //     id: "4",
+        //     detail: "Nibh et faucibus enim odio purus feugiat tempor massa libero. Luctus montes, vitae eget consequat morbi lacus, nibh commodo. Sed cras cursus sed neque purus elit vitae et non. Proin massa ut velit duis ullamcorper. Arcu aliquet elementum non volutpat ipsum massa egestas mauris nunc.",
+        //     vote: 40,
+        //     owner: {
+        //         name: "Wattanasiri Uparakkitanon",
+        //     },
+        //     datetime: "11/5/2022, 00:00",
+        //     reply: [
+        //         {
+        //             id: "5",
+        //             detail: "Nibh et faucibus enim odio purus feugiat tempor massa libero. Luctus montes, vitae eget consequat morbi lacus, nibh commodo. Sed cras cursus sed neque purus elit vitae et non. Proin massa ut velit duis ullamcorper. Arcu aliquet elementum non volutpat ipsum massa egestas mauris nunc.",
+        //             vote: 20,
+        //             owner: {
+        //                 name: "Wattanasiri Uparakkitanon",
+        //             },
+        //             datetime: "11/5/2022, 00:00",
+        //         }
+        //     ]
+        // }
+    ]);
+    const rootComments = discuss.filter( (discuss) => discuss.ParentID === null)    
     const [showReply, setShowReply] = useState([]);
     
     function toggleReply(id) {
@@ -305,8 +309,6 @@ function Weekly() {
         let resUser = await getStudent();
         setInFoUser(resUser[0])
         setIsLoading3(false)
-        // setIsLoading(isLoading-1)
-        // setIsLoading(isLoading.splice(isLoading.indexOf(3), 1))
     }
 
     async function loadWeeklyQuestion(){
@@ -315,27 +317,18 @@ function Weekly() {
         setTopicID(res[0].TopicID);
         setQuestionID(res[0].QuestionID);
         setIsLoading(false);
-        // loadEachSubmissionFromUserIDandQuestionID();
     }
 
-    // async function loadEachSubmissionFromUserIDandQuestionID() {
-    //     console.log("start load submission");
-    //     let res = await getEachSubmissionFromUserIDandQuestionID(QuestionID);
-    //     if(res[0] === undefined){
-    //         setIsDone(false)
-    //     }else{
-    //         setIsDone(true)
-    //         setInFoSubmit(res[0])
-    //         setFileListSubmit(JSON.parse(res[0].FileAttachment))
-    //         if(res[0].Score === null){
-    //             setIsDoneEstimate(false)
-    //         }else{
-    //             setIsDoneEstimate(true)
-    //         }
-    //     }
-    //     setIsLoading1(false)
-    //     console.log("end load submission");
-    // }
+    function getReply(discussQuestionId) {
+        return discuss.filter(discuss => discuss.ParentID === discussQuestionId).sort(
+            (a,b) => new Date(a.Date).getTime() - new Date(b.Date).getTime())
+    }
+
+    async function getDiscuss() {
+        let res = await getWeeklyComment();
+        setDiscuss(res)
+        setIsLoading4(false)
+    }
 
     async function loadWeeklySubmission(){
         let res = await getWeeklySubmission();
@@ -358,6 +351,7 @@ function Weekly() {
         loadWeeklyQuestion();
         loadWeeklySubmission();
         getInfoUser();
+        getDiscuss();
     }, [])
 
     return (
@@ -485,7 +479,15 @@ function Weekly() {
                                             <option>Oldest</option>
                                         </select>
                                     </div>
-                                    {
+                                    {/* {
+                                        rootComments.map((comment, key) => (
+                                            <CommentDiscussQuestion
+                                                key={comment.DiscussQuestionID}
+                                                comment={comment}
+                                                replies={getReply(comment.DiscussQuestionID)}></CommentDiscussQuestion>
+                                        ))
+                                    } */}
+                                    {/* {
                                         discuss.map((comment, key) => (
                                             <div className="comment" key={key}>
                                                 <div className="comment-owner">
@@ -558,7 +560,7 @@ function Weekly() {
                                                 </div>
                                             </div>
                                         ))
-                                    }
+                                    } */}
                                 </div>
                                 <div className={`submission ${menuActive === 3 ? "active" : ""}`}>
                                     {

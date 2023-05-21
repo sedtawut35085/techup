@@ -12,6 +12,7 @@ import "./assets/styles/Ranking.css"
 import "./assets/styles/Question.css"
 import "./assets/styles/Weekly.css"
 import "./assets/styles/Discuss.css"
+import "./assets/styles/Profile.css"
 import 'react-toastify/dist/ReactToastify.css';
 import 'aos/dist/aos.css';
 import './assets/styles/Admin.css'
@@ -44,11 +45,13 @@ import DiscussDetail from "./pages/Discuss/detail.js"
 import AddDiscuss from "./pages/Discuss/addDiscuss.js"
 import AdminHomepage from "./pages/Admin/Home"
 import AdminUserpage from "./pages/Admin/Page/User/DescUser"
+import EditProfile from "./pages/Profile/editProfile.js"
 
 import Discuss from "./pages/Discuss/index.js"
 import Ranking from "./pages/Ranking/index.js"
 import Store from "./pages/Store/index.js"
 import Weekly from "./pages/Weekly/index.js"
+import Profile from "./pages/Profile/index.js"
 
 function App() {
   AOS.init({once: true});
@@ -83,6 +86,8 @@ function App() {
             <Route path="/ranking" element={<Ranking />}/>
             <Route path="/store" element={<Store />}/>
             <Route path="/weekly" element={<Weekly />}/>
+            <Route path="/profile/:id" element={<Profile />}/>
+            <Route path="/profile/:id/edit" element={<EditProfile />}/>
           </Route>
         </Routes>
       </BrowserRouter>
