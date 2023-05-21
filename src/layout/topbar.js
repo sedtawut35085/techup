@@ -48,12 +48,18 @@ const TopBar = ({currentEmailUser,isProfessor}) => {
     }
 
     async function loadinfoUser() {
+       
         let resUser
-        if(currentEmailUser.includes('@mail.kmutt.ac.th')){
+        await Auth.currentAuthenticatedUser()
+        .then(async(response) => {
+          if(response.attributes.email.includes('@mail.kmutt.ac.th')){
             resUser = await getStudent();
-        }else{
+          }else{
             resUser = await getProfessor();
-        }
+          }
+        })
+        .catch(() => {
+        }) 
         setInFoUser(resUser[0]);
     }
 
@@ -181,7 +187,7 @@ const TopBar = ({currentEmailUser,isProfessor}) => {
                                     } 
                                     
                                     {
-                                        !currentEmailUser.includes('@mail.kmutt.ac.th') === true
+                                        currentEmailUser.includes('@mail.kmutt.ac.th') === true
                                         ?
                                             <div className="nav">
                                                 <div className="point">{inFoUser.Point} P</div>

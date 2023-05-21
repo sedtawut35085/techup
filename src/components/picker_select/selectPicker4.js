@@ -16,7 +16,6 @@ const SelectPicker4 = ({id, data, defaultValue, setValue, placeholder}) => {
 
     function selectOption(option) {
         setIsShow(false)
-        console.log(option.TopicID)
         setSelected(option.TopicID)
         setValue(option.TopicID)
     }
@@ -25,9 +24,9 @@ const SelectPicker4 = ({id, data, defaultValue, setValue, placeholder}) => {
         <div className="tu-selectpicker" onMouseLeave={() => setIsShow(false)}>
             <div className="tu-selectpicker-box" id={"tu-selectpicker-box-" + id} onClick={() => toggleOption()}>
                 {
-                    selected.label === "" && selected.data === ""
+                    selected === "" 
                     ?   <span className="color-gray2">{placeholder}</span>
-                    :   <span>{selected.label}</span>
+                    :   <span>{selected}</span>
                 } 
                 <div className="icon">
                     <FaChevronDown style={isShow ? {transform: "rotate(0.5turn)"} : {}} />
@@ -35,7 +34,7 @@ const SelectPicker4 = ({id, data, defaultValue, setValue, placeholder}) => {
             </div>
             <div className={"tu-selectpicker-options " + (isShow ? "showed" : "")} style={{width: width + 40}}>
                 {data.map((item, key) => (
-                    <div key={key} className={"option " + (item.TopicID === selected.label ? "selected" : "")} onClick={() => selectOption(item)}>{item.TopicID}</div>
+                    <div key={key} className={"option " + (item.TopicID === selected ? "selected" : "")} onClick={() => selectOption(item)}>{item.TopicID}</div>
                 ))}
             </div>
         </div>

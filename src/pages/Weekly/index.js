@@ -48,6 +48,7 @@ function Weekly() {
     const [isLoading1, setIsLoading1] = useState(true);
     const [isLoading3, setIsLoading3] = useState(true);
     
+    
 
     const [inFoQuestion, setInFoQuestion] = useState("")
     const [inFoUser, setInFoUser] = useState("")
@@ -408,7 +409,7 @@ function Weekly() {
                             </div>
                             <div className="right-side">
                                 <div className="action">
-                                    <button 
+                                    {/* <button 
                                         className="btn-5"
                                         onClick={() => {
                                             if(isHintShow) {
@@ -419,7 +420,7 @@ function Weekly() {
                                         }}
                                     >
                                         <TbBulb size={22} className="me-1" />Hint
-                                    </button>
+                                    </button> */}
                                 </div>
                                 <div className="point">
                                     {
