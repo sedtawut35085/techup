@@ -29,3 +29,70 @@ export async function getRewards() {
     )
     return response.data
 }
+
+export async function addToRedeemHistory(reward){
+    userEmail = await getCurrentUserId()
+    await axios(
+        {
+            method:'post',
+            url: `${baseUrl}/store`,
+            headers: { 
+                'Content-Type': 'text/plain'
+            },
+            data:{
+                "Type" : "addToHistory",
+                "UserEmail" : userEmail,
+                "RewardID" : reward.RewardID,
+                "UsePoint" : reward.Point
+            }
+        }
+    ).then((res) => {
+        response = res
+    }).catch((err) => {
+        response = err
+    })
+    return response
+}
+
+export async function addToLogPoint(reward){
+    userEmail = await getCurrentUserId()
+    await axios(
+        {
+            method:'post',
+            url: `${baseUrl}/store`,
+            headers: { 
+                'Content-Type': 'text/plain'
+            },
+            data:{
+                "Type" : "addToLogPoint",
+                "UserEmail" : userEmail,
+                "Point" : reward.Point
+            }
+        }
+    ).then((res) => {
+        response = res
+    }).catch((err) => {
+        response = err
+    })
+    return response
+}
+
+export async function updateUserPoint(reward){
+    userEmail = await getCurrentUserId()
+    await axios(
+        {
+            method:'patch',
+            url: `${baseUrl}/store`,
+            params:{
+                "UserEmail" : userEmail,
+                "Point" : reward.Point
+            }
+        }
+    ).then((res) => {
+        response = res
+    }).catch((err) => {
+        response = err
+    })
+    return response
+}
+

@@ -1,54 +1,27 @@
-import React, { useEffect, useLayoutEffect, useState } from 'react';
-import { useNavigate , useLocation } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import Moment from 'moment'
 import AWS from 'aws-sdk'
 import { getWeeklyQuestion } from '../../service/weeklyQuestion';
-import { getEachSubmissionFromUserIDandQuestionID } from '../../service/submission';
-import { getStudent } from '../../service/student';
-
 
 import { fileSize, fileType, download, downloadAll } from '../../assets/js/helper'
-import { saveSubmission } from '../../service/submission'
-import { getWeeklySubmission } from '../../service/submission';
 
 import BackgroundIcon from '../../components/background/bgIcons.js';
 
 import { HiOutlineCalendar, HiOutlineExclamation } from 'react-icons/hi';
 import { TbCalendarTime, TbBulb, TbSwords, TbLock, TbFileZip, TbInfoCircle, TbFileDescription, TbMessage2, TbFileUpload, TbMessageCircle, TbPaperclip, TbTrash, } from 'react-icons/tb'
-import { IoCloseCircle, IoCaretUp, IoCaretDown } from 'react-icons/io5'
-import { BsReplyAll, BsCheckLg } from 'react-icons/bs'
+import { IoCaretUp, IoCaretDown } from 'react-icons/io5'
+import { BsReplyAll } from 'react-icons/bs'
 
-const S3_BUCKET ='techup-file-upload-storage';
-const REGION ='ap-southeast-1';
-const s3Subfolder = 'data-submit';
-
-AWS.config.update({
-    accessKeyId: 'AKIA6PZPD4TPJJAKDW6Q',
-    secretAccessKey: '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'
-})
-
-const myBucket = new AWS.S3({
-    params: { Bucket: S3_BUCKET},
-    region: REGION,
-})
-
-function Weekly() {
-    
-    // const location = useLocation();
+function WeeklyProf() {
+      
     const [topicID , setTopicID] = useState("");
-    const [QuestionID , setQuestionID] = useState("");
 
     const navigate = useNavigate()
 
-    const [inFoSubmit, setInFoSubmit] = useState("")
-
     const [loading, setLoading] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
-    const [isLoading1, setIsLoading1] = useState(true);
-    const [isLoading3, setIsLoading3] = useState(true);
-    
-    
 
     const [inFoQuestion, setInFoQuestion] = useState("")
     const [inFoUser, setInFoUser] = useState("")
@@ -58,7 +31,6 @@ function Weekly() {
     const [hintModal, setHintModal] = useState(false);
     const [voteModal, setVoteModal] = useState(false);
     const [isDone, setIsDone] = useState(false);
-    const [isDoneEstimate, setIsDoneEstimate] = useState(false);
 
     const [commentDiscuss, setCommentDiscuss] = useState("");
     const [discuss, setDiscuss] = useState([
@@ -141,239 +113,42 @@ function Weekly() {
         setFileList(array)
     };
 
-    const uploadFile = async (file) => {
-        setLoading(true)
-        const convertFiles = []
-
-        if(file.length === 0 && commentSubmission === "") {
-            toast.error('Please enter answer!', {
-                position: "bottom-left",
-                autoClose: 2000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                theme: "light",
-            });
-            setLoading(false)
-        } else if (file.length === 0) {            
-            var body = {
-                "StudentEmail": inFoUser.UserEmail,
-                "FirstName": inFoUser.FirstName,
-                "SurName": inFoUser.SurName,
-                "DateSubmit": Moment(new Date()).format('YYYY-MM-DD'),
-                "DueDate": Moment(inFoQuestion.DueDate).format('YYYY-MM-DD'),
-                "Status":"UnChecked",
-                "QuestionID": inFoQuestion.QuestionID,
-                "QuestionName":inFoQuestion.QuestionName,
-                "TopicID": inFoQuestion.TopicID,
-                "TopicName": inFoQuestion.TopicName,
-                "Answer": commentSubmission
-            }
-            let ressavesubmit = saveSubmission(body)
-                .then((res)=>{    
-                    setLoading(false)
-                    toast.success('Success submission!', {
-                        position: "bottom-left",
-                        autoClose: 2000,
-                        hideProgressBar: false,
-                        closeOnClick: true,
-                        pauseOnHover: true,
-                        draggable: true,
-                        theme: "light",
-                    });                
-                    navigate(`/topic/${topicID}`)  
-                })
-                .catch((err) => {
-                    toast.error('Server error, please try again', {
-                        position: "bottom-left",
-                        autoClose: 2000,
-                        hideProgressBar: false,
-                        closeOnClick: true,
-                        pauseOnHover: true,
-                        draggable: true,
-                        theme: "light",
-                    });
-                    setLoading(false)
-                })
-        } else if(file.length !== 0){
-            file.forEach(async (files, i) => {
-                let currentDate = new Date()
-                currentDate = Moment(currentDate).format('YYYY-MM-DD:HH-mm-ss')
-                const fileName = currentDate + "_" + files.name
-                const params = {
-                    ACL: 'public-read',
-                    Body: files,
-                    Bucket: S3_BUCKET,
-                    Key: `${s3Subfolder}/${fileName}`
-                };
-                let name = files.name
-                let size = files.size
-                const convertFile = await myBucket.upload(params).promise().then((res) => {
-                    convertFiles.push(
-                    {
-                        "name" : name,
-                        "size" : size,
-                        "Url" : res.Location
-                    })
-                    i = i+1
-                    if(i === file.length){
-                        setTimeout(() => {
-                            var body = {
-                                "StudentEmail": inFoUser.UserEmail,
-                                "FirstName": inFoUser.FirstName,
-                                "SurName": inFoUser.SurName,
-                                "DateSubmit": Moment(new Date()).format('YYYY-MM-DD'),
-                                "DueDate": Moment(inFoQuestion.DueDate).format('YYYY-MM-DD'),
-                                "Status":"UnChecked",
-                                "FileAttachment": convertFiles,
-                                "QuestionID": inFoQuestion.QuestionID,
-                                "QuestionName":inFoQuestion.QuestionName,
-                                "TopicID": inFoQuestion.TopicID,
-                                "TopicName": inFoQuestion.TopicName,
-                                "Answer": commentSubmission
-                            }
-                            let ressavesubmit = saveSubmission(body)
-                                .then((res)=>{
-                                    setLoading(false)
-                                    toast.success('Success submission!', {
-                                        position: "bottom-left",
-                                        autoClose: 2000,
-                                        hideProgressBar: false,
-                                        closeOnClick: true,
-                                        pauseOnHover: true,
-                                        draggable: true,
-                                        theme: "light",
-                                    });     
-                                    navigate(`/topic/${topicID}`)
-                                })
-                                .catch((err) => {
-                                    toast.error('Server error, please try again', {
-                                        position: "bottom-left",
-                                        autoClose: 2000,
-                                        hideProgressBar: false,
-                                        closeOnClick: true,
-                                        pauseOnHover: true,
-                                        draggable: true,
-                                        theme: "light",
-                                    });
-                                    setLoading(false)
-                                })
-                          }, 3000);
-                    }
-                });
-            });
-        } else {
-            toast.error('Server error, please try again', {
-                position: "bottom-left",
-                autoClose: 2000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                theme: "light",
-            });
-        }
-        
-    }
     const files = fileList ? [...fileList] : [];
 
     const [voteShow, setVoteShow] = useState("")
     const [countVote, setCountVote] = useState(19)
 
     function showHint(vote) {
-        if(vote === "Y" && voteShow !== "Y") {
-            setVoteShow(vote)
-            setCountVote(20)            
-            setIsHintShow(true)
-            setVoteModal(false)
-            setHintModal(true)
-        } else if(vote === "N" && voteShow !== "N") {
-            setVoteShow(vote)
-            setCountVote(18)
-        } else {
-            setVoteShow("")
-            setCountVote(19)
-        }
+        setIsHintShow(true)
     }
 
     setTimeout(() => {
         setIsLoading(false)
     }, 200)
 
-    async function getInfoUser() {
-        let resUser = await getStudent();
-        setInFoUser(resUser[0])
-        setIsLoading3(false)
-        // setIsLoading(isLoading-1)
-        // setIsLoading(isLoading.splice(isLoading.indexOf(3), 1))
-    }
-
     async function loadWeeklyQuestion(){
-        let res = await getWeeklyQuestion()
+        let res = await getWeeklyQuestion();
         setInFoQuestion(res[0]);
-        setTopicID(res[0].TopicID);
-        setQuestionID(res[0].QuestionID);
+        setTopicID(res[0].TopicID)
         setIsLoading(false);
-        // loadEachSubmissionFromUserIDandQuestionID();
-    }
-
-    // async function loadEachSubmissionFromUserIDandQuestionID() {
-    //     console.log("start load submission");
-    //     let res = await getEachSubmissionFromUserIDandQuestionID(QuestionID);
-    //     if(res[0] === undefined){
-    //         setIsDone(false)
-    //     }else{
-    //         setIsDone(true)
-    //         setInFoSubmit(res[0])
-    //         setFileListSubmit(JSON.parse(res[0].FileAttachment))
-    //         if(res[0].Score === null){
-    //             setIsDoneEstimate(false)
-    //         }else{
-    //             setIsDoneEstimate(true)
-    //         }
-    //     }
-    //     setIsLoading1(false)
-    //     console.log("end load submission");
-    // }
-
-    async function loadWeeklySubmission(){
-        let res = await getWeeklySubmission();
-        if(res[0] === undefined){
-            setIsDone(false)
-        }else{
-            setIsDone(true)
-            setInFoSubmit(res[0])
-            setFileListSubmit(JSON.parse(res[0].FileAttachment))
-            if(res[0].Score === null){
-                setIsDoneEstimate(false)
-            }else{
-                setIsDoneEstimate(true)
-            }
-        }
-        setIsLoading1(false)
     }
 
     useEffect(() => {
         loadWeeklyQuestion();
-        loadWeeklySubmission();
-        getInfoUser();
     }, [])
 
     return (
         <div className="weekly-page">
             <div className="cover-container">
                 {
-                    isLoading && isLoading1 && 
-                    // isLoading3 &&
+                    isLoading &&
                     <div className="loader2">
                         <div className="lds-roller"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div>
                         </div>
                     </div>
                 }   
                 {
-                    !isLoading && !isLoading1 && 
-                    // !isLoading3 &&
+                    !isLoading &&
                     <>                    
                     <div data-aos="fade-left" data-aos-duration="1000" className="body">
                         <div className="top-section">
@@ -409,7 +184,7 @@ function Weekly() {
                             </div>
                             <div className="right-side">
                                 <div className="action">
-                                    {/* <button 
+                                    <button 
                                         className="btn-5"
                                         onClick={() => {
                                             if(isHintShow) {
@@ -420,10 +195,10 @@ function Weekly() {
                                         }}
                                     >
                                         <TbBulb size={22} className="me-1" />Hint
-                                    </button> */}
+                                    </button>
                                 </div>
                                 <div className="point">
-                                    {
+                                    {/* {
                                         isDone
                                         ?  
                                         <>
@@ -433,8 +208,8 @@ function Weekly() {
                                             }
                                         </>
                                         :   <span>{inFoQuestion.Point} P</span>
-                                    }                                
-                                    {/* <span>{inFoQuestion.Point} P</span> */}
+                                    }                                 */}
+                                    <span>{inFoQuestion.Point} P</span>
                                 </div>
                             </div>
                         </div>
@@ -567,22 +342,22 @@ function Weekly() {
                                                 <span className="fw-700 f-md">Comment from professor</span>
                                                 <div className="sp-vertical"></div>
                                                 <div className="comment-box-edit">
-                                                    {
+                                                    {/* {
                                                         inFoSubmit.CommentFromProf === null
                                                         ?   <p>No comment</p>
                                                         :   <p>{inFoSubmit.CommentFromProf}</p>
-                                                    }                                                
+                                                    }                                                 */}
                                                     <p className="color-gray2">No comment</p>
                                                 </div>
                                                 <div className="divider my-4"></div>
                                                 <span className="fw-700 f-md">Your submission</span>
                                                 <div className="sp-vertical"></div>
                                                 <div className="comment-box-edit">
-                                                    {
+                                                    {/* {
                                                         inFoSubmit.Answer === null
                                                         ?   <p>No Text Answer</p>
                                                         :   <p>{inFoSubmit.Answer}</p>
-                                                    }                                                
+                                                    }                                                 */}
                                                     <p className="color-gray2">No Text Answer</p>
                                                 </div>
                                                 <div className="attachment">
@@ -691,4 +466,4 @@ function Weekly() {
     );
 }
 
-export default Weekly;
+export default WeeklyProf;

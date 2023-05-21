@@ -23,7 +23,6 @@ function SignInForm() {
   const [isForgetPasswordMessage, setIsForgetPasswordMessage] = useState(false);
   const [isErrorSignIn, setIsErrorSignIn] = useState(false);
   const [keep, setKeep] = useState(false);
-
   const [errors, setErrors] = useState([])
   const [errorConfirmPasswordMessage, setErrorConfirmPasswordMessage] = useState(null);
   const [errorPasswordMessage, setErrorPasswordMessage] = useState(null);
@@ -413,11 +412,11 @@ function SignInForm() {
                             <div className='f-xs color-5'> {errorCodeMessage}</div>
                         </div>
                       <div className="form-group pb-4">
-                            <label className="f-md color-black pb-2" htmlFor="password">New Password</label>
+                            <label className="f-md color-black pb-2" htmlFor="NewPassword">New Password</label>
                             <input
                             required
                             type="password"
-                            id="newpassword"
+                            id="NewPassword"
                             className="sign-form-input"
                             value={newPassword}
                             onChange={(e) => checkNewPassword(e)}

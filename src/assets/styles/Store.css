@@ -45,6 +45,16 @@
     border-radius: 25px;
 }
 
+.store .disabled {
+    padding: 0 1rem;
+    color: #fff;
+    font-size: 1rem;
+    font-weight: 600;
+    background-color: grey;
+    border: 3px solid #FED470;
+    border-radius: 25px;
+}
+
 .reward-image{
     object-fit: cover;
     height: 250px;

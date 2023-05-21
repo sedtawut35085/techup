@@ -10,7 +10,8 @@ import { TbListDetails } from 'react-icons/tb'
 import { getAllSubmissionFromProfessorID } from '../../service/submission.js';
 
 function Professor() {
-
+    const [isLoading, setIsLoading] = useState(true)
+    const [isLoading1, setIsLoading1] = useState(true)
     const [allTopic, setAllTopic] = useState([])
     const [recentSubmission, setRecentSubmission] = useState([])
     const navigate = useNavigate()
@@ -36,15 +37,25 @@ function Professor() {
     async function getTopics() {
         let res = await getTopicfromProfessor();
         setAllTopic(res);
+        setIsLoading(false)
     }
 
     async function loadAllSubmissionFromProfessorID() {
         let res = await getAllSubmissionFromProfessorID(0,5);
         setRecentSubmission(res);
+        setIsLoading1(false)
     }
 
     return (
         <div className="homepageprof">
+            {
+            (isLoading === true) && (isLoading1 === true) &&
+            <div className="loader2">
+                <div className="lds-roller"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div>
+                </div>
+            </div>
+            }
+            { (isLoading === false) && (isLoading1 === false) &&
             <div className="cover-container">
             <div className="homepageprof-main d-flex fd-col">                           
                 <span className="mt-3 f-xl fw-700"><TbListDetails className="color-1 me-2" />My list</span>
@@ -125,6 +136,7 @@ function Professor() {
                 </div>                     
             </div>
             </div>
+            }
             <div className="background-container"></div>
             <BackgroundIcon />
         </div>
