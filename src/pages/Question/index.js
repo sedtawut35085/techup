@@ -2,23 +2,18 @@ import React, { ChangeEvent, useState , useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import $ from 'jquery'
 import { ToastContainer, toast } from 'react-toastify';
-
 import { fileSize, fileType, download, downloadAll } from '../../assets/js/helper'
 import { FaChevronLeft } from 'react-icons/fa';
 import { TbCalendarTime, TbBulb, TbSwords, TbLock, TbFileZip, TbInfoCircle, TbFileDescription, TbMessage2, TbFileUpload, TbMessageCircle, TbPaperclip, TbTrash, } from 'react-icons/tb'
 import { GiFlyingFlag } from 'react-icons/gi'
 import { BsReplyAll, BsCheckLg } from 'react-icons/bs'
 import { HiOutlineExclamation } from 'react-icons/hi'
-
 import { IoCloseCircle, IoCaretUp, IoCaretDown } from 'react-icons/io5'
-
 import { getQuestion, updateQuestion } from '../../service/question';
 import { getComment , addComment } from '../../service/discussQuestion';
 import { saveSubmission } from '../../service/submission'
 import { getStudent } from '../../service/student';
-
 import BackgroundIcon from '../../components/background/bgIcons.js';
-
 import Moment from 'moment'
 import { getEachSubmissionFromUserIDandQuestionID } from '../../service/submission'
 import { convertToBase64, uploadPhoto } from '../../service';
