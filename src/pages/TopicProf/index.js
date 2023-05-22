@@ -284,9 +284,10 @@ function TopicProf() {
                         </div>
                     </div>
                     <div className="question-section">
-                        <span className="f-xl fw-700">Question</span>
-                        <div className="top-question-section mt-4">
-                            <div className="filter">
+                        <span className="f-xl fw-700 pe-2 pt-2">Question</span>
+                        <Link className="btn-addquestion p-2" to={`/professor/${TopicID}/addquestion`} >Add Question + </Link> 
+                        <div className="top-question-section mt-0">
+                            {/* <div className="filter">
                                 <SelectPicker2
                                 id='status'
                                 placeholder="Status"
@@ -310,8 +311,8 @@ function TopicProf() {
                                     onChange={(e) => setSearch(e.target.value)}
                                     />
                                 </div>
-                            </div>
-                            <Link className="btn-addquestion" to={`/professor/${TopicID}/addquestion`} >Add Question + </Link> 
+                            </div> */}
+                            
                         </div>
                         <div className="question-table">
                             <table className="table">
