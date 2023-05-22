@@ -78,9 +78,10 @@ function AddQuestion() {
                 "Point": point,
                 "DueDate": `${year}-${month}-${day}`,
                 "Hint": hint
-            }
+            } 
             let res = await saveQuestionForEachTopic(bodydata)
             if(res === undefined){
+                setErrorsSubmit(true)
             }else{
                 navigate(`/professor/${TopicID}`)
             }
