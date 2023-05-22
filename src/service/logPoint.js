@@ -7,8 +7,30 @@ let response
 let accessToken
 let userEmail
 
-export async function addPointFromProfessorToLogPoint(point){
+export async function getLogPoint() {
     userEmail = await getCurrentUserId()
+    await axios(
+        {
+            method:'get',
+            url: `${baseUrl}/log-point`,
+            params:{
+                "UserEmail" : userEmail
+            }
+        }
+    ).then((res) => 
+        {
+            response = res
+        }
+    ).catch((err) => 
+        {
+            response = err
+        }
+    )
+    return response.data
+}
+
+export async function addPointFromProfessorToLogPoint(userEmail,point,desc){
+    const date = new Date()
     await axios(
         {
             method:'post',
@@ -16,7 +38,9 @@ export async function addPointFromProfessorToLogPoint(point){
             params:{
                 "Type" : "addPointFromProfessor",
                 "UserEmail" : userEmail,
-                "Point" : point
+                "Point" : point,
+                "Date" : date,
+                "Description" : desc
             }
         }
     ).then((res) => {

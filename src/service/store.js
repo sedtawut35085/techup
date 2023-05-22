@@ -32,6 +32,7 @@ export async function getRewards() {
 
 export async function addToRedeemHistory(reward){
     userEmail = await getCurrentUserId()
+    const date = new Date()
     await axios(
         {
             method:'post',
@@ -43,7 +44,8 @@ export async function addToRedeemHistory(reward){
                 "Type" : "addToHistory",
                 "UserEmail" : userEmail,
                 "RewardID" : reward.RewardID,
-                "UsePoint" : reward.Point
+                "UsePoint" : reward.Point,
+                "Date" : date
             }
         }
     ).then((res) => {
@@ -56,6 +58,7 @@ export async function addToRedeemHistory(reward){
 
 export async function addToLogPoint(reward){
     userEmail = await getCurrentUserId()
+    const date = new Date()
     await axios(
         {
             method:'post',
@@ -66,7 +69,9 @@ export async function addToLogPoint(reward){
             data:{
                 "Type" : "addToLogPoint",
                 "UserEmail" : userEmail,
-                "Point" : reward.Point
+                "Point" : reward.Point,
+                "Date" : date,
+                "Description" : "Redeem reward : " + reward.RewardName
             }
         }
     ).then((res) => {
