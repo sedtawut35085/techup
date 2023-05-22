@@ -292,11 +292,10 @@ function Topic() {
                                 </div>
                             </div>
                             <div className="question-section">
-                                <div className="d-flex jc-btw ai-center">
+                                <div className="d-flex jc-btw ai-center pb-2">
                                     <span className="f-xl fw-700">Question</span>
-                                   
                                 </div>                                
-                                <div className="top-question-section mt-4">
+                                {/* <div className="top-question-section mt-4">
                                     <div className="filter">
                                         <SelectPicker2
                                         id='status'
@@ -323,7 +322,7 @@ function Topic() {
                                     <button className="btn-4 random">
                                         <span>Random</span><TbArrowsShuffle className="icon"/>
                                     </button>
-                                </div>
+                                </div> */}
                                 <div className="question-table">
                                     <table className="table">
                                         <thead>
