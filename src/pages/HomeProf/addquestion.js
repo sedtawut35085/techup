@@ -77,10 +77,14 @@ function AddQuestion() {
                 "Difficulty": dificulty.data,    
                 "Point": point,
                 "DueDate": `${year}-${month}-${day}`,
-                "Hint": hint,
-                "Status": "normal"
+                "Hint": hint
             }
-            await saveQuestionForEachTopic(bodydata).then(navigate(`/professor/${TopicID}`)).catch()
+            let res = await saveQuestionForEachTopic(bodydata)
+            if(res === undefined){
+            }else{
+                navigate(`/professor/${TopicID}`)
+            }
+            
         }
         setErrors(arrayError);
     } 
