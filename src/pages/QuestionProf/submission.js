@@ -115,7 +115,7 @@ function SubmissionProf() {
                 "updateValue": Number(point) + Number(inFoUser.MostPoint)
             }
             let resupdateMaxpoint = await updateStudentText(bodyForMostPoint,inFoUser.UserEmail)
-            let resAddToLogPoint = await addPointFromProfessorToLogPoint(point)
+            let resAddToLogPoint = await addPointFromProfessorToLogPoint(inFoUser.UserEmail,point,"from Question : " + inFoQuestion.QuestionName)
             navigate(`/professor/${TopicID}/question/${QuestionId}`)
         }
     }
