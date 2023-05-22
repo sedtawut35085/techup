@@ -93,15 +93,15 @@ function SelectRole() {
                 arrayError.push('location');
             }
         }
-        if(role === "professor") {
-            if(professorID.length !== 11){
-                if(studentID === "") {
-                    arrayError.push('profId');
-                } else {
-                    arrayError.push('invalid_profId');
-                }
-            }
-        }
+        // if(role === "professor") {
+        //     if(professorID.length !== 11){
+        //         if(studentID === "") {
+        //             arrayError.push('profId');
+        //         } else {
+        //             arrayError.push('invalid_profId');
+        //         }
+        //     }
+        // }
         if(image == ""){
             arrayError.push('image');
         }
@@ -369,8 +369,8 @@ function SelectRole() {
                                             onKeyPress={(event) => isNumber(event)}
                                             onChange={(event) => setProfessorID(event.target.value)}
                                         />
-                                        {errors.includes("profId") && (<label className="f-xs color-5 pt-2" htmlFor="professor-id">Please enter your Professor ID</label>)}
-                                        {errors.includes("invalid_profId") && (<label className="f-xs color-5 pt-2" htmlFor="professor-id">Please enter a valid Professor ID</label>)}
+                                        {/* {errors.includes("profId") && (<label className="f-xs color-5 pt-2" htmlFor="professor-id">Please enter your Professor ID</label>)}
+                                        {errors.includes("invalid_profId") && (<label className="f-xs color-5 pt-2" htmlFor="professor-id">Please enter a valid Professor ID</label>)} */}
                                 </div>
                                 <div className="col-lg-6 col-md-12 pt-4 px-4">
                                     <label className="f-lg pb-2" htmlFor="gender">Gender<span className="color-5">*</span></label>
