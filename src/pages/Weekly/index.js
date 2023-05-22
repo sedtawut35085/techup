@@ -44,8 +44,8 @@ function Weekly() {
 
     const [inFoSubmit, setInFoSubmit] = useState("")
     const [loading, setLoading] = useState(false);
-    const [isLoading, setIsLoading] = useState(true);
     const [isLoading1, setIsLoading1] = useState(true);
+    const [isLoading2, setIsLoading2] = useState(true);
     const [isLoading3, setIsLoading3] = useState(true);
     const [isLoading4, setIsLoading4] = useState(true);
     
@@ -75,7 +75,7 @@ function Weekly() {
     async function getDiscuss() {
         let res = await getWeeklyComment();
         setDiscuss(res)
-        setIsLoading(false)
+        setIsLoading1(false)
     }
 
     async function addNewComment() {
@@ -255,7 +255,7 @@ function Weekly() {
     async function getInfoUser() {
         let resUser = await getStudent();
         setInFoUser(resUser[0])
-        setIsLoading3(false)
+        setIsLoading2(false)
     }
 
     async function loadWeeklyQuestion(){
@@ -265,10 +265,10 @@ function Weekly() {
             setTopicID(res[0].TopicID);
             setQuestionID(res[0].QuestionID);
             setIsHaveWeekly(true)
-            setIsLoading(false);
+            setIsLoading3(false);
         }else{
             setIsHaveWeekly(false)
-            setIsLoading(false);
+            setIsLoading3(false);
         }
         
         
@@ -289,7 +289,7 @@ function Weekly() {
                 setIsDoneEstimate(true)
             }
         }
-        setIsLoading1(false)
+        setIsLoading4(false)
     }
 
     useEffect(() => {
@@ -301,7 +301,7 @@ function Weekly() {
 
     return (
         <div className="weekly-page">
-             {
+            {
                 loading &&
                 <div className="loader">
                     <div class="lds-ring"><div></div><div></div><div></div><div></div></div>
@@ -309,19 +309,17 @@ function Weekly() {
             }
             <div className="cover-container">
                 {
-                    isLoading && isLoading1 && isLoading3 &&
-                    // isLoading3 &&
+                    (isLoading1 || isLoading2 || isLoading3 || isLoading4) &&
                     <div className="loader2">
                         <div className="lds-roller"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div>
                         </div>
                     </div>
                 }   
                 {
-                    !isLoading && !isLoading1 && !isLoading3 &&
-                    // !isLoading3 &&
+                    !(isLoading1 || isLoading2 || isLoading3 || isLoading4) &&
                     <>  
                     {isHaveWeekly === true ?              
-                    <div data-aos="fade-left" data-aos-duration="1000" className="body">
+                    <div data-aos="fade-up" data-aos-duration="1000" className="body">
                         <div className="top-section">
                             <div className="left-side">
                                 <p className="question-name">{inFoQuestion.QuestionName}</p>
@@ -331,7 +329,6 @@ function Weekly() {
                                     </div>
                                     Weekly question -&nbsp;
                                     <span 
-                                        // className="color-3"
                                         className={`${
                                             inFoQuestion.Difficulty === "Easy"
                                             ? "color-3"
@@ -350,23 +347,17 @@ function Weekly() {
                                         <TbCalendarTime size={24} />
                                     </div>
                                     Due date - {Moment(inFoQuestion.DueDate).format('DD/MM/YYYY')}
-                                    {/* Due date - 01/03/2023 */}
                                 </p>
                             </div>
                             <div className="right-side">
                                 <div className="point">
                                     {
                                         isDone
-                                        ?  
-                                        <>
-                                            { isDoneEstimate
-                                            ? <span>{inFoSubmit.Score*inFoQuestion.Point/100} / {inFoQuestion.Point} P</span>
-                                            :  <span>Waiting for professor to evaluate</span>
-                                            }
-                                        </>
+                                        ? isDoneEstimate
+                                            ?   <span>{inFoSubmit.Score*inFoQuestion.Point/100} / {inFoQuestion.Point} P</span>
+                                            :   <span>Waiting for professor to evaluate</span>
                                         :   <span>{inFoQuestion.Point} P</span>
-                                    }                                
-                                    {/* <span>{inFoQuestion.Point} P</span> */}
+                                    }
                                 </div>
                             </div>
                         </div>

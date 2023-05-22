@@ -64,7 +64,7 @@ function Ranking() {
                                     (key < 3) &&
                                     <div key={key} data-aos="fade-up" data-aos-duration="1000" data-aos-delay={key * 200} className="top-card">
                                         <div className="user-info">                                    
-                                            <Link className="user-profile">
+                                            <Link className="user-profile" to={"/profile/" + user.UserEmail}>
                                                 <img alt="Avatar" onError={defaultProfileImg} src={user.ImageURL}></img>
                                                 <span className="number" id={"no-" + (key + 1)}>
                                                     {
@@ -79,7 +79,7 @@ function Ranking() {
                                             <span className="f-md">{user.TechUpID}</span>
                                             <span className="point">{user.MostPoint} P</span>
                                         </div>
-                                        <Link className="see-profile">
+                                        <Link className="see-profile" to={"/profile/" + user.UserEmail}>
                                             <span><HiOutlineEye size={20} /> View profile</span>
                                         </Link>
                                     </div>
@@ -115,7 +115,7 @@ function Ranking() {
                                                     <td className="number">{key + 1}</td>
                                                     <td className="id">{user.TechUpID}</td>
                                                     <td className="points color-1 fw-600">{user.MostPoint} P</td>
-                                                    <td className="action"><Link className="btn-view-detail">View Profile</Link></td>
+                                                    <td className="action"><Link className="btn-view-detail" to={"/profile/" + user.UserEmail}>View Profile</Link></td>
                                                 </tr>
                                             ))
                                         }
