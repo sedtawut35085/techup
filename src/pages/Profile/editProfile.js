@@ -7,6 +7,7 @@ import { isNumber, defaultProfileImg } from '../../assets/js/helper'
 import SelectPicker from '../../components/picker_select/selectPicker.js'
 import TuDatePicker from '../../components/picker_date/datePicker.js'
 import ContactInfo from '../../components/contact_info/contactInfo.js'
+import { updateUserProfile } from '../../service/student';
 
 import { FaChevronLeft, FaUpload } from 'react-icons/fa';
 
@@ -97,6 +98,21 @@ function EditProfile() {
 
         setErrors(arrayError);
         event.preventDefault();
+    }
+
+    async function editProfile(){
+        let body = {
+            "TechUpID" : techupID,
+            "StudentID" : studentID,
+            "FirstName" : name,
+            "SurName" : surname,
+            "Gender" : gender,
+            "Birthday" : birthday,
+            "Location" :location,
+            "Website" : contacts,
+        }
+        await updateUserProfile(body);
+        navigate("/profile/"+userEmail)
     }
 
     useEffect( () => {
@@ -227,7 +243,7 @@ function EditProfile() {
                             </div>
                             <div className="col-12 pt-4 px-4"><div className="divider"></div></div>
                             <div className="col-12 pt-5 d-flex jc-center">
-                                <button type="submit" className="btn-01">Submit</button>
+                                <button type="submit" className="btn-01" onClick={editProfile()}>Submit</button>
                             </div>
                             {errorsSubmit === false?
                                 <>

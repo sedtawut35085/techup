@@ -87,3 +87,25 @@ export async function updateStudentText (bodydata,StudentEmail) {
       })
   return response
 }
+
+export async function updateUserProfile (body) {
+  accessToken = await getAccessToken()
+  userEmail = await getCurrentUserId()
+  await axios({
+      method: 'put',
+      url: `${baseUrl}/student`,
+      headers: { 
+          'Authorization': accessToken, 
+          'Content-Type': 'text/plain'
+      },
+      params: {
+        "UserEmail" : userEmail
+      }, 
+      data: body
+      }).then((res) => {
+        response = res
+      }).catch((err)=>{
+        response = err
+      })
+  return response
+}
