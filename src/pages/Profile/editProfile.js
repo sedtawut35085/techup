@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import Moment from 'moment';
 
-import { getStudent } from '../../service/student'
+import { getStudent, updateUserProfileWithNewImage } from '../../service/student'
 import { isNumber, defaultProfileImg } from '../../assets/js/helper'
 import SelectPicker from '../../components/picker_select/selectPicker.js'
 import TuDatePicker from '../../components/picker_date/datePicker.js'
@@ -21,6 +21,7 @@ function EditProfile() {
 
     const [currentUser, setCurrentUser] = useState();
     const [image, setImage] = useState("");
+    const [oldImage , setOldImage] = useState("")
     const [imageFile, setImageFile] = useState("");
     const [techupID, setTechupID] = useState("") 
     const [studentID, setStudentID] = useState("") 
@@ -47,6 +48,7 @@ function EditProfile() {
         setCurrentUser(res[0]);
 
         setImage(res[0].ImageURL)
+        setOldImage(res[0].ImageURL)
         setTechupID(res[0].TechUpID)
         setStudentID(res[0].StudentID)
         setName(res[0].FirstName)
@@ -74,7 +76,7 @@ function EditProfile() {
     }
 
     async function handleSubmit(event) {
-
+ 
         setErrors([]);
         const arrayError = [];
 
@@ -94,10 +96,10 @@ function EditProfile() {
         if(surname === ""){
             arrayError.push('surname');
         }
-        if(gender.label == ""){
+        if(gender.label === ""){
             arrayError.push('gender');
         }
-        if(birthday == ""){
+        if(birthday === ""){
             arrayError.push('birthday');
         }
 
@@ -108,42 +110,57 @@ function EditProfile() {
                 let value = contacts[i].contact
                 website = {...website, [label]: value}
             }
-            var data = {
-                "TechUpID": techupID,    
-                "StudentID": studentID, 
-                "FirstName": name,    
-                "SurName": surname,   
-                "Gender": gender.label,    
-                "Birthday": Moment(birthday).format('YYYY-MM-DD'),
-                "Location": location,
-                "Website": website,
-                "Notification": false,
-                "Point": point,
-                "ImageURL": 'image'
+            if(image === oldImage)
+            {
+                var data = {
+                    "TechUpID": techupID,    
+                    "StudentID": studentID, 
+                    "FirstName": name,    
+                    "SurName": surname,   
+                    "Gender": gender.label,    
+                    "Birthday": Moment(birthday).format('YYYY-MM-DD'),
+                    "Location": location,
+                    "Website": website,
+                    // "Notification": false,
+                    // "Point": point,
+                    "ImageURL": image
+                }
+                event.preventDefault();
+                let response = await updateUserProfile(data)
+                // navigate('/profile/'+userEmail)
+                if(response.status === 200){
+                    navigate('/profile/'+userEmail)
+                } else {
+                    setErrorsSubmit(true)
+                }
+            } else {
+                var data2 = {
+                    "TechUpID": techupID,    
+                    "StudentID": studentID, 
+                    "FirstName": name,    
+                    "SurName": surname,   
+                    "Gender": gender.label,    
+                    "Birthday": Moment(birthday).format('YYYY-MM-DD'),
+                    "Location": location,
+                    "Website": website,
+                    "ImageURL": 'image'
+                }
+                event.preventDefault();
+                let response = await updateUserProfileWithNewImage(data2,imageFile)
+                console.log(response.status)
+                if(response.status === 200){
+                    navigate('/profile/'+userEmail)
+                } else {
+                    setErrorsSubmit(true)
+                }
             }
-            event.preventDefault();
-            
+            event.preventDefault()
         } else {
             setErrors(arrayError);
         }
-
-        event.preventDefault();
+        return false;
     }
 
-    async function editProfile(){
-        let body = {
-            "TechUpID" : techupID,
-            "StudentID" : studentID,
-            "FirstName" : name,
-            "SurName" : surname,
-            "Gender" : gender,
-            "Birthday" : birthday,
-            "Location" :location,
-            "Website" : contacts,
-        }
-        await updateUserProfile(body);
-        navigate("/profile/"+userEmail)
-    }
 
     useEffect( () => {
         loadCurrentInfoUser();
@@ -273,7 +290,7 @@ function EditProfile() {
                             </div>
                             <div className="col-12 pt-4 px-4"><div className="divider"></div></div>
                             <div className="col-12 pt-5 d-flex jc-center">
-                                <button type="submit" className="btn-01" onClick={editProfile()}>Submit</button>
+                                <button type="submit" className="btn-01">Submit</button>
                             </div>
                             {errorsSubmit === false?
                                 <>
