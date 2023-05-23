@@ -171,7 +171,6 @@ function SignInForm() {
     })
     .catch(err => {
       setErrorCodeMessage('Wrong code, please try again')
-      console.log(err)
     });   
   }
 

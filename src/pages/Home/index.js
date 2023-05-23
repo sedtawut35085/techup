@@ -29,7 +29,6 @@ function Homepage() {
             let todayconvert = new Date(today).getTime();
             let weeklyid = res[0].QuestionID
             if (dateconvert < todayconvert) {
-                console.log('update to normal'); 
                 const bodydata = {
                     "updateType": "Text",
                     "updateKey": "Status",

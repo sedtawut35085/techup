@@ -153,8 +153,6 @@ function Weeklyprof() {
         setIsLoading4(false)
     }
 
-    console.log(allSubmission)
-
     useEffect(() => {
         loadWeeklyQuestion();
         loadWeeklySubmission(pageStart,pageSize);

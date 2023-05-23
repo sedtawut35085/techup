@@ -151,7 +151,6 @@ function SignInAdminForm() {
     })
     .catch(err => {
       setErrorCodeMessage('Wrong code, please try again')
-      console.log(err)
     });   
   }
 
@@ -170,16 +169,13 @@ function SignInAdminForm() {
     e.preventDefault();
     setIsErrorSignIn(false)
     let res = await getAccountAdmin(email)
-    console.log(res[0])
     if(res[0] !== undefined){ 
       await Auth.signIn(email, adminpassword)
       .then(async () =>  {
           navigate('/Admin/home')
-          console.log('success')
       })
       .catch(err => {
         setIsErrorSignIn(true)
-        console.log('unsuccess')
       });   
     }else{
       setIsErrorSignIn(true)

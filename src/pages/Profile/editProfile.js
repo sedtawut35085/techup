@@ -147,7 +147,6 @@ function EditProfile() {
                 }
                 event.preventDefault();
                 let response = await updateUserProfileWithNewImage(data2,imageFile)
-                console.log(response.status)
                 if(response.status === 200){
                     navigate('/profile/'+userEmail)
                 } else {

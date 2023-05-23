@@ -40,8 +40,6 @@ function SubmitProf() {
         setSubmission(res);
     }
 
-    console.log(submission)
-
     return (
         <div className="submit">
             <div className="cover-container">

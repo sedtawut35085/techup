@@ -26,7 +26,6 @@ function Discuss() {
         const res = await getDiscussInTrend();
         setDiscusses(res);
         setDiscussesSearch(res);
-        console.log('All discuss :', res)
 
         let tags = [];
         for(let i=0; i < res.length; i++) {

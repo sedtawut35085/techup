@@ -46,7 +46,6 @@ function SubmissionWeeklyProf() {
         let resUser = await getStudentFromStudentEmail(res[0].StudentEmail);
         setInFoUser(resUser[0])
     }
-    
     const [guModal, setGuModal] = useState(false);
     const [hintModal, setHintModal] = useState(false);
     const [voteModal, setVoteModal] = useState(false);
@@ -219,7 +218,7 @@ function SubmissionWeeklyProf() {
                                             <div className="d-flex jc-center ai-center">
                                                 <button 
                                                     className="btn-01 d-flex jc-center ai-center" 
-                                                    onClick={() => downloadAll(fileList, (inFoQuestion.FirstName + "_" + inFoQuestion.QuestionName))}
+                                                    onClick={() => downloadAll(fileList, (inFoSubmission.FirstName + "_" + inFoQuestion.QuestionName))}
                                                 >
                                                     <TbFileZip size={24} className="me-1" />
                                                     Download All

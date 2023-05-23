@@ -76,7 +76,6 @@ function AddTopic() {
                 "Owner": inFoProfessor.ProfessorEmail,   
                 "Icon": icon.label
             }
-            console.log(data)
             let res = await saveTopic(data)
             if(res === undefined){
                 setErrorsSubmit(true)

@@ -30,7 +30,6 @@ function DiscussDetail() {
 
     async function getDiscussDetail(discussId) {
         let res = await getEachDiscuss(discussId)
-        console.log("discuss detail :", res[0])
         setDiscuss(res[0])
         setIsLoading(false)
         // setIsLoading(isLoading.splice(isLoading.indexOf(1), 1))

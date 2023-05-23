@@ -9,8 +9,10 @@ import { getStudent, getStudentFromStudentEmail } from '../../service/student'
 import { TbEdit, TbLogout } from 'react-icons/tb'
 import { RiInstagramFill, RiFacebookCircleFill, RiGithubFill, RiGlobalFill , RiLineFill } from 'react-icons/ri'
 import { HiMail } from 'react-icons/hi'
+import { FaChevronLeft } from 'react-icons/fa'
 
 import BackgroundIcon from '../../components/background/bgIcons.js';
+import { getProfessor } from '../../service/professor';
 
 function Profile() {
 
@@ -24,9 +26,21 @@ function Profile() {
     const [user, setUser] = useState();
 
     async function loadCurrentInfoUser() {
-        let res = await getStudent();
-        setCurrentUser(res[0]);
-        setIsLoading1(false);
+        await Auth.currentAuthenticatedUser()
+        .then(async (response) => {
+          if(response.attributes.email.includes('@mail.kmutt.ac.th')){
+            let res = await getStudent();
+            setCurrentUser(res[0]);
+            setIsLoading1(false);
+          }else{
+            let res = await getProfessor();
+            setCurrentUser(res[0]);
+            setIsLoading1(false);
+          }
+        })
+        .catch(() => {
+        })
+        
     }
 
     async function loadInfoUser() {
@@ -62,6 +76,9 @@ function Profile() {
                     !(isLoading1 || isLoading2) &&
                     <div className="body">
                         <div className="left-side">
+                            <Link data-aos="fade-right" data-aos-duration="1000" className="btn-back" to={-1}>
+                                <FaChevronLeft />
+                            </Link>
                             <div data-aos="fade-up" data-aos-duration="1000" className="card-box main">
                                 <img className="profile-img" onError={defaultProfileImg} src={user.ImageURL}  alt="Avatar" />
                                 <span className="techup-id"><img src="/assets/images/icons/logo.png" />{user.TechUpID}</span>

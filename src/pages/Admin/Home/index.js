@@ -38,7 +38,6 @@ function AdminHomepage() {
     }
 
     const handleChangePage = async (e, step) => {
-        console.log(step)
         setCurrentPage(step)
     }
 

@@ -21,7 +21,6 @@ function AddDiscuss() {
     const navigate = useNavigate()
 
     function addTag(event) {
-        console.log('addtag')
         let newTag = event.target.value.trim()
 
         if ( event.keyCode === 13 || event.keyCode == 32 ) {
@@ -41,7 +40,6 @@ function AddDiscuss() {
     }
 
     function removeTag(tagIndex) {
-        console.log('remove tag ', tagIndex)
         let array = [...tags];
         array.splice(tagIndex, 1);
         setTags(array)
