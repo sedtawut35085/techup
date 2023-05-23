@@ -195,7 +195,7 @@ function TopicProf() {
                             <span className="color-1 f-lg fw-700 d-flex ai-center">Detail Session<BiMessageSquareDetail className="ms-2" size={28} /></span>      
                             <div className="detail">
                                 <div className="pt-4 d-flex fd-col jc-center ai-center">
-                                    <img width="100px" className="profile-pic" src="/assets/images/icons/profile.png" />
+                                    <img width="160px" height="160px" className="profile-pic rounded-circle" src={data.ImageURL} alt="Avatar" />
                                     <div className="d-flex jc-center ai-center mt-4 f-md">
                                         <RiVipCrown2Fill className="color-1 me-1" size={24} /> {data.Name} {data.Surname}
                                     </div>
