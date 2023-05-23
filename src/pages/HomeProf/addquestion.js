@@ -77,7 +77,8 @@ function AddQuestion() {
                 "Difficulty": dificulty.data,    
                 "Point": point,
                 "DueDate": `${year}-${month}-${day}`,
-                "Hint": hint
+                "Hint": hint,
+                "Status": "normal"
             } 
             let res = await saveQuestionForEachTopic(bodydata)
             if(res === undefined){
