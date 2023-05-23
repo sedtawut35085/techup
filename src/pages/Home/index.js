@@ -128,7 +128,7 @@ function Homepage() {
                                 <div className="mt-3 mb-5 divider"></div>             
                                 <p className="f-xl fw-700">
                                     <img className="me-2" alt="logo" width="36px" src="/assets/images/logo/logo.png" />
-                                    All Topic in <span className="color-1">TECHUP</span>
+                                    All Topic in <span className="color-1" >TECHUP</span>
                                 </p>
                                 <div className="box-zone">
                                     {allTopic.map((topic, key) => (

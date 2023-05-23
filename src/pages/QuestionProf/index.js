@@ -275,21 +275,21 @@ function QuestionProf() {
                         <div className="menu-section">
                             <div 
                                 className={`menu des ${menuActive === 1 ? "active" : ""}`}
-                                onClick={() => setMenuActive(1)}
+                                onClick={() => setMenuActive(1)} title='Description'
                             >
                                 <TbFileDescription className="icon" />
                                 <span>Description</span>
                             </div>
                             <div 
                                 className={`menu dis ${menuActive === 2 ? "active" : ""}`}
-                                onClick={() => setMenuActive(2)}
+                                onClick={() => setMenuActive(2)} title='Discuss'
                             >
                                 <TbMessage2 className="icon" />
                                 <span>Discuss</span>
                             </div>
                             <div 
                                 className={`menu sub ${menuActive === 3 ? "active" : ""}`}
-                                onClick={() => setMenuActive(3)}
+                                onClick={() => setMenuActive(3)} title='Submission'
                             >
                                 <TbFileUpload className="icon" />
                                 <span>Submission</span>
@@ -311,14 +311,14 @@ function QuestionProf() {
                                     />
                                     <button className="btn-01" onClick={() => {addNewComment();setCommentDiscuss("");}}>Comment</button>
                                 </div>
-                                <div className="sort">
+                                {/* <div className="sort">
                                     <span>Sort by :</span>
                                     <select>
                                         <option>Best</option>
                                         <option>Newest</option>
                                         <option>Oldest</option>
                                     </select>
-                                </div>
+                                </div> */}
                                 {
                                     rootComments.map((comment, key) => (
                                         <CommentDiscussQuestion
