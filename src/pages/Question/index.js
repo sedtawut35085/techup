@@ -661,7 +661,7 @@ function Question() {
                                                     }                                                
                                                 </div>
                                                 <div className="attachment">
-                                                    <span className="f-md fw-700">Attachment ({fileList.length})</span>
+                                                    <span className="f-md fw-700">Attachment ({fileListSubmit?.length || 0})</span>
                                                     <div className="sp-vertical"></div>
                                                     {fileListSubmit?.map((file, key) => ( 
                                                         <div className="attach-file" key={key}>
@@ -686,13 +686,13 @@ function Question() {
                                                         </div>
                                                     ))}                
                                                     {
-                                                        fileListSubmit &&
+                                                        (fileListSubmit?.length > 1) &&
                                                         <>
                                                         <div className="divider my-4"></div>
                                                         <div className="d-flex jc-center ai-center">
                                                             <button 
                                                                 className="btn-01 d-flex jc-center ai-center" 
-                                                                onClick={() => downloadAll(fileList, (inFoQuestion.FirstName + "_" + inFoQuestion.QuestionName))}
+                                                                onClick={() => downloadAll(fileListSubmit, (inFoSubmit.FirstName + "_" + inFoQuestion.QuestionName))}
                                                             >
                                                                 <TbFileZip size={24} className="me-1" />
                                                                 Download All
@@ -749,7 +749,14 @@ function Question() {
                                                 </div>
                                                 <div className="divider my-4"></div>
                                                 <div className="d-flex jc-center ai-center">
-                                                    <button onClick={() => uploadFile(fileList)} className="btn-01">Submit</button>
+                                                    <button 
+                                                        onClick={() => uploadFile(fileList)} 
+                                                        className="btn-01" 
+                                                        disabled={challenge ? false : true}
+                                                        data-title={challenge ? null : "You must challenge this question before submit."}
+                                                    >
+                                                        Submit
+                                                    </button>
                                                 </div>
                                             </>
                                     }                                    

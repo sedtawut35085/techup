@@ -48,8 +48,6 @@ function Weekly() {
     const [isLoading2, setIsLoading2] = useState(true);
     const [isLoading3, setIsLoading3] = useState(true);
     const [isLoading4, setIsLoading4] = useState(true);
-    
-    
 
     const [inFoQuestion, setInFoQuestion] = useState("")
     const [inFoUser, setInFoUser] = useState("")

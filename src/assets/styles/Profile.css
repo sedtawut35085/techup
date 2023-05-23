@@ -186,3 +186,200 @@
     align-items: center;
     gap: .5rem;
 }
+
+
+.point-history-page .body .redeem-reward .item-wrap {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2rem;
+    margin: 2rem 0;
+}
+
+.point-history-page .body .redeem-reward .item-wrap .redeem-card {
+    user-select: none;
+    position: relative;
+    cursor: pointer;
+    width: 100%;
+    height: 250px;
+    border-radius: 24px;
+    box-shadow: 0 0 8px rgba(0, 0, 0, .25);
+    background-color: #fff;
+    overflow: hidden;
+    transition: all .2s;
+}
+
+.point-history-page .body .redeem-reward .item-wrap .redeem-card .detail-hover {
+    z-index: 1;
+    position: absolute;
+    top: 10%;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    gap: 1rem;
+    background: linear-gradient(#00000013 0%,  #ffa142f6 50%);
+    /* background-color: #ffa142ef; */
+    color: #fff;
+    padding: 0 1.5rem;
+    font-weight: 700;
+    opacity: 0;
+    transition: all .2s;
+}
+
+.point-history-page .body .redeem-reward .item-wrap .redeem-card .detail-hover span.reward-name {
+    font-size: 2.7rem;
+    white-space: nowrap;
+}
+
+.point-history-page .body .redeem-reward .item-wrap .redeem-card .detail-hover .redeem-detail {
+    outline: none;
+    border: none;
+    display: flex;
+    flex-direction: column;
+    color: #fff;
+    font-size: 1rem;
+    font-weight: 500;
+    gap: 1rem
+}
+
+.point-history-page .body .redeem-reward .item-wrap .redeem-card .detail-hover .redeem-detail .left {
+    width: 82px;
+    display: flex;
+    align-items: center;
+    gap: .25rem;
+}
+
+.point-history-page .body .redeem-reward .item-wrap .redeem-card .detail-hover .redeem-detail .left svg {
+    height: 20px;
+    width: 20px;
+}
+
+.point-history-page .body .redeem-reward .item-wrap .redeem-card img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 0;
+    width: 100%;
+    height: 250px;
+    border-radius: 24px;
+    object-fit: cover;
+    transition: all .2s;
+}
+
+.point-history-page .body .redeem-reward .item-wrap .redeem-card:hover {
+    box-shadow: 0 0 12px rgba(0, 0, 0, .45);
+}
+
+.point-history-page .body .redeem-reward .item-wrap .redeem-card:hover .detail-hover {
+    top: 0;
+    opacity: 1;
+}
+
+.point-history-page .body .redeem-reward .item-wrap .redeem-card:hover img {
+    scale: 1.5;
+}
+
+.point-history-page .body .log-point .log-table {
+    overflow: hidden;
+    background-color: #fff;
+    width: 100%;
+    padding: 1.8rem;
+    margin: 2rem 0;
+    border-radius: 24px;
+    box-shadow: 0 0 4px rgba(0, 0, 0, 0.25);
+}
+
+.point-history-page .body .log-point .log-table .table thead tr th {
+    font-weight: 400;
+    color: #A5A3A2;
+}
+
+.point-history-page .body .log-point .log-table .table tbody tr td {
+    border: none;
+}
+
+.point-history-page .body .log-point .log-table .table tbody tr:nth-child(1) td {
+    padding-top: 1.5rem;
+}
+
+.point-history-page .body .log-point .log-table .table .number {
+    width: 80px;
+    max-width: 120px;
+    text-align: left;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.point-history-page .body .log-point .log-table .table .description {
+    min-width: 200px;
+    max-width: 400px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.point-history-page .body .log-point .log-table .table .points {
+    min-width: 100px;
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.point-history-page .body .log-point .log-table .table .date {
+    width: 250px;
+    max-width: 250px;
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+@media screen and (max-width: 1520px) {
+    .point-history-page .body .redeem-reward .item-wrap {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media screen and (max-width: 1200px) {
+}
+
+@media screen and (max-width: 992px) {
+    .point-history-page .body .redeem-reward .item-wrap {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .point-history-page .body .log-point .log-table {
+        overflow-x: scroll;
+    }
+    .point-history-page .body .log-point .log-table::-webkit-scrollbar {
+        height: 8px;
+    }
+    .point-history-page .body .log-point .log-table::-webkit-scrollbar-track{
+        margin: 0 16px;
+        background: transparent;
+    }    
+    .point-history-page .body .log-point .log-table::-webkit-scrollbar-thumb {
+        background: #ffb56a;
+        border-radius: 5px;
+    }
+    
+    .point-history-page .body .log-point .log-table::-webkit-scrollbar-thumb:hover {
+        background: #FFA242;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .profile-page .body {
+        grid-template-columns: 1fr;
+    }
+    .point-history-page .body .redeem-reward .item-wrap {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media screen and (max-width: 576px) {
+}

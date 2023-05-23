@@ -98,7 +98,7 @@ const TopBar = ({currentEmailUser,isProfessor}) => {
       
     return (
         <>
-            <div className={`topbar ${isTopbarVisible ? "visible" : ""}`}>
+            <div className={`topbar ${isTopbarVisible ? "visible" : ""}`} onMouseLeave={() => setDropdownActive(false)}>
                 <nav>
                     {currentEmailUser.includes('@mail.kmutt.ac.th') === true?
                         <>
@@ -149,15 +149,15 @@ const TopBar = ({currentEmailUser,isProfessor}) => {
                         </div>
                     </Link>
                 </nav>
-                <div className="profile-section" onMouseLeave={() => setDropdownActive(false)}>
-                    <div className="nav">
+                <div className="profile-section">
+                    {/* <div className="nav">
                         <div className="notification">
                             <div className="icon">
                                 <HiOutlineBell size={24} />
                                 <span className="badge">.</span>
                             </div>
                         </div>
-                    </div>
+                    </div> */}
                     {currentEmailUser.includes('@mail.kmutt.ac.th') === true?
                         <>
                             <div className="nav">
@@ -208,16 +208,16 @@ const TopBar = ({currentEmailUser,isProfessor}) => {
                                     </Link>
                                     <Link className="d-flex jc-btw" to={"/profile/" + inFoUser.UserEmail + "/point-history"}>
                                         <div>
-                                            <IoGiftOutline size={32} className="me-3" />Point
+                                            <IoGiftOutline size={32} className="me-3" />Points
                                         </div>
                                         <FiChevronRight size={28} />
                                     </Link>
-                                    <Link className="d-flex jc-btw">
+                                    {/* <Link className="d-flex jc-btw">
                                         <div>
                                             <IoSettingsOutline size={32} className="me-3" />Settings
                                         </div>
                                         <FiChevronRight size={28} />
-                                    </Link>
+                                    </Link> */}
                                     <Link className="d-flex jc-btw" onClick={logout}>
                                         <div>
                                             <IoExitOutline size={32} className="me-3" />Sign out

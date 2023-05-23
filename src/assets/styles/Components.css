@@ -259,6 +259,7 @@ div.loader2 {
     align-items: center;
 }
 .input-tags .tag {
+    white-space: nowrap;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -735,6 +736,14 @@ div.loader2 {
 }
 .btn-01:hover {
     background-color: #FF9326;
+}
+
+.btn-01:disabled {
+    cursor: not-allowed;
+    background-color: #D7D7D6;
+}
+.btn-01:disabled:hover {
+    background-color: #D7D7D6;
 }
 
 .btn-02 {
