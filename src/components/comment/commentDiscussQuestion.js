@@ -31,7 +31,7 @@ const CommentDiscussQuestion = ({comment , replies}) => {
             <div className="comment-owner">
                 <Link to={"/profile/"+comment?.UserEmail}><img alt="Avatar" className="owner-image" onError={defaultProfileImg} src={comment?.UserImage}/></Link>
                 <div className="owner-detail">
-                    <span>{comment?.AuthorName} {comment.AuthorSurName}</span>
+                    <span>{comment?.Name} {comment.SurName}</span>
                     <div className="date">
                         <span>Create at:</span>
                         <span className="ms-2">{Moment(comment?.Date).format('DD-MM-YYYY , hh:mm')}</span>

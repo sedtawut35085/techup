@@ -13,7 +13,7 @@ import { TbCalendarTime, TbFileDescription, TbMessage2, TbFileUpload, TbMessageC
 import { IoCaretUp, IoCaretDown } from 'react-icons/io5'
 import { BsReplyAll } from 'react-icons/bs'
 import CommentDiscussQuestion from "../../components/comment/commentDiscussQuestion"
-import { getComment,getWeeklyComment , addComment } from '../../service/discussQuestion';
+import { getComment,getWeeklyCommentNew , addComment } from '../../service/discussQuestion';
 
 function Weeklyprof() {
     
@@ -50,14 +50,14 @@ function Weeklyprof() {
     }
 
     async function getDiscuss() {
-        let res = await getWeeklyComment();
+        let res = await getWeeklyCommentNew();
         setDiscuss(res)
         setIsLoading1(false)
     }
 
     async function addNewComment() {
         await addComment(inFoQuestion.QuestionID,commentDiscuss)
-        let res = await getComment(inFoQuestion.QuestionID);
+        let res = await getWeeklyCommentNew();
         setDiscuss(res)
     }
 

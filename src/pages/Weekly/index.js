@@ -7,7 +7,7 @@ import { getWeeklyQuestion } from '../../service/weeklyQuestion';
 import { updateAdminWeeklyStatus } from '../../service/admin'
 import { getStudent } from '../../service/student';
 import CommentDiscussQuestion from "../../components/comment/commentDiscussQuestion"
-import { getComment,getWeeklyComment , addComment } from '../../service/discussQuestion';
+import { getComment,getWeeklyCommentNew , addComment } from '../../service/discussQuestion';
 
 import { fileSize, fileType, download, downloadAll } from '../../assets/js/helper'
 import { saveSubmission } from '../../service/submission'
@@ -71,14 +71,14 @@ function Weekly() {
     }
 
     async function getDiscuss() {
-        let res = await getWeeklyComment();
+        let res = await getWeeklyCommentNew();
         setDiscuss(res)
         setIsLoading1(false)
     }
 
     async function addNewComment() {
         await addComment(inFoQuestion.QuestionID,commentDiscuss)
-        let res = await getComment(inFoQuestion.QuestionID);
+        let res = await getWeeklyCommentNew();
         setDiscuss(res)
     }
 

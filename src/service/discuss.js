@@ -28,6 +28,22 @@ export async function getEachDiscuss(discussID) {
     return response.data
 }
 
+export async function getEachDiscussNew(discussID) {
+  await axios({
+      method: 'get',
+      url: `${baseUrl}/discuss`,  
+      params: {
+        "DiscussID" : discussID,
+        "getType" : "EachDiscussNew"
+      },
+      }).then((res) => {
+        response = res
+      }).catch((err)=>{
+        response = err
+      })
+  return response.data
+}
+
 export async function getDiscussInTrend() {
     await axios({
         method: 'get',
@@ -79,7 +95,7 @@ export async function getComment(discussID) {
         url: `${baseUrl}/discuss`,  
         params: {
           "DiscussID" : discussID,
-          "getType" : "Comment"
+          "getType" : "CommentNew"
         },
         }).then((res) => {
           response = res
