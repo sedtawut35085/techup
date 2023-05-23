@@ -200,24 +200,28 @@ const TopBar = ({currentEmailUser,isProfessor}) => {
                                     <div className="divider my-3"></div>
                                 </div>
                                 <div className="menu">
-                                    <Link className="d-flex jc-btw" to={"/profile/" + inFoUser.UserEmail}>
-                                        <div>
-                                            <IoPersonOutline size={32} className="me-3" />Profile
-                                        </div> 
+                                    {
+                                        currentEmailUser.includes('@mail.kmutt.ac.th') === true
+                                        ?
+                                        <Link className="d-flex jc-btw" to={"/profile/" + inFoUser.UserEmail}>
+                                            <div>
+                                                <IoPersonOutline size={32} className="me-3" />Profile
+                                            </div> 
                                         <FiChevronRight size={28} />
                                     </Link>
-                                    <Link className="d-flex jc-btw" to={"/profile/" + inFoUser.UserEmail + "/point-history"}>
-                                        <div>
-                                            <IoGiftOutline size={32} className="me-3" />Points
-                                        </div>
-                                        <FiChevronRight size={28} />
-                                    </Link>
-                                    {/* <Link className="d-flex jc-btw">
-                                        <div>
-                                            <IoSettingsOutline size={32} className="me-3" />Settings
-                                        </div>
-                                        <FiChevronRight size={28} />
-                                    </Link> */}
+                                        :  null
+                                    }
+                                    {
+                                        currentEmailUser.includes('@mail.kmutt.ac.th') === true
+                                        ?
+                                        <Link className="d-flex jc-btw" to={"/profile/" + inFoUser.UserEmail + "/point-history"}>
+                                            <div>
+                                                <IoGiftOutline size={32} className="me-3" />Points
+                                            </div>
+                                            <FiChevronRight size={28} />
+                                        </Link>
+                                        :  null
+                                    } 
                                     <Link className="d-flex jc-btw" onClick={logout}>
                                         <div>
                                             <IoExitOutline size={32} className="me-3" />Sign out
