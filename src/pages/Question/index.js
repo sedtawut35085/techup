@@ -10,7 +10,7 @@ import { BsReplyAll, BsCheckLg } from 'react-icons/bs'
 import { HiOutlineExclamation } from 'react-icons/hi'
 import { IoCloseCircle, IoCaretUp, IoCaretDown } from 'react-icons/io5'
 import { getQuestion, updateQuestion } from '../../service/question';
-import { getComment , addComment } from '../../service/discussQuestion';
+import { getCommentNew , addComment } from '../../service/discussQuestion';
 import { saveSubmission } from '../../service/submission'
 import { getStudent } from '../../service/student';
 import BackgroundIcon from '../../components/background/bgIcons.js';
@@ -92,14 +92,14 @@ function Question() {
     }
 
     async function getDiscuss() {
-        let res = await getComment(QuestionId);
+        let res = await getCommentNew(QuestionId);
         setDiscuss(res)
         setIsLoading(false)
     }
 
     async function addNewComment() {
         await addComment(QuestionId,commentDiscuss)
-        let res = await getComment(QuestionId);
+        let res = await getCommentNew(QuestionId);
         setDiscuss(res)
     }
     

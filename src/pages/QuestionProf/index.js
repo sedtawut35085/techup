@@ -13,7 +13,7 @@ import { HiOutlineExclamation } from 'react-icons/hi'
 import { FiChevronLeft, FiChevronRight, FiChevronsLeft, FiChevronsRight } from 'react-icons/fi'
 import { IoCloseCircle, IoCaretUp, IoCaretDown } from 'react-icons/io5'
 import { getCount, getAllSubmission } from '../../service/submission';
-import { getComment , addComment } from '../../service/discussQuestion';
+import { getCommentNew , addComment } from '../../service/discussQuestion';
 import CommentDiscussQuestion from "../../components/comment/commentDiscussQuestion"
 
 import BackgroundIcon from '../../components/background/bgIcons.js';
@@ -182,14 +182,14 @@ function QuestionProf() {
     }
 
     async function getDiscuss() {
-        let res = await getComment(QuestionId);
+        let res = await getCommentNew(QuestionId);
         setDiscuss(res)
         setIsLoading(false)
     }
 
     async function addNewComment() {
         await addComment(QuestionId,commentDiscuss)
-        let res = await getComment(QuestionId);
+        let res = await getCommentNew(QuestionId);
         setDiscuss(res)
     }
 
