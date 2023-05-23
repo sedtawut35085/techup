@@ -178,8 +178,11 @@ function Weeklyprof() {
                     <>  
                     {isHaveWeekly === true ?                       
                     <div data-aos="fade-left" data-aos-duration="1000" className="body">
+                        <div className='pb-4'>
+                        <Link className="btn-addquestion p-2" to={`/professor/weekly/addweekly`} >Add Weekly + </Link> 
+                        </div>
                         <div className="top-section">
-                            <div className="left-side">
+                            <div className="left-side pt-2">
                                 <p className="question-name">{inFoQuestion.QuestionName}</p>
                                 <p className="subject-name">
                                     <div className="icon">
@@ -238,7 +241,7 @@ function Weeklyprof() {
                                     <TbFileUpload className="icon" />
                                     <span>Submission</span>
                                 </div>
-                                <Link className="btn-addquestion" to={`/professor/weekly/addweekly`} >Add Weekly + </Link> 
+                                
                             </div>
                             <div className={`detail-section ${menuActive === 1 ? "description" : menuActive === 2 ? "discuss" : "submission"}`}>
                                 <div className={`description ${menuActive === 1 ? "active" : ""}`}>
