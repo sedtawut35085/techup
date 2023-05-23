@@ -82,7 +82,7 @@ function Profile() {
                             <div data-aos="fade-up" data-aos-duration="1000" className="card-box main">
                                 <img className="profile-img" onError={defaultProfileImg} src={user.ImageURL}  alt="Avatar" />
                                 <span className="techup-id"><img src="/assets/images/icons/logo.png" />{user.TechUpID}</span>
-                                <span className="point">Rank 1 - {user.MostPoint} P</span>
+                                <span className="point">{user.MostPoint} P</span>
                                 {
                                     currentUser.UserEmail === user.UserEmail
                                     ?   <Link className="edit-profile" to="edit"><TbEdit size={21} />Edit profile</Link>

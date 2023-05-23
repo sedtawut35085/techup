@@ -1,5 +1,3 @@
-
-
 import React, { useState, useContext, useEffect } from 'react';
 import { FaUserGraduate, FaChalkboardTeacher, FaChevronLeft, FaUserCircle, FaUpload } from 'react-icons/fa';
 import Auth from '../../configuration/configuration-aws'
@@ -14,7 +12,7 @@ import { AuthContext } from '../../auth';
 import { saveStudent } from '../../service/student';
 import { saveProfessor } from '../../service/professor';
 
-function SelectRole() {
+function SelectRole() { 
 
     const [role, setRole] = useState("");
     const { currentEmailUser } = useContext(AuthContext);
@@ -131,7 +129,7 @@ function SelectRole() {
                     "Name": name,    
                     "SurName": surname,   
                     "Gender": gender.label,    
-                    "Birthday": Moment(birthday).format('YYYY-MM-DD'),
+                    "Birthday": Moment(birthday, 'DD-MM-YYYY').format('YYYY-MM-DD'),
                     "Contact": website,
                     "Notification": false,
                     "Point": 0, 
