@@ -58,6 +58,9 @@ function Topic() {
         setIsLoading2(false)
         // setIsLoading(isLoading.splice(isLoading.indexOf(3), 1))
     }
+
+    // console.log(Moment('2023-05-23').isAfter('2023-05-23'))
+
     async function loadCountOfQuestionForEachTopic(pageSize) {
         const res = await getCountOfQuestionForEachTopic(topicID);
         const PageNumberList = []
@@ -75,7 +78,7 @@ function Topic() {
         ${
             question.SubmissionID !== null 
             ? "color-3" 
-            : Moment(question.DueDate).isSameOrBefore(new Date()) 
+            : Moment(question.DueDate).isSameOrBefore(new Moment().format('YYYY-MM-DD')) 
             ? "color-gray2"
             : ""
         }`} 
@@ -83,7 +86,7 @@ function Topic() {
     >
         <td className="status">
             {
-                Moment(question.DueDate).isSameOrBefore(new Date())
+                Moment(question.DueDate).isSameOrBefore(new Moment().format('YYYY-MM-DD'))
                 ?   <TbClockOff className={`${question.SubmissionID === null ? "color-gray2" : "color-3"}`} size={24} /> 
                 :   <TbClock className={`${question.SubmissionID === null ? "color-1" : "color-3"}`} size={24} /> 
             }
