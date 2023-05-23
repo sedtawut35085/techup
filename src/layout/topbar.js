@@ -183,7 +183,7 @@ const TopBar = ({currentEmailUser,isProfessor}) => {
                                             <span className="f-sm color-gray2">{inFoUser.FirstName} {inFoUser.SurName}</span>
                                             </>
                                         :  <>
-                                            <span className="f-sm color-black">{inFoUser.Surname} {inFoUser.Surname}</span>
+                                            <span className="f-sm color-black">{inFoUser.Name} {inFoUser.Surname}</span>
                                             </>
                                     } 
                                     
