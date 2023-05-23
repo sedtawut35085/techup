@@ -214,7 +214,7 @@ function SubmissionWeeklyProf() {
                                             </div>
                                         </div>
                                     ))}        
-                                    {
+                                    {/* {
                                         fileList &&
                                         <>                          
                                             <div className="divider my-4"></div>
@@ -228,7 +228,7 @@ function SubmissionWeeklyProf() {
                                                 </button>
                                             </div>
                                         </>
-                                    }  
+                                    }   */}
                                         </>
                                         :
                                         <>
