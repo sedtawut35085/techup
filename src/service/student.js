@@ -94,7 +94,6 @@ export async function updateUserProfileWithNewImage(body,imageFile) {
   convertedFile = await convertToBase64(imageFile);
   convertedFile = imageFile.type + ' ' + convertedFile;
   let responseLocationImage = await uploadPhoto(convertedFile)
-  console.log(responseLocationImage)
   body['ImageURL'] = responseLocationImage
   await axios({
       method: 'put',

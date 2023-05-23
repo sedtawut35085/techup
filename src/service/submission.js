@@ -107,7 +107,6 @@ export async function updateSubmission(SubmissionID, bodydata){
 }
 
 export async function saveSubmission(bodydata){
-  console.log('check', bodydata)
   await axios({
       method: 'post',
       url: `${baseUrl}/submission`,
