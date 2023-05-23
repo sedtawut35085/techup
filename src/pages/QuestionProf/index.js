@@ -298,7 +298,7 @@ function QuestionProf() {
                         <div className={`detail-section ${menuActive === 1 ? "description" : menuActive === 2 ? "discuss" : "submission"}`}>
                             <div className={`description ${menuActive === 1 ? "active" : ""}`}>
                                 <p>
-                                   {inFoQuestion.Description}
+                                   {inFoQuestion.QuestionDescription}
                                 </p>
                             </div>
                             <div className={`discuss ${menuActive === 2 ? "active" : ""}`}>
