@@ -29,7 +29,6 @@ function Professor() {
         })
         setIsLoading2(false)
     }
-
     useEffect( () => {
         checkAuthen()
         getTopics();

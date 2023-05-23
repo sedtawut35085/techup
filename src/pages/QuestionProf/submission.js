@@ -40,6 +40,7 @@ function SubmissionProf() {
     async function loadSubmission() {
         let res = await getEachSubmission(SubmissionId);
         setInFoSubmission(res[0])
+
         setFileList(JSON.parse(res[0].FileAttachment))
         setScore(res[0].Score)
         setCommentScore(res[0].CommentFromProf)
@@ -116,7 +117,7 @@ function SubmissionProf() {
             }
             let resupdateMaxpoint = await updateStudentText(bodyForMostPoint,inFoUser.UserEmail)
             let resAddToLogPoint = await addPointFromProfessorToLogPoint(inFoUser.UserEmail,point,"Get points from question: " + inFoQuestion.QuestionName)
-            navigate(`/professor/${TopicID}/question/${QuestionId}`)
+            window.history.back()
         }
     }
 
@@ -190,29 +191,32 @@ function SubmissionProf() {
                                 <div className="attachment">
                                     <span className="f-md fw-700">Attachment ({fileList?.length || 0})</span>
                                     <div className="sp-vertical"></div>
-                                    {fileList?.map((file, key) => ( 
-                                        <div className="attach-file" key={key}>
-                                            <div className="d-flex jc-center ai-center">
-                                                <div className="file-icon">{fileType(file.name)}</div>
-                                                <div className="file-info">
-                                                    <a 
-                                                        className="file-name"
-                                                        href={file.Url}
-                                                        download={file.name}
-                                                    >
-                                                        {file.name}
-                                                    </a>
-                                                    <span className="file-size">{fileSize(Number(file.size))}</span>
+                                    {
+                                        fileList !== null ?
+                                        <> 
+                                         {fileList?.map((file, key) => ( 
+                                            <div className="attach-file" key={key}>
+                                                <div className="d-flex jc-center ai-center">
+                                                    <div className="file-icon">{fileType(file.name)}</div>
+                                                    <div className="file-info">
+                                                        <a 
+                                                            className="file-name"
+                                                            href={file.Url}
+                                                            download={file.name}
+                                                        >
+                                                            {file.name}
+                                                        </a>
+                                                        <span className="file-size">{fileSize(Number(file.size))}</span>
+                                                    </div>
+                                                </div>
+                                                <div className="file-action">
+                                                    <button className="btn-download" onClick={() => download(file.Url, file.name)}>
+                                                        Download
+                                                    </button>
                                                 </div>
                                             </div>
-                                            <div className="file-action">
-                                                <button className="btn-download" onClick={() => download(file.Url, file.name)}>
-                                                    Download
-                                                </button>
-                                            </div>
-                                        </div>
-                                    ))}        
-                                    {
+                                        ))} 
+                                         {
                                         (fileList.length > 1) &&
                                         <>                          
                                             <div className="divider my-4"></div>
@@ -227,6 +231,13 @@ function SubmissionProf() {
                                             </div>
                                         </>
                                     }  
+                                        </>
+                                        :
+                                        <>
+                                        </>
+                                    }
+                                          
+                                   
                                 </div>                       
                             </div>
                             <div className={`score ${menuActive === 2 ? "active" : ""}`}>
