@@ -71,7 +71,7 @@ export async function addToLogPoint(reward){
                 "UserEmail" : userEmail,
                 "Point" : reward.Point,
                 "Date" : date,
-                "Description" : "Redeem reward : " + reward.RewardName
+                "Description" : "Redeem reward: " + reward.RewardName
             }
         }
     ).then((res) => {

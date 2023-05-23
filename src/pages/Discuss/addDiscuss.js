@@ -50,8 +50,22 @@ function AddDiscuss() {
 
     async function handleSubmit(event) {
         event.preventDefault()
-        await addNewDiscuss(title,description,tags)
-        await navigate('/discuss')
+        let arrayErrors = []
+
+        if(title === "") {
+            arrayErrors.push("title")
+        }
+        if(description === "") {
+            arrayErrors.push("description")
+        }
+        if(arrayErrors.length === 0) {
+            await addNewDiscuss(title,description,tags)
+            await navigate('/discuss')
+        } else {
+            setErrors(arrayErrors)
+        }
+    
+        return false;
     }
 
     async function addNewDiscuss(title , desc , tags){
@@ -88,7 +102,7 @@ function AddDiscuss() {
                                 placeholder="Detail about title discuss..." 
                                 onChange={(e) => setDescription(e.target.value)} 
                             />
-                        {errors.includes("title") && (<label className="f-xs color-5 pt-2" htmlFor="techup-id">Please enter your Techup ID</label>)}
+                        {errors.includes("description") && (<label className="f-xs color-5 pt-2" htmlFor="techup-id">Please enter your description of discuss</label>)}
                     </div>
                     <div data-aos="fade-up" data-aos-duration="1000" data-aos-delay="400" className="col-12 pt-4">
                         <label className="f-lg pb-2" htmlFor="tags">Tags</label>

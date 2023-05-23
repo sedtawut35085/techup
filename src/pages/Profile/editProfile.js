@@ -118,7 +118,7 @@ function EditProfile() {
                     "FirstName": name,    
                     "SurName": surname,   
                     "Gender": gender.label,    
-                    "Birthday": Moment(birthday).format('YYYY-MM-DD'),
+                    "Birthday": Moment(birthday, 'DD-MM-YYYY').format('YYYY-MM-DD'),
                     "Location": location,
                     "Website": website,
                     // "Notification": false,
@@ -140,7 +140,7 @@ function EditProfile() {
                     "FirstName": name,    
                     "SurName": surname,   
                     "Gender": gender.label,    
-                    "Birthday": Moment(birthday).format('YYYY-MM-DD'),
+                    "Birthday": Moment(birthday, 'DD-MM-YYYY').format('YYYY-MM-DD'),
                     "Location": location,
                     "Website": website,
                     "ImageURL": 'image'

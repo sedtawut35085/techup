@@ -22,9 +22,12 @@ function Weeklyprof() {
     const [QuestionID , setQuestionID] = useState("");
     const [pageSize,setPageSize] = useState(5);
     const [isHaveWeekly, setIsHaveWeekly] = useState(false)
-    const [isLoading, setIsLoading] = useState(true);
+
     const [isLoading1, setIsLoading1] = useState(true);
     const [isLoading2, setIsLoading2] = useState(true);
+    const [isLoading3, setIsLoading3] = useState(true);
+    const [isLoading4, setIsLoading4] = useState(true);
+
     const [allSubmission,setAllSubmission] = useState([]);
     const [numberPage, setNumberPage] = useState([])
     const [inFoQuestion, setInFoQuestion] = useState("")
@@ -49,7 +52,7 @@ function Weeklyprof() {
     async function getDiscuss() {
         let res = await getWeeklyComment();
         setDiscuss(res)
-        setIsLoading(false)
+        setIsLoading1(false)
     }
 
     async function addNewComment() {
@@ -131,10 +134,10 @@ function Weeklyprof() {
             setTopicID(res[0].TopicID);
             setQuestionID(res[0].QuestionID);
             setIsHaveWeekly(true)
-            setIsLoading(false);
+            setIsLoading3(false);
         }else{
             setIsHaveWeekly(false)
-            setIsLoading(false);
+            setIsLoading3(false);
         }
         // loadEachSubmissionFromUserIDandQuestionID();
     }
@@ -147,7 +150,7 @@ function Weeklyprof() {
             setIsDone(true)
             setAllSubmission(res)
         }
-        setIsLoading1(false)
+        setIsLoading4(false)
     }
 
     console.log(allSubmission)
@@ -164,7 +167,7 @@ function Weeklyprof() {
         <div className="weekly-page">
             <div className="cover-container">
                 {
-                    isLoading && isLoading1 && isLoading2 && 
+                    (isLoading1 || isLoading2 || isLoading3 || isLoading4) &&
                     // isLoading3 &&
                     <div className="loader2">
                         <div className="lds-roller"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div>
@@ -172,7 +175,7 @@ function Weeklyprof() {
                     </div>
                 }   
                 {
-                    !isLoading && !isLoading1 && !isLoading2 && 
+                    !(isLoading1 || isLoading2 || isLoading3 || isLoading4) &&
                     // !isLoading3 &&
                     <>  
                     {isHaveWeekly === true ?                       

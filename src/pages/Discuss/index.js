@@ -5,7 +5,7 @@ import Moment from 'moment';
 import { defaultProfileImg } from '../../assets/js/helper'
 import { getEachDiscuss , getDiscussInTrend ,getDiscussNewest ,getDiscussMostVote } from '../../service/discuss.js';
 
-import { IoCaretUp } from 'react-icons/io5'
+import { IoCaretUp, IoCloseCircle } from 'react-icons/io5'
 import { HiFire, HiOutlinePencilAlt, HiOutlineEye } from 'react-icons/hi';
 import { FiSearch, FiChevronLeft, FiChevronRight, FiChevronsLeft, FiChevronsRight } from 'react-icons/fi';
 
@@ -14,7 +14,9 @@ import BackgroundIcon from '../../components/background/bgIcons.js';
 function Discuss() {
 
     const [isLoading, setIsLoading] = useState(true)
-    const [discusses , setDiscusses] = useState([])
+    const [discusses, setDiscusses] = useState([])
+    const [discussesSearch, setDiscussesSearch] = useState([])
+    const [allTags, setAllTags] = useState()
 
     const [sortBy , setSortBy] = useState("trend")
     const [searchDiscuss, setSearchDiscuss] = useState("")
@@ -23,8 +25,34 @@ function Discuss() {
     async function loadInTrendDiscuss() {
         const res = await getDiscussInTrend();
         setDiscusses(res);
+        setDiscussesSearch(res);
         console.log('All discuss :', res)
+
+        let tags = [];
+        for(let i=0; i < res.length; i++) {
+            let tag = JSON.parse(res[i].Tags)
+            tags = tags.concat(tag);
+        }
+
+        let object = {}
+        tags.forEach(tag => {
+            object[tag] = (object[tag] || 0) + 1;
+        })
+
+        setAllTags(object)
         setIsLoading(false)
+    }
+
+    function searchTitleDiscuss(text) {
+        setSearchDiscuss(text)
+        const res = discusses.filter((discuss) => (discuss.Title.toLowerCase()).includes(text.toLowerCase()))
+        setDiscussesSearch(res);
+    }
+
+    function searchTagDiscuss(text) {
+        setSearchTags(text);
+        const res = discusses.filter((discuss) => (discuss.Tags.toLowerCase()).includes(text.toLowerCase()))
+        setDiscussesSearch(res);
     }
 
     useEffect(() => {
@@ -49,8 +77,8 @@ function Discuss() {
                                 <div className="col-6">
                                     <div className="sorting">
                                         <span className={`sort-select ${sortBy === 'trend' ? 'active' : ''}`} onClick={() => setSortBy('trend')}><HiFire size={24} /> In trend</span>
-                                        <span className={`sort-select ${sortBy === 'newest' ? 'active' : ''}`} onClick={() => setSortBy('newest')}>Newest</span>
-                                        <span className={`sort-select ${sortBy === 'vote' ? 'active' : ''}`} onClick={() => setSortBy('vote')}>Most Votes</span>
+                                        {/* <span className={`sort-select ${sortBy === 'newest' ? 'active' : ''}`} onClick={() => setSortBy('newest')}>Newest</span>
+                                        <span className={`sort-select ${sortBy === 'vote' ? 'active' : ''}`} onClick={() => setSortBy('vote')}>Most Votes</span> */}
                                     </div>
                                 </div>
                                 <div className="col-6 d-flex jc-end ai-center">
@@ -60,7 +88,7 @@ function Discuss() {
                                             <input 
                                                 value={searchDiscuss}
                                                 placeholder="Search discuss title..."
-                                                onChange={(e) => setSearchDiscuss(e.target.value)}
+                                                onChange={(e) => searchTitleDiscuss(e.target.value)}
                                             />
                                         </div>
                                     </div>
@@ -73,7 +101,11 @@ function Discuss() {
                             <div data-aos="fade-up" data-aos-duration="1000" data-aos-delay="200">
                                 <div className="discuss-card-wrap">
                                     {
-                                        discusses.map((discuss, key) => (
+                                        (discussesSearch.length < 1) &&
+                                        <div className="d-flex jc-center py-4 color-gray2 f-lg">No result.</div>
+                                    }
+                                    {
+                                        discussesSearch.map((discuss, key) => (
                                             <Link className="discuss-card" key={key} to={`/discuss/${discuss.DiscussID}`}>
                                                 <div className="left-side">
                                                     <img alt="Avatar" onError={defaultProfileImg} className="author-image" src={discuss.UserImage}></img>
@@ -91,13 +123,13 @@ function Discuss() {
                                                 </div>
                                                 <div className="right-side">
                                                     <span className="d-flex ai-center color-gray2"><IoCaretUp className="me-1" size={24} />{discuss.AmountLike}</span>
-                                                    <span className="d-flex ai-center color-gray2"><HiOutlineEye className="me-1" size={24} />{discuss.View}</span>
+                                                    {/* <span className="d-flex ai-center color-gray2"><HiOutlineEye className="me-1" size={24} />{discuss.View}</span> */}
                                                 </div>
                                             </Link>
                                         ))
                                     }
                                 </div>
-                                <div className="pagination1">         
+                                {/* <div className="pagination1">         
                                     <div className="display-per-page">
                                         <span>Display per page</span>
                                         <select defaultValue="5" className="page">
@@ -117,7 +149,7 @@ function Discuss() {
                                         <button className="arrow"><FiChevronRight /></button>
                                         <button className="arrow"><FiChevronsRight /></button>
                                     </div>
-                                </div>
+                                </div> */}
                             </div>
                         </div>
                         <div data-aos="fade-up" data-aos-duration="1000" data-aos-delay="400" className="tags-search">
@@ -127,30 +159,19 @@ function Discuss() {
                                 <input 
                                     value={searchTags}
                                     placeholder="#intern, #fullstack"
-                                    onChange={(e) => setSearchTags(e.target.value)}
+                                    onChange={(e) => searchTagDiscuss(e.target.value)}
                                 />
+                                <IoCloseCircle size={24} className="color-5" onClick={() => searchTagDiscuss("")} />
                             </div>
                             <div className="all-tags">
-                                <div className="tag" onClick={() => setSearchTags("#interview")}>
-                                    <span>#interview</span>
-                                    <span>20</span>
-                                </div>
-                                <div className="tag" onClick={() => setSearchTags("#Coding")}>
-                                    <span>#Coding</span>
-                                    <span>18</span>
-                                </div>
-                                <div className="tag" onClick={() => setSearchTags("#TECHUP")}>
-                                    <span>#TECHUP</span>
-                                    <span>17</span>
-                                </div>
-                                <div className="tag" onClick={() => setSearchTags("#FullStack")}>
-                                    <span>#FullStack</span>
-                                    <span>17</span>
-                                </div>
-                                <div className="tag" onClick={() => setSearchTags("#Internship")}>
-                                    <span>#Internship</span>
-                                    <span>16</span>
-                                </div>                                
+                                {
+                                    Object.entries(allTags).sort(([,a],[,b]) => b-a).map(([key, value], index) => (
+                                        <div key={index} className="tag thai" onClick={() => searchTagDiscuss(`${key}`)}>
+                                            <span>#{key}</span>
+                                            <span>{value}</span>
+                                        </div>
+                                    ))
+                                }                             
                             </div>
                         </div>
                     </div>

@@ -111,15 +111,15 @@ function DiscussDetail() {
                             <FaChevronLeft />
                         </Link>
                         <div data-aos="fade-up" data-aos-duration="1000" className="main-discuss-card">
-                            <div className="vote-section">
-                                <IoCaretUp className="color-1 vote" size={24} />
+                            <div className="color-gray1 vote-section">
+                                <IoCaretUp className="vote" size={24} />
                                 <span>{discuss.AmountLike}</span>
-                                <IoCaretDown className="color-1 vote" size={24} />
+                                <IoCaretDown className="vote" size={24} />
                             </div>
                             <div className="detail-section">
                                 <div className="header-detail">
                                     <div className="profile-info">
-                                        <img alt="Avatar" onError={defaultProfileImg} className="profile-img" src={discuss?.UserImage} />
+                                        <Link to={"/profile/" + discuss?.UserEmail}><img alt="Avatar" onError={defaultProfileImg} className="profile-img" src={discuss?.UserImage} /></Link>
                                         <div className="information">
                                             <p className="f-md m-0 thai fw-500">{discuss?.Title}</p>
                                             <div className="tags">
@@ -137,7 +137,7 @@ function DiscussDetail() {
                                         </div>
                                     </div>
                                     <div className="action">
-                                        <span><HiOutlineEye size={24} />{discuss?.View}</span>
+                                        {/* <span><HiOutlineEye size={24} />{discuss?.View}</span> */}
                                         <span className="report" onClick={() => {setReportModal(true); toggleScrollable(true)}}><HiOutlineExclamation size={24} /></span>
                                     </div>
                                 </div>

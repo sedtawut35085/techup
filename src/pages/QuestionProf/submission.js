@@ -115,7 +115,7 @@ function SubmissionProf() {
                 "updateValue": Number(point) + Number(inFoUser.MostPoint)
             }
             let resupdateMaxpoint = await updateStudentText(bodyForMostPoint,inFoUser.UserEmail)
-            let resAddToLogPoint = await addPointFromProfessorToLogPoint(inFoUser.UserEmail,point,"from Question : " + inFoQuestion.QuestionName)
+            let resAddToLogPoint = await addPointFromProfessorToLogPoint(inFoUser.UserEmail,point,"Get points from question: " + inFoQuestion.QuestionName)
             navigate(`/professor/${TopicID}/question/${QuestionId}`)
         }
     }
@@ -213,13 +213,13 @@ function SubmissionProf() {
                                         </div>
                                     ))}        
                                     {
-                                        fileList &&
+                                        (fileList.length > 1) &&
                                         <>                          
                                             <div className="divider my-4"></div>
                                             <div className="d-flex jc-center ai-center">
                                                 <button 
                                                     className="btn-01 d-flex jc-center ai-center" 
-                                                    onClick={() => downloadAll(fileList, (inFoQuestion.FirstName + "_" + inFoQuestion.QuestionName))}
+                                                    onClick={() => downloadAll(fileList, (inFoSubmission.FirstName + "_" + inFoQuestion.QuestionName))}
                                                 >
                                                     <TbFileZip size={24} className="me-1" />
                                                     Download All

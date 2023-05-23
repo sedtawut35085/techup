@@ -84,7 +84,7 @@ function Store() {
                             </div>
                         )}
                     </div>
-                    <div className="pagination1">                    
+                    {/* <div className="pagination1">                    
                         <div className="pagination-number">
                             <button className="arrow disable"><FiChevronsLeft /></button>
                             <button className="arrow disable"><FiChevronLeft /></button>
@@ -105,7 +105,7 @@ function Store() {
                             </select>
                             <span>Showing 1-6 of 6</span>
                         </div>
-                    </div>
+                    </div> */}
                     </>
                 }
             </div>

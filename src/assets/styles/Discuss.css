@@ -173,12 +173,12 @@
 }
 
 .discuss-detail-page .main-discuss-card .vote-section .vote {
-    cursor: pointer;
+    cursor: not-allowed;
     transition: all .2s;
 }
 
 .discuss-detail-page .main-discuss-card .vote-section .vote:hover {
-    color: #FF9326;
+    /* color: #FF9326; */
 }
 
 .discuss-detail-page .main-discuss-card .header-detail {
