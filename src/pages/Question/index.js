@@ -14,7 +14,7 @@ import { IoCloseCircle, IoCaretUp, IoCaretDown } from 'react-icons/io5'
 
 import { getStudent } from '../../service/student';
 import { getQuestion, updateQuestion } from '../../service/question';
-import { getComment , addComment } from '../../service/discussQuestion';
+import { getCommentNew , addComment } from '../../service/discussQuestion';
 import { saveSubmission, getEachSubmissionFromUserIDandQuestionID } from '../../service/submission'
 import { getChallenge,addChallengeUser,deleteChallengedUser, addAmountChalleger ,subAmountChalleger } from '../../service/challenge';
 import { getUserHintStatus, addVote , changeVote , addAmountShow , subAmountShow , addAmountNotShow ,subAmountNotShow } from '../../service/hint';
