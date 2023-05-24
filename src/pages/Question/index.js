@@ -1,30 +1,26 @@
 import React, { ChangeEvent, useState , useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import $ from 'jquery'
+import Moment from 'moment'
+import AWS from 'aws-sdk'
 import { ToastContainer, toast } from 'react-toastify';
+
 import { fileSize, fileType, download, downloadAll } from '../../assets/js/helper'
 import { FaChevronLeft } from 'react-icons/fa';
 import { TbCalendarTime, TbBulb, TbSwords, TbLock, TbFileZip, TbInfoCircle, TbFileDescription, TbMessage2, TbFileUpload, TbMessageCircle, TbPaperclip, TbTrash, } from 'react-icons/tb'
 import { GiFlyingFlag } from 'react-icons/gi'
-import { BsReplyAll, BsCheckLg } from 'react-icons/bs'
-import { HiOutlineExclamation } from 'react-icons/hi'
+import { BsCheckLg } from 'react-icons/bs'
 import { IoCloseCircle, IoCaretUp, IoCaretDown } from 'react-icons/io5'
+
+import { getStudent } from '../../service/student';
 import { getQuestion, updateQuestion } from '../../service/question';
 import { getComment , addComment } from '../../service/discussQuestion';
-import { saveSubmission } from '../../service/submission'
-import { getStudent } from '../../service/student';
-import BackgroundIcon from '../../components/background/bgIcons.js';
-import Moment from 'moment'
-import { getEachSubmissionFromUserIDandQuestionID } from '../../service/submission'
-import { convertToBase64, uploadPhoto } from '../../service';
-import AWS from 'aws-sdk'
-import { getChallenge,addChallengeUser,deleteChallengedUser } from '../../service/challenge';
+import { saveSubmission, getEachSubmissionFromUserIDandQuestionID } from '../../service/submission'
+import { getChallenge,addChallengeUser,deleteChallengedUser, addAmountChalleger ,subAmountChalleger } from '../../service/challenge';
+import { getUserHintStatus, addVote , changeVote , addAmountShow , subAmountShow , addAmountNotShow ,subAmountNotShow } from '../../service/hint';
+
 import CommentDiscussQuestion from "../../components/comment/commentDiscussQuestion"
-import { addAmountChalleger ,subAmountChalleger } from '../../service/challenge';
-import { getUserHintStatus } from '../../service/hint';
-import { addVote , changeVote , addAmountShow , subAmountShow , addAmountNotShow ,subAmountNotShow } from '../../service/hint';
-
-
+import BackgroundIcon from '../../components/background/bgIcons.js';
 
 const S3_BUCKET ='techup-file-upload-storage';
 const REGION ='ap-southeast-1';
@@ -142,24 +138,24 @@ function Question() {
         setVoteNow(questionInfo.AmountShow)
         var date = new Moment(res[0].DueDate).format('YYYY-MM-DD')
         var today = new Moment().format('YYYY-MM-DD')
-        let dateconvert = new Date(date).getTime();
-        let todayconvert = new Date(today).getTime();
-        let weeklyid = res[0].QuestionID
-        if (dateconvert < todayconvert && questionInfo.isDueDateCheck === "0") {
-            const bodydata1 = {
+        let dateConvert = new Date(date).getTime();
+        let todayConvert = new Date(today).getTime();
+        let weeklyId = res[0].QuestionID
+        if (dateConvert < todayConvert && questionInfo.isDueDateCheck === "0") {
+            const bodyData1 = {
                 "updateType": "Text",
                 "updateKey": "isDueDateCheck",
                 "updateValue": "1"
             }
-            const bodydata = {
+            const bodyData = {
                 "updateType": "Text",
                 "updateKey": "Point",
                 "updateValue": Math.ceil(questionInfo.Point*0.9)
             }
             questionInfo.Point = Math.ceil(questionInfo.Point*0.9)
-            let res = await updateQuestion(weeklyid, bodydata1)
-            let res2 = await updateQuestion(weeklyid, bodydata)
-            // let res = await updateAdminWeeklyStatus(weeklyid, bodydata)
+            let res = await updateQuestion(weeklyId, bodyData1)
+            let res2 = await updateQuestion(weeklyId, bodyData)
+            // let res = await updateAdminWeeklyStatus(weeklyId, bodyData)
         }
         setIsLoading2(false)
     }
@@ -820,7 +816,7 @@ function Question() {
                             <TbLock className="color-1" size={140} />
                             {
                                 (inFoQuestion.AmountChallenge < 10) &&
-                                <span className="count-vote">need {10 - inFoQuestion.AmountChallenge} more challenger to use this feature</span>
+                                <span className="vote-section f-smd color-1">Need {10 - inFoQuestion.AmountChallenge} more challenger to use this feature</span>
                             }
                             {   (inFoQuestion.AmountChallenge >= 10) &&
                                 <>
