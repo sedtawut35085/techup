@@ -88,14 +88,14 @@ function Question() {
     }
 
     async function getDiscuss() {
-        let res = await getComment(QuestionId);
+        let res = await getCommentNew(QuestionId);
         setDiscuss(res)
         setIsLoading(false)
     }
 
     async function addNewComment() {
         await addComment(QuestionId,commentDiscuss)
-        let res = await getComment(QuestionId);
+        let res = await getCommentNew(QuestionId);
         setDiscuss(res)
     }
     

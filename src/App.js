@@ -83,17 +83,17 @@ function App() {
             <Route path="/professor/weekly" element={<AuthProvider><Weeklyprof /></AuthProvider>} /> 
             <Route path="/professor/weekly/addweekly" element={<AuthProvider><AddWeeklyQuestion /></AuthProvider>} /> 
             <Route path="/home" element={<AuthProvider><Homepage /></AuthProvider>}/>
-            <Route path="/topic/:topic" element={<Topic />}/>
-            <Route path="/topic/:topic/question/:question" element={<Question />}/>
-            <Route path="/discuss" element={<Discuss />}/>
-            <Route path="/discuss/add" element={<AddDiscuss />}/>
-            <Route path="/discuss/:id" element={<DiscussDetail />}/>
-            <Route path="/ranking" element={<Ranking />}/>
-            <Route path="/store" element={<Store />}/>
-            <Route path="/weekly" element={<Weekly />}/>
-            <Route path="/profile/:id" element={<Profile />}/>
-            <Route path="/profile/:id/edit" element={<EditProfile />}/>
-            <Route path="/profile/:id/point-history" element={<PointHistory />}/>
+            <Route path="/topic/:topic" element={<AuthProvider><Topic /></AuthProvider>}/>
+            <Route path="/topic/:topic/question/:question" element={<AuthProvider><Question /></AuthProvider>}/>
+            <Route path="/discuss" element={<AuthProvider><Discuss /></AuthProvider>}/>
+            <Route path="/discuss/add" element={<AuthProvider><AddDiscuss /></AuthProvider>}/>
+            <Route path="/discuss/:id" element={<AuthProvider><DiscussDetail /></AuthProvider>}/>
+            <Route path="/ranking" element={<AuthProvider><Ranking /></AuthProvider>}/>
+            <Route path="/store" element={<AuthProvider><Store /></AuthProvider>}/>
+            <Route path="/weekly" element={<AuthProvider><Weekly /></AuthProvider>}/>
+            <Route path="/profile/:id" element={<AuthProvider><Profile /></AuthProvider>}/>
+            <Route path="/profile/:id/edit" element={<AuthProvider><EditProfile /></AuthProvider>}/>
+            <Route path="/profile/:id/point-history" element={<AuthProvider><PointHistory /></AuthProvider>}/>
           </Route>
         </Routes>
       </BrowserRouter>

@@ -30,7 +30,7 @@ const Comment = ({key , comment , replies}) => {
             <div className="d-flex user-info">
                 <img alt="Avatar" onError={defaultProfileImg} src={comment?.UserImage} />
                 <div className="ms-2 d-flex fd-col">
-                    <span className="f-md">{comment?.AuthorName} {comment?.AuthorSurName}</span>
+                    <span className="f-md">{comment?.Name} {comment?.SurName}</span>
                     <span className="f-xs color-gray2">created at: {Moment(comment?.Date).format('DD-MM-YYYY , hh:mm')}</span>
                 </div>
             </div>

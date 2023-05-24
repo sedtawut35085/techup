@@ -4,7 +4,7 @@ import $ from 'jquery'
 import Moment from "moment"
 
 import { toggleScrollable, defaultProfileImg } from '../../assets/js/helper'
-import { addComment, getComment, getEachDiscuss } from '../../service/discuss.js';
+import { addComment, getComment, getEachDiscussNew } from '../../service/discuss.js';
 
 import { BsReplyAll } from 'react-icons/bs'
 import { FaChevronLeft } from 'react-icons/fa';
@@ -29,7 +29,7 @@ function DiscussDetail() {
     const [discuss , setDiscuss] = useState("")
 
     async function getDiscussDetail(discussId) {
-        let res = await getEachDiscuss(discussId)
+        let res = await getEachDiscussNew(discussId)
         setDiscuss(res[0])
         setIsLoading(false)
         // setIsLoading(isLoading.splice(isLoading.indexOf(1), 1))
@@ -132,7 +132,7 @@ function DiscussDetail() {
                                                 <span>#Internship</span>
                                                 <span>#Experience</span> */}
                                             </div>
-                                            <span className="f-xs m-0 color-gray2">{discuss?.AuthorName} {discuss?.AuthorSurName} created at: {Moment(discuss.Date).format('MMM DD, YYYY - H:mm')}</span>
+                                            <span className="f-xs m-0 color-gray2">{discuss?.Name} {discuss?.SurName} created at: {Moment(discuss.Date).format('MMM DD, YYYY - H:mm')}</span>
                                         </div>
                                     </div>
                                     <div className="action">

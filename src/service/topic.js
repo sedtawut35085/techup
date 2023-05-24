@@ -72,7 +72,6 @@ export async function saveTopic (bodydata) {
       }).catch((err)=>{
         response = err
       })
-  console.log("topic : " + response.data)
   return response.data
 }
 
