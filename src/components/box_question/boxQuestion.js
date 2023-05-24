@@ -21,6 +21,7 @@ const QuestionBox = ({data}) => {
                     ? {backgroundColor: "#194D45"}
                     : {backgroundColor: "#fff"}
                 }
+                title={data.TopicName}
             >
                 <div className="point">{data.Point} P</div>
                 <div className="title">
@@ -38,7 +39,15 @@ const QuestionBox = ({data}) => {
                     </span>
                 </div>
                 <div className="bottom f-sm">
-                    <span>{data.TopicName}</span>
+                    {
+                        data.TopicName.length > 29 ?
+                        <>
+                        <span>{data.TopicName.substring(0, 23) + "..."}</span>
+                        </>
+                        :<>
+                        <span>{data.TopicName}</span>
+                        </>
+                    }
                     <span 
                         className={`text-capitalize fw-700 ${
                             data.Difficulty === "Easy"
