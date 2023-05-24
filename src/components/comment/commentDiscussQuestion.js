@@ -56,10 +56,10 @@ const CommentDiscussQuestion = ({comment , replies}) => {
                         </div>
                     :   null
                 }
-                <div className="reply">
+                {/* <div className="reply">
                     <BsReplyAll className="icon" />
                     <span>Reply</span>
-                </div>
+                </div> */}
                 <div className="report">
                     <HiOutlineExclamation className="icon" />
                     <span>report</span>

@@ -701,6 +701,7 @@ div.loader2 {
 
 /* Button view detail */
 .btn-view-detail {
+    white-space: nowrap;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -722,6 +723,7 @@ div.loader2 {
 
 /* Button 1 */
 .btn-01 {
+    white-space: nowrap;
     height: 45px;
     padding: 0 24px;
     border-radius: 12px;
@@ -747,6 +749,7 @@ div.loader2 {
 }
 
 .btn-02 {
+    white-space: nowrap;
     height: 45px;
     padding: 8px 24px;
     border-radius: 12px;
@@ -767,6 +770,7 @@ div.loader2 {
 
 /* Button 2 */
 .btn-2 {
+    white-space: nowrap;
     height: 30px;
     padding: 0 .7rem;
     border-radius: 15px;
@@ -789,6 +793,7 @@ div.loader2 {
 
 /* Button 2 edit */
 .btn-2-edit {
+    white-space: nowrap;
     height: 36px;
     padding: 0 .7rem;
     border-radius: 18px;
@@ -811,6 +816,7 @@ div.loader2 {
 
 /* Button 3 */
 .btn-3 {
+    white-space: nowrap;
     height: 30px;
     padding: 0 .7rem;
     border-radius: 15px;
@@ -830,6 +836,7 @@ div.loader2 {
 
 /* Button 4 */
 .btn-4 {
+    white-space: nowrap;
     height: 40px;
     padding: 0 1.4rem;
     border-radius: 20px;
@@ -852,6 +859,7 @@ div.loader2 {
 
 /* Button 5 */
 .btn-5 {
+    white-space: nowrap;
     overflow: hidden;
     height: 36px;
     padding: 0 .8rem;
@@ -879,6 +887,7 @@ div.loader2 {
 
 /* Button 6 */
 .btn-6 {
+    white-space: nowrap;
     overflow: hidden;
     height: 36px;
     width: 36px;
@@ -901,6 +910,7 @@ div.loader2 {
 
 /* Button 7 */
 .btn-7 {
+    white-space: nowrap;
     height: 36px;
     padding: 0 .7rem;
     border-radius: 10px;

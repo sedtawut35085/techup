@@ -5,7 +5,7 @@ import Moment from 'moment'
 import AWS from 'aws-sdk'
 import { ToastContainer, toast } from 'react-toastify';
 
-import { fileSize, fileType, download, downloadAll } from '../../assets/js/helper'
+import { fileSize, fileType, download, downloadAll, toggleScrollable } from '../../assets/js/helper'
 import { FaChevronLeft } from 'react-icons/fa';
 import { TbCalendarTime, TbBulb, TbSwords, TbLock, TbFileZip, TbInfoCircle, TbFileDescription, TbMessage2, TbFileUpload, TbMessageCircle, TbPaperclip, TbTrash, } from 'react-icons/tb'
 import { GiFlyingFlag } from 'react-icons/gi'
@@ -236,6 +236,7 @@ function Question() {
     };
     const uploadFile = async (file) => {
         setLoading(true)
+        toggleScrollable(true)
         const convertFiles = []
 
         if(file.length === 0 && commentSubmission === "") {
@@ -249,6 +250,7 @@ function Question() {
                 theme: "light",
             });
             setLoading(false)
+            toggleScrollable(false)
         } else if (file.length === 0) {            
             var body = {
                 "StudentEmail": inFoUser.UserEmail,
@@ -267,6 +269,7 @@ function Question() {
             let ressavesubmit = saveSubmission(body)
                 .then((res)=>{    
                     setLoading(false)
+                    toggleScrollable(false)
                     toast.success('Success submission!', {
                         position: "bottom-left",
                         autoClose: 2000,
@@ -289,6 +292,7 @@ function Question() {
                         theme: "light",
                     });
                     setLoading(false)
+                    toggleScrollable(false)
                 })
         } else if(file.length !== 0){
             file.forEach(async (files, i) => {
@@ -331,6 +335,7 @@ function Question() {
                             let ressavesubmit = saveSubmission(body)
                                 .then((res)=>{
                                     setLoading(false)
+                                    toggleScrollable(false)
                                     toast.success('Success submission!', {
                                         position: "bottom-left",
                                         autoClose: 2000,
@@ -353,6 +358,7 @@ function Question() {
                                         theme: "light",
                                     });
                                     setLoading(false)
+                                    toggleScrollable(false)
                                 })
                           }, 3000);
                     }
@@ -368,6 +374,8 @@ function Question() {
                 draggable: true,
                 theme: "light",
             });
+            setLoading(false)
+            toggleScrollable(false)
         }
         
     }

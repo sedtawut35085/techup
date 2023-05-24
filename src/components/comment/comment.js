@@ -36,10 +36,10 @@ const Comment = ({key , comment , replies}) => {
             </div>
             <p className="f-md my-3 thai">{comment?.Comment}</p>
             <div className="action">
-                <div className="d-flex ai-center">
-                    <IoCaretUp className="color-1" />
+                <div className="d-flex ai-center color-gray1">
+                    <IoCaretUp className="" />
                     <span className="mx-2">{comment?.AmountLike}</span>
-                    <IoCaretDown className="color-1" />
+                    <IoCaretDown className="" />
                 </div>
                 {
                     replies.length > 0
@@ -49,10 +49,10 @@ const Comment = ({key , comment , replies}) => {
                         </div>
                     :   null
                 }
-                <div className="d-flex ai-center">
+                {/* <div className="d-flex ai-center">
                     <BsReplyAll size={24} className="color-1 me-1" />
                     <span>Reply</span>
-                </div>
+                </div> */}
                 <div className="d-flex ai-center">
                     <HiOutlineExclamation size={24} className="color-1 me-1" />
                     <span>report</span>

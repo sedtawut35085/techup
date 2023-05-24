@@ -39,15 +39,7 @@ const QuestionBox = ({data}) => {
                     </span>
                 </div>
                 <div className="bottom f-sm">
-                    {
-                        data.TopicName.length > 29 ?
-                        <>
-                        <span>{data.TopicName.substring(0, 23) + "..."}</span>
-                        </>
-                        :<>
-                        <span>{data.TopicName}</span>
-                        </>
-                    }
+                    <span className="topic-name">{data.TopicName}</span>
                     <span 
                         className={`text-capitalize fw-700 ${
                             data.Difficulty === "Easy"

@@ -17,7 +17,7 @@ const TopicBox = ({data}) => {
             }
         >
             <div className="title">
-                <span className="f-lg fw-700">{data.TopicName}</span>
+                <span className="f-lg fw-700 topic-name">{data.TopicName}</span>
                 <span className="f-xs fw-400">{data.Type}</span>
             </div>
             <span className="professor-owner f-xs fw-500"><RiVipCrown2Fill className="color-1 me-1" size={20} />{data.Name+" "+data.Surname}</span>
