@@ -198,7 +198,7 @@ function SignUpForm() {
             <span className="d-flex jc-center f-md">Already have an account?<a href="/" className="underline color-1 ps-2">Sign in</a></span>
           </div>
         </div>
-        <div className="sign-info">
+        <div className="sign-info d-none d-md-block">
           <div className="d-flex mb-4 jc-center">
             <img className="sign-logo" alt="logo" width="250px" height="214px" src="/assets/images/logo/logo(white).png" />
           </div>
