@@ -91,7 +91,7 @@ export async function deleteChallengedUser(questionID) {
     return response
 }
 
-export async function addAmountChalleger(questionID) {
+export async function addAmountChallenger(questionID) {
   await axios({
     method:'patch',
     url:`${baseUrl}/challenge`,
@@ -107,7 +107,7 @@ export async function addAmountChalleger(questionID) {
   return response
 }
 
-export async function subAmountChalleger(questionID) {
+export async function subAmountChallenger(questionID) {
   await axios({
     method:'patch',
     url:`${baseUrl}/challenge`,

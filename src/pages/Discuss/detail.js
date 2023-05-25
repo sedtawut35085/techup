@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import $ from 'jquery'
 import Moment from "moment"
+import { toast } from 'react-toastify';
 
 import { toggleScrollable, defaultProfileImg } from '../../assets/js/helper'
 import { addComment, getComment, getEachDiscussNew } from '../../service/discuss.js';
@@ -10,7 +11,7 @@ import { BsReplyAll } from 'react-icons/bs'
 import { FaChevronLeft } from 'react-icons/fa';
 import { IoCaretUp, IoCaretDown, IoCloseCircle } from 'react-icons/io5'
 import { HiOutlineEye, HiOutlineExclamation, HiCheckCircle } from 'react-icons/hi'
-import { TbMessage2, TbMessageCircle } from 'react-icons/tb'
+import { TbMessage2 } from 'react-icons/tb'
 
 import Comment from "../../components/comment/comment"
 import BackgroundIcon from '../../components/background/bgIcons.js';
@@ -24,9 +25,12 @@ function DiscussDetail() {
     const [reportModal, setReportModal] = useState(false)
     const [reportDoneModal, setReportDoneModal] = useState(false)
 
-    const [sortBy, setSortBy] = useState(1)
+    const [sortBy, setSortBy] = useState("newest")
     const [comment , setComment] = useState("")
     const [discuss , setDiscuss] = useState("")
+
+    const [allComment, setAllComment] = useState([])
+    const [showReply, setShowReply] = useState([]);
 
     async function getDiscussDetail(discussId) {
         let res = await getEachDiscussNew(discussId)
@@ -37,20 +41,31 @@ function DiscussDetail() {
 
     async function getAllComment(discussId) {
         let res = await getComment(discussId)
+
+        res.sort((a, b) => (Moment(b.Date).diff(Moment(a.Date))))
+
         setAllComment(res)
         setIsLoading1(false)
-        // setIsLoading(isLoading.splice(isLoading.indexOf(2), 1))
     }
 
     async function addNewComment() {
-        await addComment(discussID,comment)
-        let res = await getComment(discussID);
-        setAllComment(res)
-        setComment("")
+        if (comment !== "") {
+            await addComment(discussID,comment)
+            let res = await getComment(discussID);
+            setAllComment(res)
+            setComment("")
+        } else {
+            toast.error('Please enter comment!', {
+                position: "bottom-left",
+                autoClose: 2000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                theme: "light",
+            });
+        }
     }
-
-    const [allComment, setAllComment] = useState([])
-
     const rootComments = allComment.filter( (allComment) => allComment.ParentID === null)
 
     function getReply(commentId) {
@@ -63,7 +78,15 @@ function DiscussDetail() {
         getAllComment(discussID)
     } , []);
 
-    const [showReply, setShowReply] = useState([]);
+    function sortComment(type) {
+        setSortBy(type)
+        if (type === "newest") {
+            setAllComment(allComment.sort((a, b) => (Moment(b.Date).diff(Moment(a.Date)))))
+        }
+        if (type === "oldest") {
+            setAllComment(allComment.sort((a, b) => (Moment(a.Date).diff(Moment(b.Date)))))
+        }
+    }
 
     function toggleReply(id) {
         let array = [...showReply];
@@ -149,9 +172,9 @@ function DiscussDetail() {
                             <div data-aos="fade-up" data-aos-duration="1000" data-aos-delay="200" className="d-flex jc-btw my-4">
                                 <span className="f-md d-flex ai-center"><TbMessage2 className="me-1 color-1" size={36} />Comments ({rootComments.length})</span>
                                 <div className="sorting">
-                                    <span className={`sort-select ${sortBy === 1 ? 'active' : ''}`} onClick={() => setSortBy(1)}>Most Votes</span>
-                                    <span className={`sort-select ${sortBy === 2 ? 'active' : ''}`} onClick={() => setSortBy(2)}>Newest</span>
-                                    <span className={`sort-select ${sortBy === 3 ? 'active' : ''}`} onClick={() => setSortBy(3)}>Oldest</span>
+                                    {/* <span className={`sort-select ${sortBy === 1 ? 'active' : ''}`} onClick={() => setSortBy(1)}>Most Votes</span> */}
+                                    <span className={`sort-select ${sortBy === "newest" ? 'active' : ''}`} onClick={() => sortComment("newest")}>Newest</span>
+                                    <span className={`sort-select ${sortBy === "oldest" ? 'active' : ''}`} onClick={() => sortComment("oldest")}>Oldest</span>
                                 </div>
                             </div>
                             <div data-aos="fade-up" data-aos-duration="1000" data-aos-delay="300" className="comment-box">
@@ -169,7 +192,9 @@ function DiscussDetail() {
                                         <Comment  
                                             key={comment.DiscussQuestionID}
                                             comment={comment}
-                                            replies={getReply(comment.DiscussID)}></Comment>
+                                            replies={getReply(comment.DiscussID)}
+                                            setReportModal={setReportModal}
+                                        />
                                     ))
                                 }                                
                             </div>

@@ -1,14 +1,15 @@
 import React, { ChangeEvent, useState , useEffect } from 'react';
 import Moment from 'moment'
+import { Link } from  'react-router-dom'
 
-import { defaultProfileImg } from '../../assets/js/helper'
+import { defaultProfileImg, toggleScrollable } from '../../assets/js/helper'
 
 import { IoCaretUp, IoCaretDown } from 'react-icons/io5'
 import { TbMessageCircle } from 'react-icons/tb'
 import { BsReplyAll} from 'react-icons/bs'
 import { HiOutlineExclamation } from 'react-icons/hi'
 
-const Comment = ({key , comment , replies}) => {
+const Comment = ({key , comment , replies, setReportModal}) => {
     const [showReply, setShowReply] = useState([]);
 
     function toggleReply(id) {
@@ -28,7 +29,7 @@ const Comment = ({key , comment , replies}) => {
     return (
         <div className="comment-reply" key={key}>
             <div className="d-flex user-info">
-                <img alt="Avatar" onError={defaultProfileImg} src={comment?.UserImage} />
+                <Link to={"/profile/" + comment?.UserEmail}><img alt="Avatar" onError={defaultProfileImg} src={comment?.UserImage}/></Link>
                 <div className="ms-2 d-flex fd-col">
                     <span className="f-md">{comment?.Name} {comment?.SurName}</span>
                     <span className="f-xs color-gray2">created at: {Moment(comment?.Date).format('DD-MM-YYYY , hh:mm')}</span>
@@ -36,7 +37,7 @@ const Comment = ({key , comment , replies}) => {
             </div>
             <p className="f-md my-3 thai">{comment?.Comment}</p>
             <div className="action">
-                <div className="d-flex ai-center color-gray1">
+                <div className="d-flex ai-center vote">
                     <IoCaretUp className="" />
                     <span className="mx-2">{comment?.AmountLike}</span>
                     <IoCaretDown className="" />
@@ -53,7 +54,7 @@ const Comment = ({key , comment , replies}) => {
                     <BsReplyAll size={24} className="color-1 me-1" />
                     <span>Reply</span>
                 </div> */}
-                <div className="d-flex ai-center">
+                <div className="d-flex ai-center report" onClick={() => {setReportModal(true); toggleScrollable(true)}}>
                     <HiOutlineExclamation size={24} className="color-1 me-1" />
                     <span>report</span>
                 </div>  

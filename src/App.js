@@ -72,7 +72,7 @@ function App() {
           
           <Route exact path="/Admin/home/User/:user" element={<AuthProviderAdmin><AdminUserpage /></AuthProviderAdmin>} />
           <Route element={<AppLayout />}>
-            <Route path="/addtopic" element={<AuthProvider><AddTopic /></AuthProvider>}/>
+            <Route path="/add-topic" element={<AuthProvider><AddTopic /></AuthProvider>}/>
             <Route path="/professor" element={<AuthProvider><Professor /></AuthProvider>}/>
             <Route path="/submit" element={<AuthProvider><SubmitProf /></AuthProvider>}/>
             <Route path="/professor/:topic" element={<AuthProvider><TopicProf /></AuthProvider>}/>

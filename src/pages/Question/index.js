@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import $ from 'jquery'
 import Moment from 'moment'
 import AWS from 'aws-sdk'
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 
 import { fileSize, fileType, download, downloadAll, toggleScrollable } from '../../assets/js/helper'
 import { FaChevronLeft } from 'react-icons/fa';
@@ -16,7 +16,7 @@ import { getStudent } from '../../service/student';
 import { getQuestion, updateQuestion } from '../../service/question';
 import { getCommentNew , addComment } from '../../service/discussQuestion';
 import { saveSubmission, getEachSubmissionFromUserIDandQuestionID } from '../../service/submission'
-import { getChallenge,addChallengeUser,deleteChallengedUser, addAmountChalleger ,subAmountChalleger } from '../../service/challenge';
+import { getChallenge,addChallengeUser,deleteChallengedUser, addAmountChallenger ,subAmountChallenger } from '../../service/challenge';
 import { getUserHintStatus, addVote , changeVote , addAmountShow , subAmountShow , addAmountNotShow ,subAmountNotShow } from '../../service/hint';
 
 import CommentDiscussQuestion from "../../components/comment/commentDiscussQuestion"
@@ -94,9 +94,23 @@ function Question() {
     }
 
     async function addNewComment() {
-        await addComment(QuestionId,commentDiscuss)
-        let res = await getCommentNew(QuestionId);
-        setDiscuss(res)
+        if (commentDiscuss !== "") {
+            await addComment(QuestionId, commentDiscuss)
+            let res = await getCommentNew(QuestionId);
+            setDiscuss(res)
+            setCommentDiscuss("")
+        } else {
+            toast.error('Please enter comment!', {
+                position: "bottom-left",
+                autoClose: 2000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                theme: "light",
+            });
+        }
+        
     }
     
     async function loadEachSubmissionFromUserIDandQuestionID() {
@@ -204,13 +218,13 @@ function Question() {
 
     function addChallenge(){
         addChallengeUser(QuestionId)
-        addAmountChalleger(QuestionId)
+        addAmountChallenger(QuestionId)
         setChallenge(true)
     }
 
     function deleteChallenge(){
         deleteChallengedUser(QuestionId)
-        subAmountChalleger(QuestionId)
+        subAmountChallenger(QuestionId)
         setChallenge(false)
     }
     function toggleReply(id) {
@@ -467,14 +481,14 @@ function Question() {
             }
             <div className="cover-container">
                 {
-                    (isLoading === true) && (isLoading1 === true) && (isLoading2 === true) && (isLoading3 === true) && (isLoading4 === true) && (isLoading5 === true) &&
+                    (isLoading || isLoading1 || isLoading2 || isLoading3 || isLoading4 || isLoading5) &&
                     <div className="loader2">
                         <div className="lds-roller"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div>
                         </div>
                     </div>
                 }   
                 {
-                    (isLoading === false) && (isLoading1 === false) && (isLoading2 === false) && (isLoading3 === false) && (isLoading4 === false) && (isLoading5 === false) &&
+                    !(isLoading || isLoading1 || isLoading2 || isLoading3 || isLoading4 || isLoading5) &&
                     <>
                     <Link data-aos="fade-right" data-aos-duration="1000" className="btn-back" to={-1}>
                         <FaChevronLeft />
@@ -622,7 +636,7 @@ function Question() {
                                             onChange={(e) => setCommentDiscuss(e.target.value)}
                                             value = {commentDiscuss} 
                                         />
-                                        <button className="btn-01" onClick={() => {addNewComment();setCommentDiscuss("");}}>Comment</button>
+                                        <button className="btn-01" onClick={() => addNewComment()}>Comment</button>
                                     </div>
                                     {/* <div className="sort">
                                         <span>Sort by :</span>

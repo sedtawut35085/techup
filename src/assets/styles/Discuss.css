@@ -196,6 +196,7 @@
     width: 64px;
     height: 64px;
     border-radius: 50%;
+    object-fit: cover;
 }
 
 .discuss-detail-page .main-discuss-card .header-detail .profile-info .information .tags {
@@ -329,12 +330,22 @@
     height: 50px;
     width: 50px;
     border-radius: 50%;
+    object-fit: cover;
 }
 
 .discuss-detail-page .comment-section .comment-wrap .comment-reply .action {
     display: flex;
     align-items: center;
     gap: 1.5rem;
+}
+
+.discuss-detail-page .comment-section .comment-wrap .comment-reply .action .vote {
+    cursor: not-allowed;
+    color: #e1e1e1;
+}
+
+.discuss-detail-page .comment-section .comment-wrap .comment-reply .action .report {
+    cursor: pointer;
 }
 
 .discuss-detail-page .tu-modal .report-checkbox {

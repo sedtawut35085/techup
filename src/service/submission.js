@@ -58,6 +58,23 @@ export async function getAllSubmissionFromProfessorID(pageStart,pageSize){
   return response.data
 }
 
+export async function getAllSubmissionWithoutPagination(){
+  let ProfessorID = await getCurrentUserId()
+  await axios({
+      method: 'get',
+      url: `${baseUrl}/submission`,
+      params: {
+          "ProfessorID" : ProfessorID,
+          "getType": "getAllSubmissionWithoutPagination",
+      },
+      }).then((res) => {
+        response = res
+      }).catch((err)=>{
+        response = err
+      })
+  return response.data
+}
+
 export async function getEachSubmission(SubmissionID){
     await axios({
         method: 'get',

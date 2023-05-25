@@ -1,5 +1,6 @@
 import React, { ChangeEvent, useState , useEffect } from 'react';
 import Moment from 'moment'
+import { Link } from  'react-router-dom'
 
 import { defaultProfileImg } from '../../assets/js/helper'
 
@@ -7,7 +8,6 @@ import { IoCaretUp, IoCaretDown } from 'react-icons/io5'
 import { TbMessageCircle } from 'react-icons/tb'
 import { BsReplyAll} from 'react-icons/bs'
 import { HiOutlineExclamation } from 'react-icons/hi'
-import {Link} from  'react-router-dom'
 
 const CommentDiscussQuestion = ({comment , replies}) => {
     const [showReply, setShowReply] = useState([]);

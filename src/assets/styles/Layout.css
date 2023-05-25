@@ -96,6 +96,7 @@
     height: 36px;
     border-radius: 50%;
     box-shadow: 0 0 4px rgba(0, 0, 0, 0.25);
+    object-fit: cover;
 }
 .topbar .profile-section .profile-pic .dropdown {
     width: 200px;

@@ -18,8 +18,6 @@ const SelectPicker2 = ({id, className, data, defaultValue, setValue, placeholder
         setIsShow(false)
         setSelected(option)
         setValue(option)
-        console.log("data.title ",option.title)
-        console.log("data.label ",option.label)
         if(option.title === "Difficulty"){
             changefilter(option.title,option.label)
         }else if(option.title === "Date"){

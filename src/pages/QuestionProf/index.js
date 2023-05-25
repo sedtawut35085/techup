@@ -2,6 +2,7 @@ import React, { ChangeEvent, useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import $ from 'jquery'
 import Moment from 'moment';
+import { toast } from 'react-toastify';
 
 import { fileSize, fileType } from '../../assets/js/helper'
 import { getQuestion } from '../../service/question';
@@ -25,9 +26,9 @@ function QuestionProf() {
     const [isLoading2, setIsLoading2] = useState(true)
     const [inFoQuestion, setInFoQuestion] = useState("")
     const [numberPage, setNumberPage] = useState([])
-    const [pageSize,setPageSize] = useState(5);
-    const [currentpage,setCurrentpage] = useState(1);
-    const [allSubmission,setAllSubmission] = useState([]);
+    const [pageSize, setPageSize] = useState(5);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [allSubmission, setAllSubmission] = useState([]);
     const location = useLocation();
     let pageStart = 0;
     let pageNumber
@@ -55,50 +56,50 @@ function QuestionProf() {
 
     async function loadCount(pageSize) {
         const res = await getCount(QuestionId);
-        const Pagenumberlist = []
+        const PageNumberList = []
         pageNumber = Math.ceil(res[0]["count(*)"] / pageSize);
         for(let i=1;i<=pageNumber;i++){
-            Pagenumberlist.push(i)
+            PageNumberList.push(i)
         }
-        setNumberPage(Pagenumberlist)
+        setNumberPage(PageNumberList)
         setIsLoading1(false)
     }
 
-    async function changepage(event) {
+    async function changePage(event) {
         let temp = event.target.value
-        setCurrentpage(Number(temp))
+        setCurrentPage(Number(temp))
         pageStart = pageSize*(event.target.value - 1)
         await loadSubmission(pageStart,pageSize)
     }
 
-    async function gotofirstpage(event) {
-        setCurrentpage(1)
+    async function goToFirstPage(event) {
+        setCurrentPage(1)
         pageStart = pageSize*(1 - 1)
         await loadSubmission(pageStart,pageSize)
     }
 
-    async function gotolastpage(event) {
-        setCurrentpage(numberPage.length)
+    async function goToLastPage(event) {
+        setCurrentPage(numberPage.length)
         pageStart = pageSize*(numberPage.length - 1)
         await loadSubmission(pageStart,pageSize)
     }
 
-    async function gotobackpage(event) {
+    async function previousPage(event) {
         event.preventDefault();
-        setCurrentpage(currentpage-1)
-        pageStart = pageSize*(currentpage - 2)
+        setCurrentPage(currentPage-1)
+        pageStart = pageSize*(currentPage - 2)
         await loadSubmission(pageStart,pageSize)
     }
 
-    async function gotonextpage(event) {
-        setCurrentpage(currentpage+1)
-        pageStart = pageSize*(currentpage)
+    async function nextPage(event) {
+        setCurrentPage(currentPage+1)
+        pageStart = pageSize*(currentPage)
         await loadSubmission(pageStart,pageSize)
     }
 
-    async function changepagesize(pageSize) {
+    async function changePageSize(pageSize) {
         setPageSize(Number(pageSize))
-        setCurrentpage(1)
+        setCurrentPage(1)
         pageStart = pageSize*(1 - 1)
         await loadCount(Number(pageSize))
         await loadSubmission(pageStart,Number(pageSize))
@@ -188,9 +189,23 @@ function QuestionProf() {
     }
 
     async function addNewComment() {
-        await addComment(QuestionId,commentDiscuss)
-        let res = await getCommentNew(QuestionId);
-        setDiscuss(res)
+        if (commentDiscuss !== "") {
+            await addComment(QuestionId, commentDiscuss)
+            let res = await getCommentNew(QuestionId);
+            setDiscuss(res)
+            setCommentDiscuss("")
+        } else {
+            toast.error('Please enter comment!', {
+                position: "bottom-left",
+                autoClose: 2000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                theme: "light",
+            });
+        }
+        
     }
 
     function toggleReply(id) {
@@ -228,19 +243,21 @@ function QuestionProf() {
 
     return(
         <div className="question-page">
-            {
-            (isLoading === true) && (isLoading1 === true) && (isLoading2 === true) &&
-            <div className="loader2">
-                <div className="lds-roller"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div>
-                </div>
-            </div>
-            }
-            { (isLoading === false) && (isLoading1 === false) && (isLoading2 === false) &&
             <div className="cover-container">
-                <Link className="btn-back" to={`/professor/${TopicID}`}>
+            {
+                (isLoading || isLoading1 || isLoading2) &&
+                <div className="loader2">
+                    <div className="lds-roller"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div>
+                    </div>
+                </div>
+            }
+            { 
+                !(isLoading || isLoading1 || isLoading2) &&
+                <>
+                <Link className="btn-back" to={`/professor/${TopicID}`} data-aos="fade-left" data-aos-duration="1000" >
                     <FaChevronLeft />
                 </Link>
-                <div className="body">
+                <div className="body" data-aos="fade-up" data-aos-duration="1000">
                     <div className="top-section">
                         <div className="left-side">
                             <p className="question-name">{inFoQuestion.QuestionName}</p>
@@ -248,13 +265,26 @@ function QuestionProf() {
                                 <div className="icon">
                                     <img width="24px" alt="icon" src={"/assets/images/icons/" + data.icon + ".png"} />
                                 </div>
-                                {inFoQuestion.TopicName} -&nbsp;<span className="color-3">{inFoQuestion.Difficulty}</span>
+                                {inFoQuestion.TopicName} -&nbsp;
+                                <span 
+                                    className={`${
+                                        inFoQuestion.Difficulty === "Easy"
+                                        ? "color-3"
+                                        : inFoQuestion.Difficulty === "Normal"
+                                        ? "color-1"
+                                        : inFoQuestion.Difficulty === "Hard"
+                                        ? "color-5"
+                                        : ""
+                                    }`}
+                                >
+                                    {inFoQuestion.Difficulty}
+                                </span>
                             </p>
                             <p className="due-date">
                                 <div className="icon">
                                     <TbCalendarTime size={24} />
                                 </div>
-                                Due date - {Moment(inFoQuestion.DueDate).format('YYYY-MM-DD')}
+                                Due date - {Moment(inFoQuestion.DueDate).format('DD/MM/YYYY')}
                             </p>
                         </div>
                         <div className="right-side">
@@ -309,7 +339,7 @@ function QuestionProf() {
                                         onChange={(e) => setCommentDiscuss(e.target.value)}
                                         value={commentDiscuss} 
                                     />
-                                    <button className="btn-01" onClick={() => {addNewComment();setCommentDiscuss("");}}>Comment</button>
+                                    <button className="btn-01" onClick={() => addNewComment()}>Comment</button>
                                 </div>
                                 {/* <div className="sort">
                                     <span>Sort by :</span>
@@ -324,78 +354,8 @@ function QuestionProf() {
                                         <CommentDiscussQuestion
                                             key={comment.DiscussQuestionID}
                                             comment={comment}
-                                            replies={getReply(comment.DiscussQuestionID)}></CommentDiscussQuestion>
-                                    // discuss.map((comment, key) => (
-                                    //     <div className="comment" key={key}>
-                                    //         <div className="comment-owner">
-                                    //             <img height="50px" src="/assets/images/icons/profile.png" />
-                                    //             <div className="owner-detail">
-                                    //                 <span>{comment?.owner?.name}</span>
-                                    //                 <div className="date">
-                                    //                     <span>Create at:</span>
-                                    //                     <span className="ms-2">{comment?.datetime}</span>
-                                    //                 </div>
-                                    //             </div>
-                                    //         </div>
-                                    //         <p className="comment-detail">
-                                    //             {comment?.detail}
-                                    //         </p>
-                                    //         <div className="comment-action">
-                                    //             <div className="vote">
-                                    //                 <IoCaretUp className="icon" />
-                                    //                 <span>{comment?.vote}</span>
-                                    //                 <IoCaretDown className="icon" />
-                                    //             </div>
-                                    //             {
-                                    //                 comment?.reply.length > 0
-                                    //                 ?   <div className="show-reply" onClick={() => toggleReply(comment?.id)}>
-                                    //                         <TbMessageCircle className="icon" />
-                                    //                         <span>Show {comment?.reply?.length} Reply</span>
-                                    //                     </div>
-                                    //                 :   null
-                                    //             }
-                                    //             <div className="reply">
-                                    //                 <BsReplyAll className="icon" />
-                                    //                 <span>Reply</span>
-                                    //             </div>
-                                    //             <div className="report">
-                                    //                 <HiOutlineExclamation className="icon" />
-                                    //                 <span>report</span>
-                                    //             </div>                                        
-                                    //         </div>
-                                    //         <div className={`comment-reply ${showReply.indexOf(comment?.id) > -1 ? "active" : ""}`}>
-                                    //         {
-                                    //             comment?.reply.map((replyComment, key1) => (
-                                    //                     <div className="comment" key={key1}>
-                                    //                         <div className="comment-owner">
-                                    //                             <img height="50px" src="/assets/images/icons/profile.png" />
-                                    //                             <div className="owner-detail">
-                                    //                                 <span>{replyComment?.owner.name}</span>
-                                    //                                 <div className="date">
-                                    //                                     <span>Create at:</span>
-                                    //                                     <span className="ms-2">{replyComment?.datetime}</span>
-                                    //                                 </div>
-                                    //                             </div>
-                                    //                         </div>
-                                    //                         <p className="comment-detail">
-                                    //                             {replyComment?.detail}
-                                    //                         </p>
-                                    //                         <div className="comment-action">
-                                    //                             <div className="vote">
-                                    //                                 <IoCaretUp className="icon" />
-                                    //                                 <span>{replyComment?.vote}</span>
-                                    //                                 <IoCaretDown className="icon" />
-                                    //                             </div>
-                                    //                             <div className="report">
-                                    //                                 <HiOutlineExclamation className="icon" />
-                                    //                                 <span>report</span>
-                                    //                             </div>                                        
-                                    //                         </div>
-                                    //                     </div>
-                                    //             ))
-                                    //         }            
-                                    //         </div>
-                                    //     </div>
+                                            replies={getReply(comment.DiscussQuestionID)}
+                                        />                                
                                     ))
                                 }
                             </div>
@@ -416,22 +376,9 @@ function QuestionProf() {
                                             <td className={`status ${submit.Status === "Checked" ? "color-3" : "color-1"} `}>{submit.Status}</td>
                                             <td className="name">{submit.FirstName + " " + submit.SurName}</td>
                                             <td className="date">{submit.DateSubmit}</td>
-                                            { submit.Status === "UnChecked"
-                                            ?
-                                            <>
-                                                <td className="action">
-                                                    <Link className="btn-view-detail" to={`submission/${submit.SubmissionID}`}>View Detail</Link>
-                                                </td>
-                                            </>
-                                            :
-                                            <>
-                                                <td className="action">
-                                                    <div className="btn-view-detail">View Detail</div>
-                                                </td>
-                                            </>
-
-                                            }
-                                           
+                                            <td className="action">
+                                                <Link className="btn-view-detail" to={`submission/${submit.SubmissionID}`}>View Detail</Link>
+                                            </td>
                                         </tr>
                                         )}
                                             {/* <tr>
@@ -477,37 +424,37 @@ function QuestionProf() {
                         ?   
                         <div className="pagination1">                                    
                                            <div className="pagination-number">
-                            <button onClick={gotofirstpage} className={
-                                    currentpage !== 1 
+                            <button onClick={goToFirstPage} className={
+                                    currentPage !== 1 
                                     ? "arrow"
                                     : "arrow disable"
                                     }><FiChevronsLeft /></button>
-                                <button onClick={gotobackpage} className={
-                                    currentpage !== 1 
+                                <button onClick={previousPage} className={
+                                    currentPage !== 1 
                                     ? "arrow"
                                     : "arrow disable"
                                     }><FiChevronLeft /></button>
                                 {numberPage.map((key, i) => (
                                     <button key={i} name={key} value={key} className={
-                                        currentpage === key
+                                        currentPage === key
                                         ? "number active"
                                         : "number"
-                                    } onClick={changepage}>{key}</button>
+                                    } onClick={changePage}>{key}</button>
                                 ))}
-                                 <button onClick={gotonextpage} className={
-                                    currentpage < numberPage.length
+                                 <button onClick={nextPage} className={
+                                    currentPage < numberPage.length
                                     ? "arrow"
                                     : "arrow disable"
                                     }><FiChevronRight /></button>
-                                <button onClick={gotolastpage} className={
-                                    currentpage < numberPage.length
+                                <button onClick={goToLastPage} className={
+                                    currentPage < numberPage.length
                                     ? "arrow"
                                     : "arrow disable"
                                     }><FiChevronsRight /></button>
                             </div>
                                 <div className="display-per-page">
                                     <span>Display per page</span>
-                                    <select onChange={(event) => {changepagesize(event.target.value)}} className="page">
+                                    <select onChange={(event) => {changePageSize(event.target.value)}} className="page">
                                         <option default>5</option>
                                         <option>10</option>
                                         <option>25</option>
@@ -519,8 +466,9 @@ function QuestionProf() {
                         : null
                     }                    
                 </div>
-            </div>            
+                </>
             }
+            </div> 
             {/* Hint show Modal */}
             <div className="tu-modal" style={hintModal ? {opacity: "1", visibility: "visible"} : {}}>
                 <div className="tu-modal-card">

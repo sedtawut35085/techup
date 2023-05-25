@@ -2,22 +2,24 @@ import React, { useState, useEffect } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import Moment from 'moment';
 
-import { getStudent, updateUserProfileWithNewImage } from '../../service/student'
-import { isNumber, defaultProfileImg } from '../../assets/js/helper'
-import SelectPicker from '../../components/picker_select/selectPicker.js'
-import TuDatePicker from '../../components/picker_date/datePicker.js'
-import ContactInfo from '../../components/contact_info/contactInfo.js'
-import { updateUserProfile } from '../../service/student';
+import { isNumber, defaultProfileImg, toggleScrollable } from '../../assets/js/helper'
+import { getStudent, updateUserProfile, updateUserProfileWithNewImage } from '../../service/student'
+import { getProfessor } from '../../service/professor';
 
 import { FaChevronLeft, FaUpload } from 'react-icons/fa';
 
+import SelectPicker from '../../components/picker_select/selectPicker.js'
+import TuDatePicker from '../../components/picker_date/datePicker.js'
+import ContactInfo from '../../components/contact_info/contactInfo.js'
 import BackgroundIcon from '../../components/background/bgIcons.js';
 
 function EditProfile() {
 
 
     const userEmail = (useLocation().pathname).split("/")[2];
+    const [loadingSubmit, setLoadingSubmit] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
+    const [isStudent, setIsStudent] = useState(true);
 
     const [currentUser, setCurrentUser] = useState();
     const [image, setImage] = useState("");
@@ -44,28 +46,40 @@ function EditProfile() {
     ]
 
     async function loadCurrentInfoUser() {
-        let res = await getStudent();
-        setCurrentUser(res[0]);
-
-        setImage(res[0].ImageURL)
-        setOldImage(res[0].ImageURL)
-        setTechupID(res[0].TechUpID)
-        setStudentID(res[0].StudentID)
-        setName(res[0].FirstName)
-        setSurname(res[0].SurName)
-        setGender({
-            label: res[0].Gender,
-            data: res[0].Gender
-        })
-        setBirthday(Moment(res[0].Birthday).format('DD-MM-YYYY'))
-        setLocation(res[0].Location)
-        setPoint(res[0].Point)
-
-        let contactObject = JSON.parse(res[0].Website)
+        let res;
         let defaultContact = [];
-        for(let key in contactObject) {
-            defaultContact.push({ contact: contactObject[key], type: {label: key, data: key}})
+        let contactObject;
+
+        if(userEmail.includes('@mail.kmutt.ac.th')){
+            res = await getStudent();
+            setCurrentUser(res[0]);
+
+            setImage(res[0].ImageURL)
+            setOldImage(res[0].ImageURL)
+            setTechupID(res[0].TechUpID)
+            setStudentID(res[0].StudentID)
+            setName(res[0].FirstName)
+            setSurname(res[0].SurName)
+            setGender({
+                label: res[0].Gender,
+                data: res[0].Gender
+            })
+            setBirthday(Moment(res[0].Birthday).format('DD-MM-YYYY'))
+            setLocation(res[0].Location)
+            setPoint(res[0].Point)
+
+            contactObject = JSON.parse(res[0].Website)
+            if (contactObject.length < 1) {
+                defaultContact.push({ contact: "", type: {label: "", data: ""}})
+            } else {
+                for(let key in contactObject) {
+                    defaultContact.push({ contact: contactObject[key], type: {label: key, data: key}})
+                }
+            }
+        } else {
+            // res = await getProfessor();
         }
+        
         setContacts(defaultContact)
         setIsLoading(false);
     }
@@ -76,6 +90,8 @@ function EditProfile() {
     }
 
     async function handleSubmit(event) {
+        setLoadingSubmit(true)
+        toggleScrollable(true)
  
         setErrors([]);
         const arrayError = [];
@@ -157,6 +173,8 @@ function EditProfile() {
         } else {
             setErrors(arrayError);
         }
+        setLoadingSubmit(false)
+        toggleScrollable(false)
         return false;
     }
 
@@ -167,6 +185,12 @@ function EditProfile() {
 
     return (
         <div className="edit-profile-page">
+            {
+                loadingSubmit &&
+                <div className="loader">
+                    <div className="lds-ring"><div></div><div></div><div></div><div></div></div>
+                </div>
+            }
             <div className="cover-container">
                 {
                     isLoading &&

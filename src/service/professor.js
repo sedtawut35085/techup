@@ -25,6 +25,26 @@ export async function getProfessor() {
     return response.data
 }
 
+export async function getProfessorByEmail(professorEmail) {
+  accessToken = await getAccessToken()
+  await axios({
+      method: 'get',
+      url: `${baseUrl}/professor`,  
+      params: {
+        "ProfessorEmail" : professorEmail
+      },
+      headers: { 
+          'Authorization': accessToken, 
+          'Content-Type': 'text/plain'
+      },
+      }).then((res) => {
+        response = res
+      }).catch((err)=>{
+        response = err
+      })
+  return response.data
+}
+
 export async function saveProfessor (bodydata, imageFile) {
     accessToken = await getAccessToken()
     convertedFile = await convertToBase64(imageFile);

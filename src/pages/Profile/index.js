@@ -5,6 +5,8 @@ import Auth from '../../configuration/configuration-aws'
 
 import { defaultProfileImg } from '../../assets/js/helper'
 import { getStudent, getStudentFromStudentEmail } from '../../service/student'
+import { getLeaderboard } from '../../service/leaderboard';
+import { getProfessorByEmail } from '../../service/professor';
 
 import { TbEdit, TbLogout } from 'react-icons/tb'
 import { RiInstagramFill, RiFacebookCircleFill, RiGithubFill, RiGlobalFill , RiLineFill } from 'react-icons/ri'
@@ -24,6 +26,7 @@ function Profile() {
 
     const [currentUser, setCurrentUser] = useState();
     const [user, setUser] = useState();
+    const [isStudent, setIsStudent] = useState(true)
 
     async function loadCurrentInfoUser() {
         await Auth.currentAuthenticatedUser()
@@ -38,17 +41,29 @@ function Profile() {
             setIsLoading1(false);
           }
         })
-        .catch(() => {
+        .catch((error) => {
+            console.log(error)
         })
         
     }
 
     async function loadInfoUser() {
-        let res = await getStudentFromStudentEmail(userEmail);
-        let contact = JSON.parse(res[0].Website);
-        res[0].Website = contact;
-        setUser(res[0]);
+        let res;
+        if(userEmail.includes('@mail.kmutt.ac.th')){
+            res = await getStudentFromStudentEmail(userEmail);
+            let contact = JSON.parse(res[0].Website);
+            res[0].Website = contact;
 
+            let resLeaderBoard = await getLeaderboard();
+            res[0].RankNo = resLeaderBoard.findIndex(leaderboard => leaderboard.UserEmail === userEmail) + 1;
+        } else {
+            res = await getProfessorByEmail(userEmail);
+            let contact = JSON.parse(res[0].Contact);
+            res[0].Website = contact;
+            setIsStudent(false);
+        }
+
+        setUser(res[0]);
         setIsLoading2(false);
     }
 
@@ -80,30 +95,75 @@ function Profile() {
                                 <FaChevronLeft />
                             </Link>
                             <div data-aos="fade-up" data-aos-duration="1000" className="card-box main">
-                                <img className="profile-img" onError={defaultProfileImg} src={user.ImageURL}  alt="Avatar" />
-                                <span className="techup-id"><img src="/assets/images/icons/logo.png" />{user.TechUpID}</span>
-                                <span className="point">{user.MostPoint} P</span>
+                                <div className="profile-img-wrap">
+                                    {
+                                        user.RankNo < 4 &&
+                                        <span className="number" id={"no-" + user.RankNo}>
+                                        {
+                                            user.RankNo === 1
+                                            ? "1st"
+                                            : user.RankNo === 2
+                                            ? "2nd"
+                                            : "3rd"
+                                        }
+                                        </span>
+                                    }
+                                    <img className="profile-img" onError={defaultProfileImg} src={user.ImageURL}  alt="Avatar" />
+                                </div>
                                 {
-                                    currentUser.UserEmail === user.UserEmail
-                                    ?   <Link className="edit-profile" to="edit"><TbEdit size={21} />Edit profile</Link>
-                                    :   null
+                                    isStudent 
+                                    ? <span className="techup-id"><img src="/assets/images/icons/logo.png" />{user.TechUpID}</span>
+                                    : <span className="techup-id"><img src="/assets/images/icons/logo.png" />Prof - {user.Name}</span>
                                 }
+                                {
+                                    isStudent && 
+                                    <span className="point">
+                                        {
+                                            user.MostPoint === 0
+                                            ? `UNRANKED - ${user.MostPoint} P`
+                                            : `Rank ${user.RankNo} - ${user.MostPoint} P`
+                                        }
+                                    </span>
+                                }
+                                {
+                                    isStudent && (currentUser.UserEmail === user.UserEmail) &&
+                                    <Link className="edit-profile" to="edit"><TbEdit size={21} />Edit profile</Link>
+                                }
+                                {/* {
+                                    !isStudent && (currentUser.ProfessorEmail === user.ProfessorEmail) &&
+                                    <Link className="edit-profile" to="edit"><TbEdit size={21} />Edit profile</Link>
+                                } */}
                             </div>
                             <div data-aos="fade-up" data-aos-duration="1000" data-aos-delay="200" id="info" className="card-box info">
                                 <span className="title">Information</span>
                                 <div className="sp-vertical"></div>
-                                <div className="information">
-                                    <span className="left">Student ID.</span>
-                                    <span className="right">{user.StudentID}</span>
-                                </div>
-                                <div className="information">
-                                    <span className="left">Name</span>
-                                    <span className="right">{user.FirstName}</span>
-                                </div>
-                                <div className="information">
-                                    <span className="left">Surname</span>
-                                    <span className="right">{user.SurName}</span>
-                                </div>
+                                {
+                                    isStudent
+                                    ?   <>
+                                        <div className="information">
+                                            <span className="left">Student ID.</span>
+                                            <span className="right">{user.StudentID}</span>
+                                        </div>
+                                        <div className="information">
+                                            <span className="left">Name</span>
+                                            <span className="right">{user.FirstName}</span>
+                                        </div>
+                                        <div className="information">
+                                            <span className="left">Surname</span>
+                                            <span className="right">{user.SurName}</span>
+                                        </div>                                        
+                                        </>
+                                    :   <>
+                                        <div className="information">
+                                            <span className="left">Name</span>
+                                            <span className="right">{user.Name}</span>
+                                        </div>
+                                        <div className="information">
+                                            <span className="left">Surname</span>
+                                            <span className="right">{user.Surname}</span>
+                                        </div>                                        
+                                        </>
+                                }       
                                 <div className="information">
                                     <span className="left">Gender</span>
                                     <span className="right">{user.Gender}</span>
@@ -111,8 +171,8 @@ function Profile() {
                                 <div className="information">
                                     <span className="left">Birthday</span>
                                     <span className="right">{Moment(user.Birthday).format('MMM DD, YYYY')}</span>
-                                </div>
-                                {user.Website && <div className="divider my-3"></div>}
+                                </div>                     
+                                {(user.Website.length > 0 || user.Website[""] !== "") && <div className="divider my-3"></div>}
                                 {user.Website.Email &&
                                     <div className="contact">
                                         <div className="icon">

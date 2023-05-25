@@ -117,22 +117,31 @@ export function download(url, name) {
 
 export function downloadAll(files, filename) {
     var zip = new JsZip();
+    const folder = zip.folder("Files");
     let count = 0;
     files.map((e) => {
-      const blob = e.src;
-      zip.file(e.name, blob, {
-        binary: true
-      });
-      ++count;
-      if (count == files.length) {
-        zip
-          .generateAsync({
-            type: "blob"
-          })
-          .then(function (content) {
-            saveAs(content, filename + ".zip");
-          });
-      }
+        const blob = fetch(e.Url)
+        .then((res) => {
+            if (res.status === 200) {
+                return res.blob();
+            }
+            return Promise.reject(new Error(res.statusText));
+        });
+        folder.file(e.name, blob);
+        ++count;
+
+        if (count == files.length) {
+            zip
+            .generateAsync({
+                type: "blob"
+            })
+            .then(function (content) {
+                saveAs(content, (filename + ".zip"));
+            })
+            .catch((error) => {
+                console.log(error)
+            });
+        }
     });
 }
 

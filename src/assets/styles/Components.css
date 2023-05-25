@@ -1,7 +1,7 @@
 /* Loader 1 */
 div.loader {
     z-index: 999;
-    position: absolute;
+    position: fixed;
     width: 100vw;
     height: 100vh;
     background-color: rgba(0, 0, 0, 0.25);
@@ -245,7 +245,7 @@ div.loader2 {
     font-family: 'IBM Plex Sans Thai', sans-serif;
     background-color: #fff;
     width: 100%;
-    height: 60px;
+    min-height: 60px;
     padding: 1rem 20px;
     font-size: 1rem;
     color: #26262C;
@@ -257,6 +257,8 @@ div.loader2 {
     border: 1px solid #fff;
     display: flex;
     align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
 }
 .input-tags .tag {
     white-space: nowrap;
@@ -267,7 +269,6 @@ div.loader2 {
     color: #fff;
     height: 36px;
     padding: 0 12px;
-    margin-right: 8px;
     border-radius: 18px;
 }
 .input-tags .tag .close {
@@ -277,7 +278,7 @@ div.loader2 {
 .input-tags input {
     outline: none;
     border: none;
-    width: 100%;
+    width: 234px;
 }
 /* Information input box */
 
@@ -701,6 +702,7 @@ div.loader2 {
 
 /* Button view detail */
 .btn-view-detail {
+    cursor: pointer;
     white-space: nowrap;
     display: flex;
     align-items: center;

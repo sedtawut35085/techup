@@ -1,19 +1,23 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import Moment from 'moment'
+import { toast } from 'react-toastify';
+
 import { getWeeklyQuestion } from '../../service/weeklyQuestion';
 import { getCount, getAllSubmissionOnWeekly, getCountAllSubmissionOnWeekly } from '../../service/submission';
 import { getStudent } from '../../service/student';
+import { getComment, getWeeklyCommentNew , addComment } from '../../service/discussQuestion';
+
 import { FaSort } from 'react-icons/fa';
 import { FiChevronLeft, FiChevronRight, FiChevronsLeft, FiChevronsRight } from 'react-icons/fi'
-import BackgroundIcon from '../../components/background/bgIcons.js';
-
 import { HiOutlineCalendar, HiOutlineExclamation } from 'react-icons/hi';
 import { TbCalendarTime, TbFileDescription, TbMessage2, TbFileUpload, TbMessageCircle } from 'react-icons/tb'
 import { IoCaretUp, IoCaretDown } from 'react-icons/io5'
 import { BsReplyAll } from 'react-icons/bs'
+
 import CommentDiscussQuestion from "../../components/comment/commentDiscussQuestion"
-import { getComment,getWeeklyCommentNew , addComment } from '../../service/discussQuestion';
+import BackgroundIcon from '../../components/background/bgIcons.js';
+
 
 function Weeklyprof() {
     
@@ -56,9 +60,22 @@ function Weeklyprof() {
     }
 
     async function addNewComment() {
-        await addComment(inFoQuestion.QuestionID,commentDiscuss)
-        let res = await getWeeklyCommentNew();
-        setDiscuss(res)
+        if (commentDiscuss !== "") {
+            await addComment(inFoQuestion.QuestionID,commentDiscuss)
+            let res = await getWeeklyCommentNew();
+            setDiscuss(res)
+            setCommentDiscuss("")
+        } else {
+            toast.error('Please enter comment!', {
+                position: "bottom-left",
+                autoClose: 2000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                theme: "light",
+            });
+        }
     }
 
     async function loadCount(pageSize) {
@@ -257,7 +274,7 @@ function Weeklyprof() {
                                             onChange={(e) => setCommentDiscuss(e.target.value)}
                                             value={commentDiscuss} 
                                         />
-                                        <button className="btn-01" onClick={() => {addNewComment();setCommentDiscuss("");}}>Comment</button>
+                                        <button className="btn-01" onClick={() => addNewComment()}>Comment</button>
                                     </div>
                                     {/* <div className="sort">
                                         <span>Sort by :</span>

@@ -17,6 +17,8 @@ function SelectRole() {
     const [role, setRole] = useState("");
     const { currentEmailUser } = useContext(AuthContext);
 
+    const [loadingSubmit, setLoadingSubmit] = useState(false);
+
     const [image, setImage] = useState("");
     const [imageFile, setImageFile] = useState("");
     const [techupID, setTechupID] = useState("") 
@@ -39,11 +41,7 @@ function SelectRole() {
         {label: "Female", data: "female"}
     ]
 
-    useEffect( () => {
-        checkAuthen()
-    }, []);  
-
-    async function checkAuthen() {
+    async function checkAuthentication() {
         await Auth.currentAuthenticatedUser()
         .then(async (response) => {
           if(response.attributes.email.includes('@mail.kmutt.ac.th')){
@@ -73,6 +71,7 @@ function SelectRole() {
     }
     
     async function handleSubmit(event) {
+        setLoadingSubmit(true);
         setErrors([]);
         const arrayError = [];
 
@@ -173,6 +172,7 @@ function SelectRole() {
             }
         }
 
+        setLoadingSubmit(false)
         setErrors(arrayError);
         event.preventDefault();
     } 
@@ -182,8 +182,18 @@ function SelectRole() {
         setImageFile(event.target.files[0])
     }
 
+    useEffect( () => {
+        checkAuthentication()
+    }, []);  
+
     return (
         <div className="select-role">
+            {
+                loadingSubmit &&
+                <div className="loader">
+                    <div className="lds-ring"><div></div><div></div><div></div><div></div></div>
+                </div>
+            }
             <div className="cover-container" style={{paddingTop: 0}}>
                 <div className="container">
                     {
@@ -306,7 +316,7 @@ function SelectRole() {
                                         :                        
                                     <>
                                         <div className="col-12 pt-5 d-flex jc-center">
-                                            <label className="f-xm color-5" htmlFor="error">server error</label>
+                                            <label className="f-xm color-5" htmlFor="error">Server error. Please try again.</label>
                                         </div>
                                     </>
                                 } 
@@ -407,7 +417,7 @@ function SelectRole() {
                                         :                        
                                     <>
                                         <div className="col-12 pt-5 d-flex jc-center">
-                                            <label className="f-xm color-5" htmlFor="error">server error</label>
+                                            <label className="f-xm color-5" htmlFor="error">Server error. Please try again.</label>
                                         </div>
                                     </>
                                 } 

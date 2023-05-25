@@ -111,6 +111,7 @@ function AddDiscuss() {
                                 ))
                             }
                             <input 
+                                placeholder="(Press space bar to add tag)"
                                 id="tags"
                                 name="tags"
                                 onKeyUp={(event) => addTag(event)}

@@ -3,8 +3,9 @@ import { Link } from 'react-router-dom';
 import Moment from 'moment';
 
 import { defaultProfileImg } from '../../assets/js/helper'
-import { getEachDiscuss , getDiscussInTrend ,getDiscussNewest ,getDiscussMostVote } from '../../service/discuss.js';
+import { getEachDiscuss , getDiscussInTrend ,getDiscussNewest ,getDiscussMostVote, getComment } from '../../service/discuss.js';
 
+import { TbMessage2 } from 'react-icons/tb'
 import { IoCaretUp, IoCloseCircle } from 'react-icons/io5'
 import { HiFire, HiOutlinePencilAlt, HiOutlineEye } from 'react-icons/hi';
 import { FiSearch, FiChevronLeft, FiChevronRight, FiChevronsLeft, FiChevronsRight } from 'react-icons/fi';
@@ -23,7 +24,15 @@ function Discuss() {
     const [searchTags, setSearchTags] = useState("")
 
     async function loadInTrendDiscuss() {
-        const res = await getDiscussInTrend();
+        const res = await getDiscussInTrend();     
+
+        for (let discuss of res) {
+            let resComment = await getComment(discuss.DiscussID)
+            discuss.Comment = resComment.length
+        }
+
+        res.sort((a, b) => (a.Comment < b.Comment) ? 1 : -1)
+
         setDiscusses(res);
         setDiscussesSearch(res);
 
@@ -40,6 +49,19 @@ function Discuss() {
 
         setAllTags(object)
         setIsLoading(false)
+    }
+
+    function sortDiscuss(type) {
+        setSortBy(type)
+        if (type === "newest") {
+            setDiscussesSearch(discussesSearch.sort((a, b) => (Moment(b.Date).diff(Moment(a.Date)))))
+        }
+        if (type === "oldest") {
+            setDiscussesSearch(discussesSearch.sort((a, b) => (Moment(a.Date).diff(Moment(b.Date)))))
+        }
+        if (type === "trend") {
+            setDiscussesSearch(discussesSearch.sort((a, b) => (a.Comment < b.Comment) ? 1 : -1))
+        }
     }
 
     function searchTitleDiscuss(text) {
@@ -75,9 +97,10 @@ function Discuss() {
                             <div data-aos="fade-up" data-aos-duration="1000" className="d-flex jc-btw ai-center">
                                 <div className="col-6">
                                     <div className="sorting">
-                                        <span className={`sort-select ${sortBy === 'trend' ? 'active' : ''}`} onClick={() => setSortBy('trend')}><HiFire size={24} /> In trend</span>
-                                        {/* <span className={`sort-select ${sortBy === 'newest' ? 'active' : ''}`} onClick={() => setSortBy('newest')}>Newest</span>
-                                        <span className={`sort-select ${sortBy === 'vote' ? 'active' : ''}`} onClick={() => setSortBy('vote')}>Most Votes</span> */}
+                                        <span className={`sort-select ${sortBy === 'trend' ? 'active' : ''}`} onClick={() => sortDiscuss('trend')}><HiFire size={24} /> In trend</span>
+                                        <span className={`sort-select ${sortBy === 'newest' ? 'active' : ''}`} onClick={() => sortDiscuss('newest')}>Newest</span>
+                                        <span className={`sort-select ${sortBy === 'oldest' ? 'active' : ''}`} onClick={() => sortDiscuss('oldest')}>Oldest</span>
+                                        {/* <span className={`sort-select ${sortBy === 'vote' ? 'active' : ''}`} onClick={() => setSortBy('vote')}>Most Votes</span> */}
                                     </div>
                                 </div>
                                 <div className="col-6 d-flex jc-end ai-center">
@@ -122,6 +145,7 @@ function Discuss() {
                                                 </div>
                                                 <div className="right-side">
                                                     <span className="d-flex ai-center color-gray2"><IoCaretUp className="me-1" size={24} />{discuss.AmountLike}</span>
+                                                    <span className="d-flex ai-center color-gray2"><TbMessage2 className="me-1" size={24} />{discuss.Comment}</span>
                                                     {/* <span className="d-flex ai-center color-gray2"><HiOutlineEye className="me-1" size={24} />{discuss.View}</span> */}
                                                 </div>
                                             </Link>

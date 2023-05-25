@@ -1,14 +1,18 @@
 import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
+import Moment from 'moment'
 
-import { TbSwords, TbListDetails } from 'react-icons/tb'
 import { updateAdminWeeklyStatus } from '../../service/admin'
-import BackgroundIcon from '../../components/background/bgIcons.js';
-import TopicBox from '../../components/box_topic/boxTopic.js'
-import QuestionBox from '../../components/box_question/boxQuestion.js'
 import { getAllTopic , getList } from '../../service/topic.js';
 import { getChallengeList } from '../../service/challenge.js';
+import { getEachSubmissionFromUserIDandQuestionID } from '../../service/submission'
 import { getWeeklyQuestion } from '../../service/weeklyQuestion';
-import Moment from 'moment'
+
+import { TbSwords, TbListDetails, TbListCheck } from 'react-icons/tb'
+
+import TopicBox from '../../components/box_topic/boxTopic.js'
+import QuestionBox from '../../components/box_question/boxQuestion.js'
+import BackgroundIcon from '../../components/background/bgIcons.js';
 
 function Homepage() {   
 
@@ -16,7 +20,8 @@ function Homepage() {
     const [isLoading1, setIsLoading1] = useState(true)
     const [isLoading2, setIsLoading2] = useState(true)
     const [isLoading3, setIsLoading3] = useState(true)
-    const [challengeList ,setChallengeList] = useState([])
+    const [challengeList, setChallengeList] = useState([])
+    const [doneList, setDoneList] = useState([])
     const [allTopic, setAllTopic] = useState([])
     const [myList, setMyList] = useState([])
 
@@ -43,9 +48,27 @@ function Homepage() {
 
     async function loadChallengeList() {
         const res = await getChallengeList();
-        setChallengeList(res); 
+
+        let ListOfChallenge = [];
+        let ListOfDone = [];
+
+        for (let question of res) {
+            let resSubmission = await getEachSubmissionFromUserIDandQuestionID(question.QuestionID);
+            if (resSubmission[0]) {
+                if(resSubmission[0].Score) {
+                    question.IsChecked = true
+                } else {
+                    question.IsChecked = false
+                }
+                ListOfDone.push(question);
+            } else {
+                ListOfChallenge.push(question)
+            }
+        }
+        
+        setDoneList(ListOfDone)
+        setChallengeList(ListOfChallenge); 
         setIsLoading(false)
-        // setIsLoading(isLoading.splice(isLoading.indexOf(1), 1))
     }
     async function loadAllTopic() {
         const res = await getAllTopic();
@@ -97,7 +120,44 @@ function Homepage() {
                         </div>
                     :   <div className="homepage-main d-flex fd-col">
                             {
-                               challengeList?.length !== 0 &&
+                                doneList?.length !== 0 &&
+                                <div data-aos="fade-up" data-aos-duration="1000">
+                                    <span className="f-xl fw-700"><TbListCheck className="color-1 me-2" />Submissions</span>
+                                    <div className="done-question-table">
+                                        <table className="table">
+                                            <thead>
+                                                <tr>
+                                                    <th className="number">#</th>
+                                                    <th className="topic">Topic</th>
+                                                    <th className="question">Question title</th>
+                                                    <th className="status">Status</th>
+                                                    <th className="action">Action</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {
+                                                    doneList.map((question, key) => (
+                                                        <tr key={key}>
+                                                            <td className="number">{key + 1}</td>
+                                                            <td className="topic">{question.TopicName}</td>
+                                                            <td className="question thai" title={question.QuestionName}>{question.QuestionName}</td>
+                                                            <td className="status">
+                                                                {question.IsChecked 
+                                                                    ? <span className="color-3">Checked</span> 
+                                                                    : <span className="color-1">Waiting</span>
+                                                                }
+                                                            </td>
+                                                            <td className="action"><Link className="btn-view-detail" to={`/topic/${question.TopicID}/question/${question.QuestionID}`}>View question</Link></td>
+                                                        </tr>
+                                                    ))
+                                                }
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            }
+                            {
+                                challengeList?.length !== 0 &&
                                 <div data-aos="fade-up" data-aos-duration="1000">
                                     <span className="f-xl fw-700"><TbSwords className="color-1 me-2" />Challenging</span>
                                     <div className="box-zone">
@@ -109,7 +169,7 @@ function Homepage() {
                                         ))}
                                     </div>
                                 </div>
-                            }
+                            }                            
                             {
                                 myList?.length !== 0 &&
                                 <div data-aos="fade-up" data-aos-duration="1000">
