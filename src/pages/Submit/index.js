@@ -61,7 +61,7 @@ function SubmitProf() {
 
     function filterSearch(text) {
         setSearch(text)
-        resultData(topic, status, text)
+        resultData(topic, status, text.toLowerCase())
     }
 
     function resultData(topicFilter, statusFilter, textSearch) {
