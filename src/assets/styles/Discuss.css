@@ -75,10 +75,15 @@
     gap: 1rem;
 }
 
+.all-discuss-page .all-discuss .discuss-card-wrap .discuss-card .left-side .image-frame {
+    position : relative;
+}
+
 .all-discuss-page .all-discuss .discuss-card-wrap .discuss-card .left-side .author-image {
     height: 64px;
     width: 64px;
     object-fit: cover;
+    object-position: center;
     border-radius: 50%;
 }
 
@@ -414,3 +419,96 @@
     -ms-transform: rotate(45deg);
     transform: rotate(45deg);
 }
+
+@media screen and (max-width: 1520px) {
+    .all-discuss-page .all-discuss {
+        width: 100%;
+    }
+}
+
+@media screen and (max-width: 1200px) {
+    .all-discuss-page .all-discuss {
+        width: 100%;
+    }
+}
+
+@media screen and (max-width: 992px) {
+    .all-discuss-page .all-discuss {
+        width: 100%;
+    }
+    .all-discuss-page .all-discuss .search-and-new {
+        margin-top: 15px;
+    }
+    /* .tags-search {
+        display: none;
+    } */
+}
+
+@media screen and (max-width: 768px) {
+    .all-discuss-page .all-discuss {
+        width: 100%;
+    }
+    .all-discuss-page .all-discuss .search-and-new {
+        margin-top: 15px;
+    }
+    .all-discuss-page .body {
+        grid-template-columns: 3fr;
+    }
+    /* .all-discuss-page .tags-search {
+        width: 100%;
+    } */
+    /* .tags-search {
+        display: none;
+    } */
+}
+
+@media screen and (max-width: 576px) {
+    .all-discuss-page .all-discuss {
+        width: 100%;
+    }
+    .all-discuss-page .all-discuss .search-and-new {
+        margin-top: 15px;
+    }
+    .all-discuss-page .body {
+        grid-template-columns: 4fr;
+        flex-direction: column-reverse;
+        
+    }
+
+    .all-discuss-page .all-discuss .discuss-card-wrap .discuss-card .left-side .tags ,.discuss-detail-page .tags {
+        flex-direction:column;
+    }
+    .each-tags{
+        width: 100%;
+    }
+}
+
+/* @media screen and (max-width: 1200px) {
+    .store-page .item-wrap {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media screen and (max-width: 992px) {
+    .store-page .title::before,
+    .store-page .title::after {
+        width: 30%;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .store-page .title::before,
+    .store-page .title::after {
+        width: 20%;
+    }
+    .store-page .item-wrap {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media screen and (max-width: 576px) {
+    .store-page .title::before,
+    .store-page .title::after {
+        width: 0;
+    }
+} */
