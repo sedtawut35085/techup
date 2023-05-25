@@ -94,8 +94,8 @@ function Discuss() {
                     !isLoading &&
                     <div className="body">
                         <div className="all-discuss">
-                            <div data-aos="fade-up" data-aos-duration="1000" className="d-flex jc-btw ai-center">
-                                <div className="col-6">
+                            <div data-aos="fade-up" data-aos-duration="1000" className="d-flex jc-btw ai-center row">
+                                <div className="d-flex col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
                                     <div className="sorting">
                                         <span className={`sort-select ${sortBy === 'trend' ? 'active' : ''}`} onClick={() => sortDiscuss('trend')}><HiFire size={24} /> In trend</span>
                                         <span className={`sort-select ${sortBy === 'newest' ? 'active' : ''}`} onClick={() => sortDiscuss('newest')}>Newest</span>
@@ -103,7 +103,7 @@ function Discuss() {
                                         {/* <span className={`sort-select ${sortBy === 'vote' ? 'active' : ''}`} onClick={() => setSortBy('vote')}>Most Votes</span> */}
                                     </div>
                                 </div>
-                                <div className="col-6 d-flex jc-end ai-center">
+                                <div className="search-and-new d-flex col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12 d-flex ai-center justify-content-xl-end justify-content-lg-end justify-content-md-start justify-content-sm-start justify-content-start">
                                     <div className="me-3">
                                         <div className="search-box">
                                             <FiSearch size={24} className="me-1" />
@@ -121,29 +121,33 @@ function Discuss() {
                                 </div>
                             </div>
                             <div data-aos="fade-up" data-aos-duration="1000" data-aos-delay="200">
-                                <div className="discuss-card-wrap">
+                                <div className="discuss-card-wrap d-flex ai-center">
                                     {
                                         (discussesSearch.length < 1) &&
                                         <div className="d-flex jc-center py-4 color-gray2 f-lg">No result.</div>
                                     }
                                     {
                                         discussesSearch.map((discuss, key) => (
-                                            <Link className="discuss-card" key={key} to={`/discuss/${discuss.DiscussID}`}>
-                                                <div className="left-side">
-                                                    <img alt="Avatar" onError={defaultProfileImg} className="author-image" src={discuss.UserImage}></img>
+                                            <Link className="discuss-card d-flex row" key={key} to={`/discuss/${discuss.DiscussID}`}>
+                                                {/* <div className="left-side"> */}
+                                                <div className="left-side col-xl-9 col-lg-9 col-md-12 col-sm-12 col-12">
+                                                    <div className='image-frame'>
+                                                        <img alt="Avatar" onError={defaultProfileImg} className="author-image" src={discuss.UserImage}></img>
+                                                    </div>
                                                     <div className="discuss-info">
                                                         <p className="f-md m-0 thai fw-500">{discuss.Title}</p>
                                                         <div className="tags">
                                                         {
                                                             JSON.parse(discuss.Tags).map((tag, key) => 
-                                                                <span key={key}>#{tag}</span>
+                                                                <span className="" key={key}>#{tag}</span>
                                                             )
                                                         }
                                                         </div>
                                                         <p className="f-xs color-gray2 m-0">{discuss.Name} created at: {Moment(discuss.Date).format('MMM DD, YYYY - H:mm')}</p>
                                                     </div>
                                                 </div>
-                                                <div className="right-side">
+                                                {/* <div className="right-side"> */}
+                                                <div className="right-side col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12 justify-content-xl-end justify-content-lg-end justify-content-md-center justify-content-sm-center justify-content-center">
                                                     <span className="d-flex ai-center color-gray2"><IoCaretUp className="me-1" size={24} />{discuss.AmountLike}</span>
                                                     <span className="d-flex ai-center color-gray2"><TbMessage2 className="me-1" size={24} />{discuss.Comment}</span>
                                                     {/* <span className="d-flex ai-center color-gray2"><HiOutlineEye className="me-1" size={24} />{discuss.View}</span> */}
