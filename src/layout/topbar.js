@@ -214,8 +214,23 @@ const TopBar = ({currentEmailUser,isProfessor}) => {
             <div className={`topbar-res ${topbarRes ? "active" : ""}`}>
                 <Link to="/discuss" onClick={() => linkTo()}>Discuss</Link>
                 <Link to="/ranking" onClick={() => linkTo()}>Ranking</Link>
-                <Link to="/store" onClick={() => linkTo()}>Store</Link>
-                <Link to="/weekly" onClick={() => linkTo()}>Weekly</Link>
+                {
+                    currentEmailUser.includes('@mail.kmutt.ac.th')
+                    ?   <>
+                            <Link to="/store" onClick={() => linkTo()}>Store</Link> 
+                        </>
+                    :   <>
+                    </>
+                } 
+                {
+                    currentEmailUser.includes('@mail.kmutt.ac.th')
+                    ?   <>
+                        <Link to="/weekly" onClick={() => linkTo()}>Weekly</Link>
+                        </>
+                    :   <Link to="/professor/weekly" onClick={() => linkTo()}>Weekly</Link>
+                } 
+               
+                
             </div>
             <div className={`backdrop ${topbarRes ? "active" : ""}`} onClick={() => linkTo()}></div>
         </>

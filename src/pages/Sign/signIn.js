@@ -238,7 +238,7 @@ function SignInForm() {
   return (
     <div className="color-black">
       <div className="sign">
-        <div className="sign-info">
+        <div className="sign-info d-none d-md-block">
           <div className="d-flex mb-4 jc-center">
             <img className="sign-logo" alt="logo" width="250px" height="214px" src="/assets/images/logo/logo(white).png" />
           </div>
