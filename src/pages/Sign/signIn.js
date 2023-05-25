@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate, Link } from 'react-router-dom'
+
 import { IoIosArrowBack } from 'react-icons/io'
+
 import Auth from '../../configuration/configuration-aws'
-import BackgroundAnimate from '../../components/background/bgAnimate.js'
-import { useNavigate } from 'react-router-dom'
 import { getStudent } from '../../service/student';
 import { getProfessor } from '../../service/professor';
+
+import BackgroundAnimate from '../../components/background/bgAnimate.js'
 
 function SignInForm() {
 
@@ -329,7 +332,7 @@ function SignInForm() {
               <button type="submit" className="sign-form-button">Sign In</button>
             </form>
             <div className="sp-vertical py-3"></div>
-            <span className="d-flex jc-center f-md">Don’t have an account?<a href="/sign-up" className="underline color-1 ps-2">Sign up</a></span>
+            <span className="d-flex jc-center f-md">Don’t have an account?<Link to="/sign-up" className="underline color-1 ps-2">Sign up</Link></span>
           </div>
           <div className="forgot-password" style={isForgot && !isSent ? {} : {width: 0, opacity: 0}}>
             <div>

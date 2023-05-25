@@ -145,6 +145,10 @@
     color: #FFA242;
 }
 
+.profile-page .body .left-side .card-box.info .contact span {
+    word-break: break-all;
+}
+
 .profile-page .body .left-side .sign-out {
     display: flex;
     align-items: center;
@@ -368,19 +372,28 @@
 }
 
 @media screen and (max-width: 1520px) {
+    .profile-page .body {
+        grid-template-columns: 5fr 7fr;
+    }
     .point-history-page .body .redeem-reward .item-wrap {
         grid-template-columns: repeat(3, 1fr);
     }
 }
 
 @media screen and (max-width: 1200px) {
+    .profile-page .body {
+        grid-template-columns: 1fr 1fr;
+    }
 }
 
 @media screen and (max-width: 992px) {
+    .profile-page .body {
+        grid-template-columns: 1fr;
+    }
+
     .point-history-page .body .redeem-reward .item-wrap {
         grid-template-columns: repeat(2, 1fr);
     }
-
     .point-history-page .body .log-point .log-table {
         overflow-x: scroll;
     }
@@ -411,4 +424,9 @@
 }
 
 @media screen and (max-width: 576px) {
+    .profile-page .body .left-side .card-box.info .information {
+        justify-content: flex-start;
+        flex-direction: column;
+        gap: .5rem;
+    }
 }

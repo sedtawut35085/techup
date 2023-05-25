@@ -4,13 +4,19 @@
     gap: 2rem;
 }
 
-.all-discuss-page .all-discuss .sorting {
+.all-discuss-page .all-discuss .top-section {
+    display: flex;
+    justify-content: space-between;
+    gap: .6rem;
+}
+
+.all-discuss-page .all-discuss .top-section .sorting {
     display: flex;
     align-items: center;
     gap: .6rem;
 }
 
-.all-discuss-page .all-discuss .sorting .sort-select {
+.all-discuss-page .all-discuss .top-section .sorting .sort-select {
     cursor: pointer;
     height: 36px;
     border-radius: 18px;
@@ -22,29 +28,36 @@
     gap: .2rem;
     justify-self: center;
     transition: all .2s;
+    white-space: nowrap;
 }
 
-.all-discuss-page .all-discuss .sorting .sort-select svg {
+.all-discuss-page .all-discuss .top-section .sorting .sort-select svg {
     color: #FFA242;
 }
 
-.all-discuss-page .all-discuss .sorting .sort-select:hover {
+.all-discuss-page .all-discuss .top-section .sorting .sort-select:hover {
     background-color: #FFA242;
     color: #fff;
 }
 
-.all-discuss-page .all-discuss .sorting .sort-select:hover svg {
+.all-discuss-page .all-discuss .top-section .sorting .sort-select:hover svg {
     color: #fff;
 }
 
-.all-discuss-page .all-discuss .sorting .sort-select.active {
+.all-discuss-page .all-discuss .top-section .sorting .sort-select.active {
     background-color: #FFA242;
     color: #fff;
     font-weight: 600;
 }
 
-.all-discuss-page .all-discuss .sorting .sort-select.active svg {
+.all-discuss-page .all-discuss .top-section .sorting .sort-select.active svg {
     color: #fff;
+}
+
+.all-discuss-page .all-discuss .top-section .right-side {
+    display: flex;
+    align-items: center;
+    gap: .6rem;
 }
 
 .all-discuss-page .all-discuss .discuss-card-wrap {
@@ -58,6 +71,7 @@
     display: grid;
     grid-template-columns: auto max-content;
     align-items: flex-start;
+    gap: .5rem;
     width: 100%;
     padding: 2rem;
     border-radius: 15px;
@@ -90,7 +104,9 @@
 .all-discuss-page .all-discuss .discuss-card-wrap .discuss-card .left-side .discuss-info .tags {
     margin: .3rem 0;
     display: flex;
+    flex-wrap: wrap;
     gap: .2rem;
+    white-space: nowrap;
 }
 
 .all-discuss-page .all-discuss .discuss-card-wrap .discuss-card .left-side .discuss-info .tags span {
@@ -421,94 +437,52 @@
 }
 
 @media screen and (max-width: 1520px) {
-    .all-discuss-page .all-discuss {
-        width: 100%;
+    .all-discuss-page .body{
+        grid-template-columns: 2fr 1fr;
     }
 }
 
 @media screen and (max-width: 1200px) {
-    .all-discuss-page .all-discuss {
+    .all-discuss-page .all-discuss .top-section {
+        flex-direction: column;
+        gap: 1rem;
+    }
+    .all-discuss-page .all-discuss .top-section .sorting {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1rem;
+    }
+    .all-discuss-page .all-discuss .top-section .sorting .sort-select {
         width: 100%;
+        justify-content: center;
     }
 }
 
 @media screen and (max-width: 992px) {
-    .all-discuss-page .all-discuss {
-        width: 100%;
+    .all-discuss-page .all-discuss .discuss-card-wrap .discuss-card {
+        padding: 1.5rem;
     }
-    .all-discuss-page .all-discuss .search-and-new {
-        margin-top: 15px;
-    }
-    /* .tags-search {
-        display: none;
-    } */
 }
 
 @media screen and (max-width: 768px) {
-    .all-discuss-page .all-discuss {
-        width: 100%;
-    }
-    .all-discuss-page .all-discuss .search-and-new {
-        margin-top: 15px;
-    }
     .all-discuss-page .body {
-        grid-template-columns: 3fr;
+        grid-template-columns: 1fr;
+        gap: 1rem;
     }
-    /* .all-discuss-page .tags-search {
-        width: 100%;
-    } */
-    /* .tags-search {
-        display: none;
-    } */
 }
 
 @media screen and (max-width: 576px) {
-    .all-discuss-page .all-discuss {
-        width: 100%;
+    .all-discuss-page .all-discuss .top-section .sorting {
+        grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
     }
-    .all-discuss-page .all-discuss .search-and-new {
-        margin-top: 15px;
-    }
-    .all-discuss-page .body {
-        grid-template-columns: 4fr;
-        flex-direction: column-reverse;
-        
-    }
-
-    .all-discuss-page .all-discuss .discuss-card-wrap .discuss-card .left-side .tags ,.discuss-detail-page .tags {
-        flex-direction:column;
-    }
-    .each-tags{
-        width: 100%;
-    }
-}
-
-/* @media screen and (max-width: 1200px) {
-    .store-page .item-wrap {
-        grid-template-columns: repeat(2, 1fr);
-    }
-}
-
-@media screen and (max-width: 992px) {
-    .store-page .title::before,
-    .store-page .title::after {
-        width: 30%;
-    }
-}
-
-@media screen and (max-width: 768px) {
-    .store-page .title::before,
-    .store-page .title::after {
-        width: 20%;
-    }
-    .store-page .item-wrap {
+    .all-discuss-page .all-discuss .discuss-card-wrap .discuss-card {
         grid-template-columns: 1fr;
     }
-}
-
-@media screen and (max-width: 576px) {
-    .store-page .title::before,
-    .store-page .title::after {
-        width: 0;
+    .all-discuss-page .all-discuss .discuss-card-wrap .discuss-card .left-side .author-image {
+        width: 40px;
+        height: 40px;
     }
-} */
+    .all-discuss-page .all-discuss .discuss-card-wrap .discuss-card .right-side {
+        justify-content: center;
+    }
+}

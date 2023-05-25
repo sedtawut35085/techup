@@ -42,7 +42,8 @@ function EditProfile() {
 
     const genderAll = [
         {label: "Male", data: "male"},
-        {label: "Female", data: "female"}
+        {label: "Female", data: "female"},
+        {label: "ETC.", data: "etc"}
     ]
 
     async function loadCurrentInfoUser() {

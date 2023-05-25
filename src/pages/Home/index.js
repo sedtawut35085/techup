@@ -122,7 +122,7 @@ function Homepage() {
                             {
                                 doneList?.length !== 0 &&
                                 <div data-aos="fade-up" data-aos-duration="1000">
-                                    <span className="f-xl fw-700"><TbListCheck className="color-1 me-2" />Submissions</span>
+                                    <span className="f-xl fw-700 title-menu"><TbListCheck className="color-1 me-2" />Submissions</span>
                                     <div className="done-question-table">
                                         <table className="table">
                                             <thead>
@@ -159,7 +159,7 @@ function Homepage() {
                             {
                                 challengeList?.length !== 0 &&
                                 <div data-aos="fade-up" data-aos-duration="1000">
-                                    <span className="f-xl fw-700"><TbSwords className="color-1 me-2" />Challenging</span>
+                                    <span className="f-xl fw-700 title-menu"><TbSwords className="color-1 me-2" />Challenging</span>
                                     <div className="box-zone">
                                         {challengeList.map((question, key) => (
                                             <QuestionBox
@@ -173,7 +173,7 @@ function Homepage() {
                             {
                                 myList?.length !== 0 &&
                                 <div data-aos="fade-up" data-aos-duration="1000">
-                                    <span className="mt-3 f-xl fw-700"><TbListDetails className="color-1 me-2" />My list</span>
+                                    <span className="mt-3 f-xl fw-700 title-menu"><TbListDetails className="color-1 me-2" />My list</span>
                                     <div className="box-zone">
                                         {myList.map((topic, key) => (
                                             <TopicBox
@@ -186,7 +186,7 @@ function Homepage() {
                             }
                             <div data-aos="fade-up" data-aos-duration="1000">
                                 <div className="mt-3 mb-5 divider"></div>             
-                                <p className="f-xl fw-700">
+                                <p className="f-xl fw-700 title-menu">
                                     <img className="me-2" alt="logo" width="36px" src="/assets/images/logo/logo.png" />
                                     All Topic in <span className="color-1" >TECHUP</span>
                                 </p>

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import Auth from '../../configuration/configuration-aws'
+import { useNavigate, Link } from 'react-router-dom'
 
-import { useNavigate } from 'react-router-dom'
+import Auth from '../../configuration/configuration-aws'
 import BackgroundAnimate from '../../components/background/bgAnimate.js'
 
 function SignUpForm() {
@@ -195,7 +195,7 @@ function SignUpForm() {
               <button type="submit" className="sign-form-button">Sign up</button>
             </form>
             <div className="sp-vertical py-3"></div>
-            <span className="d-flex jc-center f-md">Already have an account?<a href="/" className="underline color-1 ps-2">Sign in</a></span>
+            <span className="d-flex jc-center f-md">Already have an account?<Link to="/" className="underline color-1 ps-2">Sign in</Link></span>
           </div>
         </div>
         <div className="sign-info d-none d-md-block">
