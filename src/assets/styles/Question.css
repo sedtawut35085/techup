@@ -85,6 +85,11 @@
     align-items: center;
 }
 
+.question-page .body .top-section .right-side.prof {
+    white-space: nowrap;
+}
+
+
 .question-page .body .problem-section {
     margin-top: 2rem
 }
@@ -731,6 +736,14 @@
     }
     .question-page .body .top-section .right-side .action button {
         margin: 0 .6rem .6rem 0;
+    }
+
+    .question-page .body .top-section .right-side.prof {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    .question-page .body .top-section .right-side.prof .status {
+        margin: 0;
     }
 }
 

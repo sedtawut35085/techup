@@ -176,7 +176,7 @@ function SubmissionProf() {
                                     Due date - {Moment(inFoQuestion.DueDate).format('DD/MM/YYYY')}
                                 </p>
                             </div>
-                            <div className="right-side">
+                            <div className="right-side prof">
                                 {
                                     inFoSubmission.Status === "Checked"
                                     ? <span className="status bg-color-3"><TbCircleCheck size={20} />{inFoSubmission.Status}</span>

@@ -35,35 +35,36 @@
     background-color: #FF9326;
 }
 
+.homepage-prof .top-home-prof-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+}
 .homepage-prof .submission-list-wrap {
     display: flex;
     flex-direction: column;
     gap: 1rem;
 }
-
 .homepage-prof .submission-list-wrap .submission-list {
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
-
 .homepage-prof .submission-list-wrap .submission-list .left {
     display: flex;
     flex-direction: column;
     gap: .5rem;
 }
-
 .homepage-prof .submission-list-wrap .submission-list .left .student-name {
     font-size: 1.25rem;
 }
-
 .homepage-prof .submission-list-wrap .submission-list .left .detail {
     color: #A5A3A2;
     max-width: 1000px;
     overflow: hidden;
     text-overflow: ellipsis;
 }
-
 .homepage-prof .submission-list-wrap .submission-list .left .detail span {
     white-space: nowrap;
 }
@@ -141,8 +142,17 @@
     overflow: hidden;
     text-overflow: ellipsis;
 }
+@media screen and (max-width: 1520px) {
+    .homepage-prof .submission-list-wrap .submission-list .left .detail {
+        max-width: 800px;
+    }
+}
 
 @media screen and (max-width: 1200px) {
+    .homepage-prof .submission-list-wrap .submission-list .left .detail {
+        max-width: 700px;
+    }
+
     .all-submission-page .body .all-submission-table {
         overflow-x: scroll;
     }
@@ -164,10 +174,32 @@
 }
 
 @media screen and (max-width: 992px) {
+    .homepage-prof .submission-list-wrap .submission-list .left .detail {
+        max-width: 500px;
+    }
 }
 
 @media screen and (max-width: 768px) {
+    .homepage-prof .top-home-prof-section {
+        flex-direction: column;
+        margin-bottom: 4rem;
+        text-align: center;
+        gap: 1rem;
+    }
+    .homepage-prof .submission-list-wrap .submission-list .left .detail {
+        max-width: 320px;
+        display: flex;
+        flex-wrap: wrap;
+    }
 }
 
 @media screen and (max-width: 576px) {
+    .homepage-prof .submission-list-wrap {
+        gap: 2rem;
+    }
+    .homepage-prof .submission-list-wrap .submission-list {
+        flex-direction: column;
+        gap: 1rem;
+        text-align: center;
+    }
 }

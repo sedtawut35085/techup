@@ -100,11 +100,9 @@ function Professor() {
                     </div>    
                     <div className="my-5 divider"></div>
                     <div className="home-prof-section">
-                        <div className="top-home-prof-section mb-4">
-                            <div className='d-flex jc-btw ai-center'>
-                                <span className="f-xl fw-700"><TbClock className="color-1 me-2" />Recent Submissions</span>
-                                <Link className="f-md" to="/submit">See all Submissions<FiChevronRight size={20} /></Link>
-                            </div>
+                        <div className="top-home-prof-section">
+                            <span className="f-xl fw-700"><TbClock className="color-1 me-2" />Recent Submissions</span>
+                            <Link className="f-md" to="/submit">See all Submissions<FiChevronRight size={20} /></Link>
                         </div>
                         {recentSubmission.length !== 0
                             ?   <div className="submission-list-wrap">
@@ -114,7 +112,7 @@ function Professor() {
                                             <div className="left">
                                                 <span className="student-name">{submission.FirstName} {submission.SurName}</span>
                                                 <span className="detail">
-                                                    <span>Submission Date {Moment(submission.DateSubmit).format("DD/MM/YYYY")} - </span>
+                                                    <span className="submission-date"><span>Submission Date</span> {Moment(submission.DateSubmit).format("DD/MM/YYYY")} - </span>
                                                     <span className="topic-name">{submission.ShortName.toUpperCase()} - </span>
                                                     <span className="question-title thai">{submission.QuestionName_Submissions}</span>
                                                 </span>
