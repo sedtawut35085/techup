@@ -885,6 +885,14 @@ div.loader2 {
     background-color: #FFA242;
     color: #fff;
 }
+.btn-5:disabled {
+    cursor: not-allowed;
+    color: #fff;
+    background-color: #D7D7D6;
+}
+.btn-5:disabled:hover {
+    background-color: #D7D7D6;
+}
 /* Button 5 */
 
 /* Button 6 */
