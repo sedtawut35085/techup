@@ -206,7 +206,7 @@ function SignInAdminForm() {
   return (
     <div className="color-black">
       <div className="sign">
-        <div className="sign-info">
+        <div className="sign-info d-none d-lg-block">
           <div className="d-flex mb-4 jc-center">
             <img className="sign-logo" alt="logo" width="250px" height="214px" src="/assets/images/logo/logo(white).png" />
           </div>
@@ -276,7 +276,7 @@ function SignInAdminForm() {
                   />
                   <label className="f-sm color-black ps-2" htmlFor="keep">Keep me logged in</label>
                 </div>
-                <a className="f-sm text-end" href="/Admin#" onClick={() => {setIsForgot(true); clear()}}>Forgot password ?</a>
+                {/* <a className="f-sm text-end" href="/Admin#" onClick={() => {setIsForgot(true); clear()}}>Forgot password ?</a> */}
               </div>
               {isErrorSignIn === false?
                     <>

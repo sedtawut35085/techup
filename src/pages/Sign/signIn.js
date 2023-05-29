@@ -327,7 +327,7 @@ function SignInForm() {
                           <label className="f-sm color-5 text-center" htmlFor="error">The email address you entered isn't connected to an account or password not correct.</label>
                       </div>
                     </>
-              } 
+              }  
               <div className="sp-vertical"></div>
               <button type="submit" className="sign-form-button">Sign In</button>
             </form>
