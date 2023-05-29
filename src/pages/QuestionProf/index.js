@@ -305,21 +305,24 @@ function QuestionProf() {
                         <div className="menu-section">
                             <div 
                                 className={`menu des ${menuActive === 1 ? "active" : ""}`}
-                                onClick={() => setMenuActive(1)} title='Description'
+                                onClick={() => setMenuActive(1)} 
+                                data-title={menuActive === 1 ? null : "Description"}
                             >
                                 <TbFileDescription className="icon" />
                                 <span>Description</span>
                             </div>
                             <div 
                                 className={`menu dis ${menuActive === 2 ? "active" : ""}`}
-                                onClick={() => setMenuActive(2)} title='Discuss'
+                                onClick={() => setMenuActive(2)} 
+                                data-title={menuActive === 2 ? null : "Discuss"}
                             >
                                 <TbMessage2 className="icon" />
                                 <span>Discuss</span>
                             </div>
                             <div 
                                 className={`menu sub ${menuActive === 3 ? "active" : ""}`}
-                                onClick={() => setMenuActive(3)} title='Submission'
+                                onClick={() => setMenuActive(3)} 
+                                data-title={menuActive === 3 ? null : "Submission"}
                             >
                                 <TbFileUpload className="icon" />
                                 <span>Submission</span>

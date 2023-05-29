@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate, Link } from 'react-router-dom'
+
 import { IoIosArrowBack } from 'react-icons/io'
+
 import Auth from '../../configuration/configuration-aws'
-import BackgroundAnimate from '../../components/background/bgAnimate.js'
-import { useNavigate } from 'react-router-dom'
 import { getStudent } from '../../service/student';
 import { getProfessor } from '../../service/professor';
+
+import BackgroundAnimate from '../../components/background/bgAnimate.js'
 
 function SignInForm() {
 
@@ -238,7 +241,7 @@ function SignInForm() {
   return (
     <div className="color-black">
       <div className="sign">
-        <div className="sign-info d-none d-md-block">
+        <div className="sign-info d-none d-lg-block">
           <div className="d-flex mb-4 jc-center">
             <img className="sign-logo" alt="logo" width="250px" height="214px" src="/assets/images/logo/logo(white).png" />
           </div>
@@ -301,7 +304,7 @@ function SignInForm() {
                     : null
                   }
               </div>
-              <div className="sign-form-bottom d-flex jc-btw pb-5">
+              <div className="sign-form-bottom">
                 <div className="d-flex">
                   <input 
                   type="checkbox" 
@@ -329,7 +332,7 @@ function SignInForm() {
               <button type="submit" className="sign-form-button">Sign In</button>
             </form>
             <div className="sp-vertical py-3"></div>
-            <span className="d-flex jc-center f-md">Don’t have an account?<a href="/sign-up" className="underline color-1 ps-2">Sign up</a></span>
+            <span className="nav-sign-page">Don’t have an account?<Link to="/sign-up" className="underline color-1">Sign up</Link></span>
           </div>
           <div className="forgot-password" style={isForgot && !isSent ? {} : {width: 0, opacity: 0}}>
             <div>
@@ -440,7 +443,7 @@ function SignInForm() {
                       <div className="sp-vertical py-3"></div>
                       {isReSend === false?
                         <>
-                             <span className="d-flex jc-center f-md">Don’t received the link<a href="/#" className="underline color-1 ps-2" onClick={(e) => resentcode(e)}>Resend</a></span>
+                             <span className="nav-sign-page">Don’t received the link<a href="/#" className="underline color-1 ps-2" onClick={(e) => resentcode(e)}>Resend</a></span>
                         </>
                         :                        
                         <>

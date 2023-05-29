@@ -77,58 +77,66 @@ function PointHistory() {
                     <div className="body">
                         <div data-aos="fade-up" data-aos-duration="1000" className="redeem-reward">
                             <span className="title"><TbGift className="color-1" />Redeem reward</span>
-                            <div className="item-wrap">
-                                {redeemReward.map((reward, key) => 
-                                    <div className="redeem-card" key={key}>
-                                        <div className="detail-hover">
-                                            <div className="redeem-detail">
-                                                <div className="d-flex">
-                                                    <span className="left"><TbLetterP />Points:</span>
-                                                    <span>{reward.Point} P</span>
+                            {
+                                redeemReward.length === 0
+                                ?   <span className="d-flex jc-center ai-center py-5 color-gray2">You don't have any redeem reward.</span>
+                                :   <div className="item-wrap">
+                                        {redeemReward.map((reward, key) => 
+                                            <div className="redeem-card" key={key}>
+                                                <div className="detail-hover">
+                                                    <div className="redeem-detail">
+                                                        <div className="d-flex">
+                                                            <span className="left"><TbLetterP />Points:</span>
+                                                            <span>{reward.Point} P</span>
+                                                        </div>
+                                                        <div className="d-flex ai-start">
+                                                            <span className="left"><TbClock />Time:</span>
+                                                            <span>{Moment(reward.Date).format('MMM DD, YYYY - H:mm')}</span>
+                                                        </div>
+                                                    </div>
+                                                    <span className="reward-name">{reward.RewardName}</span>
                                                 </div>
-                                                <div className="d-flex ai-start">
-                                                    <span className="left"><TbClock />Time:</span>
-                                                    <span>{Moment(reward.Date).format('MMM DD, YYYY - H:mm')}</span>
-                                                </div>
+                                                <img alt="T-Shirt" src={reward.RewardImage}/>
                                             </div>
-                                            <span className="reward-name">{reward.RewardName}</span>
-                                        </div>
-                                        <img alt="T-Shirt" src={reward.RewardImage}/>
+                                        )}
                                     </div>
-                                )}
-                            </div>
+                            }                            
                         </div>
                         <div data-aos="fade-up" data-aos-duration="1000" className="divider my-5"></div>
                         <div data-aos="fade-up" data-aos-duration="1200" className="log-point">
                             <span className="title"><TbHistory className="color-1" />Points history</span>
-                            <div className="log-table">
-                                <table className="table">
-                                    <thead>
-                                        <tr>
-                                            <th className="number">#</th>
-                                            <th className="description">Description</th>
-                                            <th className="points">Points</th>
-                                            <th className="date">Date</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {
-                                            allLog.map((log, key) => (
-                                                <tr key={key}>
-                                                    <td className="number">{log.id}</td>
-                                                    <td className="description thai">{log.Description}</td>
-                                                    {
-                                                        log.Type === "Use"
-                                                        ?   <td className="points color-5 fw-600">-{log.Point} P</td>
-                                                        :   <td className="points color-3 fw-600">+{log.Point} P</td>
-                                                    }
-                                                    <td className="date">{Moment(log.Date).format('MMM DD, YYYY - H:mm')}</td>
+                            {
+                                allLog.length === 0
+                                ?   <span className="d-flex jc-center ai-center py-5 color-gray2">You don't have any points history.</span>
+                                :   <div className="log-table">
+                                        <table className="table">
+                                            <thead>
+                                                <tr>
+                                                    <th className="number">#</th>
+                                                    <th className="description">Description</th>
+                                                    <th className="points">Points</th>
+                                                    <th className="date">Date</th>
                                                 </tr>
-                                            ))
-                                        }
-                                    </tbody>
-                                </table>                                                      
-                            </div>
+                                            </thead>
+                                            <tbody>
+                                                {
+                                                    allLog.map((log, key) => (
+                                                        <tr key={key}>
+                                                            <td className="number">{log.id}</td>
+                                                            <td className="description thai">{log.Description}</td>
+                                                            {
+                                                                log.Type === "Use"
+                                                                ?   <td className="points color-5 fw-600">-{log.Point} P</td>
+                                                                :   <td className="points color-3 fw-600">+{log.Point} P</td>
+                                                            }
+                                                            <td className="date">{Moment(log.Date).format('MMM DD, YYYY - H:mm')}</td>
+                                                        </tr>
+                                                    ))
+                                                }
+                                            </tbody>
+                                        </table>                                                      
+                                    </div>
+                            }                            
                         </div>
                     </div>
                 }

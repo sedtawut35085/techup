@@ -300,9 +300,11 @@
     .box-zone {
         grid-template-columns: 1fr;
     }
-    .question-box .title {
-    }
 }
 
 @media screen and (max-width: 576px) {
+    .homepage .title-menu {
+        display: block;
+        text-align: center;
+    }
 }

@@ -389,7 +389,8 @@ textarea::-webkit-scrollbar-thumb:hover {
 
 [data-title]:hover::after {
     opacity: 1;
-    transition: all 0.3s 0.4s;
+    top: -80%;
+    transition: all 0.3s 0.1s;
     visibility: visible;
 }
 [data-title]::after {
@@ -401,7 +402,7 @@ textarea::-webkit-scrollbar-thumb:hover {
     justify-content: center;
     align-items: center;
     position: absolute;
-    top: -90%;
+    top: 0%;
     color: #26262C;
     background-color: #fff;
     white-space: nowrap;

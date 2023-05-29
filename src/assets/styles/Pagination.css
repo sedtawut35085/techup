@@ -36,11 +36,11 @@
 
 .pagination1 .pagination-number {
     display: flex;
+    gap: .6rem;
 }
 
 .pagination1 .pagination-number .arrow {
     cursor: pointer;
-    margin: 0 .3rem;
     font-size: 1.25rem;
     color: #FFA242;
     width: 30px;
@@ -72,7 +72,6 @@
 
 .pagination1 .pagination-number .number {
     cursor: pointer;
-    margin: 0 .3rem;
     font-size: 1.125rem;
     width: 30px;
     height: 30px;
@@ -113,4 +112,18 @@
 }
 
 @media screen and (max-width: 576px) {
+    .pagination1 {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 1rem;
+    }
+    .pagination1 .display-per-page {
+        display: flex;
+    }
+    .pagination1 .display-per-page span {
+        display: block;
+    }
+    .pagination1 .pagination-number {
+        flex-wrap: wrap;
+    }
 }

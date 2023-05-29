@@ -161,6 +161,7 @@ function SubmissionWeeklyProf() {
                             <div 
                                 className={`menu ans ${menuActive === 1 ? "active" : ""}`}
                                 onClick={() => setMenuActive(1)}
+                                data-title={menuActive === 1 ? null : "Answer"}
                             >
                                 <TbFileUpload className="icon" />
                                 <span>Answer</span>
@@ -168,6 +169,7 @@ function SubmissionWeeklyProf() {
                             <div 
                                 className={`menu scr ${menuActive === 2 ? "active" : ""}`}
                                 onClick={() => setMenuActive(2)}
+                                data-title={menuActive === 2 ? null : "Score"}
                             >
                                 <svg className="icon" stroke="currentColor" fill="none" strokeWidth="2" viewBox="0 0 24 24" strokeLinecap="round" strokeLinejoin="round" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
                                     <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>

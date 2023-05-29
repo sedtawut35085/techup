@@ -8,7 +8,7 @@ import { getStudent, getStudentFromStudentEmail } from '../../service/student'
 import { getLeaderboard } from '../../service/leaderboard';
 import { getProfessorByEmail } from '../../service/professor';
 
-import { TbEdit, TbLogout } from 'react-icons/tb'
+import { TbEdit, TbLogout, TbDotsCircleHorizontal } from 'react-icons/tb'
 import { RiInstagramFill, RiFacebookCircleFill, RiGithubFill, RiGlobalFill , RiLineFill } from 'react-icons/ri'
 import { HiMail } from 'react-icons/hi'
 import { FaChevronLeft } from 'react-icons/fa'
@@ -208,7 +208,7 @@ function Profile() {
                                 {user.Website.ETC &&
                                     <div className="contact">
                                         <div className="icon">
-                                            <RiGlobalFill size={28} />
+                                            <TbDotsCircleHorizontal size={28} />
                                         </div>
                                         <span>{user.Website.ETC}</span>
                                     </div>
