@@ -535,6 +535,7 @@ function Question() {
                                             }
                                         }}
                                         disabled={!challenge}
+                                        data-title={challenge ? null : "You must challenge first."}
                                     >
                                         <TbBulb size={22} className="me-1" />Hint
                                     </button>
