@@ -534,6 +534,7 @@ function Question() {
                                                 setVoteModal(true);
                                             }
                                         }}
+                                        disabled={!challenge}
                                     >
                                         <TbBulb size={22} className="me-1" />Hint
                                     </button>
