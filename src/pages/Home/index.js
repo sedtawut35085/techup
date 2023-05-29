@@ -103,7 +103,7 @@ function Homepage() {
                 {
                     isLoading || isLoading1 || isLoading2 || isLoading3
                     ?   null
-                    :   (challengeList?.length === 0 && myList.length === 0)
+                    :   (challengeList?.length === 0 && myList?.length === 0 && doneList?.length === 0)
                     ?   <div data-aos="fade-up" data-aos-duration="1000" className="none-topic">
                             <p className="f-xl fw-700 text-center">
                                 <img className="me-2" alt="logo" width="38px" src="/assets/images/logo/logo.png" />
