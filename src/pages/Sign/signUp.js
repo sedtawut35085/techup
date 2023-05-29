@@ -172,7 +172,7 @@ function SignUpForm() {
                   className="sign-form-input"
                   value={cfPassword}
                   onChange={event => setCfPassword(event.target.value)}
-                  onClick={() => {removeError('cf_password')}}
+                  onClick={() => {removeError('cf_password');removeError('wrong_cf_password')}}
                   style={
                     errors.includes('cf_password') ||
                     errors.includes('wrong_cf_password') 
