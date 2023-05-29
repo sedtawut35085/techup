@@ -25,15 +25,6 @@
     font-weight: 700;
 }
 
-.profile-page .body .card-box .coming-soon {
-    width: 100%;
-    height: 100px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    color: #A5A3A2;
-}
-
 .profile-page .body .left-side .card-box.main {
     padding: 2rem 0;
     display: flex;

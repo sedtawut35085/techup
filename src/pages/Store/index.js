@@ -150,7 +150,13 @@ function Store() {
                     </div>
                     <div className="tu-modal-footer jc-center">
                         <div className="cancel-button" onClick={() => {setModalSuccess(false); toggleScrollable(false);}}>No, I don't want to go.</div>
-                        <Link className="accept-button" onClick={() => {setModalSuccess(false); toggleScrollable(false)}}>Yes, I want to go. <TbChevronsRight size={24} /></Link>
+                        <Link 
+                            className="accept-button" 
+                            to={"/profile/" + currentUser.UserEmail + "/point-history"} 
+                            onClick={() => {setModalSuccess(false); toggleScrollable(false)}}
+                        >
+                            Yes, I want to go. <TbChevronsRight size={24} />
+                        </Link>
                     </div>                   
                 </div>
             </div>

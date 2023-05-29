@@ -602,21 +602,24 @@ function Question() {
                             <div className="menu-section">
                                 <div 
                                     className={`menu des ${menuActive === 1 ? "active" : ""}`}
-                                    onClick={() => setMenuActive(1)} title='Description'
+                                    onClick={() => setMenuActive(1)} 
+                                    data-title={menuActive === 1 ? null : "Description"}
                                 >
                                     <TbFileDescription className="icon" />
                                     <span>Description</span>
                                 </div>
                                 <div 
                                     className={`menu dis ${menuActive === 2 ? "active" : ""}`}
-                                    onClick={() => setMenuActive(2)} title='Discuss'
+                                    onClick={() => setMenuActive(2)} 
+                                    data-title={menuActive === 2 ? null : "Discuss"}
                                 >
                                     <TbMessage2 className="icon" />
                                     <span>Discuss</span>
                                 </div>
                                 <div 
                                     className={`menu sub ${menuActive === 3 ? "active" : ""}`}
-                                    onClick={() => setMenuActive(3)} title='Submission'
+                                    onClick={() => setMenuActive(3)} 
+                                    data-title={menuActive === 3 ? null : "Submission"}
                                 >
                                     <TbFileUpload className="icon" />
                                     <span>Submission</span>
@@ -766,15 +769,15 @@ function Question() {
                                                     ))}
                                                 </div>
                                                 <div className="divider my-4"></div>
-                                                <div className="d-flex jc-center ai-center">
+                                                <div className="d-flex jc-center ai-center fd-col">
                                                     <button 
                                                         onClick={() => uploadFile(fileList)} 
                                                         className="btn-01" 
                                                         disabled={challenge ? false : true}
-                                                        data-title={challenge ? null : "You must challenge this question before submit."}
                                                     >
                                                         Submit
                                                     </button>
+                                                    {!challenge && <span className="d-flex jc-center ai-center pt-3 f-sm color-5">You must challenge this question before submit!</span>}                                                
                                                 </div>
                                             </>
                                     }                                    
