@@ -5,8 +5,6 @@ import { toggleScrollable } from '../../assets/js/helper'
 import { addToRedeemHistory , addToLogPoint , updateUserPoint, getRewards } from '../../service/store.js';
 import { getStudent } from '../../service/student.js';
 
-import { FiChevronLeft, FiChevronRight, FiChevronsLeft, FiChevronsRight } from 'react-icons/fi';
-import { HiChevronDoubleLeft , HiChevronLeft , HiChevronRight , HiChevronDoubleRight } from 'react-icons/hi';
 import { TbGift, TbCircleCheck, TbChevronsRight } from 'react-icons/tb';
 import { IoCloseCircle } from 'react-icons/io5'
 
