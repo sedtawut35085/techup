@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import Auth from '../../configuration/configuration-aws'
+import { useNavigate, Link } from 'react-router-dom'
 
-import { useNavigate } from 'react-router-dom'
+import Auth from '../../configuration/configuration-aws'
 import BackgroundAnimate from '../../components/background/bgAnimate.js'
 
 function SignUpForm() {
@@ -109,7 +109,7 @@ function SignUpForm() {
       <div className="sign">
       <div className="sign-up-form">
           <div className="sign-up">
-            <div className="sign-form-title px-4">
+            <div className="sign-form-title">
               <span className="color-black f-xl fw-800">Sign up to </span>
               <span className="color-1 f-xl fw-800">TECHUP</span>
             </div>          
@@ -172,7 +172,7 @@ function SignUpForm() {
                   className="sign-form-input"
                   value={cfPassword}
                   onChange={event => setCfPassword(event.target.value)}
-                  onClick={() => {removeError('cf_password')}}
+                  onClick={() => {removeError('cf_password');removeError('wrong_cf_password')}}
                   style={
                     errors.includes('cf_password') ||
                     errors.includes('wrong_cf_password') 
@@ -195,10 +195,10 @@ function SignUpForm() {
               <button type="submit" className="sign-form-button">Sign up</button>
             </form>
             <div className="sp-vertical py-3"></div>
-            <span className="d-flex jc-center f-md">Already have an account?<a href="/" className="underline color-1 ps-2">Sign in</a></span>
+            <span className="nav-sign-page">Already have an account?<Link to="/" className="underline color-1">Sign in</Link></span>
           </div>
         </div>
-        <div className="sign-info">
+        <div className="sign-info d-none d-lg-block">
           <div className="d-flex mb-4 jc-center">
             <img className="sign-logo" alt="logo" width="250px" height="214px" src="/assets/images/logo/logo(white).png" />
           </div>

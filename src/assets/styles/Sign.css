@@ -2,6 +2,7 @@
     height: 100vh;
     display: flex;
     align-items: center;
+    gap: 1rem;
     justify-content: center ;
     padding: 0 6%;
 }
@@ -12,17 +13,23 @@
     background-color: #fff;
     height: 100%;
     width: 640px;
-    padding: 0 100px;
+    padding: 0 100px; 
     display: flex;
     justify-content: center;
     align-items: center;
 }
+
 .sign-in, .forgot-password, .has-sent {
     overflow: hidden;
     transition: all .5s .1s;
 }
 .sign-form-title {
     padding-bottom: 16%;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+    text-align: center;
 }
 .sign-form-input {
     padding: 0 12px;
@@ -57,6 +64,14 @@
     background-color: #FFA242;
     border: 1px solid #FFA242;
 }
+.sign-form-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+    padding-bottom: 3rem;
+}
 .sign-form-bottom label {
     cursor: pointer;
     transition: all 0.2s;
@@ -81,7 +96,14 @@
 .sign-form-button:hover {
     background-color: #FF9326;
 }
-
+.nav-sign-page {
+    font-size: 1.125rem;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: .5rem;
+    text-align: center;
+}
 .select-role-title {
     width: 100%; 
     text-align: center;
@@ -188,6 +210,15 @@
 }
 
 @media screen and (max-width: 576px) {
+    .sign-in-form, .sign-up-form {
+        background-color: #fff;
+        height: 100%;
+        width: 640px;
+        padding: 0 50px; 
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
     .select-page .title {
         padding-top: .2rem;
         font-size: 1.8rem;

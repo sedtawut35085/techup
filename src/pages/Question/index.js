@@ -1,31 +1,26 @@
 import React, { ChangeEvent, useState , useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import $ from 'jquery'
-import { ToastContainer, toast } from 'react-toastify';
+import Moment from 'moment'
+import AWS from 'aws-sdk'
+import { toast } from 'react-toastify';
 
-import { fileSize, fileType, download, downloadAll } from '../../assets/js/helper'
+import { fileSize, fileType, download, downloadAll, toggleScrollable } from '../../assets/js/helper'
 import { FaChevronLeft } from 'react-icons/fa';
 import { TbCalendarTime, TbBulb, TbSwords, TbLock, TbFileZip, TbInfoCircle, TbFileDescription, TbMessage2, TbFileUpload, TbMessageCircle, TbPaperclip, TbTrash, } from 'react-icons/tb'
 import { GiFlyingFlag } from 'react-icons/gi'
-import { BsReplyAll, BsCheckLg } from 'react-icons/bs'
-import { HiOutlineExclamation } from 'react-icons/hi'
-
+import { BsCheckLg } from 'react-icons/bs'
 import { IoCloseCircle, IoCaretUp, IoCaretDown } from 'react-icons/io5'
 
-import { getQuestion } from '../../service/question';
-import { getDiscussQuestion , addComment } from '../../service/discussQuestion';
-import { saveSubmission } from '../../service/submission'
 import { getStudent } from '../../service/student';
+import { getQuestion, updateQuestion } from '../../service/question';
+import { getCommentNew , addComment } from '../../service/discussQuestion';
+import { saveSubmission, getEachSubmissionFromUserIDandQuestionID } from '../../service/submission'
+import { getChallenge,addChallengeUser,deleteChallengedUser, addAmountChallenger ,subAmountChallenger } from '../../service/challenge';
+import { getUserHintStatus, addVote , changeVote , addAmountShow , subAmountShow , addAmountNotShow ,subAmountNotShow } from '../../service/hint';
 
+import CommentDiscussQuestion from "../../components/comment/commentDiscussQuestion"
 import BackgroundIcon from '../../components/background/bgIcons.js';
-
-import Moment from 'moment'
-import { getEachSubmissionFromUserIDandQuestionID } from '../../service/submission'
-import { convertToBase64, uploadPhoto } from '../../service';
-import AWS from 'aws-sdk'
-import { getChallenge,addChallengeUser,deleteChallengedUser } from '../../service/challenge';
-
-
 
 const S3_BUCKET ='techup-file-upload-storage';
 const REGION ='ap-southeast-1';
@@ -51,8 +46,14 @@ function Question() {
     let topicID = window.location.href.split("/")[4];
     let QuestionId = window.location.href.split("/")[6];   
 
+    // const [isLoading, setIsLoading] = useState([1, 2, 3, 4, 5]);
     const [loading, setLoading] = useState(false);
-    const [isLoading, setIsLoading] = useState([1, 2, 3, 4]);
+    const [isLoading, setIsLoading] = useState(true)
+    const [isLoading1, setIsLoading1] = useState(true)
+    const [isLoading2, setIsLoading2] = useState(true)
+    const [isLoading3, setIsLoading3] = useState(true)
+    const [isLoading4, setIsLoading4] = useState(true)
+    const [isLoading5, setIsLoading5] = useState(true)
 
     const [isHintShow, setIsHintShow] = useState(false)
 
@@ -60,7 +61,9 @@ function Question() {
     const [isDoneEstimate, setIsDoneEstimate] = useState(false);
 
     const [voteShow, setVoteShow] = useState("")
-    const [countVote, setCountVote] = useState(19)
+    const [countVote, setCountVote] = useState(0)
+    const [voteNeed , setVoteNeed] = useState(0)
+    const [voteNow , setVoteNow] = useState(0)
 
     const [guModal, setGuModal] = useState(false);
     const [hintModal, setHintModal] = useState(false);
@@ -74,98 +77,108 @@ function Question() {
     const [challenge, setChallenge] = useState(false);
     const [menuActive, setMenuActive] = useState(1);
     const [showReply, setShowReply] = useState([]);
-    const [discuss, setDiscuss] = useState([
-        {
-            id: "1",
-            detail: "Nibh et faucibus enim odio purus feugiat tempor massa libero. Luctus montes, vitae eget consequat morbi lacus, nibh commodo. Sed cras cursus sed neque purus elit vitae et non. Proin massa ut velit duis ullamcorper. Arcu aliquet elementum non volutpat ipsum massa egestas mauris nunc.",
-            vote: 50,
-            owner: {
-                name: "Wattanasiri Uparakkitanon",
-            },
-            datetime: "11/5/2022, 00:00",
-            reply: [
-                {
-                    id: "2",
-                    detail: "Nibh et faucibus enim odio purus feugiat tempor massa libero. Luctus montes, vitae eget consequat morbi lacus, nibh commodo. Sed cras cursus sed neque purus elit vitae et non. Proin massa ut velit duis ullamcorper. Arcu aliquet elementum non volutpat ipsum massa egestas mauris nunc.",
-                    vote: 20,
-                    owner: {
-                        name: "Wattanasiri Uparakkitanon",
-                    },
-                    datetime: "11/5/2022, 00:00",
-                },
-                {
-                    id: "3",
-                    detail: "Nibh et faucibus enim odio purus feugiat tempor massa libero. Luctus montes, vitae eget consequat morbi lacus, nibh commodo. Sed cras cursus sed neque purus elit vitae et non. Proin massa ut velit duis ullamcorper. Arcu aliquet elementum non volutpat ipsum massa egestas mauris nunc.",
-                    vote: 10,
-                    owner: {
-                        name: "Wattanasiri Uparakkitanon",
-                    },
-                    datetime: "11/5/2022, 00:00",
-                }
-            ]
-        },
-        {
-            id: "4",
-            detail: "Nibh et faucibus enim odio purus feugiat tempor massa libero. Luctus montes, vitae eget consequat morbi lacus, nibh commodo. Sed cras cursus sed neque purus elit vitae et non. Proin massa ut velit duis ullamcorper. Arcu aliquet elementum non volutpat ipsum massa egestas mauris nunc.",
-            vote: 40,
-            owner: {
-                name: "Wattanasiri Uparakkitanon",
-            },
-            datetime: "11/5/2022, 00:00",
-            reply: [
-                {
-                    id: "5",
-                    detail: "Nibh et faucibus enim odio purus feugiat tempor massa libero. Luctus montes, vitae eget consequat morbi lacus, nibh commodo. Sed cras cursus sed neque purus elit vitae et non. Proin massa ut velit duis ullamcorper. Arcu aliquet elementum non volutpat ipsum massa egestas mauris nunc.",
-                    vote: 20,
-                    owner: {
-                        name: "Wattanasiri Uparakkitanon",
-                    },
-                    datetime: "11/5/2022, 00:00",
-                }
-            ]
-        }
-    ]);
+
+    const [discuss, setDiscuss] = useState([]);
+
+    const rootComments = discuss.filter( (discuss) => discuss.ParentID === null)
+
+    function getReply(discussQuestionId) {
+        return discuss.filter(discuss => discuss.ParentID === discussQuestionId).sort(
+            (a,b) => new Date(a.Date).getTime() - new Date(b.Date).getTime())
+    }
 
     async function getDiscuss() {
-        let res = await getDiscussQuestion(QuestionId);
+        let res = await getCommentNew(QuestionId);
         setDiscuss(res)
-        setIsLoading(isLoading-1)
+        setIsLoading(false)
     }
-    
+
     async function addNewComment() {
-        await addComment(QuestionId,commentDiscuss)
-        let res = await getDiscussQuestion(QuestionId);
-        setDiscuss(res)
+        if (commentDiscuss !== "") {
+            await addComment(QuestionId, commentDiscuss)
+            let res = await getCommentNew(QuestionId);
+            setDiscuss(res)
+            setCommentDiscuss("")
+        } else {
+            toast.error('Please enter comment!', {
+                position: "bottom-left",
+                autoClose: 2000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                theme: "light",
+            });
+        }
+        
     }
     
     async function loadEachSubmissionFromUserIDandQuestionID() {
+        
         let res = await getEachSubmissionFromUserIDandQuestionID(QuestionId);
-        setInFoSubmit(res[0])
-        setFileListSubmit(JSON.parse(res[0].FileAttachment))
         if(res[0] === undefined){
             setIsDone(false)
         }else{
             setIsDone(true)
+            setInFoSubmit(res[0])
+            setFileListSubmit(JSON.parse(res[0].FileAttachment))
             if(res[0].Score === null){
                 setIsDoneEstimate(false)
             }else{
                 setIsDoneEstimate(true)
             }
         }
-        setIsLoading(isLoading-1)
-        setIsLoading(isLoading.splice(isLoading.indexOf(1), 1))
+        setIsLoading1(false)
+        // setIsLoading(isLoading-1)
+        // setIsLoading(isLoading.splice(isLoading.indexOf(1), 1))
     }
+
     async function getQuestionFromQuestionID() {
         let res = await getQuestion(QuestionId);
         setInFoQuestion(res[0])
-        setIsLoading(isLoading-1)
-        setIsLoading(isLoading.splice(isLoading.indexOf(2), 1))
+        let questionInfo = res[0]
+        let percentShow = questionInfo.AmountShow / questionInfo.AmountChallenge
+        if(questionInfo.AmountChallenge >= 10 && questionInfo.AmountShow > questionInfo.AmountNotShow &&  percentShow >= 0.5){
+            setIsHintShow(true)
+        }
+        setCountVote(questionInfo.AmountShow - questionInfo.AmountNotShow)
+        let need = Math.round(questionInfo.AmountChallenge/2)
+        if(need < 5)
+        {
+            setVoteNeed(5)
+        } else {
+            setVoteNeed(Math.round(questionInfo.AmountChallenge/2))
+        }
+        setVoteNow(questionInfo.AmountShow)
+        var date = new Moment(res[0].DueDate).format('YYYY-MM-DD')
+        var today = new Moment().format('YYYY-MM-DD')
+        let dateConvert = new Date(date).getTime();
+        let todayConvert = new Date(today).getTime();
+        let weeklyId = res[0].QuestionID
+        if (dateConvert < todayConvert && questionInfo.isDueDateCheck === "0") {
+            const bodyData1 = {
+                "updateType": "Text",
+                "updateKey": "isDueDateCheck",
+                "updateValue": "1"
+            }
+            const bodyData = {
+                "updateType": "Text",
+                "updateKey": "Point",
+                "updateValue": Math.ceil(questionInfo.Point*0.9)
+            }
+            questionInfo.Point = Math.ceil(questionInfo.Point*0.9)
+            let res = await updateQuestion(weeklyId, bodyData1)
+            let res2 = await updateQuestion(weeklyId, bodyData)
+            // let res = await updateAdminWeeklyStatus(weeklyId, bodyData)
+        }
+        setIsLoading2(false)
     }
     async function getInfoUser() {
         let resUser = await getStudent();
         setInFoUser(resUser[0])
-        setIsLoading(isLoading-1)
-        setIsLoading(isLoading.splice(isLoading.indexOf(3), 1))
+        setIsLoading3(false)
+        // setIsLoading(isLoading-1)
+        // setIsLoading(isLoading.splice(isLoading.indexOf(3), 1))
     }
     async function getChallengedStatus() {
         const res = await getChallenge(QuestionId);
@@ -175,9 +188,24 @@ function Question() {
         } else {
             setChallenge(false);
         }
-        setIsLoading(isLoading-1)
-        setIsLoading(isLoading.splice(isLoading.indexOf(4), 1))
-    }    
+        setIsLoading4(false)
+        // setIsLoading(isLoading-1)
+        // setIsLoading(isLoading.splice(isLoading.indexOf(4), 1))
+    }
+    
+    async function loadHintUserStatus() {
+        let res = await getUserHintStatus(QuestionId);
+        if(res.length > 0) {
+            if(res[0].Vote === 1){
+                setVoteShow("Y")
+            } else {
+                setVoteShow("N")
+            }
+        } else {
+            setVoteShow("")
+        }
+        setIsLoading5(false);
+    }
 
     useEffect( () => {
         loadEachSubmissionFromUserIDandQuestionID()
@@ -185,15 +213,18 @@ function Question() {
         getChallengedStatus();
         getInfoUser()
         getDiscuss()
+        loadHintUserStatus();
     }, []);   
 
     function addChallenge(){
         addChallengeUser(QuestionId)
+        addAmountChallenger(QuestionId)
         setChallenge(true)
     }
 
     function deleteChallenge(){
         deleteChallengedUser(QuestionId)
+        subAmountChallenger(QuestionId)
         setChallenge(false)
     }
     function toggleReply(id) {
@@ -219,6 +250,7 @@ function Question() {
     };
     const uploadFile = async (file) => {
         setLoading(true)
+        toggleScrollable(true)
         const convertFiles = []
 
         if(file.length === 0 && commentSubmission === "") {
@@ -232,6 +264,7 @@ function Question() {
                 theme: "light",
             });
             setLoading(false)
+            toggleScrollable(false)
         } else if (file.length === 0) {            
             var body = {
                 "StudentEmail": inFoUser.UserEmail,
@@ -240,6 +273,7 @@ function Question() {
                 "DateSubmit": Moment(new Date()).format('YYYY-MM-DD'),
                 "DueDate": Moment(inFoQuestion.DueDate).format('YYYY-MM-DD'),
                 "Status":"UnChecked",
+                "StatusQuestion": "normal",
                 "QuestionID": inFoQuestion.QuestionID,
                 "QuestionName":inFoQuestion.QuestionName,
                 "TopicID": inFoQuestion.TopicID,
@@ -249,6 +283,7 @@ function Question() {
             let ressavesubmit = saveSubmission(body)
                 .then((res)=>{    
                     setLoading(false)
+                    toggleScrollable(false)
                     toast.success('Success submission!', {
                         position: "bottom-left",
                         autoClose: 2000,
@@ -271,6 +306,7 @@ function Question() {
                         theme: "light",
                     });
                     setLoading(false)
+                    toggleScrollable(false)
                 })
         } else if(file.length !== 0){
             file.forEach(async (files, i) => {
@@ -302,6 +338,7 @@ function Question() {
                                 "DateSubmit": Moment(new Date()).format('YYYY-MM-DD'),
                                 "DueDate": Moment(inFoQuestion.DueDate).format('YYYY-MM-DD'),
                                 "Status":"UnChecked",
+                                "StatusQuestion": "normal",
                                 "FileAttachment": convertFiles,
                                 "QuestionID": inFoQuestion.QuestionID,
                                 "QuestionName":inFoQuestion.QuestionName,
@@ -312,6 +349,7 @@ function Question() {
                             let ressavesubmit = saveSubmission(body)
                                 .then((res)=>{
                                     setLoading(false)
+                                    toggleScrollable(false)
                                     toast.success('Success submission!', {
                                         position: "bottom-left",
                                         autoClose: 2000,
@@ -334,6 +372,7 @@ function Question() {
                                         theme: "light",
                                     });
                                     setLoading(false)
+                                    toggleScrollable(false)
                                 })
                           }, 3000);
                     }
@@ -349,25 +388,68 @@ function Question() {
                 draggable: true,
                 theme: "light",
             });
+            setLoading(false)
+            toggleScrollable(false)
         }
         
     }
     const files = fileList ? [...fileList] : [];
 
+    function addShow(){
+        addVote(QuestionId,1)
+        addAmountShow(QuestionId)
+    }
+
+    function addNotShow(){
+        addVote(QuestionId,0)
+        addAmountNotShow(QuestionId)
+    }
+
+    function changeShowToNotShow(){
+        changeVote(QuestionId,0)
+        addAmountNotShow(QuestionId)
+        subAmountShow(QuestionId)
+    }
+
+    function changeNotShowToShow(){
+        changeVote(QuestionId,1)
+        addAmountShow(QuestionId)
+        subAmountNotShow(QuestionId)
+    }
+
     function showHint(vote) {
-        if(vote === "Y" && voteShow !== "Y") {
+        let i = voteNow
+        if(vote === "Y" && voteShow === ""){
             setVoteShow(vote)
-            setCountVote(20)            
+            addShow()
+            setCountVote(countVote + 1)
+            i = i+1
+            setVoteNow(voteNow + 1)
+        } else if(vote === "N" && voteShow === ""){
+            setVoteShow(vote)
+            addNotShow()
+            setCountVote(countVote - 1)
+        } else if(vote === "Y" && voteShow === "N"){
+            setVoteShow(vote)
+            changeNotShowToShow()
+            setCountVote(countVote + 2)
+            i = i+1
+            setVoteNow(voteNow + 1)
+
+        } else if(vote === "N" && voteShow === "Y"){
+            setVoteShow(vote)
+            changeShowToNotShow()
+            setCountVote(countVote - 2)
+            setVoteNow(voteNow - 1)
+        }
+        if(i>= voteNeed) {
             setIsHintShow(true)
             setVoteModal(false)
             setHintModal(true)
-        } else if(vote === "N" && voteShow !== "N") {
-            setVoteShow(vote)
-            setCountVote(18)
-        } else {
-            setVoteShow("")
-            setCountVote(19)
         }
+        // console.log("vote need : " + voteNeed)
+        // console.log("vote now : " + voteNow)
+        // console.log("i = " , i)
     }
 
     function autosize(){
@@ -394,19 +476,19 @@ function Question() {
             {
                 loading &&
                 <div className="loader">
-                    <div class="lds-ring"><div></div><div></div><div></div><div></div></div>
+                    <div className="lds-ring"><div></div><div></div><div></div><div></div></div>
                 </div>
             }
             <div className="cover-container">
                 {
-                    isLoading.length > 0 &&
+                    (isLoading || isLoading1 || isLoading2 || isLoading3 || isLoading4 || isLoading5) &&
                     <div className="loader2">
                         <div className="lds-roller"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div>
                         </div>
                     </div>
                 }   
                 {
-                    isLoading.length === 0 &&
+                    !(isLoading || isLoading1 || isLoading2 || isLoading3 || isLoading4 || isLoading5) &&
                     <>
                     <Link data-aos="fade-right" data-aos-duration="1000" className="btn-back" to={-1}>
                         <FaChevronLeft />
@@ -452,6 +534,8 @@ function Question() {
                                                 setVoteModal(true);
                                             }
                                         }}
+                                        disabled={!challenge}
+                                        data-title={challenge ? null : "You must challenge first."}
                                     >
                                         <TbBulb size={22} className="me-1" />Hint
                                     </button>
@@ -520,21 +604,24 @@ function Question() {
                             <div className="menu-section">
                                 <div 
                                     className={`menu des ${menuActive === 1 ? "active" : ""}`}
-                                    onClick={() => setMenuActive(1)}
+                                    onClick={() => setMenuActive(1)} 
+                                    data-title={menuActive === 1 ? null : "Description"}
                                 >
                                     <TbFileDescription className="icon" />
                                     <span>Description</span>
                                 </div>
                                 <div 
                                     className={`menu dis ${menuActive === 2 ? "active" : ""}`}
-                                    onClick={() => setMenuActive(2)}
+                                    onClick={() => setMenuActive(2)} 
+                                    data-title={menuActive === 2 ? null : "Discuss"}
                                 >
                                     <TbMessage2 className="icon" />
                                     <span>Discuss</span>
                                 </div>
                                 <div 
                                     className={`menu sub ${menuActive === 3 ? "active" : ""}`}
-                                    onClick={() => setMenuActive(3)}
+                                    onClick={() => setMenuActive(3)} 
+                                    data-title={menuActive === 3 ? null : "Submission"}
                                 >
                                     <TbFileUpload className="icon" />
                                     <span>Submission</span>
@@ -554,88 +641,22 @@ function Question() {
                                             onChange={(e) => setCommentDiscuss(e.target.value)}
                                             value = {commentDiscuss} 
                                         />
-                                        <button className="btn-01" onClick={() => {addNewComment();setCommentDiscuss("");}}>Comment</button>
+                                        <button className="btn-01" onClick={() => addNewComment()}>Comment</button>
                                     </div>
-                                    <div className="sort">
+                                    {/* <div className="sort">
                                         <span>Sort by :</span>
                                         <select>
                                             <option>Best</option>
                                             <option>Newest</option>
                                             <option>Oldest</option>
                                         </select>
-                                    </div>
+                                    </div> */}
                                     {
-                                        discuss.map((comment, key) => (
-                                            <div className="comment" key={key}>
-                                                <div className="comment-owner">
-                                                    <img className="owner-image" src={comment?.UserImage} />
-                                                    <div className="owner-detail">
-                                                        <span>{comment?.AuthorName} {comment.AuthorSurName}</span>
-                                                        <div className="date">
-                                                            <span>Create at:</span>
-                                                            <span className="ms-2">{Moment(comment?.Date).format('DD-MM-YYYY , hh:mm')}</span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <p className="comment-detail">
-                                                    {comment?.Comment}
-                                                </p>
-                                                <div className="comment-action">
-                                                    <div className="vote">
-                                                        <IoCaretUp className="icon" />
-                                                        <span>{comment?.AmountLike}</span>
-                                                        <IoCaretDown className="icon" />
-                                                    </div>
-                                                    {
-                                                        comment?.AmountLike > 0
-                                                        ?   <div className="show-reply" onClick={() => toggleReply(comment?.id)}>
-                                                                <TbMessageCircle className="icon" />
-                                                                <span>Show  Reply</span>
-                                                            </div>
-                                                        :   null
-                                                    }
-                                                    <div className="reply">
-                                                        <BsReplyAll className="icon" />
-                                                        <span>Reply</span>
-                                                    </div>
-                                                    <div className="report">
-                                                        <HiOutlineExclamation className="icon" />
-                                                        <span>report</span>
-                                                    </div>                                        
-                                                </div>
-                                                {/* <div className={`comment-reply ${showReply.indexOf(comment?.id) > -1 ? "active" : ""}`}>
-                                                {
-                                                    comment?.reply.map((replyComment, key1) => (
-                                                            <div className="comment" key={key1}>
-                                                                <div className="comment-owner">
-                                                                    <img height="50px" src="/assets/images/icons/profile.png" />
-                                                                    <div className="owner-detail">
-                                                                        <span>{replyComment?.owner.name}</span>
-                                                                        <div className="date">
-                                                                            <span>Create at:</span>
-                                                                            <span className="ms-2">{replyComment?.datetime}</span>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                                <p className="comment-detail">
-                                                                    {replyComment?.detail}
-                                                                </p>
-                                                                <div className="comment-action">
-                                                                    <div className="vote">
-                                                                        <IoCaretUp className="icon" />
-                                                                        <span>{replyComment?.vote}</span>
-                                                                        <IoCaretDown className="icon" />
-                                                                    </div>
-                                                                    <div className="report">
-                                                                        <HiOutlineExclamation className="icon" />
-                                                                        <span>report</span>
-                                                                    </div>                                        
-                                                                </div>
-                                                            </div>
-                                                    ))
-                                                }            
-                                                </div> */}
-                                            </div>
+                                        rootComments.map((comment, key) => (
+                                            <CommentDiscussQuestion
+                                                key={comment.DiscussQuestionID}
+                                                comment={comment}
+                                                replies={getReply(comment.DiscussQuestionID)}></CommentDiscussQuestion>
                                         ))
                                     }
                                 </div>
@@ -663,7 +684,7 @@ function Question() {
                                                     }                                                
                                                 </div>
                                                 <div className="attachment">
-                                                    <span className="f-md fw-700">Attachment ({fileList.length})</span>
+                                                    <span className="f-md fw-700">Attachment ({fileListSubmit?.length || 0})</span>
                                                     <div className="sp-vertical"></div>
                                                     {fileListSubmit?.map((file, key) => ( 
                                                         <div className="attach-file" key={key}>
@@ -688,13 +709,13 @@ function Question() {
                                                         </div>
                                                     ))}                
                                                     {
-                                                        fileListSubmit &&
+                                                        (fileListSubmit?.length > 1) &&
                                                         <>
                                                         <div className="divider my-4"></div>
                                                         <div className="d-flex jc-center ai-center">
                                                             <button 
                                                                 className="btn-01 d-flex jc-center ai-center" 
-                                                                onClick={() => downloadAll(fileList, (inFoQuestion.FirstName + "_" + inFoQuestion.QuestionName))}
+                                                                onClick={() => downloadAll(fileListSubmit, (inFoSubmit.FirstName + "_" + inFoQuestion.QuestionName))}
                                                             >
                                                                 <TbFileZip size={24} className="me-1" />
                                                                 Download All
@@ -750,8 +771,15 @@ function Question() {
                                                     ))}
                                                 </div>
                                                 <div className="divider my-4"></div>
-                                                <div className="d-flex jc-center ai-center">
-                                                    <button onClick={() => uploadFile(fileList)} className="btn-01">Submit</button>
+                                                <div className="d-flex jc-center ai-center fd-col">
+                                                    <button 
+                                                        onClick={() => uploadFile(fileList)} 
+                                                        className="btn-01" 
+                                                        disabled={challenge ? false : true}
+                                                    >
+                                                        Submit
+                                                    </button>
+                                                    {!challenge && <span className="d-flex jc-center ai-center pt-3 f-sm color-5">You must challenge this question before submit!</span>}                                                
                                                 </div>
                                             </>
                                     }                                    
@@ -800,27 +828,38 @@ function Question() {
             </div>
 
             {/* Hint vote Modal */}
-            <div className="tu-modal" style={voteModal ? {opacity: "1", visibility: "visible"} : {}}>
-                <div className="tu-modal-card hint">
-                    <IoCloseCircle className="close-button" onClick={() => setVoteModal(false)} />
-                    <div className="tu-modal-head jc-center">
-                        <TbBulb className="icon" />
-                        <span>
-                            Vote to show hint!
-                        </span>
-                    </div>
-                    <div className="tu-modal-body mb-0">
-                        <TbLock className="color-1" size={140} />
-                        <span className="count-vote">1 vote left to show hint</span>
-                        <div className="vote-section">
-                            <span className={`vote jc-end ${voteShow === "Y" ? "active" : ""}`} onClick={() => showHint("Y")}>Show<IoCaretUp className="ms-1" size={14} /></span>
-                            <span className="number">{countVote}</span>
-                            <span className={`vote jc-start ${voteShow === "N" ? "active" : ""}`} onClick={() => showHint("N")}><IoCaretDown className="me-1" size={14} />Not show</span>
+            {
+                1 &&
+                <div className="tu-modal" style={voteModal ? {opacity: "1", visibility: "visible"} : {}}>
+                    <div className="tu-modal-card hint">
+                        <IoCloseCircle className="close-button" onClick={() => setVoteModal(false)} />
+                        <div className="tu-modal-head jc-center">
+                            <TbBulb className="icon" />
+                            <span>
+                                Vote to show hint!
+                            </span>
                         </div>
-                        <span className="info"><TbInfoCircle className="me-1" size={21} />If hint showed point will decrease by 10%</span>
+                        <div className="tu-modal-body mb-0">
+                            <TbLock className="color-1" size={140} />
+                            {
+                                (inFoQuestion.AmountChallenge < 10) &&
+                                <span className="vote-section f-smd color-1">Need {10 - inFoQuestion.AmountChallenge} more challenger to use this feature</span>
+                            }
+                            {   (inFoQuestion.AmountChallenge >= 10) &&
+                                <>
+                                <span className="count-vote">{voteNeed - voteNow} vote left to show hint</span>
+                                <div className="vote-section">
+                                    <span className={`vote jc-end ${voteShow === "Y" ? "active" : ""}`} onClick={() => showHint("Y")}>Show<IoCaretUp className="ms-1" size={14} /></span>
+                                    <span className="number">{countVote}</span>
+                                    <span className={`vote jc-start ${voteShow === "N" ? "active" : ""}`} onClick={() => showHint("N")}><IoCaretDown className="me-1" size={14} />Not show</span>
+                                </div>
+                                </>
+                            }
+                            <span className="info"><TbInfoCircle className="me-1" size={21} />If hint showed point will decrease by 10%</span>
+                        </div>
                     </div>
                 </div>
-            </div>            
+            }            
 
             {/* Background */}
             <div className="background-container"></div>

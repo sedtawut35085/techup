@@ -58,6 +58,23 @@ export async function getAllSubmissionFromProfessorID(pageStart,pageSize){
   return response.data
 }
 
+export async function getAllSubmissionWithoutPagination(){
+  let ProfessorID = await getCurrentUserId()
+  await axios({
+      method: 'get',
+      url: `${baseUrl}/submission`,
+      params: {
+          "ProfessorID" : ProfessorID,
+          "getType": "getAllSubmissionWithoutPagination",
+      },
+      }).then((res) => {
+        response = res
+      }).catch((err)=>{
+        response = err
+      })
+  return response.data
+}
+
 export async function getEachSubmission(SubmissionID){
     await axios({
         method: 'get',
@@ -107,7 +124,6 @@ export async function updateSubmission(SubmissionID, bodydata){
 }
 
 export async function saveSubmission(bodydata){
-  console.log('check', bodydata)
   await axios({
       method: 'post',
       url: `${baseUrl}/submission`,
@@ -119,3 +135,55 @@ export async function saveSubmission(bodydata){
       })
   return response.data
 }
+
+export async function getWeeklySubmission(){
+  let UserEmail = await getCurrentUserId()
+  await axios({
+      method: 'get',
+      url: `${baseUrl}/submission`,
+      params: {
+          "getType": "getWeeklySubmission",
+          "UserEmail": UserEmail
+      },
+      }).then((res) => {
+        response = res
+      }).catch((err)=>{
+        response = err
+      })
+  return response.data
+}
+
+export async function getAllSubmissionOnWeekly(pageStart,pageSize){
+  let UserEmail = await getCurrentUserId()
+  await axios({
+      method: 'get',
+      url: `${baseUrl}/submission`,
+      params: {
+          "getType": "getAllSubmissionOnWeekly",
+          "UserEmail": UserEmail,
+          "pageStart": pageStart,
+          "pageSize": pageSize
+      },
+      }).then((res) => {
+        response = res
+      }).catch((err)=>{
+        response = err
+      })
+  return response.data
+}
+
+export async function getCountAllSubmissionOnWeekly(){
+  await axios({
+      method: 'get',
+      url: `${baseUrl}/submission`,
+      params: {
+          "getType": "getCountAllSubmissionOnWeekly"
+      },
+      }).then((res) => {
+        response = res
+      }).catch((err)=>{
+        response = err
+      })
+  return response.data
+}
+

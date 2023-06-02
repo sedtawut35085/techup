@@ -12,8 +12,10 @@ import "./assets/styles/Ranking.css"
 import "./assets/styles/Question.css"
 import "./assets/styles/Weekly.css"
 import "./assets/styles/Discuss.css"
+import "./assets/styles/Profile.css"
 import 'react-toastify/dist/ReactToastify.css';
 import 'aos/dist/aos.css';
+import './assets/styles/Admin.css'
 
 import AOS from 'aos';
 import { BrowserRouter, Route, Routes} from "react-router-dom";
@@ -30,17 +32,28 @@ import Homepage from "./pages/Home/index.js"
 import Professor from "./pages/HomeProf/index"
 import AddTopic from "./pages/HomeProf/addtopic"
 import AddQuestion from "./pages/HomeProf/addquestion"
+import AddWeeklyQuestion from "./pages/WeeklyProf/addweekly"
 import Topic from "./pages/Topic/index.js"
 import Question from "./pages/Question/index.js"
 import QuestionProf from "./pages/QuestionProf"
 import SubmissionProf from "./pages/QuestionProf/submission.js"
 import TopicProf from "./pages/TopicProf/index.js"
 import SubmitProf from "./pages/Submit"
-
+import DiscussDetail from "./pages/Discuss/detail.js"
+import AddDiscuss from "./pages/Discuss/addDiscuss.js"
+import AdminHomepage from "./pages/Admin/Home"
+import EditProfile from "./pages/Profile/editProfile.js"
+import PointHistory from "./pages/Profile/pointHistory.js"
+import AdminUserpage from "./pages/Admin/Page/User/DescUser"
+import { AuthProviderAdmin } from "./authadmin"
+import SignInAdminForm from "./pages/Admin/Sign/SignIn"
 import Discuss from "./pages/Discuss/index.js"
 import Ranking from "./pages/Ranking/index.js"
 import Store from "./pages/Store/index.js"
 import Weekly from "./pages/Weekly/index.js"
+import Profile from "./pages/Profile/index.js"
+import Weeklyprof from "./pages/WeeklyProf"
+import SubmissionWeeklyProf from "./pages/WeeklyProf/submission"
 
 function App() {
   AOS.init({once: true});
@@ -53,21 +66,33 @@ function App() {
           <Route exact path="/" element={<SignInForm />} />
           <Route exact path="/sign-up" element={<SignUpForm />} />
           <Route exact path="/pending-prof" element={<PendingProf />} />
+          <Route exact path="/Admin" element={<SignInAdminForm />} />
+          <Route exact path="/Admin/home" element={<AuthProviderAdmin><AdminHomepage /></AuthProviderAdmin>} /> 
+          
+          <Route exact path="/Admin/home/User/:user" element={<AuthProviderAdmin><AdminUserpage /></AuthProviderAdmin>} />
           <Route element={<AppLayout />}>
-            <Route path="/addtopic" element={<AuthProvider><AddTopic /></AuthProvider>}/>
+            <Route path="/add-topic" element={<AuthProvider><AddTopic /></AuthProvider>}/>
             <Route path="/professor" element={<AuthProvider><Professor /></AuthProvider>}/>
             <Route path="/submit" element={<AuthProvider><SubmitProf /></AuthProvider>}/>
             <Route path="/professor/:topic" element={<AuthProvider><TopicProf /></AuthProvider>}/>
             <Route path="/professor/:topic/question/:question" element={<QuestionProf />}/>
             <Route path="/professor/:topic/addquestion" element={<AuthProvider><AddQuestion /></AuthProvider>}/>
             <Route path="/professor/:topic/question/:question/submission/:submission" element={<SubmissionProf />}/>
+            <Route path="/professor/weekly/question/:question/submission/:submission" element={<SubmissionWeeklyProf />}/>
+            <Route path="/professor/weekly" element={<AuthProvider><Weeklyprof /></AuthProvider>} /> 
+            <Route path="/professor/weekly/addweekly" element={<AuthProvider><AddWeeklyQuestion /></AuthProvider>} /> 
             <Route path="/home" element={<AuthProvider><Homepage /></AuthProvider>}/>
-            <Route path="/topic/:topic" element={<Topic />}/>
-            <Route path="/topic/:topic/question/:question" element={<Question />}/>
-            <Route path="/discuss" element={<Discuss/>}/>
-            <Route path="/ranking" element={<Ranking />}/>
-            <Route path="/store" element={<Store />}/>
-            <Route path="/weekly" element={<Weekly />}/>
+            <Route path="/topic/:topic" element={<AuthProvider><Topic /></AuthProvider>}/>
+            <Route path="/topic/:topic/question/:question" element={<AuthProvider><Question /></AuthProvider>}/>
+            <Route path="/discuss" element={<AuthProvider><Discuss /></AuthProvider>}/>
+            <Route path="/discuss/add" element={<AuthProvider><AddDiscuss /></AuthProvider>}/>
+            <Route path="/discuss/:id" element={<AuthProvider><DiscussDetail /></AuthProvider>}/>
+            <Route path="/ranking" element={<AuthProvider><Ranking /></AuthProvider>}/>
+            <Route path="/store" element={<AuthProvider><Store /></AuthProvider>}/>
+            <Route path="/weekly" element={<AuthProvider><Weekly /></AuthProvider>}/>
+            <Route path="/profile/:id" element={<AuthProvider><Profile /></AuthProvider>}/>
+            <Route path="/profile/:id/edit" element={<AuthProvider><EditProfile /></AuthProvider>}/>
+            <Route path="/profile/:id/point-history" element={<AuthProvider><PointHistory /></AuthProvider>}/>
           </Route>
         </Routes>
       </BrowserRouter>

@@ -1,136 +1,171 @@
 import React, { useState, useEffect } from 'react';
-
 import { Link } from 'react-router-dom';
-import BackgroundIcon from '../../components/background/bgIcons.js';
-import { getAllSubmissionFromProfessorID } from '../../service/submission.js';
+import Moment from 'moment';
+
+import { getTopicfromProfessor } from '../../service/topic.js';
+import { getAllSubmissionWithoutPagination } from '../../service/submission.js';
+
 import { FaChevronLeft} from 'react-icons/fa';
 import { FiSearch, FiChevronLeft, FiChevronRight, FiChevronsLeft, FiChevronsRight } from 'react-icons/fi'
+
 import SelectPicker2 from '../../components/picker_select/selectPicker2.js'
+import BackgroundIcon from '../../components/background/bgIcons.js';
 
 function SubmitProf() {
-    
-    const [numberPage, setNumberPage] = useState([])
-    const [pageSize,setPageSize] = useState(5);
-    const [currentpage,setCurrentpage] = useState(1);
-    let pageStart = 0;
-    let pageNumber
 
+    const [isLoading, setIsLoading] = useState(true);
+    const [isLoading1, setIsLoading1] = useState(true);
+    
     const statusAll = [
-        {label: "Available", data: "available"},
-        {label: "Ongoing", data: "ongoing"},
-        {label: "Submitted", data: "submitted"}
+        {label: "Checked", data: "Checked"},
+        {label: "UnChecked", data: "UnChecked"}
     ]
-    const [status, setStatus] = useState({label: "", data: ""})
+    const [status, setStatus] = useState({label: "", data: ""});
 
-    const difficultyAll = [
-        {label: "Easy", data: "Easy"},
-        {label: "Normal", data: "Normal"},
-        {label: "Hard", data: "Hard"}
-    ]
-    const [difficulty, setDifficulty] = useState({label: "", data: ""})
-    const [submission, setSubmission] = useState([])
-    const [search, setSearch] = useState("")
-    
-    useEffect( () => {
-        loadAllSubmissionFromProfessorID()
-      }, []);
+    const [allTopic, setAllTopic] = useState();
+    const [topic, setTopic] = useState({label: "", data: ""});
+    const [allSubmission, setAllSubmission] = useState([]);
+    const [allSubmissionSearch, setAllSubmissionSearch] = useState([]);
+    const [search, setSearch] = useState("");
 
-    async function loadAllSubmissionFromProfessorID() {
-        let res = await getAllSubmissionFromProfessorID(0,5);
-        setSubmission(res);
+    async function getTopics() {
+        let res = await getTopicfromProfessor();
+
+        let arrayFilterTopic = []
+        res.forEach(topic => {
+            let object = {label: topic.ShortName.toUpperCase(), data: topic.ShortName.toUpperCase()}
+            arrayFilterTopic.push(object);
+        });
+
+        setAllTopic(arrayFilterTopic);
+        setIsLoading(false)
     }
 
-    console.log(submission)
+    async function loadAllSubmissionFromProfessorID() {
+        let res = await getAllSubmissionWithoutPagination();
+        setAllSubmission(res);
+        setAllSubmissionSearch(res);
+        setIsLoading1(false)
+    }
+
+    function filterTopic(filter) {
+        setTopic(filter);
+        resultData(filter, status, search)
+
+    }
+
+    function filterStatus(filter) {
+        setStatus(filter);
+        resultData(topic, filter, search)
+    }
+
+    function filterSearch(text) {
+        setSearch(text)
+        resultData(topic, status, text.toLowerCase())
+    }
+
+    function resultData(topicFilter, statusFilter, textSearch) {
+        let array = [...allSubmission];
+        if (topicFilter.data !== "") {
+            array = array.filter(submission => submission.ShortName.toUpperCase() === topicFilter.data.toUpperCase())
+        }
+        if (statusFilter.data !== "") {
+            array = array.filter(submission => submission.Status.toUpperCase() === statusFilter.data.toUpperCase())
+        }
+        if (textSearch !== "") {
+            array = array.filter(submission => (
+                (submission.FirstName + " " + submission.SurName).toLowerCase().includes(textSearch) ||
+                submission.QuestionName_Submissions.toLowerCase().includes(textSearch) ||
+                submission.TopicName.toLowerCase().includes(textSearch)
+            ))
+        }
+
+        setAllSubmissionSearch(array)
+    }
+
+    useEffect( () => {
+        getTopics()
+        loadAllSubmissionFromProfessorID()
+    }, []);
 
     return (
-        <div className="submit">
+        <div className="all-submission-page">
             <div className="cover-container">
-            <Link className="btn-back" to="/professor">
-                <FaChevronLeft />
-            </Link>
-            <div className="submit-main d-flex fd-col">                           
-                <div className="submit-section">
-                        <div className="mb-4">
-                            <div className='d-flex jc-btw'>
-                                <span className="f-lg fw-700">All Submissions</span>
-                            </div>
+                {
+                    (isLoading || isLoading1) && 
+                    <div className="loader2">
+                        <div className="lds-roller"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div>
                         </div>
-                        <div className="filter mb-4">
+                    </div>
+                }
+                {
+                    !(isLoading || isLoading1) && 
+                    <>
+                    <Link className="btn-back" to="/professor" data-aos="fade-right" data-aos-duration="1000">
+                        <FaChevronLeft />
+                    </Link>
+                    <div className="body" data-aos="fade-up" data-aos-duration="1000">         
+                        <span className="f-xl fw-700">All Submissions</span>
+                        <div className="filter">
                             <SelectPicker2
-                            id='status'
-                            placeholder="Status"
-                            data={statusAll}
-                            defaultValue={status}
-                            setValue={setStatus}
+                                id='status'
+                                placeholder="Status"
+                                data={statusAll}
+                                defaultValue={status}
+                                setValue={filterStatus}
                             />
                             <SelectPicker2
-                            id='difficulty'
-                            placeholder="Difficulty"
-                            data={difficultyAll}
-                            defaultValue={difficulty}
-                            setValue={setDifficulty}
+                                id='topic'
+                                placeholder="Topic"
+                                data={allTopic}
+                                defaultValue={topic}
+                                setValue={filterTopic}
                             />
                             <div className="search-box">
                                 <FiSearch size={24} className="me-1" />
                                 <input 
-                                placeholder="Search submit..."
-                                onChange={(e) => setSearch(e.target.value)}
+                                    placeholder="Username, Question name..."
+                                    onChange={(e) => filterSearch(e.target.value)}
                                 />
                             </div>
                         </div>
-                        <div className="submit-table">
+                        <div className="all-submission-table">
                             <table className="table">
                                 <thead>
                                     <tr>
-                                        <th className="title">Title </th>
-                                        <th className="topic">Topic - Question </th>
-                                        <th className="status">Status </th>
-                                        <th className="duedate">Due Date </th>
-                                        <th className="datesubmit">Date Submission </th>
+                                        <th className="title">Username</th>
+                                        <th className="topic-question">Topic - Question</th>
+                                        <th className="status">Status</th>
+                                        <th className="due-date">Due Date</th>
+                                        <th className="date-submission">Date Submission</th>
                                         <th className="action">Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td className="title thai">Sedtawut chalothornnarumit</td>
-                                        <td className="topic thai">OS - Kernel คืออะไร</td>
-                                        <td className="status thai color-12">Unchecked</td>
-                                        <td className="duedate thai">05-12-2022</td>
-                                        <td className="datesubmit thai">05-12-2022, 00:00</td>
-                                        <td className="point-table">
-                                            <div className="col-12">
-                                                <button type="submit" className="btnsubmit-viewdetail">View Detail</button>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td className="title thai">Sedtawut chalothornnarumit</td>
-                                        <td className="topic thai">OS - Kernel คืออะไร</td>
-                                        <td className="status thai color-12">Unchecked</td>
-                                        <td className="duedate thai">05-12-2022</td>
-                                        <td className="datesubmit thai">05-12-2022, 00:00</td>
-                                        <td className="point-table">
-                                            <div className="col-12">
-                                                <button type="submit" className="btnsubmit-viewdetail">View Detail</button>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td className="title thai">Sedtawut chalothornnarumit</td>
-                                        <td className="topic thai">OS - Kernel คืออะไร</td>
-                                        <td className="status thai color-3">checked</td>
-                                        <td className="duedate thai">05-12-2022</td>
-                                        <td className="datesubmit thai">05-12-2022, 00:00</td>
-                                        <td className="point-table">
-                                            <div className="col-12">
-                                                <button type="submit" className="btnsubmit-viewdetail">View Detail</button>
-                                            </div>
-                                        </td>
-                                    </tr>
+                                    {
+                                        allSubmissionSearch.map((submission, key) => (
+                                        <tr key={key}>
+                                            <td className="title">{submission.FirstName} {submission.SurName}</td>
+                                            <td className="topic-question thai">{submission.ShortName.toUpperCase()} - {submission.QuestionName_Submissions}</td>
+                                            {
+                                                submission.Status === "Checked"
+                                                ? <td className="status color-3">{submission.Status}</td>
+                                                : <td className="status color-1">{submission.Status}</td>
+                                            }                                        
+                                            <td className="due-date">{Moment(submission.DueDate_Submissions).format("DD-MM-YYYY")}</td>
+                                            <td className="date-submission">{Moment(submission.DateSubmit).format("DD-MM-YYYY")}</td>
+                                            <td className="action">
+                                                <Link to={`/professor/${submission.TopicID}/question/${submission.QuestionID_Submissions}/submission/${submission.SubmissionID}`} className="btn-view-detail">
+                                                    View Detail
+                                                </Link>
+                                            </td>
+                                        </tr>
+                                        ))
+                                    }
                                 </tbody>
                             </table>                                                     
                         </div>
-                        <div className="pagination1">
+                        {/* <div className="pagination1">
                             <div className="display-per-page">
                                 <span>Display per page</span>
                                 <select className="page">
@@ -150,9 +185,10 @@ function SubmitProf() {
                                 <span className="arrow"><FiChevronRight /></span>
                                 <span className="arrow"><FiChevronsRight /></span>
                             </div>
-                        </div>
-                    </div>                     
-            </div>
+                        </div>                 */}
+                    </div>
+                    </>
+                }                
             </div>
             <div className="background-container"></div>
             <BackgroundIcon />

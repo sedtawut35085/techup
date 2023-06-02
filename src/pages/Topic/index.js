@@ -6,6 +6,7 @@ import { toggleScrollable } from '../../assets/js/helper'
 import { addJoinTopic , getJoin , deleteJoinedTopic } from '../../service/joinTopic'
 import { getQuestionForEachTopic, getCountOfQuestionForEachTopic } from '../../service/question.js';
 import { getEachTopic } from '../../service/topic';
+import { getChallengeList } from '../../service/challenge.js';
 
 import { BiMessageSquareDetail } from 'react-icons/bi'
 import { FaChevronLeft, FaSort, FaFrownOpen } from 'react-icons/fa';
@@ -13,7 +14,7 @@ import { FiSearch, FiChevronLeft, FiChevronRight, FiChevronsLeft, FiChevronsRigh
 import { HiOutlineChartBar } from 'react-icons/hi'
 import { IoCloseCircle } from 'react-icons/io5'
 import { RiVipCrown2Fill, RiMailFill, RiInstagramFill, RiFacebookCircleFill, RiGithubFill, RiGlobalFill , RiLineFill } from 'react-icons/ri'
-import { TbDoorExit, TbArrowsShuffle, TbClock, TbClockOff, TbSwords } from 'react-icons/tb'
+import { TbDoorExit, TbArrowsShuffle, TbCircleCheck, TbClock, TbClockOff, TbSwords, TbInfoCircle } from 'react-icons/tb'
 
 import SelectPicker2 from '../../components/picker_select/selectPicker2.js'
 import BackgroundIcon from '../../components/background/bgIcons.js';
@@ -22,7 +23,11 @@ function Topic() {
 
     const topicID = window.location.href.split("/")[4]
 
-    const [isLoading, setIsLoading] = useState([1, 2, 3, 4])
+    // const [isLoading, setIsLoading] = useState([1, 2, 3, 4])
+    const [isLoading, setIsLoading] = useState(true)
+    const [isLoading1, setIsLoading1] = useState(true)
+    const [isLoading2, setIsLoading2] = useState(true)
+    const [isLoading3, setIsLoading3] = useState(true)
     const [modal, setModal] = useState(false)
     const [data,setData] = useState([]);
 
@@ -34,66 +39,44 @@ function Topic() {
         const res = await getEachTopic(topicID);
         setData(res[0]);
         setContact(JSON.parse(res[0].Contact))
-        setIsLoading(isLoading.splice(isLoading.indexOf(1), 1))
+        setIsLoading(false)
     }
     async function getJoinedList() {
         const res = await getJoin();
-        const found = res.some(joined => joined.TopicID === (Number(topicID)))
-        if (!found)
-        {
-            setJoin(false);
+        const isJoined = res.some(joined => joined.TopicID === (Number(topicID)))
+        if (isJoined) {
+            setJoin(true);
         } else {
-            setJoin(true)
+            setJoin(false);
         }
-        setIsLoading(isLoading.splice(isLoading.indexOf(2), 1))
+        setIsLoading1(false);
     }
     async function loadQuestionForEachTopic(pageStart,value) {
         const res = await getQuestionForEachTopic(topicID,pageStart,value);
+        const resChallenge = await getChallengeList();
+
+        for(let i=0; i<resChallenge.length; i++) {
+            for(let j=0; j<res.length; j++) {
+                if(resChallenge[i].QuestionID === res[j].QuestionID) {
+                    res[j].IsChallenge = true;
+                }
+            }
+        }
+
         setAllQuestion(res); 
-        setIsLoading(isLoading.splice(isLoading.indexOf(3), 1))
+        setIsLoading2(false);
     }
+
     async function loadCountOfQuestionForEachTopic(pageSize) {
         const res = await getCountOfQuestionForEachTopic(topicID);
-        const PageNumberList = []
+        const PageNumberList = [];
         pageNumber = Math.ceil(res[0]["count(*)"] / pageSize);
         for(let i=1;i<=pageNumber;i++){
-            PageNumberList.push(i)
+            PageNumberList.push(i);
         }
-        setNumberPage(PageNumberList)
-        setIsLoading(isLoading.splice(isLoading.indexOf(4), 1))
+        setNumberPage(PageNumberList);
+        setIsLoading3(false);
     }    
-    const listQuestions = allQuestion.map((question, i) =>   
-    <tr className={`${question.SubmissionID === null ? "" : "color-3"}`} key={i}>
-        <td className="status">
-            {
-                Moment(question.DueDate).isBefore(new Date())
-                ?   <TbClockOff className={`${question.SubmissionID === null ? "color-gray2" : "color-3"}`} size={24} /> 
-                :   <TbClock className={`${question.SubmissionID === null ? "color-1" : "color-3"}`} size={24} /> 
-            }
-        </td>
-        <td className="title thai">
-            <Link to={`/topic/${topicID}/question/${question.QuestionID}`}>{question.QuestionName}</Link>
-        </td>
-        <td className="date">{Moment(question.DueDate).format('YYYY-MM-DD')}</td>
-        <td className="acceptance">10.00 %</td>
-        <td 
-            className={`difficulty ${
-                question.Difficulty === "Easy" && question.SubmissionID === null
-                ? "color-3"
-                : question.Difficulty === "Normal" && question.SubmissionID === null
-                ? "color-1"
-                : question.Difficulty === "Hard" && question.SubmissionID === null
-                ? "color-5"
-                : "color-3"
-            }`}
-        >
-            {question.Difficulty}
-        </td>
-        <td className="point-table">
-            <span className={`point ${question.SubmissionID === null ? "" : "done"}`}>{question.SubmissionID === null ? (question.Point + "P") : "Done"}</span>
-        </td>       
-    </tr>
-    )
 
     useEffect(() => {
         getTopicData();
@@ -116,22 +99,22 @@ function Topic() {
         {label: "Available", data: "available"},
         {label: "Ongoing", data: "ongoing"},
         {label: "Submitted", data: "submitted"}
-    ]
-    const [status, setStatus] = useState({label: "", data: ""})
+    ];
+    const [status, setStatus] = useState({label: "", data: ""});
     const difficultyAll = [
         {label: "Easy", data: "Easy"},
         {label: "Normal", data: "Normal"},
         {label: "Hard", data: "Hard"}
-    ]
-    const [difficulty, setDifficulty] = useState({label: "", data: ""})
-    const [search, setSearch] = useState("")
+    ];
+    const [difficulty, setDifficulty] = useState({label: "", data: ""});
+    const [search, setSearch] = useState("");
 
     //Pagination function
     const [currentPage,setCurrentPage] = useState(1);
-    const [numberPage, setNumberPage] = useState([])
+    const [numberPage, setNumberPage] = useState([]);
     const [pageSize,setPageSize] = useState(5);
     let pageStart = 0;
-    let pageNumber
+    let pageNumber;
 
     async function changePage(event) {
         let temp = event.target.value
@@ -172,14 +155,14 @@ function Topic() {
         <div className="topic-page">
             <div className="cover-container">
                 {
-                    isLoading.length > 0 &&
+                    (isLoading || isLoading1 || isLoading2 || isLoading3) &&
                     <div className="loader2">
                         <div className="lds-roller"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div>
                         </div>
                     </div>
                 }      
                 {
-                    isLoading.length === 0 &&
+                    !(isLoading || isLoading1 || isLoading2 || isLoading3) &&
                     <>
                         <Link data-aos="fade-down" data-aos-duration="1000" className="btn-back" to="/home">
                             <FaChevronLeft />
@@ -200,7 +183,7 @@ function Topic() {
                             <div className="info-section">
                                 <div className="info-box">
                                     <span className="color-1 f-lg fw-700 d-flex ai-center">Stats Session<HiOutlineChartBar className="ms-2" size={28} /></span>
-                                    <div className="d-flex ai-center mt-3 jc-btw bar">
+                                    {/* <div className="d-flex ai-center mt-3 jc-btw bar">
                                         <span className="color-3 f-md">Easy</span>
                                         <div className="stat-bar">
                                             <div className="stat-val" style={{width: 50 + "%"}}></div>
@@ -217,13 +200,14 @@ function Topic() {
                                         <div className="stat-bar">
                                             <div className="stat-val" style={{width: 50 + "%"}}></div>
                                         </div>
-                                    </div>
+                                    </div> */}
+                                    <div className="coming-soon">Coming Soon...</div>
                                 </div>
                                 <div className="info-box">
                                     <span className="color-1 f-lg fw-700 d-flex ai-center">Detail Session<BiMessageSquareDetail className="ms-2" size={28} /></span>      
                                     <div className="detail">
                                         <div className="pt-4 d-flex fd-col jc-center ai-center">
-                                            <img width="100px" className="profile-pic" src="/assets/images/icons/profile.png" />
+                                            <img width="160px" height="160px" className="profile-pic rounded-circle" src={data.ImageURL} alt="Avatar" />
                                             <div className="d-flex jc-center ai-center mt-4 f-md">
                                                 <RiVipCrown2Fill className="color-1 me-1" size={24} /> {data.Name} {data.Surname}
                                             </div>
@@ -238,7 +222,7 @@ function Topic() {
                                                     <span>{contact.Email}</span>
                                                 </div>
                                             }
-                                        {contact.Facebook && 
+                                            {contact.Facebook && 
                                                 <div className="contact">
                                                     <div className="icon">
                                                         <RiFacebookCircleFill size={28} />
@@ -275,11 +259,20 @@ function Topic() {
                                 </div>
                             </div>
                             <div className="question-section">
-                                <div className="d-flex jc-btw ai-center">
+                                <div className="d-flex ai-center pb-2">
                                     <span className="f-xl fw-700">Question</span>
-                                   
+                                    <div className="info-status">
+                                        <TbInfoCircle size={28} className="color-gray2 icon" />
+                                        <div className="detail">
+                                            <span className="fw-700">Status:</span>
+                                            <span><TbClock size={24} className="color-1" />Available</span>
+                                            <span><TbClockOff size={24} className="color-gray2" />Out time</span>
+                                            <span><TbSwords size={24} className="color-5" />Challenging</span>
+                                            <span><TbCircleCheck size={24} className="color-3" />Done</span>
+                                        </div>
+                                    </div>
                                 </div>                                
-                                <div className="top-question-section mt-4">
+                                {/* <div className="top-question-section mt-4">
                                     <div className="filter">
                                         <SelectPicker2
                                         id='status'
@@ -306,21 +299,66 @@ function Topic() {
                                     <button className="btn-4 random">
                                         <span>Random</span><TbArrowsShuffle className="icon"/>
                                     </button>
-                                </div>
+                                </div> */}
                                 <div className="question-table">
                                     <table className="table">
                                         <thead>
                                             <tr>
-                                                <th className="status">Status <FaSort /></th>
-                                                <th className="title">Title <FaSort /></th>
-                                                <th className="date">Due date <FaSort /></th>
-                                                <th className="acceptance">Acceptance <FaSort /></th>
-                                                <th className="difficulty">Difficulty <FaSort /></th>
-                                                <th className="point-table">Point <FaSort /></th>
+                                                <th className="status">Status</th>
+                                                <th className="title">Title</th>
+                                                <th className="date">Due date</th>
+                                                <th className="difficulty">Difficulty</th>
+                                                <th className="point-table">Point</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            {listQuestions}
+                                            {
+                                                allQuestion.map((question, key) =>   
+                                                <tr 
+                                                    className={
+                                                        question.SubmissionID !== null 
+                                                        ? "color-3" 
+                                                        : Moment(question.DueDate).isSameOrBefore(new Moment().format('YYYY-MM-DD')) 
+                                                        ? "color-gray2"
+                                                        : ""
+                                                    } 
+                                                    key={key}
+                                                >
+                                                    <td className="status">
+                                                        {
+                                                            question.SubmissionID === null && 
+                                                            (
+                                                                Moment(question.DueDate).isSameOrBefore(new Moment().format('YYYY-MM-DD'))
+                                                                ?   <TbClockOff className="color-gray2" size={24} /> 
+                                                                :   <TbClock className="color-1" size={24} /> 
+                                                            )
+                                                        }
+                                                        { question.IsChallenge && question.SubmissionID === null && <TbSwords className="color-5" size={24} />}
+                                                        { question.SubmissionID !== null && <TbCircleCheck size={24} />}
+                                                    </td>
+                                                    <td className="title thai">
+                                                        <Link to={`/topic/${topicID}/question/${question.QuestionID}`}>{question.QuestionName}</Link>
+                                                    </td>
+                                                    <td className="date">{Moment(question.DueDate).format('YYYY-MM-DD')}</td>
+                                                    <td 
+                                                        className={`difficulty ${
+                                                            question.Difficulty === "Easy" && question.SubmissionID === null
+                                                            ? "color-3"
+                                                            : question.Difficulty === "Normal" && question.SubmissionID === null
+                                                            ? "color-1"
+                                                            : question.Difficulty === "Hard" && question.SubmissionID === null
+                                                            ? "color-5"
+                                                            : "color-3"
+                                                        }`}
+                                                    >
+                                                        {question.Difficulty}
+                                                    </td>
+                                                    <td className="point-table">
+                                                        <span className={`point ${question.SubmissionID === null ? "" : "done"}`}>{question.SubmissionID === null ? (question.Point + "P") : "Done"}</span>
+                                                    </td>       
+                                                </tr>
+                                                )
+                                            }
                                         </tbody>
                                     </table>                                                      
                                 </div>
@@ -334,16 +372,20 @@ function Topic() {
                                         </select>
                                     </div>
                                     <div className="pagination-number">
-                                        <button onClick={goToFirstPage} className={
-                                            currentPage !== 1 
-                                            ? "arrow"
-                                            : "arrow disable"
-                                            }><FiChevronsLeft /></button>
-                                        <button onClick={goToPreviousPage} className={
-                                            currentPage !== 1 
-                                            ? "arrow"
-                                            : "arrow disable"
-                                            }><FiChevronLeft /></button>
+                                        <button 
+                                            onClick={goToFirstPage} 
+                                            className={currentPage !== 1 ? "arrow" : "arrow disable"}
+                                            disabled={currentPage === 1}
+                                        >
+                                            <FiChevronsLeft />
+                                        </button>
+                                        <button 
+                                            onClick={goToPreviousPage} 
+                                            className={currentPage !== 1 ? "arrow" : "arrow disable"}
+                                            disabled={currentPage === 1}
+                                        >
+                                            <FiChevronLeft />
+                                        </button>
                                         {numberPage.map((key, i) => (
                                             <button key={i} name={key} value={key} className={
                                                 currentPage === key
@@ -351,16 +393,20 @@ function Topic() {
                                                 : "number"
                                             } onClick={changePage}>{key}</button>
                                         ))}
-                                        <button onClick={goToNextPage} className={
-                                            currentPage < numberPage.length
-                                            ? "arrow"
-                                            : "arrow disable"
-                                            }><FiChevronRight /></button>
-                                        <button onClick={goToLastPage} className={
-                                            currentPage < numberPage.length
-                                            ? "arrow"
-                                            : "arrow disable"
-                                            }><FiChevronsRight /></button>
+                                        <button 
+                                            onClick={goToNextPage} 
+                                            className={currentPage < numberPage.length ? "arrow" : "arrow disable"}
+                                            disabled={currentPage >= numberPage.length}
+                                        >
+                                            <FiChevronRight />
+                                        </button>
+                                        <button 
+                                            onClick={goToLastPage}
+                                            className={currentPage < numberPage.length ? "arrow" : "arrow disable"}
+                                            disabled={currentPage >= numberPage.length}
+                                        >
+                                            <FiChevronsRight />
+                                        </button>
                                     </div>
                                 </div>  
                             </div>

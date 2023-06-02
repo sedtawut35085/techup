@@ -33,6 +33,14 @@
     flex-direction: column;
     justify-content: center;
 }
+.topic-box .title .topic-name {
+    display: -webkit-box;
+    max-height: 4.5rem;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
 .topic-box .professor-owner {
     z-index: 1;
     display: flex;
@@ -146,6 +154,12 @@
     padding: 0 .6rem;
     border-radius: 8px;
 }
+.question-box .bottom .topic-name {
+    width: 190px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
 .question-box .bg-icon {
     position: absolute;
     z-index: 0;
@@ -187,6 +201,82 @@
     rotate: -25deg;
 }
 
+.done-question-table {
+    width: 100%;
+    max-height: 250px;
+    border-radius: 12px;
+    box-shadow: 0 0 12px rgba(0, 0, 0, 0.25);
+    margin: 1.6rem 0;
+    padding: 1.8rem;
+    background-color: #fff;
+    overflow: hidden;
+    overflow-y: scroll;
+}
+.done-question-table .table thead tr th {
+    font-weight: 400;
+    color: #A5A3A2;
+}
+.done-question-table .table tbody tr td {
+    border: none;
+}
+.done-question-table .table tbody tr:nth-child(1) td {
+    padding-top: 1.5rem;
+}
+.done-question-table .table .number {
+    min-width: 60px;
+    max-width: 60px;
+    width: 60px;
+    text-align: left;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.done-question-table .table .topic {
+    min-width: 150px;
+    max-width: 150px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.done-question-table .table .question {
+    min-width: 300px;
+    max-width: 300px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.done-question-table .table .status {
+    min-width: 140px;
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.done-question-table .table .action {
+    width: 140px;
+    max-width: 140px;
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.done-question-table::-webkit-scrollbar {
+    height: 8px;
+}
+.done-question-table::-webkit-scrollbar-track{
+    margin: 6px;
+    background: transparent;
+}    
+.done-question-table::-webkit-scrollbar-thumb {
+    background: #ffb56a83;
+    border-radius: 5px;
+}
+
+.done-question-table::-webkit-scrollbar-thumb:hover {
+    background: #FFA242;
+}
+
 @media screen and (max-width: 1520px) {
     .box-zone {
         grid-template-columns: repeat(3, 1fr);
@@ -200,15 +290,21 @@
     .box-zone {
         grid-template-columns: repeat(2, 1fr);
     }
+
+    .done-question-table {
+        overflow-x: scroll;
+    }
 }
 
 @media screen and (max-width: 768px) {
     .box-zone {
         grid-template-columns: 1fr;
     }
-    .question-box .title {
-    }
 }
 
 @media screen and (max-width: 576px) {
+    .homepage .title-menu {
+        display: block;
+        text-align: center;
+    }
 }

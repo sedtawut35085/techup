@@ -90,3 +90,35 @@ export async function deleteChallengedUser(questionID) {
     })
     return response
 }
+
+export async function addAmountChallenger(questionID) {
+  await axios({
+    method:'patch',
+    url:`${baseUrl}/challenge`,
+    params:{
+      "Type" : "add",
+      "QuestionID" : questionID
+    }
+  }).then((res) => {
+    response = res
+  }).catch((err) => {
+    response = err
+  })
+  return response
+}
+
+export async function subAmountChallenger(questionID) {
+  await axios({
+    method:'patch',
+    url:`${baseUrl}/challenge`,
+    params:{
+      "Type" : "sub",
+      "QuestionID" : questionID
+    }
+  }).then((res) => {
+    response = res
+  }).catch((err) => {
+    response = err
+  })
+  return response
+}

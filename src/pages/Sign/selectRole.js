@@ -1,8 +1,6 @@
-
-
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { FaUserGraduate, FaChalkboardTeacher, FaChevronLeft, FaUserCircle, FaUpload } from 'react-icons/fa';
-
+import Auth from '../../configuration/configuration-aws'
 import Moment from 'moment';
 import { isNumber } from '../../assets/js/helper'
 import BackgroundIcon from '../../components/background/bgIcons.js';
@@ -14,11 +12,12 @@ import { AuthContext } from '../../auth';
 import { saveStudent } from '../../service/student';
 import { saveProfessor } from '../../service/professor';
 
-function SelectRole() {
+function SelectRole() { 
 
     const [role, setRole] = useState("");
-
     const { currentEmailUser } = useContext(AuthContext);
+
+    const [loadingSubmit, setLoadingSubmit] = useState(false);
 
     const [image, setImage] = useState("");
     const [imageFile, setImageFile] = useState("");
@@ -39,8 +38,22 @@ function SelectRole() {
 
     const genderAll = [
         {label: "Male", data: "male"},
-        {label: "Female", data: "female"}
+        {label: "Female", data: "female"},
+        {label: "ETC.", data: "etc"}
     ]
+
+    async function checkAuthentication() {
+        await Auth.currentAuthenticatedUser()
+        .then(async (response) => {
+          if(response.attributes.email.includes('@mail.kmutt.ac.th')){
+            setRole("student")
+          }else{
+            setRole("professor")
+          }
+        })
+        .catch(() => {
+        })
+      }
 
     function goBack() {
         setRole("")
@@ -59,8 +72,10 @@ function SelectRole() {
     }
     
     async function handleSubmit(event) {
+        setLoadingSubmit(true);
         setErrors([]);
         const arrayError = [];
+
         if(role === "student") {
             if(techupID === "") {
                 arrayError.push('techupId');
@@ -76,15 +91,15 @@ function SelectRole() {
                 arrayError.push('location');
             }
         }
-        if(role === "professor") {
-            if(professorID.length !== 11){
-                if(studentID === "") {
-                    arrayError.push('profId');
-                } else {
-                    arrayError.push('invalid_profId');
-                }
-            }
-        }
+        // if(role === "professor") {
+        //     if(professorID.length !== 11){
+        //         if(studentID === "") {
+        //             arrayError.push('profId');
+        //         } else {
+        //             arrayError.push('invalid_profId');
+        //         }
+        //     }
+        // }
         if(image == ""){
             arrayError.push('image');
         }
@@ -102,7 +117,6 @@ function SelectRole() {
         }
         if(arrayError.length === 0) {
             if(role === "professor") {
-                console.log('pass pro')
                 let website = [];
                 for(let i =0;i<contacts.length;i++){
                     let label = contacts[i].type.label
@@ -112,19 +126,19 @@ function SelectRole() {
                 var data = {
                     "ProfessorEmail": currentEmailUser,
                     "ProfessorID": professorID,  
-                    "FirstName": name,    
+                    "Name": name,    
                     "SurName": surname,   
                     "Gender": gender.label,    
-                    "Birthday": Moment(birthday).format('YYYY-MM-DD'),
+                    "Birthday": Moment(birthday, 'DD-MM-YYYY').format('YYYY-MM-DD'),
                     "Contact": website,
                     "Notification": false,
-                    "Point": 0,
+                    "Point": 0, 
                     "ImageURL": 'image'
                 }
                 event.preventDefault();
                 let response = await saveProfessor(data, imageFile)
                 if(response.status === 200){
-                    navigate('/home')
+                    navigate('/professor')
                 }else{
                     setErrorsSubmit(true)
                 }
@@ -142,7 +156,7 @@ function SelectRole() {
                     "FirstName": name,    
                     "SurName": surname,   
                     "Gender": gender.label,    
-                    "Birthday": Moment(birthday).format('YYYY-MM-DD'),
+                    "Birthday": Moment(birthday, 'DD-MM-YYYY').format('YYYY-MM-DD'),
                     "Location": location,
                     "Website": website,
                     "Notification": false,
@@ -159,25 +173,36 @@ function SelectRole() {
             }
         }
 
+        setLoadingSubmit(false)
         setErrors(arrayError);
         event.preventDefault();
-    }
+    } 
     
     async function onSelectFile(event) {
         setImage(URL.createObjectURL(event.target.files[0]))
         setImageFile(event.target.files[0])
     }
 
+    useEffect( () => {
+        checkAuthentication()
+    }, []);  
+
     return (
         <div className="select-role">
+            {
+                loadingSubmit &&
+                <div className="loader">
+                    <div className="lds-ring"><div></div><div></div><div></div><div></div></div>
+                </div>
+            }
             <div className="cover-container" style={{paddingTop: 0}}>
                 <div className="container">
                     {
                     role === "student"
                     ?   <div className="select-page">
-                            <div className="btn-back" onClick={() => goBack()}>
+                            {/* <div className="btn-back" onClick={() => goBack()}>
                                 <FaChevronLeft />
-                            </div>
+                            </div> */}
                             <p className="title f-xl fw-800">Information - Student</p>
                             <form className="input-section pt-4 row" onSubmit={handleSubmit}>
                                 <div className="col-lg-6 col-md-12 d-flex fd-col ai-center jc-center profile-image">
@@ -292,7 +317,7 @@ function SelectRole() {
                                         :                        
                                     <>
                                         <div className="col-12 pt-5 d-flex jc-center">
-                                            <label className="f-xm color-5" htmlFor="error">server error</label>
+                                            <label className="f-xm color-5" htmlFor="error">Server error. Please try again.</label>
                                         </div>
                                     </>
                                 } 
@@ -300,9 +325,9 @@ function SelectRole() {
                         </div>
                     :   role === "professor"
                     ?   <div className="select-page">
-                            <div className="btn-back" onClick={() => goBack()}>
+                            {/* <div className="btn-back" onClick={() => goBack()}>
                                 <FaChevronLeft />
-                            </div>
+                            </div> */}
                             <p className="title f-xl fw-800">Information - Professor</p>
                             <form className="input-section pt-4 row" onSubmit={handleSubmit}>
                             <div className="col-lg-6 col-md-12 d-flex fd-col ai-center jc-center profile-image">
@@ -353,8 +378,8 @@ function SelectRole() {
                                             onKeyPress={(event) => isNumber(event)}
                                             onChange={(event) => setProfessorID(event.target.value)}
                                         />
-                                        {errors.includes("profId") && (<label className="f-xs color-5 pt-2" htmlFor="professor-id">Please enter your Professor ID</label>)}
-                                        {errors.includes("invalid_profId") && (<label className="f-xs color-5 pt-2" htmlFor="professor-id">Please enter a valid Professor ID</label>)}
+                                        {/* {errors.includes("profId") && (<label className="f-xs color-5 pt-2" htmlFor="professor-id">Please enter your Professor ID</label>)}
+                                        {errors.includes("invalid_profId") && (<label className="f-xs color-5 pt-2" htmlFor="professor-id">Please enter a valid Professor ID</label>)} */}
                                 </div>
                                 <div className="col-lg-6 col-md-12 pt-4 px-4">
                                     <label className="f-lg pb-2" htmlFor="gender">Gender<span className="color-5">*</span></label>
@@ -393,7 +418,7 @@ function SelectRole() {
                                         :                        
                                     <>
                                         <div className="col-12 pt-5 d-flex jc-center">
-                                            <label className="f-xm color-5" htmlFor="error">server error</label>
+                                            <label className="f-xm color-5" htmlFor="error">Server error. Please try again.</label>
                                         </div>
                                     </>
                                 } 

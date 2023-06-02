@@ -1,0 +1,423 @@
+.profile-page .body {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 2rem;
+}
+
+.profile-page .body .left-side,
+.profile-page .body .right-side {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.profile-page .body .card-box {
+    width: 100%;
+    padding: 1.5rem;
+    border-radius: 15px;
+    background-color: #fff;
+    box-shadow: 0 0 4px rgba(0, 0, 0, .25) 
+}
+
+.profile-page .body .card-box .title {
+    color: #FFA242;
+    font-size: 1.25rem;
+    font-weight: 700;
+}
+
+.profile-page .body .left-side .card-box.main {
+    padding: 2rem 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.profile-page .body .left-side .card-box.main .profile-img-wrap {
+    position: relative;
+}
+
+.profile-page .body .left-side .card-box.main .profile-img-wrap .profile-img {
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    object-fit: cover;
+    object-position: center;
+    box-shadow: 0 0 8px rgba(0, 0, 0, .25);
+}
+
+.profile-page .body .left-side .card-box.main .profile-img-wrap .number {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;   
+}
+
+.profile-page .body .left-side .card-box.main .profile-img-wrap .number#no-1 {
+    background-color: #FFBF7D;
+    border: 2px solid #FFA242;
+}
+.profile-page .body .left-side .card-box.main .profile-img-wrap .number#no-2 {
+    background-color: #D9D9D9;
+    border: 2px solid #9D9B9B;
+}
+.profile-page .body .left-side .card-box.main .profile-img-wrap .number#no-3 {
+    background-color: #DB8C50;
+    border: 2px solid #A05822;
+}
+
+.profile-page .body .left-side .card-box.main .techup-id {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #FFA242;
+}
+
+.profile-page .body .left-side .card-box.main .techup-id img {
+    width: 24px;
+    height: 24px;
+    margin-right: .5rem;
+}
+
+.profile-page .body .left-side .card-box.main .point {
+    height: 32;
+    border-radius: 16px;
+    padding: 0 1rem;
+    font-weight: 700;
+    color: #fff;
+    background-color: #FFA242;
+    border: solid 3px #FED470;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.profile-page .body .left-side .card-box.main .edit-profile {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: .5rem;
+    height: 32px;
+    padding: 0 1rem;
+    border-radius: 12px;
+    background-color: #fff;
+    box-shadow: 0 0 4px rgba(0, 0, 0, .25);
+    transition: all .2s;
+}
+
+.profile-page .body .left-side .card-box.main .edit-profile:hover {
+    background-color: #2CACC9;
+    color: #fff;
+}
+
+.profile-page .body .left-side .card-box.info .information {
+    display: flex;
+    justify-content: space-between;
+    padding: .6rem 0;
+}
+
+.profile-page .body .left-side .card-box.info .information .right {
+    color: #A5A3A2;
+}
+
+.profile-page .body .left-side .card-box.info .contact {
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+    padding: .5rem 0;
+}
+
+.profile-page .body .left-side .card-box.info .contact .icon {
+    color: #FFA242;
+}
+
+.profile-page .body .left-side .card-box.info .contact span {
+    word-break: break-all;
+}
+
+.profile-page .body .left-side .sign-out {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: .4rem;
+    height: 42px;
+    width: 100%;
+    border-radius: 15px;
+    background-color: #fff;
+    color: #FF333D;
+    box-shadow: 0 0 4px rgba(0, 0, 0, .25);
+    border: none;
+    outline: none;
+    font-weight: 700;
+    font-size: 1.125rem;
+    transition: all .2s;
+}
+
+.profile-page .body .left-side .sign-out:hover {
+    background-color: #FF333D;
+    color: #fff;
+}
+
+.profile-page .body .right-side {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.edit-profile-page .body .profile-image img {
+    width: 300px;
+    height: 300px;
+    border-radius: 50%;
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.25);
+    object-fit: cover;
+}
+
+.edit-profile-page .body .profile-image input {
+    display: none;
+}
+
+.edit-profile-page .body .profile-image label {
+    cursor: pointer;
+    height: 40px;
+    font-size: 1.125rem;
+    color: #FFA242;
+    background-color: #fff;
+    margin-top: -18px;
+    padding: 0 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.25);
+    border-radius: 20px;
+    transition: all .2s;
+}
+
+.edit-profile-page .body .profile-image label:hover {
+    background-color: #FFA242;
+    box-shadow: 0 0 12px rgba(0, 0, 0, 0.25);
+    color: #fff;
+}
+
+.point-history-page .body .title {
+    font-size: 2.25rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+}
+
+
+.point-history-page .body .redeem-reward .item-wrap {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2rem;
+    margin: 2rem 0;
+}
+
+.point-history-page .body .redeem-reward .item-wrap .redeem-card {
+    user-select: none;
+    position: relative;
+    cursor: pointer;
+    width: 100%;
+    height: 250px;
+    border-radius: 24px;
+    box-shadow: 0 0 8px rgba(0, 0, 0, .25);
+    background-color: #fff;
+    overflow: hidden;
+    transition: all .2s;
+}
+
+.point-history-page .body .redeem-reward .item-wrap .redeem-card .detail-hover {
+    z-index: 1;
+    position: absolute;
+    top: 10%;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    gap: 1rem;
+    background: linear-gradient(#00000013 0%,  #ffa142f6 50%);
+    /* background-color: #ffa142ef; */
+    color: #fff;
+    padding: 0 1.5rem;
+    font-weight: 700;
+    opacity: 0;
+    transition: all .2s;
+}
+
+.point-history-page .body .redeem-reward .item-wrap .redeem-card .detail-hover span.reward-name {
+    font-size: 2.7rem;
+    white-space: nowrap;
+}
+
+.point-history-page .body .redeem-reward .item-wrap .redeem-card .detail-hover .redeem-detail {
+    outline: none;
+    border: none;
+    display: flex;
+    flex-direction: column;
+    color: #fff;
+    font-size: 1rem;
+    font-weight: 500;
+    gap: 1rem
+}
+
+.point-history-page .body .redeem-reward .item-wrap .redeem-card .detail-hover .redeem-detail .left {
+    width: 82px;
+    display: flex;
+    align-items: center;
+    gap: .25rem;
+}
+
+.point-history-page .body .redeem-reward .item-wrap .redeem-card .detail-hover .redeem-detail .left svg {
+    height: 20px;
+    width: 20px;
+}
+
+.point-history-page .body .redeem-reward .item-wrap .redeem-card img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 0;
+    width: 100%;
+    height: 250px;
+    border-radius: 24px;
+    object-fit: cover;
+    transition: all .2s;
+}
+
+.point-history-page .body .redeem-reward .item-wrap .redeem-card:hover {
+    box-shadow: 0 0 12px rgba(0, 0, 0, .45);
+}
+
+.point-history-page .body .redeem-reward .item-wrap .redeem-card:hover .detail-hover {
+    top: 0;
+    opacity: 1;
+}
+
+.point-history-page .body .redeem-reward .item-wrap .redeem-card:hover img {
+    scale: 1.5;
+}
+
+.point-history-page .body .log-point .log-table {
+    overflow: hidden;
+    background-color: #fff;
+    width: 100%;
+    padding: 1.8rem;
+    margin: 2rem 0;
+    border-radius: 24px;
+    box-shadow: 0 0 4px rgba(0, 0, 0, 0.25);
+}
+
+.point-history-page .body .log-point .log-table .table thead tr th {
+    font-weight: 400;
+    color: #A5A3A2;
+}
+
+.point-history-page .body .log-point .log-table .table tbody tr td {
+    border: none;
+}
+
+.point-history-page .body .log-point .log-table .table tbody tr:nth-child(1) td {
+    padding-top: 1.5rem;
+}
+
+.point-history-page .body .log-point .log-table .table .number {
+    width: 80px;
+    max-width: 120px;
+    text-align: left;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.point-history-page .body .log-point .log-table .table .description {
+    min-width: 200px;
+    max-width: 400px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.point-history-page .body .log-point .log-table .table .points {
+    min-width: 100px;
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.point-history-page .body .log-point .log-table .table .date {
+    width: 250px;
+    max-width: 250px;
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+@media screen and (max-width: 1520px) {
+    .profile-page .body {
+        grid-template-columns: 5fr 7fr;
+    }
+    .point-history-page .body .redeem-reward .item-wrap {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media screen and (max-width: 1200px) {
+    .profile-page .body {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+@media screen and (max-width: 992px) {
+    .profile-page .body {
+        grid-template-columns: 1fr;
+    }
+
+    .point-history-page .body .redeem-reward .item-wrap {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    .point-history-page .body .log-point .log-table {
+        overflow-x: scroll;
+    }
+    .point-history-page .body .log-point .log-table::-webkit-scrollbar {
+        height: 8px;
+    }
+    .point-history-page .body .log-point .log-table::-webkit-scrollbar-track{
+        margin: 0 16px;
+        background: transparent;
+    }    
+    .point-history-page .body .log-point .log-table::-webkit-scrollbar-thumb {
+        background: #ffb56a;
+        border-radius: 5px;
+    }
+    
+    .point-history-page .body .log-point .log-table::-webkit-scrollbar-thumb:hover {
+        background: #FFA242;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .profile-page .body {
+        grid-template-columns: 1fr;
+    }
+    .point-history-page .body .redeem-reward .item-wrap {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media screen and (max-width: 576px) {
+    .profile-page .body .left-side .card-box.info .information {
+        justify-content: flex-start;
+        flex-direction: column;
+        gap: .5rem;
+    }
+}

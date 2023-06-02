@@ -19,6 +19,7 @@
     "pretty-bytes": "^6.1.0",
     "query-string": "^8.1.0",
     "react": "^18.2.0",
+    "react-bootstrap": "^2.7.4",
     "react-dom": "^18.2.0",
     "react-icons": "^4.7.1",
     "react-otp-input": "^2.4.0",

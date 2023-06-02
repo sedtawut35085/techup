@@ -87,3 +87,51 @@ export async function updateStudentText (bodydata,StudentEmail) {
       })
   return response
 }
+
+export async function updateUserProfileWithNewImage(body,imageFile) {
+  accessToken = await getAccessToken()
+  userEmail = await getCurrentUserId()
+  convertedFile = await convertToBase64(imageFile);
+  convertedFile = imageFile.type + ' ' + convertedFile;
+  let responseLocationImage = await uploadPhoto(convertedFile)
+  body['ImageURL'] = responseLocationImage
+  await axios({
+      method: 'put',
+      url: `${baseUrl}/student`,
+      headers: { 
+          'Authorization': accessToken, 
+          'Content-Type': 'text/plain'
+      },
+      params: {
+        "UserEmail" : userEmail
+      }, 
+      data: body
+      }).then((res) => {
+        response = res
+      }).catch((err)=>{
+        response = err
+      })
+  return response
+}
+
+export async function updateUserProfile (body) {
+  accessToken = await getAccessToken()
+  userEmail = await getCurrentUserId()
+  await axios({
+      method: 'put',
+      url: `${baseUrl}/student`,
+      headers: { 
+          'Authorization': accessToken, 
+          'Content-Type': 'text/plain'
+      },
+      params: {
+        "UserEmail" : userEmail
+      }, 
+      data: body
+      }).then((res) => {
+        response = res
+      }).catch((err)=>{
+        response = err
+      })
+  return response
+}

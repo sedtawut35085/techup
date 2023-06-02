@@ -1,18 +1,25 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { ToastContainer, toast } from 'react-toastify';
+import React, { useEffect, useState } from 'react';
+import { useNavigate , Link } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import Moment from 'moment'
 import AWS from 'aws-sdk'
 
 import { fileSize, fileType, download, downloadAll } from '../../assets/js/helper'
-import { saveSubmission } from '../../service/submission'
 
-import BackgroundIcon from '../../components/background/bgIcons.js';
+import { getWeeklyQuestion } from '../../service/weeklyQuestion';
+import { updateAdminWeeklyStatus } from '../../service/admin'
+import { getStudent } from '../../service/student';
+import { getComment,getWeeklyCommentNew , addComment } from '../../service/discussQuestion';
+import { saveSubmission } from '../../service/submission'
+import { getWeeklySubmission } from '../../service/submission';
 
 import { HiOutlineCalendar, HiOutlineExclamation } from 'react-icons/hi';
 import { TbCalendarTime, TbBulb, TbSwords, TbLock, TbFileZip, TbInfoCircle, TbFileDescription, TbMessage2, TbFileUpload, TbMessageCircle, TbPaperclip, TbTrash, } from 'react-icons/tb'
 import { IoCloseCircle, IoCaretUp, IoCaretDown } from 'react-icons/io5'
 import { BsReplyAll, BsCheckLg } from 'react-icons/bs'
+
+import CommentDiscussQuestion from "../../components/comment/commentDiscussQuestion"
+import BackgroundIcon from '../../components/background/bgIcons.js';
 
 const S3_BUCKET ='techup-file-upload-storage';
 const REGION ='ap-southeast-1';
@@ -30,75 +37,65 @@ const myBucket = new AWS.S3({
 
 function Weekly() {
     
-    let topicID = window.location.href.split("/")[4];
-    let QuestionId = window.location.href.split("/")[6];   
+    // const location = useLocation();
+    const [topicID , setTopicID] = useState("");
+    const [QuestionID , setQuestionID] = useState("");
+
     const navigate = useNavigate()
 
+    const [inFoSubmit, setInFoSubmit] = useState("")
     const [loading, setLoading] = useState(false);
-    const [isLoading, setIsLoading] = useState(true);
+    const [isLoading1, setIsLoading1] = useState(true);
+    const [isLoading2, setIsLoading2] = useState(true);
+    const [isLoading3, setIsLoading3] = useState(true);
+    const [isLoading4, setIsLoading4] = useState(true);
 
     const [inFoQuestion, setInFoQuestion] = useState("")
     const [inFoUser, setInFoUser] = useState("")
+    const [isHaveWeekly, setIsHaveWeekly] = useState(false)
 
     const [isHintShow, setIsHintShow] = useState(false)
     const [menuActive, setMenuActive] = useState(1);
     const [hintModal, setHintModal] = useState(false);
     const [voteModal, setVoteModal] = useState(false);
     const [isDone, setIsDone] = useState(false);
+    const [isDoneEstimate, setIsDoneEstimate] = useState(false);
 
     const [commentDiscuss, setCommentDiscuss] = useState("");
-    const [discuss, setDiscuss] = useState([
-        {
-            id: "1",
-            detail: "Nibh et faucibus enim odio purus feugiat tempor massa libero. Luctus montes, vitae eget consequat morbi lacus, nibh commodo. Sed cras cursus sed neque purus elit vitae et non. Proin massa ut velit duis ullamcorper. Arcu aliquet elementum non volutpat ipsum massa egestas mauris nunc.",
-            vote: 50,
-            owner: {
-                name: "Wattanasiri Uparakkitanon",
-            },
-            datetime: "11/5/2022, 00:00",
-            reply: [
-                {
-                    id: "2",
-                    detail: "Nibh et faucibus enim odio purus feugiat tempor massa libero. Luctus montes, vitae eget consequat morbi lacus, nibh commodo. Sed cras cursus sed neque purus elit vitae et non. Proin massa ut velit duis ullamcorper. Arcu aliquet elementum non volutpat ipsum massa egestas mauris nunc.",
-                    vote: 20,
-                    owner: {
-                        name: "Wattanasiri Uparakkitanon",
-                    },
-                    datetime: "11/5/2022, 00:00",
-                },
-                {
-                    id: "3",
-                    detail: "Nibh et faucibus enim odio purus feugiat tempor massa libero. Luctus montes, vitae eget consequat morbi lacus, nibh commodo. Sed cras cursus sed neque purus elit vitae et non. Proin massa ut velit duis ullamcorper. Arcu aliquet elementum non volutpat ipsum massa egestas mauris nunc.",
-                    vote: 10,
-                    owner: {
-                        name: "Wattanasiri Uparakkitanon",
-                    },
-                    datetime: "11/5/2022, 00:00",
-                }
-            ]
-        },
-        {
-            id: "4",
-            detail: "Nibh et faucibus enim odio purus feugiat tempor massa libero. Luctus montes, vitae eget consequat morbi lacus, nibh commodo. Sed cras cursus sed neque purus elit vitae et non. Proin massa ut velit duis ullamcorper. Arcu aliquet elementum non volutpat ipsum massa egestas mauris nunc.",
-            vote: 40,
-            owner: {
-                name: "Wattanasiri Uparakkitanon",
-            },
-            datetime: "11/5/2022, 00:00",
-            reply: [
-                {
-                    id: "5",
-                    detail: "Nibh et faucibus enim odio purus feugiat tempor massa libero. Luctus montes, vitae eget consequat morbi lacus, nibh commodo. Sed cras cursus sed neque purus elit vitae et non. Proin massa ut velit duis ullamcorper. Arcu aliquet elementum non volutpat ipsum massa egestas mauris nunc.",
-                    vote: 20,
-                    owner: {
-                        name: "Wattanasiri Uparakkitanon",
-                    },
-                    datetime: "11/5/2022, 00:00",
-                }
-            ]
-        }
-    ]);    
+    const [discuss, setDiscuss] = useState([]);
+    const rootComments = discuss.filter( (discuss) => discuss.ParentID === null)    
     const [showReply, setShowReply] = useState([]);
+
+    function getReply(discussQuestionId) {
+        return discuss.filter(discuss => discuss.ParentID === discussQuestionId).sort(
+            (a,b) => new Date(a.Date).getTime() - new Date(b.Date).getTime())
+    }
+
+    async function getDiscuss() {
+        let res = await getWeeklyCommentNew();
+        setDiscuss(res)
+        setIsLoading1(false)
+    }
+
+    async function addNewComment() {
+        if (commentDiscuss !== "") {
+            await addComment(inFoQuestion.QuestionID,commentDiscuss)
+            let res = await getWeeklyCommentNew();
+            setDiscuss(res)
+            setCommentDiscuss("")
+        } else {
+            toast.error('Please enter comment!', {
+                position: "bottom-left",
+                autoClose: 2000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                theme: "light",
+            });
+        }
+    }
+
     
     function toggleReply(id) {
         let array = [...showReply];
@@ -167,8 +164,8 @@ function Weekly() {
                         pauseOnHover: true,
                         draggable: true,
                         theme: "light",
-                    });                
-                    navigate(`/topic/${topicID}`)  
+                    });  
+                    navigate("/home")             
                 })
                 .catch((err) => {
                     toast.error('Server error, please try again', {
@@ -231,7 +228,7 @@ function Weekly() {
                                         draggable: true,
                                         theme: "light",
                                     });     
-                                    navigate(`/topic/${topicID}`)
+                                    navigate("/home")
                                 })
                                 .catch((err) => {
                                     toast.error('Server error, please try again', {
@@ -267,121 +264,134 @@ function Weekly() {
     const [voteShow, setVoteShow] = useState("")
     const [countVote, setCountVote] = useState(19)
 
-    function showHint(vote) {
-        if(vote === "Y" && voteShow !== "Y") {
-            setVoteShow(vote)
-            setCountVote(20)            
-            setIsHintShow(true)
-            setVoteModal(false)
-            setHintModal(true)
-        } else if(vote === "N" && voteShow !== "N") {
-            setVoteShow(vote)
-            setCountVote(18)
-        } else {
-            setVoteShow("")
-            setCountVote(19)
+    async function getInfoUser() {
+        let resUser = await getStudent();
+        setInFoUser(resUser[0])
+        setIsLoading2(false)
+    }
+
+    async function loadWeeklyQuestion(){
+        let res = await getWeeklyQuestion()
+        if(res[0] !== undefined){
+            setInFoQuestion(res[0]);
+            setTopicID(res[0].TopicID);
+            setQuestionID(res[0].QuestionID);
+            setIsHaveWeekly(true)
+            setIsLoading3(false);
+        }else{
+            setIsHaveWeekly(false)
+            setIsLoading3(false);
         }
     }
 
-    setTimeout(() => {
-        setIsLoading(false)
-    }, 200)
+    async function loadWeeklySubmission(){
+        let res = await getWeeklySubmission();
+        if(res[0] === undefined){
+            setIsDone(false)
+        }else{
+            setIsDone(true)
+            setInFoSubmit(res[0])
+            setFileListSubmit(JSON.parse(res[0].FileAttachment))
+            if(res[0].Score === null){
+                setIsDoneEstimate(false)
+            }else{
+                setIsDoneEstimate(true)
+            }
+        }
+        setIsLoading4(false)
+    }
+
+    useEffect(() => {
+        loadWeeklyQuestion();
+        loadWeeklySubmission();
+        getInfoUser();
+        getDiscuss();
+    }, [])
 
     return (
         <div className="weekly-page">
+            {
+                loading &&
+                <div className="loader">
+                    <div className="lds-ring"><div></div><div></div><div></div><div></div></div>
+                </div>
+            }
             <div className="cover-container">
                 {
-                    isLoading &&
+                    (isLoading1 || isLoading2 || isLoading3 || isLoading4) &&
                     <div className="loader2">
                         <div className="lds-roller"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div>
                         </div>
                     </div>
                 }   
                 {
-                    !isLoading &&
-                    <>                    
-                    <div data-aos="fade-left" data-aos-duration="1000" className="body">
+                    !(isLoading1 || isLoading2 || isLoading3 || isLoading4) &&
+                    <>  
+                    {isHaveWeekly === true ?              
+                    <div data-aos="fade-up" data-aos-duration="1000" className="body">
                         <div className="top-section">
                             <div className="left-side">
-                                <p className="question-name">Distance มีกี่วิธี</p>
+                                <p className="question-name">{inFoQuestion.QuestionName}</p>
                                 <p className="subject-name">
                                     <div className="icon">
                                         <HiOutlineCalendar size={24} />
                                     </div>
                                     Weekly question -&nbsp;
                                     <span 
-                                        className="color-3"
-                                        // className={`${
-                                        //     inFoQuestion.Difficulty === "Easy"
-                                        //     ? "color-3"
-                                        //     : inFoQuestion.Difficulty === "Normal"
-                                        //     ? "color-1"
-                                        //     : inFoQuestion.Difficulty === "Hard"
-                                        //     ? "color-5"
-                                        //     : ""
-                                        // }`}
+                                        className={`${
+                                            inFoQuestion.Difficulty === "Easy"
+                                            ? "color-3"
+                                            : inFoQuestion.Difficulty === "Normal"
+                                            ? "color-1"
+                                            : inFoQuestion.Difficulty === "Hard"
+                                            ? "color-5"
+                                            : ""
+                                        }`}
                                     >
-                                        Easy
+                                        {inFoQuestion.Difficulty}
                                     </span>
                                 </p>
                                 <p className="due-date">
                                     <div className="icon">
                                         <TbCalendarTime size={24} />
                                     </div>
-                                    {/* Due date - {Moment(inFoQuestion.DueDate).format('DD/MM/YYYY')} */}
-                                    Due date - 01/03/2023
+                                    Due date - {Moment(inFoQuestion.DueDate).format('DD/MM/YYYY')}
                                 </p>
                             </div>
                             <div className="right-side">
-                                <div className="action">
-                                    <button 
-                                        className="btn-5"
-                                        onClick={() => {
-                                            if(isHintShow) {
-                                                setHintModal(true);
-                                            } else {
-                                                setVoteModal(true);
-                                            }
-                                        }}
-                                    >
-                                        <TbBulb size={22} className="me-1" />Hint
-                                    </button>
-                                </div>
                                 <div className="point">
-                                    {/* {
+                                    {
                                         isDone
-                                        ?  
-                                        <>
-                                            { isDoneEstimate
-                                            ? <span>{inFoSubmit.Score*inFoQuestion.Point/100} / {inFoQuestion.Point} P</span>
-                                            :  <span>Waiting for professor to evaluate</span>
-                                            }
-                                        </>
+                                        ? isDoneEstimate
+                                            ?   <span>{inFoSubmit.Score*inFoQuestion.Point/100} / {inFoQuestion.Point} P</span>
+                                            :   <span>Waiting for professor to evaluate</span>
                                         :   <span>{inFoQuestion.Point} P</span>
-                                    }                                 */}
-                                    <span>100 P</span>
+                                    }
                                 </div>
                             </div>
                         </div>
                         <div className="problem-section">
-                            <div className="menu-section">
+                        <div className="menu-section">
                                 <div 
                                     className={`menu des ${menuActive === 1 ? "active" : ""}`}
-                                    onClick={() => setMenuActive(1)}
+                                    onClick={() => setMenuActive(1)} 
+                                    data-title={menuActive === 1 ? null : "Description"}
                                 >
                                     <TbFileDescription className="icon" />
                                     <span>Description</span>
                                 </div>
                                 <div 
                                     className={`menu dis ${menuActive === 2 ? "active" : ""}`}
-                                    onClick={() => setMenuActive(2)}
+                                    onClick={() => setMenuActive(2)} 
+                                    data-title={menuActive === 2 ? null : "Discuss"}
                                 >
                                     <TbMessage2 className="icon" />
                                     <span>Discuss</span>
                                 </div>
                                 <div 
                                     className={`menu sub ${menuActive === 3 ? "active" : ""}`}
-                                    onClick={() => setMenuActive(3)}
+                                    onClick={() => setMenuActive(3)} 
+                                    data-title={menuActive === 3 ? null : "Submission"}
                                 >
                                     <TbFileUpload className="icon" />
                                     <span>Submission</span>
@@ -398,19 +408,28 @@ function Weekly() {
                                         <textarea 
                                             className="autosize" 
                                             placeholder="Type comment here ..." 
-                                            onChange={(e) => setCommentDiscuss(e.target.value)} 
+                                            onChange={(e) => setCommentDiscuss(e.target.value)}
+                                            value = {commentDiscuss} 
                                         />
-                                        <button className="btn-01">Comment</button>
+                                        <button className="btn-01" onClick={() => addNewComment()}>Comment</button>
                                     </div>
-                                    <div className="sort">
+                                    {/* <div className="sort">
                                         <span>Sort by :</span>
                                         <select>
                                             <option>Best</option>
                                             <option>Newest</option>
                                             <option>Oldest</option>
                                         </select>
-                                    </div>
+                                    </div> */}
                                     {
+                                        rootComments.map((comment, key) => (
+                                            <CommentDiscussQuestion
+                                                key={comment.DiscussQuestionID}
+                                                comment={comment}
+                                                replies={getReply(comment.DiscussQuestionID)}></CommentDiscussQuestion>
+                                        ))
+                                    }
+                                    {/* {
                                         discuss.map((comment, key) => (
                                             <div className="comment" key={key}>
                                                 <div className="comment-owner">
@@ -483,7 +502,7 @@ function Weekly() {
                                                 </div>
                                             </div>
                                         ))
-                                    }
+                                    } */}
                                 </div>
                                 <div className={`submission ${menuActive === 3 ? "active" : ""}`}>
                                     {
@@ -492,23 +511,21 @@ function Weekly() {
                                                 <span className="fw-700 f-md">Comment from professor</span>
                                                 <div className="sp-vertical"></div>
                                                 <div className="comment-box-edit">
-                                                    {/* {
+                                                    {
                                                         inFoSubmit.CommentFromProf === null
                                                         ?   <p>No comment</p>
                                                         :   <p>{inFoSubmit.CommentFromProf}</p>
-                                                    }                                                 */}
-                                                    <p className="color-gray2">No comment</p>
+                                                    }                                                
                                                 </div>
                                                 <div className="divider my-4"></div>
                                                 <span className="fw-700 f-md">Your submission</span>
                                                 <div className="sp-vertical"></div>
                                                 <div className="comment-box-edit">
-                                                    {/* {
+                                                    {
                                                         inFoSubmit.Answer === null
                                                         ?   <p>No Text Answer</p>
                                                         :   <p>{inFoSubmit.Answer}</p>
-                                                    }                                                 */}
-                                                    <p className="color-gray2">No Text Answer</p>
+                                                    }                                                
                                                 </div>
                                                 <div className="attachment">
                                                     <span className="f-md fw-700">Attachment ({fileList.length})</span>
@@ -607,6 +624,18 @@ function Weekly() {
                             </div>
                         </div>
                     </div>
+                    :
+                    <>
+                        <div >
+                            <div className="text-center f-md thai pt-4 pb-4">
+                                Now there is no question of the week, Please wait and try again later.
+                            </div>
+                            <div className="text-center f-md thai pt-4">
+                                <Link className="btn-addquestion" to={`/home`} >Go Home </Link> 
+                            </div>
+                        </div>
+                    </>
+                    }
                     </>
                 }
             </div>

@@ -20,6 +20,7 @@
 
 .question-page .body .top-section .left-side .subject-name {
     font-size: 1rem;
+    white-space: nowrap;
 }
 
 .question-page .body .top-section .left-side .due-date {
@@ -58,6 +59,19 @@
     justify-content: center;
 }
 
+.question-page .body .top-section .right-side .status {
+    margin-top: .6rem;
+    margin-bottom: 2rem;
+    padding: 0 .6rem;
+    height: 36px;
+    border-radius: 18px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: .3rem;
+    color: #fff;
+}
+
 .question-page .body .top-section .right-side .point {
     white-space: nowrap;
     height: 36px;
@@ -70,6 +84,11 @@
     justify-content: center;
     align-items: center;
 }
+
+.question-page .body .top-section .right-side.prof {
+    white-space: nowrap;
+}
+
 
 .question-page .body .problem-section {
     margin-top: 2rem
@@ -283,6 +302,8 @@
 }
 
 .question-page .body .problem-section .detail-section .discuss .comment .comment-detail {
+    font-family: 'IBM Plex Sans Thai', sans-serif;
+    margin: 0;
     padding: .8rem 0;
 }
 
@@ -296,6 +317,12 @@
     display: flex;
     align-items: center;
     margin-right: 1rem;
+    color: #e1e1e1;
+}
+
+.question-page .body .problem-section .detail-section .discuss .comment .comment-action .vote .icon {
+    cursor: not-allowed;
+    color: #e1e1e1;
 }
 
 .question-page .body .problem-section .detail-section .discuss .comment .comment-action .show-reply,
@@ -601,7 +628,6 @@
     margin: 10px 0;
     position: relative;
     height: 50px;
-    cursor: pointer;
     display: flex;
     width: 100%;
     justify-content: center;
@@ -611,7 +637,11 @@
     transition: all.2s;
 }
 
-.question-page .body .problem-section .detail-section .score .score-bar .score-point:hover {
+.question-page .body .problem-section .detail-section .score .score-bar.un-checked .score-point {
+    cursor: pointer;
+}
+
+.question-page .body .problem-section .detail-section .score .score-bar.un-checked .score-point:hover {
     background-color: #FFA242;
     color: #fff;
 }
@@ -706,6 +736,14 @@
     }
     .question-page .body .top-section .right-side .action button {
         margin: 0 .6rem .6rem 0;
+    }
+
+    .question-page .body .top-section .right-side.prof {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    .question-page .body .top-section .right-side.prof .status {
+        margin: 0;
     }
 }
 
