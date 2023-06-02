@@ -15,7 +15,6 @@ import "./assets/styles/Discuss.css"
 import "./assets/styles/Profile.css"
 import 'react-toastify/dist/ReactToastify.css';
 import 'aos/dist/aos.css';
-import './assets/styles/Admin.css'
 
 import AOS from 'aos';
 import { BrowserRouter, Route, Routes} from "react-router-dom";
